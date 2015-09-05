@@ -32,6 +32,7 @@ describe('Library View', function() {
 		it('should initialize collection', function() {
 			var view = new app.LibraryView;
 			expect(view.collection).toEqual(jasmine.any(app.Library));
+			expect(view.collection.size()).toBe(0);
 		});
 	});
 
