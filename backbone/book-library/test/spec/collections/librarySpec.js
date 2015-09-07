@@ -7,8 +7,8 @@ describe('Library Collection', function() {
 	});
 
 	describe('Model', function() {
-		xit('should be set to Book', function() {
-
+		it('should be set to Book', function() {
+			expect(new app.Library.prototype.model).toEqual(jasmine.any(app.Book));
 		});
 	});
 });

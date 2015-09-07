@@ -24,15 +24,16 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+				compress: true
 			},
 			build: {
-				src: 'build/*.js',
+				src: 'build/<%= pkg.name %>.js',
 				dest: 'build/<%= pkg.name %>.min.js'
 			}
 		},
 		jasmine : {
-			src : 'js/**/*.js',
+			src : 'build/<%= pkg.name %>.min.js',
 			options : {
 				vendor: [
 				'bower_components/jquery/dist/jquery.js', 
@@ -46,7 +47,7 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			files: ['js/**/*.js', 'test/**/*.js'],
-			tasks: ['jasmine']
+			tasks: ['concat', 'uglify', 'jasmine']
 		}
 	});
 
@@ -56,5 +57,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-	grunt.registerTask('default', ['uglify']);
+	grunt.registerTask('default', ['watch']);
 };
