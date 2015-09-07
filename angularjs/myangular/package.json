@@ -1,0 +1,11 @@
+{
+  "name": "my-own-ngularjs",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jasmine": "^0.9.1",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "sinon": "^1.16.1"
+  }
+}

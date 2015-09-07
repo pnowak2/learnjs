@@ -36,7 +36,7 @@ describe('Book View', function() {
 
 		beforeEach(function () {
 			view = new app.BookView;
-			spyOn(view, 'template').and.returnValue(function () {
+			spyOn(app.BookView.prototype, 'template').and.returnValue(function () {
 				return 'book template';
 			});
 		});
