@@ -23,12 +23,15 @@ module.exports = function(grunt) {
 	    }
 	  },
 		jasmine : {
-			src : 'js/**/*.js',
+			src : 'build/<%= pkg.name %>.min.js',
 			options : {
 				vendor: [
 					'bower_components/jquery/dist/jquery.js', 
+					'bower_components/jasmine-ajax/lib/mock-ajax.js',
+					'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
 					'bower_components/underscore/underscore.js', 
-					'bower_components/backbone/backbone.js'],
+					'bower_components/backbone/backbone.js'
+				],
 				specs : 'test/**/*.js'
 			}
 		},
