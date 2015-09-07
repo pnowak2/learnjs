@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 			}
 		},
 		jasmine : {
-			src : 'build/<%= pkg.name %>.min.js',
+			src : 'js/**/*.js',
 			options : {
 				vendor: [
 				'bower_components/jquery/dist/jquery.js', 
@@ -45,16 +45,16 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: '**/*.js',
+			files: ['js/**/*.js', 'test/**/*.js'],
 			tasks: ['jasmine']
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
-	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('default', ['uglify']);
 };

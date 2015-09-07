@@ -7,8 +7,8 @@ describe('Library Collection', function() {
 	});
 
 	describe('Model', function() {
-		it('should be set to Book', function() {
-			expect(app.Library.prototype.model).toBe(app.Book);
+		xit('should be set to Book', function() {
+
 		});
 	});
 });
