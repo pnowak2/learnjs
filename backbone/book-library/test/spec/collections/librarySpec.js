@@ -11,5 +11,4 @@ describe('Library Collection', function() {
 			expect(app.Library.prototype.model).toBe(app.Book);
 		});
 	});
-
 });

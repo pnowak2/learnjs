@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-	  pkg: grunt.file.readJSON('package.json'),
+		pkg: grunt.file.readJSON('package.json'),
 		jshint: {
 			all: ['js/**/*.js'],
 			options: {
@@ -13,24 +13,33 @@ module.exports = function(grunt) {
 				devel: true
 			}
 		},
-	  uglify: {
-	    options: {
-	      banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-	    },
-	    build: {
-	      src: 'js/**/*.js',
-	      dest: 'build/<%= pkg.name %>.min.js'
-	    }
-	  },
+		concat: {
+			options: {
+				separator: ';',
+			},
+			dist: {
+				src: ['js/app.js', 'js/models/*.js', 'js/collections/*.js', 'js/views/*.js'],
+				dest: 'build/<%= pkg.name %>.js',
+			},
+		},
+		uglify: {
+			options: {
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+			},
+			build: {
+				src: 'build/*.js',
+				dest: 'build/<%= pkg.name %>.min.js'
+			}
+		},
 		jasmine : {
 			src : 'build/<%= pkg.name %>.min.js',
 			options : {
 				vendor: [
-					'bower_components/jquery/dist/jquery.js', 
-					'bower_components/jasmine-ajax/lib/mock-ajax.js',
-					'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-					'bower_components/underscore/underscore.js', 
-					'bower_components/backbone/backbone.js'
+				'bower_components/jquery/dist/jquery.js', 
+				'bower_components/jasmine-ajax/lib/mock-ajax.js',
+				'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+				'bower_components/underscore/underscore.js', 
+				'bower_components/backbone/backbone.js'
 				],
 				specs : 'test/**/*.js'
 			}
@@ -42,6 +51,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-watch');
