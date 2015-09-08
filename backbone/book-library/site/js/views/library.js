@@ -39,6 +39,11 @@ app.LibraryView = Backbone.View.extend({
 		this.collection.create(formData);
 	},
 
+	showDetails: function (book) {
+		this.$('#title').val(book.title);
+		this.$('#author').val(book.author);
+	},
+
 	render: function () {
 		this.collection.each(function (book) {
 			var bookView = this.renderBook(book);
@@ -50,6 +55,8 @@ app.LibraryView = Backbone.View.extend({
 		var bookView = new app.BookView({
 			model: book
 		});
+
+		this.listenTo(bookView, 'book:show', this.showDetails);
 
 		this.$el.append(bookView.render().el);
 	}

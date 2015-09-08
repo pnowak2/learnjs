@@ -9,14 +9,13 @@ app.BookView = Backbone.View.extend({
 	},
 
 	deleteBook: function (e) {
-		console.log('delete');
 		this.model.destroy();
 		this.remove();
 	},
 
 	showDetails: function (e) {
 		if(e.target.className !== 'delete') {
-			
+			this.trigger('book:show', this.model.toJSON());
 		}
 	},
 
