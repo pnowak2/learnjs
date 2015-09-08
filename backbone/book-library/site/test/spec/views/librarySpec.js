@@ -40,13 +40,41 @@ describe('Library View', function() {
 		var view;
 
 		beforeEach(function () {
-			view = new app.LibraryView;
+			view = new app.LibraryView(new app.Library([
+				{title: 'one'},
+				{title: 'two'},
+				{title: 'three'}
+			]));
 		});
 
 		it('should return view object itself', function() {
 			expect(view.render()).toBe(view);
 		});
 
+		it('should have render book method', function() {
+			expect(view.renderBook).toEqual(jasmine.any(Function));
+		});
+
+		it('should call render book three times', function() {
+			spyOn(view, 'renderBook');
+			view.render();
+			expect(view.renderBook.calls.count()).toBe(3);
+		});
+	});
+
+	describe('Render book', function() {
+
+		beforeEach(function () {
+			spyOn(app, 'BookView');
+			view = new app.LibraryView();
+		});
+
+		it('should instantiate BookView with model', function() {
+			view.renderBook({ title : 'fake'});
+			expect(app.BookView).toHaveBeenCalledWith({
+				model: { title : 'fake'}
+			});
+		});
 	});
 
 });

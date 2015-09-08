@@ -18,8 +18,8 @@ module.exports = function(grunt) {
 				separator: ';',
 			},
 			dist: {
-				src: ['js/app.js', 'js/models/*.js', 'js/collections/*.js', 'js/views/*.js'],
-				dest: 'build/<%= pkg.name %>.js',
+				src: ['site/js/app.js', 'site/js/models/*.js', 'site/js/collections/*.js', 'site/js/views/*.js'],
+				dest: 'site/build/<%= pkg.name %>.js',
 			},
 		},
 		uglify: {
@@ -28,19 +28,19 @@ module.exports = function(grunt) {
 				compress: true
 			},
 			build: {
-				src: 'build/<%= pkg.name %>.js',
-				dest: 'build/<%= pkg.name %>.min.js'
+				src: 'site/build/<%= pkg.name %>.js',
+				dest: 'site/build/<%= pkg.name %>.min.js'
 			}
 		},
 		jasmine : {
 			src : 'build/<%= pkg.name %>.min.js',
 			options : {
 				vendor: [
-				'bower_components/jquery/dist/jquery.js', 
-				'bower_components/jasmine-ajax/lib/mock-ajax.js',
-				'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-				'bower_components/underscore/underscore.js', 
-				'bower_components/backbone/backbone.js'
+				'site/bower_components/jquery/dist/jquery.js', 
+				'site/bower_components/jasmine-ajax/lib/mock-ajax.js',
+				'site/bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+				'site/bower_components/underscore/underscore.js', 
+				'site/bower_components/backbone/backbone.js'
 				],
 				specs : 'test/**/*.js'
 			}

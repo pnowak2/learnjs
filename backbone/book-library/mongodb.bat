@@ -1,0 +1,1 @@
+mongod -f C:\PGM\Executables\stack\portable-apps\mongodb\etc\mongod.conf
