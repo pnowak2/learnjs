@@ -8,4 +8,4 @@ requirejs.config({
 	}
 });
 
-requirejs(['app/main']);
+requirejs(['app/app']);

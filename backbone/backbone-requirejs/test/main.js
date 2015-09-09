@@ -22,6 +22,7 @@ requirejs.config({
 
 require(['jasmine-boot'], function () {
 	require([
+		'test/appSpec', 
 		'test/models/bookModelSpec', 
 		'test/views/bookViewSpec'
 	], function () {
