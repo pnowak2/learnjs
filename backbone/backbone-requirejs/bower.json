@@ -1,0 +1,26 @@
+{
+  "name": "requirejs",
+  "version": "0.0.0",
+  "homepage": "https://github.com/pnowak2/learnjs",
+  "authors": [
+    "Piotr Nowak <p.nowak2@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.2.3",
+    "jquery": "~2.1.4",
+    "requirejs": "~2.1.20"
+  },
+  "devDependencies": {
+    "jasmine-core": "jasmine#~2.3.4",
+    "jasmine-ajax": "~3.2.0",
+    "jasmine-jquery": "~2.1.0"
+  }
+}
