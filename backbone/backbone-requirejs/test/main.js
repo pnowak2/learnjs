@@ -6,6 +6,7 @@ requirejs.config({
 		jquery: 'jquery/dist/jquery',
 		underscore: 'underscore/underscore',
 		backbone: 'backbone/backbone',
+		text: 'text/text',
 		jasmine: ['jasmine/lib/jasmine-core/jasmine'],
 		'jasmine-html': ['jasmine/lib/jasmine-core/jasmine-html'],
 		'jasmine-boot': ['jasmine/lib/jasmine-core/boot']

@@ -1,7 +1,9 @@
-define(['backbone', 'app/models/bookModel'], function(Backbone, Book) {
-	var BookView = Backbone.View.extend({
+define(function(require) {
+	var Backbone = require('backbone'),
+			Book = require('app/models/bookModel'),
+			BookView = Backbone.View.extend({
 
-	});
+			});
 
 	return BookView;
 });
