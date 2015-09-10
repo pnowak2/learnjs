@@ -34,6 +34,7 @@ require(['jasmine-boot', 'jasmine-jquery', 'jasmine-ajax'], function () {
 	require([
 		'test/appSpec', 
 		'test/models/bookModelSpec', 
+		'test/collections/libraryCollectionSpec', 
 		'test/views/bookViewSpec'
 	], function () {
 		window.onload();
