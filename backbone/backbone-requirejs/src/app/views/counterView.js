@@ -17,6 +17,7 @@ define(['backbone',
 
 		render: function () {
 			var html = Mustache.render(counterTemplate, {
+				total: this.collection.size(),
 				completed: this.collection.completed().length,
 				remaining: this.collection.remaining().length
 			});
