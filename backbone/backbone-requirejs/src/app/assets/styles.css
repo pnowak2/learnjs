@@ -3,6 +3,10 @@
 	text-decoration: line-through;
 }
 
+ul {
+	list-style: none;
+}
+
 li {
 	cursor: pointer;
 }

@@ -1,9 +1,10 @@
 define(function(require) {
 	var Backbone = require('backbone'),
+			Mustache = require('mustache'),
+			bookTemplate = require('text!templates/book.html'),
 			_ = require('underscore'),
 			BookView = Backbone.View.extend({
 				tagName: 'li',
-				template: _.template('<%= title %>'),
 
 				events: {
 					'click': 'itemClicked'
@@ -14,7 +15,7 @@ define(function(require) {
 				},
 
 				modelChanged: function (model) {
-					this.$el.toggleClass('done', model.get('completed'));
+					this.render();
 					this.trigger('book:change');
 				},
 
@@ -23,9 +24,8 @@ define(function(require) {
 				},
 
 				render: function () {
-					var html = this.template(this.model.toJSON());
+					var html = Mustache.render(bookTemplate, this.model.toJSON());
 					this.$el.html(html);
-					this.modelChanged(this.model);
 					return this;
 				}
 			});
