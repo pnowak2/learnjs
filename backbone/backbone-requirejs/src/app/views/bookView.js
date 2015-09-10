@@ -13,8 +13,8 @@ define(function(require) {
 					this.listenTo(this.model, 'change', _.bind(this.modelChanged, this));
 				},
 
-				modelChanged: function () {
-					this.$el.toggleClass('done', this.model.get('completed'));
+				modelChanged: function (model) {
+					this.$el.toggleClass('done', model.get('completed'));
 				},
 
 				itemClicked: function (e) {
@@ -24,7 +24,7 @@ define(function(require) {
 				render: function () {
 					var html = this.template(this.model.toJSON());
 					this.$el.html(html);
-					this.modelChanged();
+					this.modelChanged(this.model);
 					return this;
 				}
 			});

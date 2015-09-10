@@ -8,13 +8,7 @@ define(['jquery',
 									CreateBookView,
 									LibraryCollection) {
 	var app = {},
-			libraryView = new LibraryView({
-				collection: new LibraryCollection([
-					{ title: 'test' },
-					{ title: 'other' },
-					{ title: 'redundant' }
-				])
-			}),
+			libraryView = new LibraryView,
 			createBookView = new CreateBookView;
 
 	createBookView.render();

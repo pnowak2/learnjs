@@ -7,7 +7,10 @@ define(['backbone',
 
 	var LibraryView = Backbone.View.extend({
 		id: 'books',
+
 		tagName: 'ul',
+
+		collection: new LibraryCollection,
 
 		initialize: function () {
 			this.listenTo(this.collection, 'invalid', this.validationErrorOccured);
