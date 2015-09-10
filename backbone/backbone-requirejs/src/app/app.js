@@ -1,21 +1,6 @@
-define(['jquery', 
-				'app/views/libraryView', 
-				'app/views/createBookView',
-				'app/collections/libraryCollection'
-			 ], 
-				function ($, 
-									LibraryView, 
-									CreateBookView,
-									LibraryCollection) {
-	var app = {},
-			libraryView = new LibraryView,
-			createBookView = new CreateBookView;
+define(['jquery', 'app/views/appView'], function ($, AppView) {
+	var appView = new AppView;
+	$('#app').html(appView.render().el);
 
-	createBookView.render();
-	libraryView.render();
-
-	$('#form').append(createBookView.el);
-	$('#library').append(libraryView.el);
-
-	return app;
+	return appView;
 });
