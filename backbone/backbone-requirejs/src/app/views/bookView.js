@@ -15,6 +15,7 @@ define(function(require) {
 
 				modelChanged: function (model) {
 					this.$el.toggleClass('done', model.get('completed'));
+					this.trigger('book:change');
 				},
 
 				itemClicked: function (e) {

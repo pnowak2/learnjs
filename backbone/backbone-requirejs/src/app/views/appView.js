@@ -17,12 +17,17 @@ define(['backbone',
 
 		initialize: function () {
 			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
+			this.listenTo(this.libraryView.collection, 'change', _.bind(this.changedBook, this));
 			this.listenTo(this.libraryView, 'book:success', _.bind(this.bookCreated, this));
 			this.listenTo(this.libraryView, 'book:error', _.bind(this.bookCreateError, this));
 		},
 
 		createBook: function (title) {
 			this.libraryView.createBook(title);
+		},
+
+		changedBook: function () {
+			this.$('.completed').text(this.libraryView.collection.completed().length);
 		},
 
 		bookCreated: function () {
@@ -35,11 +40,12 @@ define(['backbone',
 
 		render: function () {
 			var html = Mustache.render(appTemplate, {
-				form: this.createBookView.render().$el.html(),
-				list: this.libraryView.render().$el.html()
+				completed: this.libraryView.collection.completed().length
 			});
-
 			this.$el.html(html);
+
+			this.$('.form').html(this.createBookView.render().el)
+			this.$('.list').html(this.libraryView.render().el)
 
 			return this;
 		}
