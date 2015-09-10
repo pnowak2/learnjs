@@ -7,7 +7,8 @@ define(function(require) {
 				tagName: 'li',
 
 				events: {
-					'click': 'itemClicked'
+					'click input': 'itemClicked',
+					'click button': 'removeClicked'
 				},
 
 				initialize: function () {
@@ -21,6 +22,11 @@ define(function(require) {
 
 				itemClicked: function (e) {
 					this.model.toggle();
+				},
+
+				removeClicked: function (e) {
+					this.model.destroy();
+					this.remove();
 				},
 
 				render: function () {
