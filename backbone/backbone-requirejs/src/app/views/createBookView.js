@@ -8,7 +8,7 @@ define(function(require) {
 
 				events: {
 					'click button': 'createButtonClicked',
-					'keyup input': 'keyPressed'
+					'keydown input': 'keyPressed'
 				},
 
 				bookSuccess: function () {
