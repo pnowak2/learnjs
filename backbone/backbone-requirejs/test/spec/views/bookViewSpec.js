@@ -4,6 +4,10 @@ define(['app/views/bookView'], function (BookView) {
 		it('should be defined', function() {
 			expect(BookView.prototype).toEqual(jasmine.any(Backbone.View));
 		});
+
+		it('should have correct tag name', function() {
+			expect(BookView.prototype.tagName).toEqual('li');
+		});
 	});
 
 	describe('Jasmine jQuery', function() {
