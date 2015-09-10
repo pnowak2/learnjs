@@ -33,7 +33,7 @@ define(function(require) {
 
 				editTitleKeyPressed: function (e) {
 					if(e.which === 13) {
-						this.model.set('title', this.$('.edit-title').val());
+						this.model.set('title', this.$('.edit-title').val(), {validate: true});
 						this.$el.toggleClass('edit');
 					}
 				},
