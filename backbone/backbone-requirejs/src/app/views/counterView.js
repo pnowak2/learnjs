@@ -8,8 +8,7 @@ define(['backbone',
 	var CounterView = Backbone.View.extend({
 
 		initialize: function () {
-			this.listenTo(this.collection, 'change', _.bind(this.bookChanged, this));
-			this.listenTo(this.collection, 'add', _.bind(this.bookChanged, this));
+			this.listenTo(this.collection, 'all', _.bind(this.bookChanged, this));
 		},
 
 		bookChanged: function (book) {

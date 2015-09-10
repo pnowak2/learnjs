@@ -20,7 +20,7 @@ define(['backbone',
 		initialize: function () {
 			this.counterView = new CounterView({
 				collection: this.libraryView.collection
-			})
+			});
 			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
 			this.listenTo(this.libraryView, 'book:success', _.bind(this.bookCreated, this));
 			this.listenTo(this.libraryView, 'book:error', _.bind(this.bookCreateError, this));
