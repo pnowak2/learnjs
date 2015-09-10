@@ -1,5 +1,6 @@
 <input class="bookItem" type="checkbox" {{#completed}}checked{{/completed}}>
-<span class="{{#completed}}done{{/completed}}">
+<span class="title {{#completed}}done{{/completed}}">
 {{title}}
 </span>
+<input class="edit-title" type="text" value="{{title}}">
 <button>x</button>

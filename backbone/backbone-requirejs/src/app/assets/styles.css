@@ -10,3 +10,20 @@ ul {
 li {
 	cursor: pointer;
 }
+
+.edit-title {
+	display: none;
+
+}
+
+.edit .edit-title {
+	display: inline-block;
+}
+
+.edit .title {
+	display: none;
+}
+
+.title {
+	display: inline-block;
+}

@@ -7,7 +7,8 @@ define(function(require) {
 				tagName: 'li',
 
 				events: {
-					'click input': 'itemClicked',
+					'click input[type=checkbox]': 'itemClicked',
+					'click .title': 'editClicked',
 					'click button': 'removeClicked'
 				},
 
@@ -22,6 +23,10 @@ define(function(require) {
 
 				itemClicked: function (e) {
 					this.model.toggle();
+				},
+
+				editClicked: function (e) {
+					this.$el.toggleClass('edit');
 				},
 
 				removeClicked: function (e) {
