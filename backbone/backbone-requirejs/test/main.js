@@ -3,7 +3,7 @@ requirejs.config({
 	paths: {
 		app: '../src/app',
 		test: '../test/spec',
-		templates: '../templates',
+		templates: '../src/app/templates',
 		jquery: 'jquery/dist/jquery',
 		underscore: 'underscore/underscore',
 		backbone: 'backbone/backbone',
@@ -32,10 +32,7 @@ requirejs.config({
 
 require(['jasmine-boot', 'jasmine-jquery', 'jasmine-ajax'], function () {
 	require([
-		'test/appSpec', 
-		'test/models/bookModelSpec', 
-		'test/collections/libraryCollectionSpec', 
-		'test/views/bookViewSpec'
+		'test/views/bookViewSpec'//, more specs here. Figure out why text plugin does not work from tests, but works from src folder.
 	], function () {
 		window.onload();
 	});

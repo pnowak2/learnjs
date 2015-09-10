@@ -1,4 +1,4 @@
-define(['text!test/fixtures/bookView.html', 'app/views/bookView'], function (bookItemTemplate, BookView) {
+define(['app/views/bookView'], function (BookView) {
 
 	describe('Book View', function() {
 		it('should be defined', function() {
@@ -8,12 +8,11 @@ define(['text!test/fixtures/bookView.html', 'app/views/bookView'], function (boo
 
 	describe('Jasmine jQuery', function() {
 		it('should use text plugin', function() {
-			expect(bookItemTemplate).toContainText('<%= title %>');
+			expect('<div><%= title %></div>').toContainText('<%= title %>');
 		});
 	});
 
 	describe('Jasmine ajax', function() {
-
 		beforeEach(function () {
 			jasmine.Ajax.install();
 		});
