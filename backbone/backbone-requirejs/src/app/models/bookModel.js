@@ -1,4 +1,4 @@
-define(['underscore' ,'backbone'], function (_, Backbone) {
+define(['jquery', 'underscore' ,'backbone'], function ($, _, Backbone) {
 	var Book = Backbone.Model.extend({
 		defaults: {
 			title: 'no title',
@@ -10,7 +10,7 @@ define(['underscore' ,'backbone'], function (_, Backbone) {
 		},
 
 		validate: function (attrs) {
-			if(_.isEmpty(attrs.title)) {
+			if(_.isEmpty($.trim(attrs.title))) {
 				return 'Title is mandatory';
 			}
 		}

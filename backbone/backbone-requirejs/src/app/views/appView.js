@@ -1,25 +1,48 @@
 define(['backbone', 
+				'mustache',
 				'app/views/createBookView',
 				'app/views/libraryView',
-				'app/views/bookView'
+				'text!templates/app.html'
 			 ], 
 				function (Backbone, 
+									Mustache,
 									CreateBookView,
 									LibraryView,
-									BookView) {
+									appTemplate) {
 
 	var AppView = Backbone.View.extend({
-
+		tagName: 'section',
 		libraryView: new LibraryView,
 		createBookView: new CreateBookView,
 
 		initialize: function () {
+			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
+			this.listenTo(this.libraryView, 'book:success', _.bind(this.bookCreated, this));
+			this.listenTo(this.libraryView, 'book:error', _.bind(this.bookCreateError, this));
+		},
 
+		createBook: function (title) {
+			this.libraryView.createBook(title);
+		},
+
+		bookCreated: function () {
+			this.createBookView.bookSuccess();
+		},
+
+		bookCreateError: function (msg) {
+			this.createBookView.bookError(msg);
 		},
 
 		render: function () {
-			this.$el.append(this.createBookView.render().el);
-			this.$el.append(this.libraryView.render().el);
+			var html = Mustache.render(appTemplate, {
+				form: this.createBookView.render().$el.html(),
+				list: this.libraryView.render().$el.html()
+			});
+
+			this.$el.html(html);
+
+			this.createBookView.delegateEvents();
+			this.libraryView.delegateEvents();
 
 			return this;
 		}

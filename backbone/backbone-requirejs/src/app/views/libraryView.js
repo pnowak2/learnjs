@@ -15,10 +15,9 @@ define(['backbone',
 		initialize: function () {
 			this.listenTo(this.collection, 'invalid', this.validationErrorOccured);
 			this.listenTo(this.collection, 'add', this.render);
-			Backbone.listenTo(Backbone, 'book:create', _.bind(this.bookCreated, this));
 		},
 
-		bookCreated: function(bookTitle) {
+		createBook: function(bookTitle) {
 			var isValid = this.collection.add({
 				title: bookTitle
 			}, {
@@ -26,14 +25,12 @@ define(['backbone',
 			});
 
 			if(isValid) {
-				Backbone.trigger('book:success');
+				this.trigger('book:success');
 			}
-
-			console.log(this.collection.completed());
 		},
 
 		validationErrorOccured: function (e, m) {
-			Backbone.trigger('book:error', m);
+			this.trigger('book:error', m);
 		},
 
 		render: function () {

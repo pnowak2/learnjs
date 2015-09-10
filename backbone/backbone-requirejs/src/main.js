@@ -5,6 +5,7 @@ requirejs.config({
 		templates: '../src/app/templates',
 		jquery: 'jquery/dist/jquery',
 		underscore: 'underscore/underscore',
+		mustache: 'mustache.js/mustache',
 		backbone: 'backbone/backbone',
 		text: 'text/text'
 	}

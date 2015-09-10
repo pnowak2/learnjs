@@ -1,44 +1,42 @@
 define(function(require) {
 	var Backbone = require('backbone'),
-			createBookTemplate = require('text!templates/createBook.html')
+			createBookTemplate = require('text!templates/createBook.html'),
 			_ = require('underscore'),
+			Mustache = require('mustache'),
 			ENTER_KEY = 13,
-
 			CreateBookView = Backbone.View.extend({
-				template: _.template(createBookTemplate),
-
 				events: {
 					'click button': 'createButtonClicked',
-					'keyup input': 'enterKeyPressed'
-				},
-
-				initialize: function () {
-					Backbone.listenTo(Backbone, 'book:error', _.bind(this.bookError));
-					Backbone.listenTo(Backbone, 'book:success', _.bind(this.bookSuccess));
-				},
-
-				bookError: function (message) {
-					this.$('.error-message').text(message);
+					'keyup input': 'keyPressed'
 				},
 
 				bookSuccess: function () {
 					this.$('.error-message').empty();
 				},
 
+				bookError: function (message) {
+					this.$('.error-message').text(message);
+				},
+
 				createButtonClicked: function() {
 					var bookTitle = this.$('input').val();
-					Backbone.trigger('book:create', bookTitle);
+					this.trigger('book:create', bookTitle);
 					this.$('input').val('').focus();
 				},
 
-				enterKeyPressed: function (e) {
+				keyPressed: function (e) {
+					console.log('pressed')
 					if(e.which === ENTER_KEY) {
 						this.createButtonClicked();
+					} else {
+						this.$('.error-message').empty();
 					}
 				},
 
 				render: function () {
-					this.$el.html(this.template());
+					this.$el.html(Mustache.render(createBookTemplate, {
+						buttonTitle: 'New Book'
+					}));
 					return this;
 				}
 			});
