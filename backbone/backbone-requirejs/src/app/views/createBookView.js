@@ -5,6 +5,11 @@ define(function(require) {
 			Mustache = require('mustache'),
 			ENTER_KEY = 13,
 			CreateBookView = Backbone.View.extend({
+
+				initialize: function () {
+					console.log('init')
+				},
+
 				events: {
 					'click button': 'createButtonClicked',
 					'keyup input': 'keyPressed'

@@ -43,6 +43,8 @@ define(['backbone',
 
 				this.$el.append(bookView.render().el);
 			}, this);
+
+
 			return this;
 		}
 	});

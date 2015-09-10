@@ -12,8 +12,8 @@ define(['backbone',
 
 	var AppView = Backbone.View.extend({
 		tagName: 'section',
-		libraryView: new LibraryView,
 		createBookView: new CreateBookView,
+		libraryView: new LibraryView,
 
 		initialize: function () {
 			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
@@ -40,9 +40,6 @@ define(['backbone',
 			});
 
 			this.$el.html(html);
-
-			this.createBookView.delegateEvents();
-			this.libraryView.delegateEvents();
 
 			return this;
 		}
