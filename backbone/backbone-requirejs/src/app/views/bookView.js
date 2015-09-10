@@ -9,7 +9,8 @@ define(function(require) {
 				events: {
 					'click input[type=checkbox]': 'itemClicked',
 					'click .title': 'editClicked',
-					'click button': 'removeClicked'
+					'click button': 'removeClicked',
+					'keydown .edit-title': 'editTitleKeyPressed'
 				},
 
 				initialize: function () {
@@ -27,6 +28,14 @@ define(function(require) {
 
 				editClicked: function (e) {
 					this.$el.toggleClass('edit');
+					this.$('.edit-title').focus();
+				},
+
+				editTitleKeyPressed: function (e) {
+					if(e.which === 13) {
+						this.model.set('title', this.$('.edit-title').val());
+						this.$el.toggleClass('edit');
+					}
 				},
 
 				removeClicked: function (e) {
