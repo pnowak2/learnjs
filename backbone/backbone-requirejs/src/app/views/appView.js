@@ -14,13 +14,16 @@ define(['backbone',
 
 	var AppView = Backbone.View.extend({
 		tagName: 'section',
-		createBookView: new CreateBookView,
-		libraryView: new LibraryView,
 
 		initialize: function () {
+			this.libraryView = new LibraryView;
+			this.createBookView = new CreateBookView({
+				collection: this.libraryView.collection
+			});
 			this.counterView = new CounterView({
 				collection: this.libraryView.collection
 			});
+			
 			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
 			this.listenTo(this.createBookView, 'book:remove-all', _.bind(this.removeAllBooks, this));
 			this.listenTo(this.libraryView, 'book:success', _.bind(this.bookCreated, this));

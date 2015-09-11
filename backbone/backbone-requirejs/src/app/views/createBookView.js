@@ -12,12 +12,20 @@ define(function(require) {
 					'keydown input': 'keyPressed'
 				},
 
+				initialize: function () {
+					this.listenTo(this.collection, 'all', _.bind(this.bookChanged, this));
+				},
+
 				bookSuccess: function () {
 					this.$('.error-message').empty();
 				},
 
 				bookError: function (message) {
 					this.$('.error-message').text(message);
+				},
+
+				bookChanged: function () {
+					this.render();
 				},
 
 				createButtonClicked: function() {
@@ -41,7 +49,8 @@ define(function(require) {
 
 				render: function () {
 					this.$el.html(Mustache.render(createBookTemplate, {
-						buttonTitle: 'New Book'
+						buttonTitle: 'New Book',
+						hasCompleted: this.collection.completed().length > 0
 					}));
 					return this;
 				}
