@@ -12,9 +12,13 @@ module.exports = function(grunt) {
 			}
 		},
 		browserify: {
-			dist: {
-				src: ['src/app/app.js'],
-				dest: 'src/bundle.js'
+			client: {
+				src: ['src/app/**/*.js'],
+				dest: 'src/bundle.js',
+				options: {
+					watch: true,
+					keepAlive: true
+				}
 			}
 		}
 	});
