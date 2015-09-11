@@ -50,7 +50,8 @@ define(function(require) {
 				render: function () {
 					this.$el.html(Mustache.render(createBookTemplate, {
 						buttonTitle: 'New Book',
-						hasCompleted: this.collection.completed().length > 0
+						hasCompleted: this.collection.completed().length > 0,
+						completed: this.collection.completed().length
 					}));
 					return this;
 				}
