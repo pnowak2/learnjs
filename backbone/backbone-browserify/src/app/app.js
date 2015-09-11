@@ -5,7 +5,6 @@ var Backbone = require('backbone'),
 
 Backbone.$ = $;
 $(function () {
-
 	var todo = new TodoModel;
 	$('body').html(new TodoView({
 		model: todo
