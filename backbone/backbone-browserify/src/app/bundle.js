@@ -12660,21 +12660,46 @@ return jQuery;
 
 },{}],4:[function(require,module,exports){
 var Backbone = require('backbone'),
+		TodoModel = require('./models/todoModel'),
 		TodoView = require('./views/todoView'),
 		$ = require('jquery');
 
 Backbone.$ = $;
 $(function () {
-	$('body').html(new TodoView().render().el);
+
+	var todo = new TodoModel;
+	$('body').html(new TodoView({
+		model: todo
+	}).render().el);
 });
-},{"./views/todoView":5,"backbone":1,"jquery":2}],5:[function(require,module,exports){
+},{"./models/todoModel":5,"./views/todoView":6,"backbone":1,"jquery":2}],5:[function(require,module,exports){
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({
+	defaults: {
+		title: 'no title'
+	}
+});
+},{"backbone":1}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.View.extend({
 	tagName: 'p',
-	
+
+	initialize: function () {
+		this.listenTo(this.model, 'change', this.render.bind(this));
+	},
+
+	events: {
+		'click': 'clicked'
+	},
+
+	clicked: function () {
+		this.model.set('title', Math.random());
+	},
+
 	render: function () {
-		this.$el.html('hello world');
+		this.$el.html(this.model.get('title'));
 		return this;
 	}
 });
