@@ -13,7 +13,7 @@ define(function(require) {
 				},
 
 				initialize: function () {
-					this.listenTo(this.collection, 'all', _.bind(this.bookChanged, this));
+					this.listenTo(this.collection, 'change destroy', _.bind(this.bookChanged, this));
 				},
 
 				bookSuccess: function () {
