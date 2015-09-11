@@ -7,7 +7,8 @@ module.exports = function(grunt) {
 				dest: 'src/bundle.js',
 				options: {
 					watch: true,
-					keepAlive: true
+					keepAlive: true,
+					transform: ['hbsfy']
 				}
 			}
 		}

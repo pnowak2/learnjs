@@ -1,4 +1,5 @@
-var Backbone = require('backbone');
+var Backbone = require('backbone'),
+		template = require('../templates/todo.hbs');
 
 module.exports = Backbone.View.extend({
 	tagName: 'p',
@@ -16,7 +17,9 @@ module.exports = Backbone.View.extend({
 	},
 
 	render: function () {
-		this.$el.html(this.model.get('title'));
+		this.$el.html(template({
+			title: this.model.get('title')
+		}));
 		return this;
 	}
 });
