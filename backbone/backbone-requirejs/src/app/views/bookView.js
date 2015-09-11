@@ -15,6 +15,7 @@ define(function(require) {
 
 				initialize: function () {
 					this.listenTo(this.model, 'change', _.bind(this.modelChanged, this));
+					this.listenTo(this.model, 'destroy', this.remove);
 				},
 
 				modelChanged: function (model) {

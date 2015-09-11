@@ -7,7 +7,8 @@ define(function(require) {
 			CreateBookView = Backbone.View.extend({
 
 				events: {
-					'click button': 'createButtonClicked',
+					'click button.book-submit': 'createButtonClicked',
+					'click button.book-remove-all': 'removeAllButtonClicked',
 					'keydown input': 'keyPressed'
 				},
 
@@ -23,6 +24,10 @@ define(function(require) {
 					var bookTitle = this.$('input').val();
 					this.trigger('book:create', bookTitle);
 					this.$('input').val('').focus();
+				},
+
+				removeAllButtonClicked: function() {
+					this.trigger('book:remove-all');
 				},
 
 				keyPressed: function (e) {

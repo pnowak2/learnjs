@@ -22,12 +22,19 @@ define(['backbone',
 				collection: this.libraryView.collection
 			});
 			this.listenTo(this.createBookView, 'book:create', _.bind(this.createBook, this));
+			this.listenTo(this.createBookView, 'book:remove-all', _.bind(this.removeAllBooks, this));
 			this.listenTo(this.libraryView, 'book:success', _.bind(this.bookCreated, this));
 			this.listenTo(this.libraryView, 'book:error', _.bind(this.bookCreateError, this));
 		},
 
 		createBook: function (title) {
 			this.libraryView.createBook(title);
+		},
+
+		removeAllBooks: function (title) {
+			this.libraryView.collection.completed().forEach(function (item) {
+				item.destroy();
+			});
 		},
 
 		bookCreated: function () {
