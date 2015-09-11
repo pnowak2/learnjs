@@ -1,6 +1,6 @@
 {
-  "name": "requirejs",
-  "version": "0.0.0",
+  "name": "backbone-requirejs",
+  "version": "0.0.1",
   "homepage": "https://github.com/pnowak2/learnjs",
   "authors": [
     "Piotr Nowak <p.nowak2@gmail.com>"
