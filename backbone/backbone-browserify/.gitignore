@@ -2,6 +2,7 @@ build/
 bower_components/
 node_modules/
 bundle.js
+specs.js
 .grunt
 .sublime-grunt.cache
 /_SpecRunner.html
