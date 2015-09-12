@@ -16,16 +16,24 @@ module.exports = function(grunt) {
 				dest: "test/specs.js",
 				options: {
 					browserifyOptions: {
-						debug: true,
-						paths: ["./node_modules", "./src/app"],
+						debug: false,
 						transform: ['hbsfy']
 					}
 				}
 			}
-		}
+		},
+    jasmine: {
+        src: 'src/bundle.js',
+        options: {
+            specs: 'test/specs.js',
+            vendor: []
+        }
+    }
 	});
 
 	grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+
 	grunt.registerTask('default', ['browserify']);
-	grunt.registerTask('test', ['browserify:specs']);
+	grunt.registerTask('test', ['browserify:specs', 'jasmine']);
 };
