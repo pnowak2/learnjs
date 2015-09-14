@@ -1,25 +1,26 @@
 var Backbone = require('backbone'),
-		template = require('../templates/todo.hbs');
+    template = require('../templates/todo.hbs');
 
 module.exports = Backbone.View.extend({
-	tagName: 'p',
+    tagName: 'p',
 
-	initialize: function () {
-		this.listenTo(this.model, 'change', this.render.bind(this));
-	},
+    tpl: template,
 
-	events: {
-		'click': 'clicked'
-	},
+    initialize: function() {
+        this.listenTo(this.model, 'change', this.render.bind(this));
+    },
 
-	clicked: function () {
-		this.model.set('title', Math.random());
-	},
+    events: {
+        'click': 'clicked'
+    },
 
-	render: function () {
-		this.$el.html(template({
-			title: this.model.get('title')
-		}));
-		return this;
-	}
+    clicked: function() {
+        this.model.set('title', Math.random());
+    },
+
+    render: function() {
+    		var html = this.tpl(this.model.toJSON());
+        this.$el.html(html);
+        return this;
+    }
 });
