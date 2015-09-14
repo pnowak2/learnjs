@@ -1,5 +1,6 @@
 var TodoView = require('../../../src/app/views/todoView');
 var Todo = require('../../../src/app/models/todoModel');
+var todoTpl = require('../../../src/app/templates/todo.hbs');
 
 describe('TodoView', function() {
   it('should have p tag', function() {
@@ -49,5 +50,12 @@ describe('TodoView', function() {
     todo.set('title', 'value');
     expect(view.tpl).toHaveBeenCalledWith(todo.toJSON());
     expect(view.$el.html()).toContain('my template value');
+  });
+
+  it('should have hbs template with p tag', function() {
+  	expect(todoTpl()).toContain('<p></p>');
+  	expect(todoTpl({
+  		title: 'hello'
+  	})).toContain('<p>hello</p>');
   });
 });
