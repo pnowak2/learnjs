@@ -1,7 +1,13 @@
 (function(global) {
 	var Promz = global.Promz = function() {
-
+		this.state = Promz.StateUtils.validStates.PENDING;
 	}
+
+	Promz.prototype = {
+		transition: function () {
+
+		}
+	};
 
 	Promz.StateUtils = (function() {
 		return {
