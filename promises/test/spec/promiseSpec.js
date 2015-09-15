@@ -22,13 +22,66 @@ describe('Promz', function() {
 		});
 	});
 
-	describe('transition', function() {
-		it('should be defined', function() {
-			expect(Promz.prototype.transition).toEqual(jasmine.any(Function));
+	describe('value property', function() {
+
+		var promz;
+
+		beforeEach(function () {
+			promz = new Promz;
 		});
 
-		it('should accept only two arguments', function() {
-			
+		it('should be defined', function() {
+			expect(promz.value).toBeDefined();
+		});
+
+		it('should be null', function() {
+			expect(promz.value).toBe(null);
+		});
+	});
+
+	describe('transition', function() {
+
+		var promz ;
+
+		beforeEach(function () {
+			promz = new Promz;
+		});
+
+		it('should be defined', function() {
+			expect(promz.transition).toEqual(jasmine.any(Function));
+		});
+
+		it('should change state to FULFILLED while in PENDING', function() {
+			promz.transition(Promz.StateUtils.validStates.FULFILLED);
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+		});
+
+		it('should change state to REJECTED while in PENDING', function() {
+			promz.transition(Promz.StateUtils.validStates.REJECTED);
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+		});
+
+		it('should not change state from state other than PENDING', function() {
+			promz.state = Promz.StateUtils.validStates.REJECTED;
+			promz.transition(Promz.StateUtils.validStates.FULFILLED);
+
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+
+			promz.state = Promz.StateUtils.validStates.FULFILLED;
+			promz.transition(Promz.StateUtils.validStates.REJECTED);
+
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+
+			promz.state = Promz.StateUtils.validStates.FULFILLED;
+			promz.transition(Promz.StateUtils.validStates.PENDING);
+
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+		});
+
+		it('should not change state if given state is invalid', function() {
+			promz.transition('other');
+			expect(promz.state).toEqual(Promz.StateUtils.validStates.PENDING);
+
 		});
 	});
 
