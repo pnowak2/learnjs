@@ -1,22 +1,41 @@
 (function(global) {
+	var Promz = global.Promz = function() {
 
-  var Promz = function(func) {
-  	this.func = func;
+	}
 
-	  if(this.func) {
-  		this.func.call();
+	Promz.StateUtils = (function() {
+		return {
+			validStates: {
+				PENDING: 0,
+				FULFILLED: 1,
+				REJECTED: 2
+			},
+
+			isValidState: function (state) {
+				return (state === this.validStates.PENDING ||
+					 			state === this.validStates.FULFILLED ||
+								state === this.validStates.REJECTED) 
+			}
 		}
-  }
+	})();
 
-  Promz.create = function (func) {
-  	return new Promz(func);
-  }
+	Promz.Utils = (function () {
+		return {
+			runAsync: function (fn) {
+				setTimeout(fn, 0);
+			},
 
-  Promz.prototype = {
-  	then: function (nextFunc) {
-  		return Promz.create(nextFunc);
-  	}
-  }
+			isFunction: function (val) {
+				return (val && typeof val === 'function')
+			},
 
-  global.Promz = Promz;
+			isObject: function (val) {
+				return (val && typeof val === 'object');
+			},
+
+			isPromise: function (val) {
+				return (val && val instanceof Promz);
+			}
+		}
+	})();
 })(self);

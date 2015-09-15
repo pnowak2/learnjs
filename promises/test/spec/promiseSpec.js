@@ -1,96 +1,110 @@
 describe('Promz', function() {
+	describe('creation', function() {
+		it('should exist', function() {
+			expect(Promz).toEqual(jasmine.any(Function));
+		});
+	});
 
-	describe('create', function() {
+	describe('StateUtils', function() {
+
+		var SU = Promz.StateUtils;
+
 		it('should be defined', function() {
-			expect(Promz.create).toEqual(jasmine.any(Function), 'create method not found');
+			expect(Promz.StateUtils).toEqual(jasmine.any(Object));
 		});
 
-		it('should return Promz object', function() {
-			var promz = Promz.create();
-			expect(promz).toEqual(jasmine.any(Promz));
+		describe('validStates', function() {
+			it('should be defined', function() {
+				expect(SU.validStates).toEqual({
+					PENDING: 0,
+					FULFILLED: 1,
+					REJECTED: 2
+				});
+			});
 		});
 
-		it('should accept a function', function() {
-			var spy = jasmine.createSpy(),
-					promz = Promz.create(spy);
+		describe('isValidState', function() {
+			it('should have validState', function() {
+				expect(SU.isValidState).toEqual(jasmine.any(Function));
+			});
 
-			expect(promz.func).toBe(spy);
+			it('should validate only valid states', function() {
+				expect(SU.isValidState(SU.validStates.PENDING)).toBe(true);
+				expect(SU.isValidState(SU.validStates.FULFILLED)).toBe(true);
+				expect(SU.isValidState(SU.validStates.REJECTED)).toBe(true);
+			});
+
+			it('should not validate wrong states', function() {
+				expect(SU.isValidState('pendin')).toBe(false);
+				expect(SU.isValidState('resolved')).toBe(false);
+				expect(SU.isValidState('reject')).toBe(false);
+			});
 		});
 	});
 
-	describe('Promz instance', function() {
-		var promz;
+	describe('Utils', function() {
 
-		beforeEach(function() {
-			promz = new Promz
+		var Utils = Promz.Utils;
+
+		it('should be defined', function() {
+			expect(Utils).toEqual(jasmine.any(Object));
 		});
 
-		it('should have then method', function() {
-			expect(promz.then).toEqual(jasmine.any(Function));
+		describe('isFunction', function() {
+			it('should be defined', function() {
+				expect(Utils.isFunction).toEqual(jasmine.any(Function));
+			});
+
+			it('should respond with false to non function value', function() {
+				expect(Utils.isFunction('test')).toBe(false);
+			});
+
+			it('should respond correctly to function value', function() {
+				expect(Utils.isFunction(function (){})).toBe(true);
+			});
 		});
 
-		it('should return Promz object', function() {
-			expect(promz.then()).toEqual(jasmine.any(Promz));
-		});
-	});
+		describe('isObject', function() {
+			it('should be defined', function() {
+				expect(Utils.isObject).toEqual(jasmine.any(Function));
+			});
 
-	describe('Promz then', function() {
-		var promz, originalFunc;
+			it('should respond with false to non object value', function() {
+				expect(Utils.isObject('string')).toBe(false);
+			});
 
-		beforeEach(function() {
-			originalFunc = jasmine.createSpy();
-			promz = new Promz(originalFunc);
-		});
-
-		it('should invoke original function', function() {
-			expect(originalFunc).toHaveBeenCalled();
+			it('should respond with true to object value', function() {
+				expect(Utils.isObject({})).toBe(true);
+			});
 		});
 
-		it('should invoke original function even if this.func is not defined', function() {
-			promz = new Promz;
+		describe('isPromise', function() {
+			it('should be defined', function() {
+				expect(Utils.isPromise).toEqual(jasmine.any(Function));
+			});
 
-			expect(function () {
-				promz.then();
-			}).not.toThrow();
+			it('should respond with false if value is not promise', function() {
+				expect(Utils.isPromise({})).toBe(false);
+			});
+
+			it('should respond with true if value is promise', function() {
+				expect(Utils.isPromise(new Promz)).toBe(true);
+			});
 		});
 
-		it('should invoke function passed to then', function() {
-			var thenFunc = jasmine.createSpy('thenFun');
-			promz.then(thenFunc);
-			expect(thenFunc).toHaveBeenCalled();
-		});
+		describe('runAsync', function() {
+			it('should be defined', function() {
+				expect(Utils.runAsync).toEqual(jasmine.any(Function));
+			});
 
-		it('should invoke first original func and then "then func"', function() {
-			var result = '';
-					originalFunc = function () { result += 'o'},
-					thenFunc = function () { result += 't' };
+			it('should run function in setTimeout', function() {
+				var spy = jasmine.createSpy();
+				spyOn(window, 'setTimeout');
 
-			Promz.create(originalFunc)
-			.then(thenFunc);
+				Utils.runAsync(spy)
 
-			expect(result).toEqual('ot');
-
-		});
-
-		it('should invoke full chain of thens', function() {
-			var thenFunc1 = jasmine.createSpy('then1'),
-					thenFunc2 = jasmine.createSpy('then2'),
-					thenFunc3 = jasmine.createSpy('then3');
-
-			promz
-			.then(thenFunc1)
-			.then(thenFunc2)
-			.then(thenFunc3);
-
-			expect(originalFunc).toHaveBeenCalled();
-			expect(thenFunc1).toHaveBeenCalled();
-			expect(thenFunc2).toHaveBeenCalled();
-			expect(thenFunc3).toHaveBeenCalled();
-
-			expect(originalFunc.calls.count()).toBe(1);
-			expect(thenFunc1.calls.count()).toBe(1);
-			expect(thenFunc2.calls.count()).toBe(1);
-			expect(thenFunc3.calls.count()).toBe(1);
+				expect(window.setTimeout).toHaveBeenCalledWith(spy, 0);
+			});
 		});
 	});
 });
