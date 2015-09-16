@@ -5,14 +5,22 @@
 	}
 
 	Promz.prototype = {
-		transition: function (state) {
+		transition: function (state, value) {
 			if(this.state === state ||
 				 this.state !== Promz.StateUtils.validStates.PENDING ||
-				 !Promz.StateUtils.isValidState(state)) {
+				 !Promz.StateUtils.isValidState(state) ||
+				 arguments.length > 2) {
 				return;
 			}
 
 			this.state = state;
+			this.value = value;
+
+			this.process();
+		},
+
+		process: function () {
+
 		}
 	};
 

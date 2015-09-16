@@ -51,37 +51,75 @@ describe('Promz', function() {
 			expect(promz.transition).toEqual(jasmine.any(Function));
 		});
 
-		it('should change state to FULFILLED while in PENDING', function() {
-			promz.transition(Promz.StateUtils.validStates.FULFILLED);
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+		describe('state', function() {
+			it('should change to FULFILLED while in PENDING', function() {
+				promz.transition(Promz.StateUtils.validStates.FULFILLED);
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+			});
+
+			it('should change to REJECTED while in PENDING', function() {
+				promz.transition(Promz.StateUtils.validStates.REJECTED);
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+			});
+
+			it('should not change from state other than PENDING', function() {
+				promz.state = Promz.StateUtils.validStates.REJECTED;
+				promz.transition(Promz.StateUtils.validStates.FULFILLED);
+
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+
+				promz.state = Promz.StateUtils.validStates.FULFILLED;
+				promz.transition(Promz.StateUtils.validStates.REJECTED);
+
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+
+				promz.state = Promz.StateUtils.validStates.FULFILLED;
+				promz.transition(Promz.StateUtils.validStates.PENDING);
+
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
+			});
+
+			it('should not change if given state is invalid', function() {
+				promz.transition('other');
+				expect(promz.state).toEqual(Promz.StateUtils.validStates.PENDING);
+			});
 		});
 
-		it('should change state to REJECTED while in PENDING', function() {
-			promz.transition(Promz.StateUtils.validStates.REJECTED);
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+		describe('value', function() {
+			it('should set value when in PENDING state and changing to other valid state', function() {
+				promz.transition(Promz.StateUtils.validStates.FULFILLED, 'my value');
+				expect(promz.value).toEqual('my value');
+			});
+
+			it('should not set value with inivalid state', function() {
+				promz.transition(Promz.StateUtils.validStates.PENDING, 'my value');
+				expect(promz.value).toEqual(null);
+
+				promz.state = Promz.StateUtils.validStates.FULFILLED
+				promz.transition(Promz.StateUtils.validStates.REJECTED, 'my value');
+				expect(promz.value).toEqual(null);
+			});
 		});
 
-		it('should not change state from state other than PENDING', function() {
-			promz.state = Promz.StateUtils.validStates.REJECTED;
-			promz.transition(Promz.StateUtils.validStates.FULFILLED);
+		describe('process', function() {
+			it('should call process when in PENDING state and changing to other valid state', function() {
+				spyOn(promz, 'process');
+				promz.transition(Promz.StateUtils.validStates.FULFILLED, 'my value');
+				expect(promz.process).toHaveBeenCalled();
+			});
 
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.REJECTED);
+			it('should not call process if transition with invalid state', function() {
+				spyOn(promz, 'process');
+				promz.state = Promz.StateUtils.validStates.FULFILLED
+				promz.transition(Promz.StateUtils.validStates.REJECTED, 'my value');
+				expect(promz.process).not.toHaveBeenCalled();
+			});
 
-			promz.state = Promz.StateUtils.validStates.FULFILLED;
-			promz.transition(Promz.StateUtils.validStates.REJECTED);
-
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
-
-			promz.state = Promz.StateUtils.validStates.FULFILLED;
-			promz.transition(Promz.StateUtils.validStates.PENDING);
-
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.FULFILLED);
-		});
-
-		it('should not change state if given state is invalid', function() {
-			promz.transition('other');
-			expect(promz.state).toEqual(Promz.StateUtils.validStates.PENDING);
-
+			it('should not call process if arguments are more than 2', function() {
+				spyOn(promz, 'process');
+				promz.transition(Promz.StateUtils.validStates.FULFILLED, 'my value', 'another', 'one');
+				expect(promz.process).not.toHaveBeenCalled();
+			});
 		});
 	});
 
