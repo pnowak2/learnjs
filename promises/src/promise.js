@@ -24,14 +24,24 @@
 			this.process();
 		},
 
-		process: function () {
-
-		},
-
-		then: function () {
+		then: function (onFulfilled, onRejected) {
 			var queuedPromz = new Promz();
 
+			if(Promz.Utils.isFunction(onFulfilled)) {
+				this.handlers.fulfill = onFulfilled;
+			}
+			
+			if(Promz.Utils.isFunction(onRejected)) {
+				this.handlers.reject = onRejected;
+			}
+			
+			this.process();
+
 			return queuedPromz;
+		},
+
+		process: function () {
+
 		}
 	};
 

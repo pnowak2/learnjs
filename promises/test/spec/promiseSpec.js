@@ -174,16 +174,42 @@ describe('Promz', function() {
 
 		describe('passed handlers', function() {
 
-			describe('empty', function() {
-				var promz ;
-
-				beforeEach(function () {
-					promz = new Promz;
-				});
-
+			describe('nothing provided', function() {
 				it('should be possible to omit handlers', function() {
-
+					var promz = new Promz;
+					promz.then();
+					expect(promz.handlers.fulfill).toBe(null);
+					expect(promz.handlers.reject).toBe(null);
 				});
+			});
+
+			describe('fulfill and reject provided as functions', function() {
+				it('should save them in handlers object', function() {
+					var fulfillSpy = jasmine.createSpy(),
+							rejectSpy = jasmine.createSpy(),
+							promz = new Promz;
+
+					promz.then(fulfillSpy, rejectSpy);
+
+					expect(promz.handlers.fulfill).toBe(fulfillSpy);
+					expect(promz.handlers.reject).toBe(rejectSpy);
+				});
+			});
+		});
+
+		describe('process', function() {
+			it('should be called without handlers', function() {
+				spyOn(Promz.prototype, 'process');
+				expect(Promz.prototype.process).not.toHaveBeenCalled();
+				var promz = new Promz().then();
+				expect(Promz.prototype.process).toHaveBeenCalled();
+			});
+
+			it('should be called with handlers', function() {
+				spyOn(Promz.prototype, 'process');
+				expect(Promz.prototype.process).not.toHaveBeenCalled();
+				var promz = new Promz().then(function(){}, function () {});
+				expect(Promz.prototype.process).toHaveBeenCalled();
 			});
 		});
 	});
