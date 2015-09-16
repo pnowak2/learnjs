@@ -2,6 +2,11 @@
 	var Promz = global.Promz = function() {
 		this.state = Promz.StateUtils.validStates.PENDING;
 		this.value = null;
+		this.queue = [];
+		this.handlers = {
+			fulfill: null,
+			reject: null
+		};
 	}
 
 	Promz.prototype = {
@@ -21,6 +26,12 @@
 
 		process: function () {
 
+		},
+
+		then: function () {
+			var queuedPromz = new Promz();
+
+			return queuedPromz;
 		}
 	};
 
