@@ -28,13 +28,14 @@
 			var queuedPromz = new Promz();
 
 			if(Promz.Utils.isFunction(onFulfilled)) {
-				this.handlers.fulfill = onFulfilled;
+				queuedPromz.handlers.fulfill = onFulfilled;
 			}
-			
+
 			if(Promz.Utils.isFunction(onRejected)) {
-				this.handlers.reject = onRejected;
+				queuedPromz.handlers.reject = onRejected;
 			}
-			
+
+			this.queue.push(queuedPromz);
 			this.process();
 
 			return queuedPromz;

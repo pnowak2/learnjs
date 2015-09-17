@@ -187,13 +187,24 @@ describe('Promz', function() {
 				it('should save them in handlers object', function() {
 					var fulfillSpy = jasmine.createSpy(),
 							rejectSpy = jasmine.createSpy(),
+							thenPromz,
 							promz = new Promz;
 
-					promz.then(fulfillSpy, rejectSpy);
+					thenPromz = promz.then(fulfillSpy, rejectSpy);
 
-					expect(promz.handlers.fulfill).toBe(fulfillSpy);
-					expect(promz.handlers.reject).toBe(rejectSpy);
+					expect(thenPromz.handlers.fulfill).toBe(fulfillSpy);
+					expect(thenPromz.handlers.reject).toBe(rejectSpy);
 				});
+			});
+		});
+
+		describe('queue', function() {
+			it('should push to the queue', function() {
+				var promz = new Promz(),
+			 			thenPromz = promz.then();
+
+			 	expect(promz.queue.length).toBe(1);
+			 	expect(promz.queue).toEqual(jasmine.arrayContaining([thenPromz]));
 			});
 		});
 
