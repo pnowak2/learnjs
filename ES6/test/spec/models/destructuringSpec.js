@@ -62,9 +62,17 @@ describe('destructuring', function() {
 		});
 	});
 
-	describe('Mixed destructuring', function() {
+	describe('Mixed destructuring with local name', function() {
 		it('should destructure from objects and arrays mixed', function() {
-			
+			var options = {
+				repeat: true,
+				colors: ['red', 'green', 'blue']
+			}
+
+			var { repeat: r, colors: [,g,]}  = options;
+
+			expect(r).toBe(true);
+			expect(g).toBe('green');
 		});
 	});
 });
