@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     },
     watch: {
       all: {
-        files: ['src/**/*.*', 'test/**/*.*'],
+        files: ['test/**/*.*'],
         tasks: ['test']
       },
     }
