@@ -1,7 +1,7 @@
 {
   "name": "promises",
   "version": "1.0.0",
-  "description": "",
+  "description": "http://abdulapopoola.com/2015/02/23/how-to-write-a-promisea-compatible-library/",
   "main": "index.js",
   "directories": {
     "test": "test"
