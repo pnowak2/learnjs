@@ -22,7 +22,7 @@ describe('unicode support', function() {
 			expect(text.codePointAt(2)).toBe(97);
     });
 
-    describe('nw string methods', function() {
+    describe('string methods', function() {
     	it('includes', function () {
     		expect('hello'.includes('o')).toBe(true);
     	});
