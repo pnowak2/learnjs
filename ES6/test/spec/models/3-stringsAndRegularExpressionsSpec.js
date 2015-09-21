@@ -83,7 +83,7 @@ describe('unicode support', function() {
 						firstArg,
 						restArgs;
 
-				msg = tagSpy`${name}, welcome to ${number} world.`
+			msg = tagSpy`${name}, welcome to ${number} world.`
 
 	    	expect(tagSpy).toHaveBeenCalled();
 	    	calls = tagSpy.calls.mostRecent();
