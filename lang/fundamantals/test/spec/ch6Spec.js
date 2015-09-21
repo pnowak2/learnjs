@@ -149,7 +149,7 @@ describe('Chapter 6', function() {
 				// creating child constructor on fly
 				Child = function () {
 					Parent.apply(this, arguments); // invoke parent constructor
-					Child.prototype.constructor.extend = extend; // allow children to be also extensible
+					Child.extend = extend; // allow children to be also extensible
 				}
 
 				// classic inheritance pattern
