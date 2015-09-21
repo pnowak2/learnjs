@@ -46,10 +46,12 @@ describe('destructuring', function() {
 		it('should extract rhs items and assign to lhs as variables', function() {
 			var [r, ,b] = ['red', 'green', 'blue'];
 			var [,g,] = ['red', 'green', 'blue'];
+			var [first,] = ['a', 'b', 'c', 'd'];
 
 			expect(r).toBe('red');
 			expect(b).toBe('blue');
 			expect(g).toBe('green');
+			expect(first).toBe('a');
 		});
 
 		it('extracts nested arrays', function() {
