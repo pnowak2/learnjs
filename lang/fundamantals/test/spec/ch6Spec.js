@@ -140,7 +140,7 @@ describe('Chapter 6', function() {
 
 		var global = {};
 
-		(function (global) {
+		(function (obj) {
 			var extend = function(options) {
 				var Parent = this, // Base in first step
 						Child, 
@@ -149,7 +149,7 @@ describe('Chapter 6', function() {
 				// creating child constructor on fly
 				Child = function () {
 					Parent.apply(this, arguments); // invoke parent constructor
-					this.constructor.extend = extend; // allow children to be also extensible
+					Child.prototype.constructor.extend = extend; // allow children to be also extensible
 				}
 
 				// classic inheritance pattern
@@ -185,7 +185,7 @@ describe('Chapter 6', function() {
 			})()
 
 			Base.extend = extend;
-			global.Base = Base;
+			obj.Base = Base;
 		})(global);
 
 		expect(global.extend).toBeUndefined();
