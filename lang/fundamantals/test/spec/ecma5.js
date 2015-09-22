@@ -1,9 +1,6 @@
 describe('ECMAScript 5', function() {
-	it('should define property', function() {
-
-		var obj = {
-
-		}
+	it('Object.defineProperty', function() {
+		var obj = {}
 
 		Object.defineProperty(obj, "prop", {
 			value: 'my property',
@@ -22,7 +19,37 @@ describe('ECMAScript 5', function() {
 		expect(obj.prop).toBeDefined();
 	});
 
-	it('should define getters and setters', function() {
+	it('Object.defineProperties', function() {
+		var obj = {}
+
+		Object.defineProperties(obj, {
+			'prop': {
+				value: 'my property',
+				writable: false,
+				configurable: false
+			},
+			'other': {
+				value: 'other property',
+				writable: true,
+				configurable: true
+			}
+		});
+
+		expect(obj.prop).toBeDefined();
+		expect(obj.prop).toBe('my property');
+
+		expect(obj.other).toBeDefined();
+		expect(obj.other).toBe('other property');
+
+		obj.prop = 'test';
+		expect(obj.prop).toBe('my property');
+
+		delete obj.prop
+
+		expect(obj.prop).toBeDefined();
+	});
+
+	it('Object.defineProperty should define getters and setters', function() {
 		var obj = {};
 
 		var setSpy = jasmine.createSpy('setSpy');
@@ -48,7 +75,7 @@ describe('ECMAScript 5', function() {
 		expect(getSpy).toHaveBeenCalled();
 	});
 
-	it('should user Object.create() built in method', function() {
+	it('Object.create()', function() {
 		var obj = {
 			prop: 'myprop',
 			action: function () {}
@@ -67,4 +94,32 @@ describe('ECMAScript 5', function() {
 		expect(copyObj.hasOwnProperty('prop')).toBe(false);
 		expect(copyObj.hasOwnProperty('another')).toBe(true);
 	});
+
+	it('Object.getOwnPropertyNames', function() {
+		var obj = {
+					name: 'piotr',
+					age: 35
+				},
+				propNames;
+
+		propNames = Object.getOwnPropertyNames(obj);
+
+		expect(propNames.length).toBe(2);
+		expect(propNames).toEqual(['name', 'age']);
+	});
+
+	it('Object.keys()');
+	it('Object.freeze()');
+	it('Object.isFrozen()');
+	it('Object.seal()');
+	it('Object.isSealed()');
+	it('Object.getOwnPropertyDescriptor()');
+	it('Object.getPrototypeOf()');
+	it('Object.setPrototypeOf()');
+	it('Object.is()');
+	it('Object.isExtensible()');
+	it('Object.getOwnPropertyDescriptor()');
+	it('Object.getOwnPropertyDescriptor()');
+	it('Object.observe()');
+	it('Object.preventExtensions()');
 });
