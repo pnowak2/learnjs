@@ -45,9 +45,41 @@ describe('Iterators', function() {
 		});
 	});
 
-	describe('generators', function() {
-		it('should behave...', function() {
-			
+	describe('generators (function which creates iterator object)', function() {
+		it('create generator with function * syntax', function() {
+			var createIterator = function *(items) {
+						for(let i = 0; i < items.length; i++) {
+							yield items[i];
+						}
+					}, 
+					it = createIterator([1, 2, 3]);
+
+			expect(it.next).toEqual(jasmine.any(Function));
+
+			expect(it.next()).toEqual({
+				done: false,
+				value: 1
+			});
+
+			expect(it.next()).toEqual({
+				done: false,
+				value: 2
+			});
+
+			expect(it.next()).toEqual({
+				done: false,
+				value: 3
+			});
+
+			expect(it.next()).toEqual({
+				done: true,
+				value: undefined
+			});
+
+			expect(it.next()).toEqual({
+				done: true,
+				value: undefined
+			});
 		});
 	});
 });
