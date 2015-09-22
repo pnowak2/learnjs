@@ -98,9 +98,22 @@ describe('symbols like in ruby(new kind of primitive value with strings, numbers
 					};
 
 			expect(Object.getOwnPropertySymbols(obj)).toEqual([sbl]);
-			
+
 			expect(Object.getOwnPropertyNames(obj)).toEqual(['name']);
 			expect(Object.keys(obj)).toEqual(['name']);
+		});
+	});
+
+	describe('well known symbols - built in js symbols as property of Symbol function', function() {
+		it('@@toStringTag - a string used by Object.prototype.toString() to create an object description', function() {
+			var Person = function (name) {
+						this.name = name;
+					},
+					piotr = new Person('piotr');
+
+			Person.prototype[Symbol.toStringTag] = 'Person';
+
+			expect(Object.prototype.toString.call(piotr)).toBe('[object Person]');
 		});
 	});
 });
