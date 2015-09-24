@@ -296,7 +296,7 @@ describe('itarables and for-of', function() {
 		});
 
 		describe('string iterators', function() {
-			it('should behave...', function() {
+			it('should iterate each character', function() {
 				let result = '';
 				for(let c of "test") {
 					result += c + '-'
