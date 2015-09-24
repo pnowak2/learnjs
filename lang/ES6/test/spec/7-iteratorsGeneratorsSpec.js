@@ -154,11 +154,164 @@ describe('generators', function() {
 });
 
 describe('itarables and for-of', function() {
-	it('defines default iterator to be iterable', function() {
-		
+
+	describe('for-of loop', function() {
+		it('calls @@iterator method on object first', function() {
+			let result = '';
+			for(let i of [1, 2, 3]) {
+				result +=i;
+			}
+
+			expect(result).toBe('123');
+		});
+
+		it('throws error if invoked on object without @@iterator', function() {
+			expect(function () {
+				for(let i of { name: 'test' }) {
+
+				}
+			}).toThrow();
+		});
 	});
 
-	it('for-of loop works with iterables', function() {
-		
+	describe('default iterator', function() {
+		it('array has built-in default iterator', function() {
+			let value = [1, 2, 3],
+					iterator = value[Symbol.iterator]();
+
+			expect(iterator.next().value).toBe(1);
+			expect(iterator.next().value).toBe(2);
+			expect(iterator.next().value).toBe(3);
+		});
+
+		it('check if object is iterable', function() {
+			let isIterable = function (object) {
+				var iterator = object[Symbol.iterator];
+				return typeof iterator === 'function';
+			}
+
+			expect(isIterable([1, 2, 3])).toBe(true);
+			expect(isIterable("abc")).toBe(true);
+			expect(isIterable(new Map())).toBe(true);
+			expect(isIterable(new Set())).toBe(true);
+			expect(isIterable({})).toBe(false);
+		});
+	});
+
+	describe('creating iterables', function() {
+		it('make object iterable', function() {
+			let collection = {
+						items: [1, 2, 3],
+						*[Symbol.iterator]() {
+							yield *this.items;
+						}
+					},
+					result = '';
+
+			for (let item of collection) {
+				result += item;
+			}
+
+			expect(result).toBe('123');
+		});
+
+		it('make class iterable', function() {
+			class Person {
+				constructor() {
+					this.employees = ['jo', 'anne', 'cris'];
+				}
+
+				*[Symbol.iterator]() {
+					yield *this.employees;
+				}
+			}
+
+			let peter = new Person(),
+					employeeString = '';
+			for(let employee of peter) {
+				employeeString += employee;
+			}
+
+			expect(employeeString).toBe('joannecris');
+		});
+	});
+
+	describe('built-in iterators', function() {
+		describe('collection iterators (arrays, maps, sets) expose entries(), values(), keys() iterators', function() {
+			it('entries() iterator, each entry object is 2 dimension array', function() {
+
+				let array = ['red', 'blue', 'green'];
+
+				let set = new Set(['a', 'b', 'c']);
+
+				let map = new Map();
+				map.set('one', 1);
+				map.set('two', 2);
+				map.set('three', 3);
+
+
+				for(let entry of array.entries()) {
+					expect(entry).toEqual(jasmine.any(Array));
+					expect(entry[0]).toEqual(jasmine.any(Number)); // index 0, 1, 2
+					expect(entry[1]).toEqual(jasmine.any(String)); // value 'red', 'blue', 'green'
+					expect(entry[1]).toEqual(array[entry[0]]); // verify that above is true
+				}
+
+				for(let entry of set.entries()) {
+					expect(entry).toEqual(jasmine.any(Array));
+					expect(entry[0]).toEqual(jasmine.any(String)); // index 'a', 'b', 'c'
+					expect(entry[1]).toEqual(jasmine.any(String)); // value 'a', 'b', 'c'
+					expect(entry[1]).toEqual(entry[0]); // verify that above is true
+				}
+
+				for(let entry of map.entries() /* same as let entry of map */) {
+					expect(entry).toEqual(jasmine.any(Array));
+					expect(entry[0]).toEqual(jasmine.any(String)); // index 'one', 'two', 'three'
+					expect(entry[1]).toEqual(jasmine.any(Number)); // value 1, 2, 3
+					expect(entry[1]).toEqual(map.get(entry[0]));
+				}
+			});
+
+			it('values() iterator, provides just values', function() {
+				let map = new Map();
+				map.set('one', 1);
+				map.set('two', 2);
+				map.set('three', 3);
+
+				for(let val of map.values()) {
+					expect(val).toEqual(jasmine.any(Number)); // 1, 2, 3
+				}
+			});
+
+			it('keys() iterator, provides just keys', function() {
+				let map = new Map();
+				map.set('one', 1);
+				map.set('two', 2);
+				map.set('three', 3);
+
+				for(let key of map.keys()) {
+					expect(key).toEqual(jasmine.any(String)); // 'one', 'two', 'three'
+				}
+			});
+		});
+
+		describe('string iterators', function() {
+			it('should behave...', function() {
+				let result = '';
+				for(let c of "test") {
+					result += c + '-'
+				}
+
+				expect(result).toBe('t-e-s-t-');
+			});
+		});
+	});
+
+	describe('advanced functionality', function() {
+		describe('passing arguments to iterators', function() {
+			it('should behave...', function() {
+				
+			});
+		});
 	});
 });
