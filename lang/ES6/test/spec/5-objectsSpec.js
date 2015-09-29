@@ -31,6 +31,18 @@ describe('objects', function() {
 		});
 	});
 
+	describe('getters and setters (accessors)', function() {
+		it('can use accessors', function() {
+			var person = {
+				get name() {
+					return 'test';
+				}
+			}
+
+			expect(person.name).toBe('test');
+		});
+	});
+
 	describe('computed property names', function() {
 		it('ES5 way', function() {
 			var propName = 'my name',
@@ -125,7 +137,7 @@ describe('objects', function() {
 	});
 
 	describe('super references (Object.getPrototypeOf(this).method.call(this))', function() {
-		it('traditional approach', function() {
+		it('traditional ES5 approach', function() {
 			var parent = {
 						greet: function () {
 							return '-parent greet-';
