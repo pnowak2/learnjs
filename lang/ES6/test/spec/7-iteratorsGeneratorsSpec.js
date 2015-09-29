@@ -309,8 +309,138 @@ describe('itarables and for-of', function() {
 
 	describe('advanced functionality', function() {
 		describe('passing arguments to iterators', function() {
-			it('should behave...', function() {
-				
+			it('parameter to next() replaces previous yield return value', function() {
+				function * createIterator() {
+					let first = yield 1;
+					let second = yield first + 2
+					let third = yield second + 3
+				}
+
+				let it = createIterator();
+
+				expect(it.next()).toEqual({
+					value: 1,
+					done: false
+				});
+
+				expect(it.next(4)).toEqual({
+					value: 6,
+					done: false
+				});
+
+				expect(it.next(4)).toEqual({
+					value: 7,
+					done: false
+				});
+			});
+		});
+
+		describe('throwing error from iterator', function() {
+			it('iterator.throw() is like next giving the {value, done}, but generator can catch error and do sth with it', function() {
+				let createIterator = function * () {
+					let first = yield 1,
+							second;
+
+					try {
+						second = yield first + 5
+					} catch(e) {
+						second = 9;
+					}
+
+					yield second + 6;
+				}
+
+				let it = createIterator();
+
+				expect(it.next()).toEqual({
+					value: 1,
+					done: false
+				});
+
+				expect(it.next(4)).toEqual({
+					value: 9,
+					done: false
+				});
+
+				expect(it.throw(new Error('error'))).toEqual({
+					value: 15,
+					done: false
+				});
+			});
+		});
+
+		describe('generator return statements', function() {
+			it('return indicates that processing is done, done is true, return becomes the value', function() {
+				let createIterator = function * () {
+					yield 1;
+					return 'other';
+					yield 2;
+					yield 3;
+				}
+
+				let it = createIterator();
+
+				expect(it.next()).toEqual({
+					value: 1,
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: 'other',
+					done: true
+				});
+			});
+		});
+
+		describe('delegating generators', function() {
+			it('yield with * (asterisk)', function() {
+				let numberGenerator = function * () {
+					yield 1;
+					yield 2;
+				}
+
+				let colorGenerator = function * () {
+					yield 'red';
+					yield 'green';
+				}
+
+				let combinedGenerator = function * () {
+					yield *numberGenerator();
+					yield *colorGenerator();
+					yield true;
+				}
+
+				let it = combinedGenerator();
+
+				expect(it.next()).toEqual({
+					value: 1,
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: 2,
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: 'red',
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: 'green',
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: true,
+					done: false
+				});
+
+				expect(it.next()).toEqual({
+					value: undefined,
+					done: true
+				});
 			});
 		});
 	});
