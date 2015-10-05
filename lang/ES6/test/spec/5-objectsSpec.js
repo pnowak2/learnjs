@@ -100,6 +100,8 @@ describe('objects', function() {
 			expect(obj.title).toBe('hello');
 			expect(obj.age).toBe(12);
 			expect(obj.greet).toEqual(jasmine.any(Function));
+			expect(obj.hasOwnProperty('title'));
+			expect(obj.hasOwnProperty('greet'));
 		});
 	});
 
