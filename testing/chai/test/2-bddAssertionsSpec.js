@@ -5,7 +5,7 @@ describe('bdd assertions', function() {
 		expect('peter').not.to.equal('piotr');
 	});
 
-	it('deep', function() {
+	it.skip('deep', function() {
 		
 	});
 });
