@@ -16,6 +16,6 @@ describe('assertions libraries', function() {
 	});
 
 	it('can use chai expect assertion library', function() {
-		expect('hello'.length).to.eql(5);
+		chaiExpect('hello'.length).to.eql(5);
 	});
 });
