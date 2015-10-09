@@ -1,7 +1,7 @@
 {
-  "name": "sinon",
+  "name": "sinon-testing",
   "version": "1.0.0",
-  "description": "",
+  "description": "http://sinonjs.org",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
