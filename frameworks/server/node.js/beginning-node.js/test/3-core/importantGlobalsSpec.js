@@ -39,7 +39,7 @@ describe('important globals', function() {
 			// first - node executable path
 			// second - js file name
 			// rest - argument passed
-			expect(process.argv.length).to.equal(3);
+			expect(process.argv.length).to.equal(2);
 		});
 
 		it('process.nextTick - used to put the callback in the next node cycle', function(done) {
