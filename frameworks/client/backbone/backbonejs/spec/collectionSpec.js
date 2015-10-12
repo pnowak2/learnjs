@@ -16,7 +16,7 @@ describe('Collection', function() {
 				});
 
 			expect(books.length).toBe(1);
-			expect(books.get(1) instanceof Backbone.Model).toBeTruthy();
+			expect(books.get(1)).toEqual(jasmine.any(Backbone.Model));
 		});
 
 		it('should create collection with defined model', function() {
@@ -125,6 +125,7 @@ describe('Collection', function() {
 			})
 
 			expect(addSpy).toHaveBeenCalled();
+			expect(addSpy.calls.mostRecent().args[0]).toEqual(jasmine.any(Backbone.Model));
 			expect(addSpy.calls.mostRecent().args[0].attributes).toEqual({
 				title: 'new title'
 			});
@@ -280,9 +281,13 @@ describe('Collection', function() {
 					]);
 
 			expect(todos.sortBy).toEqual(jasmine.any(Function));
-			var sorted = todos.sortBy(function (model) {
-				return model.get('title').toLowerCase();
-			});
+
+			var sorted = todos.sortBy('title');
+
+			// or more verbose
+			// var sorted = todos.sortBy(function (model) {
+			// 	return model.get('title').toLowerCase();
+			// });
 
 			expect(sorted[0].get('title')).toBe('a');
 			expect(sorted[1].get('title')).toBe('b');
@@ -362,6 +367,21 @@ describe('Collection', function() {
 
 			expect(filtered.length).toBe(1);
 			expect(filtered[0].get('id')).toBe(3);
+			expect(filtered[0]).toEqual(jasmine.any(Backbone.Model));
+		});
+
+		it('should have where', function() {
+			var todos = new Backbone.Collection([
+						{id: 3, title: 'a'},
+						{id: 2, title: 'b'},
+						{id: 1, title: 'c'}
+					]);
+
+			var filtered = todos.where({ title: 'a' });
+
+			expect(filtered.length).toBe(1);
+			expect(filtered[0].id).toBe(3);
+			expect(filtered[0]).toEqual(jasmine.any(Backbone.Model));
 		});
 
 		it('should have indexOf', function() {
@@ -433,6 +453,7 @@ describe('Collection', function() {
 			var completed = todos.groupBy('completed');
 
 			expect(completed[true].length).toBe(2);
+			expect(completed[true][0]).toEqual(jasmine.any(Backbone.Model));
 		});
 
 		it('should have pick()', function() {
