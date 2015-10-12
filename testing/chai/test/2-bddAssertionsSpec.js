@@ -252,7 +252,7 @@ describe('bdd assertions', function() {
   describe('.keys(key1, [key2], [...]) - asserts that the target contains any or all keys.', function() {
     it('should behave...', function() {
           
-        });    
+    });    
   });
 });
 
@@ -260,7 +260,7 @@ describe('multiple assertions in one chain', function() {
   it('can chain assertions', function() {
     expect('peter'.length)
       .to.eql(5)
-      .and.below(10)
-      .and.a('number');
+      .and.be.below(10)
+      .and.to.be.a('number');
   });
 });
