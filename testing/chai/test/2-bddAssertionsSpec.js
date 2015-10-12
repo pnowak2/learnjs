@@ -235,8 +235,8 @@ describe('bdd assertions', function() {
     expect('peter').to.have.length(5);
 
     expect('peter').to.have
-    .length.above(4)
-    .and.below(6);
+      .length.above(4)
+      .and.below(6);
   });
 
   it('.match(string) - asserts that the target matches a regular expression', function() {
@@ -250,9 +250,120 @@ describe('bdd assertions', function() {
   });
 
   describe('.keys(key1, [key2], [...]) - asserts that the target contains any or all keys.', function() {
-    it('should behave...', function() {
-          
-    });    
+
+    var obj = {
+      foo: 1,
+      bar: 2
+    }
+
+    it('with any - at least one key must exist in the target object', function() {
+      expect(obj).to.have.any.keys('foo', 'baz');
+      expect(obj).to.have.any.keys('foo');
+      expect(obj).to.contain.any.keys('foo', 'bas');
+      expect(obj).to.contain.any.keys(['foo']);
+      expect(obj).to.contain.any.keys({foo: 6});
+    });
+
+    it('all with contain - target must have at least all passed keys, but can have more', function() {
+      expect(obj).to.contain.all.keys('foo');
+    });
+
+    it('all with have - target must both contain all passed keys AND number of keys must match number keys passed in', function() {
+      expect(obj).to.have.all.keys('foo', 'bar');
+      expect(obj).to.have.all.keys({ foo: 'a', bar: 'b'});
+    });
+
+    it('default is all', function() {
+      expect(obj).to.have.keys('foo', 'bar');
+    });
+  });
+
+  it('.throw(constructor) - asserts that function throws specific error or type of error', function() {
+    var errFn = function () {
+      throw new ReferenceError('bad thing')
+    }    
+
+    expect(errFn).to.throw(ReferenceError);
+    expect(errFn).to.throw(Error);
+    expect(errFn).to.throw(/bad thing/);
+
+    expect(function () {
+      throw new Error('bad thing');
+    }).to.throw(Error);
+  });
+
+  it('.respondTo(method) - asserts that the object or class (in prototype) target will respond to a method', function() {
+    var Klass = function () {
+
+    } 
+
+    Klass.foo = function () {}
+
+    Klass.prototype.bar = function () {};
+
+    expect(Klass).not.respondTo('foo');
+    expect(new Klass).respondTo('bar');
+  });
+
+  it('.itself - sets the itself flag used by the respondTo to check if function itself reponds to passed property', function() {
+    var Klass = function () {
+
+    } 
+    Klass.foo = function () {};
+
+    expect(Klass).itself.respondTo('foo');
+  });
+
+  it('.satisfy(method) - asserts that the target passes a given truth test', function() {
+    expect(1).to.satisfy(function (num) {
+      return num > 0;
+    });
+  });
+
+  it('.closeTo(expected, delta) - asserts that the target is equal expected within a +/- delta range', function() {
+    expect(1.5).to.be.closeTo(1.7, .3);
+  });
+
+  it('.members(set) - asserts that the target is a superset of set, or the target and set have the same strictly equal (===) members', function() {
+    expect([1, 2, 3]).to.include.members([3, 2]);
+    expect([1, 2, 3]).not.to.include.members([3, 2, 8]);
+
+    expect([4, 2]).to.have.members([2, 4]);
+    expect([4, 2]).not.to.have.members([2, 4, 5]);
+
+    // deep means comparing deep by value, not by reference
+    expect([{ id: 1 }]).to.deep.include.members([{ id: 1 }]);
+  });
+
+  it('.change(function) - asserts that a function changes an object property', function() {
+    var obj = { val: 10 },
+        fn = function () {
+          obj.val += 3;
+        },
+        noChangeFn = function () {
+          return 'test'
+        }
+
+    expect(fn).to.change(obj, 'val');
+    expect(noChangeFn).to.not.change(obj, 'val');
+  });
+
+  it('.increase(function) - asserts that a function increases an object property', function() {
+    var obj = { val: 10 },
+        fn = function () {
+          obj.val += 3;
+        };
+
+    expect(fn).increase(obj, 'val');
+  });
+
+  it('.decrease(function) - asserts that a function decreases an object property', function() {
+    var obj = { val: 10 },
+        fn = function () {
+          obj.val -= 2;
+        };
+
+    expect(fn).decrease(obj, 'val');
   });
 });
 
