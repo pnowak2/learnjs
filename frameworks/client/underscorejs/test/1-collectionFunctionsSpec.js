@@ -294,17 +294,143 @@ describe('collection functions', function() {
 
   describe('_.groupBy(list, iteratee, [context]) - Splits a collection into sets, grouped by the result of running each value through iteratee', function() {
     it('group by whole numbers', function() {
-    	var list = [1.1, 1.2, 2.6, 2.7];
+      var list = [1.1, 1.2, 2.6, 2.7];
 
-    	var grouped = _.groupBy(list, function (num) {
-    		return Math.floor(num);
-    	});
+      var grouped = _.groupBy(list, function(num) {
+        return Math.floor(num);
+      });
 
-    	expect(grouped).to.eql({
-    		1: [1.1, 1.2],
-    		2: [2.6, 2.7]
-    	})
+      expect(grouped).to.eql({
+        1: [1.1, 1.2],
+        2: [2.6, 2.7]
+      })
     });
   });
 
+  describe('_.indexBy(list, iteratee, [context]) - Given a list, and an iteratee function that returns a key for each element in the list (or a property name), returns an object with an index of each item', function() {
+    it('group by whole numbers', function() {
+      var list = [{
+        name: 'moe',
+        age: 40
+      }, {
+        name: 'larry',
+        age: 50
+      }];
+
+      var grouped = _.indexBy(list, 'age');
+
+      expect(grouped).to.eql({
+        '40': {
+          name: 'moe',
+          age: 40
+        },
+        '50': {
+          name: 'larry',
+          age: 50
+        }
+      })
+    });
+  });
+
+  describe('_.countBy(list, iteratee, [context]) - Sorts a list into groups and returns a count for the number of objects in each group', function() {
+    it('count how many even and odd numbers are in the array', function() {
+      var list = [1, 2, 3, 4, 5, 6, 7];
+
+      var counted = _.countBy(list, function(number) {
+        return number % 2 === 0 ? 'even' : 'odd'
+      });
+
+      expect(counted).to.eql({
+        'even': 3,
+        'odd': 4
+      })
+    });
+  });
+
+  describe('_.shuffle(list) - Returns a shuffled copy of the list', function() {
+    it('shuffle the array', function() {
+      var shuffled = _.shuffle([1, 2, 3, 4, 5]);
+
+      expect(shuffled).to.contain(1, 2, 3, 4, 5);
+    });
+  });
+
+  describe('_.sample(list, [n]) - Produce a random sample from the list. Pass a number to return n random elements from the list', function() {
+    it('take one random number from list', function() {
+      var list = [1, 2, 3, 4, 5, 6];
+
+      var sampledOne = _.sample(list);
+
+      expect(sampledOne)
+        .to.be.a('number')
+        .and.within(1, 6);
+    });
+
+    it('take 3 random numbers from list', function() {
+      var list = [1, 2, 3, 4, 5, 6];
+
+      var sampledThree = _.sample(list, 3);
+
+      expect(sampledThree)
+        .to.be.an('array')
+        .with.length(3);
+    });
+  });
+
+  describe('_.toArray(list) - Creates a real Array from the list (anything that can be iterated over). Useful for transmuting the arguments object', function() {
+    it('converts arguments to array', function() {
+      var result = (function() {
+        return _.toArray(arguments)
+      })(1, 2, 3, 4);
+
+      expect(result)
+      	.to.be.an('array')
+      	.with.length(4);
+    });
+  });
+
+  describe('_.size(list) - Return the number of values in the list', function() {
+
+  	it('checks size of the array', function() {
+  		expect(_.size([1, 2, 3, 4])).to.eql(4);
+  	});
+
+  	it('checks size of object (keys)', function() {
+  		var obj = {
+  			name: 'peter',
+  			age: 35,
+  			proffession: 'developer'
+  		}
+
+  		expect(_.size(obj)).to.eql(3);
+  	});
+  });
+
+  describe('_.partition(array, predicate) - Split array into two arrays: one whose elements all satisfy predicate and one whose elements all do not satisfy predicate', function() {
+  	it('split dogs from cats', function() {
+  		var list = [
+  			{ type: 'dog', name: 'butch'},
+  			{ type: 'cat', name: 'cattie'},
+  			{ type: 'dog', name: 'rusty'},
+  			{ type: 'dog', name: 'azor'},
+  			{ type: 'cat', name: 'meowee'},
+  		];
+
+  		var result = _.partition(list, function (obj) {
+  			return obj.type === 'dog';
+  		});
+
+  		expect(result).to.eql([
+  			[
+  				{ type: 'dog', name: 'butch'},
+  				{ type: 'dog', name: 'rusty'},
+  				{ type: 'dog', name: 'azor'}
+  			],
+  			[
+  				{ type: 'cat', name: 'cattie'},
+  				{ type: 'cat', name: 'meowee'}
+  			]
+  		])
+  	});
+  });
 });
