@@ -196,5 +196,4 @@ describe('arrays', function() {
   		expect(_.range(1, 10, 2)).to.eql([1, 3, 5, 7, 9]);
   	});	
   });
-
 });

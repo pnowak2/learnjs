@@ -348,6 +348,9 @@ describe('stubs - functions (spies) with pre-programmed behavior. Supports spy A
 
     	stub(spy1, spy2);
 
+    	expect(spy1.called).to.be.false;
+    	expect(spy2.called).to.be.false;
+
     	stub.callArg(1);
 
     	expect(spy1.called).to.be.false;
@@ -377,7 +380,6 @@ describe('stubs - functions (spies) with pre-programmed behavior. Supports spy A
 				expect(Array.prototype.slice.call(arguments)).to.eql(['a', 'b', 'c']);
 				done();
 			});
-
     });
   });
 });
