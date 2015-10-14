@@ -7,9 +7,9 @@ import { renamedSum } from "./modules/renamingExports.js";
 // import already renamed object and rename it locally again
 import { renamedSum as anotherRenamedSum } from "./modules/renamingExports.js";
 // import default object exported from module (no need to use { name} on lhs)
-import withDefaultSum from "./modules/renamingExports.js";
+import withDefaultSum from "./modules/defaultExports.js";
 // import default and other objects from module
-import def, { color } from "./modules/renamingExports.js";
+import def, { color } from "./modules/defaultExports.js";
 // import renamed default and other objects from module
 import {default as renamedDefault, anotherColor} from "./modules/renamingExports.js";
 // import module which re exports imported object
