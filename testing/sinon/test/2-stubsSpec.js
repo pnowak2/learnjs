@@ -310,6 +310,8 @@ describe('stubs - functions (spies) with pre-programmed behavior. Supports spy A
 
 			stub(spy);
 
+			expect(spy.called).to.be.false;
+
 			stub.yield(1, 2, 3);
 
 			expect(spy.calledOnce).to.be.true;
