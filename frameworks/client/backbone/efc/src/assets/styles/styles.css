@@ -1,0 +1,90 @@
+/* Banner */
+.efc-banner {
+    width: 984px;
+    height: 280px;
+    margin: 0 -6px 0 -15px;
+    background: url(../images/efc_slidea.jpg);
+}
+
+
+/* Results */
+.efc-results {
+    margin: 0 -9px 0 -15px;
+}
+
+.efc-results-container {
+
+}
+
+/* Results - Table */
+.efc-results-table {
+    padding: 10px;
+}
+
+.efc-results-table table {
+    border-collapse: collapse;
+    width: 100%
+}
+
+.efc-results-table th {
+    font-weight: bold;
+}
+
+.efc-results-table td, .efc-results-table th {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+/* Results - Map */
+.efc-results-map {
+    padding: 0;
+}
+
+/* Search box */
+.efc-searchbox-container {
+    position: relative;
+    clear: both;
+    width: 400px;
+    margin: 0 auto;
+    top: 120px;
+    text-align: center;
+}
+
+/* Tabs */
+.efc-tabs {
+    padding: 0;
+    margin: 0;
+    background-color: #074a8b;
+    border-top: 1px solid #4B8AC8;
+    border-bottom: 1px solid #4B8AC8;
+    border-left: 0;
+    border-right: 0;
+    font-size: 0;
+}
+
+.efc-tab {
+    width: 50%;
+    border: 0;
+    margin: 0;
+    display: inline-block;
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.efc-tab.efc-selected {
+    background-color: #0762af;
+}
+
+.efc-tab:hover {
+    background-color: #0774bb;
+}
+
+.efc-tab:last-child {
+    border-left: 1px solid #4B8AC8;
+}
