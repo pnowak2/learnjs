@@ -12,11 +12,6 @@ define(function (require) {
       });
     },
 
-    render: function () {
-      tabSwitcherView.render();
-      return this;
-    },
-
     selectListTab: function () {
       tabSwitcherView.selectTab('list');
     },

@@ -3,17 +3,17 @@ define(function (require) {
   		$ = require('jquery');
 
   return Module.extend({
+    view: null,
 
     render: function () { 
-    	return this; 
+      this.view.render();
+      return this; 
     },
 
     remove: function () {
-    	if(this.view) {
-    		this.view.remove();
-    	}
-    },
-
-    view: null
+      if(this.view) {
+        this.view.remove();
+      }
+    }
   });
 });

@@ -27,7 +27,7 @@ define(function (require) {
     },
 
     validationDidFail: function (e) {
-      this.trigger('searchbox:invalid', e.validationError);
+      widgetEventBus.trigger('searchbox:invalid', e.validationError);
     },
 
     keyPressed: function (e) {
@@ -40,7 +40,7 @@ define(function (require) {
     performSearch: function () {
       var isValid = this.model.set('keyword', this.keywordInput.val(), { validate: true });
       if(isValid) {
-        this.trigger('searchbox:keyword', this.model.toJSON());
+        widgetEventBus.trigger('searchbox:keyword', this.model.toJSON());
       }
     },
 

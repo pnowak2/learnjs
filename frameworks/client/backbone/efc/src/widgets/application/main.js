@@ -56,10 +56,10 @@ define(function (require) {
 
       tabSwitcherWidget.selectListTab();
 
-      $('.efc-searchbox-container').html(searchboxWidget.view.render().$el);
-      $('.efc-tabs-container').html(tabSwitcherWidget.view.render().$el);
-      $('.efc-results-container').append(tableResultsWidget.view.render().$el);
-      $('.efc-results-container').append(mapResultsWidget.view.render().$el);
+      $('.efc-searchbox-container').html(searchboxWidget.render().view.$el);
+      $('.efc-tabs-container').html(tabSwitcherWidget.render().view.$el);
+      $('.efc-results-container').append(tableResultsWidget.render().view.$el);
+      $('.efc-results-container').append(mapResultsWidget.render().view.$el);
     }
   });
 });

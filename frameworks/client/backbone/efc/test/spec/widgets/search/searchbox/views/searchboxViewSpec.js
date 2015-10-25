@@ -1,7 +1,6 @@
 define(function (require) {
 
 	var Backbone = require('backbone'),
-			SearchCriteriaModel = require('app/widgets/search/searchbox/models/searchCriteriaModel'),
 			SearchboxView = require('app/widgets/search/searchbox/views/searchboxView'),
 			tpl = require('text!app/widgets/results/map/templates/result-map.html');
 

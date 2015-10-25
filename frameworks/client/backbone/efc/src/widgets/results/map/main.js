@@ -4,11 +4,6 @@ define(function (require) {
       mapView = new MapView;
 
   return Widget.extend({
-    view: mapView,
-
-    render: function () {
-      mapView.render();
-      return this;
-    },
+    view: mapView
   });
 });

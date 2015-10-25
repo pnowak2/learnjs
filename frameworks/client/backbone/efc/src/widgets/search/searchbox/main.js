@@ -1,5 +1,6 @@
 define(function (require) {
   var Widget = require('../../../core/widget'),
+      widgetEventBus = require('./events/widgetEventBus'),
       SearchboxView = require('./views/searchboxView'),
       searchboxView = new SearchboxView;
 
@@ -8,18 +9,13 @@ define(function (require) {
     view: searchboxView,
 
     initialize: function () {
-      this.listenTo(searchboxView, 'searchbox:keyword', function (searchCriteria) {
+      this.listenTo(widgetEventBus, 'searchbox:keyword', function (searchCriteria) {
         this.trigger('searchbox:keyword', searchCriteria);
       });
 
-      this.listenTo(searchboxView, 'searchbox:invalid', function (errorMessage) {
+      this.listenTo(widgetEventBus, 'searchbox:invalid', function (errorMessage) {
         this.trigger('searchbox:invalid', errorMessage);
       });
-    },
-
-    render: function () {
-      searchboxView.render();
-      return this;
     }
   });
 });

@@ -13,11 +13,6 @@ define(function (require) {
       });
     },
 
-    render: function () {
-      tableView.render();
-      return this;
-    },
-
     fetchData: function (searchCriteria) {
       tableView.fetchData(searchCriteria);
     }
