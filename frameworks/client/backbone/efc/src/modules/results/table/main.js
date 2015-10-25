@@ -2,7 +2,7 @@ define(function (require) {
   var Widget = require('app/core/widget'),
     TableView = require('app/modules/results/table/views/tableView'),
     tableView = new TableView,
-    moduleEventBus = require('app/modules/results/table/events/moduleEventBus');
+    moduleEventBus = require('app/modules/results/table/events/widgetEventBus');
 
   return Widget.extend({
     initialize: function () {

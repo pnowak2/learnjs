@@ -2,7 +2,7 @@ define(function (require) {
   var _ = require('underscore'),
     Mustache = require('mustache'),
     Backbone = require('backbone'),
-    moduleEventBus = require('app/modules/results/table/events/moduleEventBus'),
+    moduleEventBus = require('app/modules/results/table/events/widgetEventBus'),
     tpl = require('text!app/modules/results/table/templates/result-table-item.html');
 
   return Backbone.View.extend({

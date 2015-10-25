@@ -20,13 +20,5 @@ define(function(require) {
         }),
         appModule = new AppModule;
 
-    appModule
-        .on('app:busy:start', function() {
-            this.showInfo('busy started');
-        })
-        .on('app:busy:stop', function() {
-            this.showInfo('busy stopped');
-        });
-
     return appModule;
 });
