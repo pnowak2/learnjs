@@ -34,8 +34,8 @@ requirejs.config({
 require(['jasmine-boot', 'jasmine-jquery', 'jasmine-ajax'], function () {
 	require([
 		'spec/core/moduleSpec',
-		'spec/modules/search/searchbox/models/searchCriteriaModelSpec',
-		'spec/modules/search/searchbox/views/searchboxViewSpec',
+		'spec/widgets/search/searchbox/models/searchCriteriaModelSpec',
+		'spec/widgets/search/searchbox/views/searchboxViewSpec',
 		'spec/services/search/searchServiceSpec'
 	], function () {
 		window.onload();

@@ -16,7 +16,7 @@ define(function (require) {
   var app = require('app/app'),
       Router = require('app/routers/router'),
       Backbone = require('backbone'),
-      ApplicationModule = require('app/modules/application/main'),
+      ApplicationModule = require('app/widgets/application/main'),
       router,
       applicationModule;
 
