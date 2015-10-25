@@ -1,10 +1,9 @@
 define(function (require) {
-  var Module = require('app/core/module'),
-    LayoutModule = require('app/modules/layout/main'),
+  var ApplicationModule = require('app/modules/application/main'),
     appEventBus = require('app/events/appEventBus'),
     $ = require('jquery');
 
-  var initializeEvents = function () {
+  var setupApplicationEvents = function () {
     $(document)
       .ajaxStart(function () {
         appEventBus.trigger('app:busy:start');
@@ -13,10 +12,10 @@ define(function (require) {
       });
   }
 
-  return Module.extend({
+  return {
     initialize: function () {
-      initializeEvents();
-      var layoutModule = new LayoutModule;
+      setupApplicationEvents();
+      var applicationModule = new ApplicationModule;
     }
-  });
+  };
 });
