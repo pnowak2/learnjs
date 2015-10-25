@@ -1,21 +1,32 @@
-define(function (require) {
-  var ApplicationModule = require('app/modules/application/main'),
-    appEventBus = require('app/events/appEventBus'),
-    $ = require('jquery');
+define(function(require) {
+    var Module = require('app/core/module'),
+        $ = require('jquery'),
 
-  var setupApplicationEvents = function () {
-    $(document)
-      .ajaxStart(function () {
-        appEventBus.trigger('app:busy:start');
-      }).ajaxStop(function () {
-        appEventBus.trigger('app:busy:stop');
-      });
-  }
+        AppModule = Module.extend({
+            initialize: function() {
+                var self = this;
 
-  return {
-    initialize: function () {
-      setupApplicationEvents();
-      var applicationModule = new ApplicationModule;
-    }
-  };
+                $(document)
+                    .ajaxStart(function() {
+                        self.trigger('app:busy:start');
+                    }).ajaxStop(function() {
+                        self.trigger('app:busy:stop');
+                    });
+            },
+
+            showInfo: function(message) {
+                console.log('show info ' + message);
+            }
+        }),
+        appModule = new AppModule;
+
+    appModule
+        .on('app:busy:start', function() {
+            this.showInfo('busy started');
+        })
+        .on('app:busy:stop', function() {
+            this.showInfo('busy stopped');
+        });
+
+    return appModule;
 });

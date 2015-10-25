@@ -16,8 +16,11 @@ define(function (require) {
   var app = require('app/app'),
       Router = require('app/routers/router'),
       Backbone = require('backbone'),
-      router = new Router();
+      ApplicationModule = require('app/modules/application/main'),
+      router,
+      applicationModule;
 
-  app.initialize();
+  router = new Router()
+  applicationModule = new ApplicationModule;
   Backbone.history.start();
 });

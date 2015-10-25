@@ -23,10 +23,6 @@ define(function(require) {
       	expect(Module.prototype.initialize).toBeDefined();
       });
 
-      it('should have default view property', function() {
-      	expect(Module.prototype.view).toEqual(jasmine.any(Backbone.View));
-      });
-
       it('should be extensible', function() {
       	expect(Module.extend).toBe(utils.extend);
       });

@@ -9,8 +9,7 @@ define(function (require) {
   }
  
   _.extend(Module.prototype, {
-    initialize: function () { },
-    view: new Backbone.View
+    initialize: function () { }
   });
 
   mixins.mixEvents(Module.prototype);

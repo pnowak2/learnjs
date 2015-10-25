@@ -27,7 +27,7 @@ define(function (require) {
     },
 
     didSelectTab: function (identifier) {
-      this.collection.filter(function (tabModel) {
+      this.collection.each(function (tabModel) {
         if (identifier !== tabModel.get('identifier')) {
           tabModel.set('selected', false);
         }
