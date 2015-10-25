@@ -1,24 +1,24 @@
 define(function(require) {
-    var Module = require('app/core/module'),
-        $ = require('jquery'),
+    var $ = require('jquery'),
+        mixins = require('./core/mixins'),
+        Module = require('./core/module'),
 
         AppModule = Module.extend({
             initialize: function() {
                 var self = this;
-
                 $(document)
                     .ajaxStart(function() {
-                        self.trigger('app:busy:start');
+                        self.trigger('app:ajax:start');
                     }).ajaxStop(function() {
-                        self.trigger('app:busy:stop');
+                        self.trigger('app:ajax:stop');
+                    }).ajaxError(function(event, jqxhr, settings, thrownError) {
+                        self.trigger('app:ajax:error', event, jqxhr, settings, thrownError);
                     });
-            },
-
-            showInfo: function(message) {
-                console.log('show info ' + message);
             }
         }),
+
         appModule = new AppModule;
+        mixins.mixNotifications(AppModule.prototype);
 
     return appModule;
 });

@@ -1,7 +1,7 @@
 define(function (require) {
   var _ = require('underscore'),
       Backbone = require('backbone'),
-      tpl = require('text!app/widgets/results/map/templates/result-map.html');
+      tpl = require('text!../templates/result-map.html');
 
   return Backbone.View.extend({
     className: 'efc-results-map',

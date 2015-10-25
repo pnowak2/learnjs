@@ -1,26 +1,22 @@
 requirejs.config({
   waitSeconds: 10,
-  baseUrl: '../',
   paths: {
-    app: 'src',
-    templates: 'src/templates',
-    jquery: 'lib/jquery/dist/jquery.min',
-    underscore: 'lib/underscore/underscore-min',
-    backbone: 'lib/backbone/backbone-min',
-    mustache: 'lib/mustache.js/mustache.min',
-    text: 'lib/text/text'
+    jquery: '../lib/jquery/dist/jquery.min',
+    underscore: '../lib/underscore/underscore-min',
+    backbone: '../lib/backbone/backbone-min',
+    mustache: '../lib/mustache.js/mustache.min',
+    text: '../lib/text/text'
   }
 });
 
 define(function (require) {
-  var app = require('app/app'),
-      Router = require('app/routers/router'),
+  var app = require('app'),
       Backbone = require('backbone'),
-      ApplicationModule = require('app/widgets/application/main'),
-      router,
-      applicationModule;
+      Router = require('./routers/router'),
+      ApplicationWidget = require('./widgets/application/main'),
+      router;
 
   router = new Router()
-  applicationModule = new ApplicationModule;
+  applicationWidget = new ApplicationWidget;
   Backbone.history.start();
 });

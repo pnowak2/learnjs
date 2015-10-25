@@ -2,10 +2,10 @@ define(function (require) {
   var _ = require('underscore'),
     Mustache = require('mustache'),
     Backbone = require('backbone'),
-    searchService = require('app/services/search/searchService'),
-    ProjectCollection = require('app/widgets/results/table/collections/projectsCollection'),
-    ItemView = require('app/widgets/results/table/views/itemView'),
-    tpl = require('text!app/widgets/results/table/templates/result-table.html');
+    searchService = require('../../../../services/search/searchService'),
+    ProjectCollection = require('../collections/projectsCollection'),
+    ItemView = require('./itemView'),
+    tpl = require('text!../templates/result-table.html');
 
   return Backbone.View.extend({
     className: 'efc-results-table',
@@ -35,9 +35,8 @@ define(function (require) {
     },
 
     render: function () {
-      this.$el.html(Mustache.render(tpl, {
-        hasProjects: this.collection.isEmpty()
-      }));
+
+      this.$el.html(Mustache.render(tpl));
 
       var tbody = this.$el.find('tbody');
 

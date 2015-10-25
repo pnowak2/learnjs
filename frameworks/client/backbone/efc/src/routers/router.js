@@ -1,6 +1,6 @@
 define(function(require) {
   var Backbone = require('backbone'),
-      app = require('app/app'),
+      app = require('../app'),
       Router = Backbone.Router.extend({
         routes: {
           'search/:keyword': 'keywordSearch'

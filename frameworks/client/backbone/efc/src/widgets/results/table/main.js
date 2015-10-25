@@ -1,20 +1,20 @@
 define(function (require) {
-  var Widget = require('app/core/widget'),
-    TableView = require('app/widgets/results/table/views/tableView'),
+  var Widget = require('../../../core/widget'),
+    TableView = require('./views/tableView'),
     tableView = new TableView,
-    moduleEventBus = require('app/widgets/results/table/events/widgetEventBus');
+    widgetEventBus = require('./events/widgetEventBus');
 
   return Widget.extend({
+    view: tableView,
+    
     initialize: function () {
-      this.listenTo(moduleEventBus, 'results:actions:showmap', function (item) {
+      this.listenTo(widgetEventBus, 'results:actions:showmap', function (item) {
         this.trigger('results:actions:showmap', item);
       });
-
-      this.render();
     },
 
     render: function () {
-      this.$el = tableView.render().$el;
+      tableView.render();
       return this;
     },
 

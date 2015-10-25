@@ -1,9 +1,10 @@
 define(function (require) {
-  var Module = require('app/core/module'),
-      SearchboxView = require('app/widgets/search/searchbox/views/searchboxView'),
+  var Widget = require('../../../core/widget'),
+      SearchboxView = require('./views/searchboxView'),
       searchboxView = new SearchboxView;
 
-  return Module.extend({
+  return Widget.extend({
+
     view: searchboxView,
 
     initialize: function () {
@@ -14,6 +15,11 @@ define(function (require) {
       this.listenTo(searchboxView, 'searchbox:invalid', function (errorMessage) {
         this.trigger('searchbox:invalid', errorMessage);
       });
+    },
+
+    render: function () {
+      searchboxView.render();
+      return this;
     }
   });
 });

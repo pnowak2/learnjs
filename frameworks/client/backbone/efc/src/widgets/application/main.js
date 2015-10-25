@@ -1,51 +1,65 @@
 define(function (require) {
-  var Module = require('app/core/module'),
-      $ = require('jquery'),
-      TabSwitcherModule = require('app/widgets/tab-switcher/main'),
-      SearchboxModule = require('app/widgets/search/searchbox/main'),
-      TableResultsWidget = require('app/widgets/results/table/main'),
-      MapResultsModule = require('app/widgets/results/map/main');
+  var $ = require('jquery'),
+      app = require('../../app'),
+      Widget = require('../../core/widget'),
+      TabSwitcherWidget = require('widgets/tab-switcher/main'),
+      SearchboxWidget = require('widgets/search/searchbox/main'),
+      TableResultsWidget = require('widgets/results/table/main'),
+      MapResultsWidget = require('widgets/results/map/main');
 
-  return Module.extend({
+  return Widget.extend({
     initialize: function () {
-      var tabSwitcherModule = new TabSwitcherModule;
-      var searchboxModule = new SearchboxModule;
+      var tabSwitcherWidget = new TabSwitcherWidget;
+      var searchboxWidget = new SearchboxWidget;
       var tableResultsWidget = new TableResultsWidget;
-      var mapResultsModule = new MapResultsModule;
+      var mapResultsWidget = new MapResultsWidget;
 
-      tableResultsWidget.$el.hide();
-      mapResultsModule.view.$el.hide();
+      tableResultsWidget.view.$el.hide();
+      mapResultsWidget.view.$el.hide();
 
-      this.listenTo(searchboxModule, 'searchbox:keyword', function (searchCriteria) {
+      this.listenTo(searchboxWidget, 'searchbox:keyword', function (searchCriteria) {
         console.log('search', searchCriteria);
         tableResultsWidget.fetchData(searchCriteria);
       });
 
-      this.listenTo(searchboxModule, 'searchbox:invalid', function (errorMessage) {
+      this.listenTo(searchboxWidget, 'searchbox:invalid', function (errorMessage) {
         console.log('error', errorMessage);
       });
 
       this.listenTo(tableResultsWidget, 'results:actions:showmap', function (item) {
-        tabSwitcherModule.selectMapTab();
+        tabSwitcherWidget.selectMapTab();
         $('.efc-results-map').html(item.title);
       });
 
-      this.listenTo(tabSwitcherModule, 'tab-switcher:selected', function (identifier) {
+      this.listenTo(tabSwitcherWidget, 'tab-switcher:selected', function (identifier) {
         if (identifier === 'list') {
-          tableResultsWidget.$el.show();
-          mapResultsModule.view.$el.hide();
+          tableResultsWidget.view.$el.show();
+          mapResultsWidget.view.$el.hide();
         } else if (identifier === 'map') {
-          tableResultsWidget.$el.hide();
-          mapResultsModule.view.$el.show();
+          tableResultsWidget.view.$el.hide();
+          mapResultsWidget.view.$el.show();
         }
       });
 
-      tabSwitcherModule.selectListTab();
+      this.listenTo(app, 'app:ajax:start', function () {
+        console.log('ajax start');
+      });
 
-      $('.efc-searchbox-container').html(searchboxModule.view.render().el);
-      $('.efc-tabs-container').html(tabSwitcherModule.view.render().el);
-      $('.efc-results-container').append(tableResultsWidget.$el);
-      $('.efc-results-container').append(mapResultsModule.view.render().el);
+      this.listenTo(app, 'app:ajax:stop', function () {
+        console.log('ajax stop');
+      });  
+
+      this.listenTo(app, 'app:ajax:error', function (event, jqxhr, settings, thrownError) {
+        console.log('ajax error');
+        app.showError('something went wrong');
+      });   
+
+      tabSwitcherWidget.selectListTab();
+
+      $('.efc-searchbox-container').html(searchboxWidget.view.render().$el);
+      $('.efc-tabs-container').html(tabSwitcherWidget.view.render().$el);
+      $('.efc-results-container').append(tableResultsWidget.view.render().$el);
+      $('.efc-results-container').append(mapResultsWidget.view.render().$el);
     }
   });
 });

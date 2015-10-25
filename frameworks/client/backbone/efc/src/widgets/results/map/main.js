@@ -1,13 +1,14 @@
 define(function (require) {
-  var Module = require('app/core/module'),
-      MapView = require('app/widgets/results/map/views/mapView'),
+  var Widget = require('../../../core/widget'),
+      MapView = require('./views/mapView'),
       mapView = new MapView;
 
-  return Module.extend({
+  return Widget.extend({
     view: mapView,
 
-    initialize: function () {
-
-    }
+    render: function () {
+      mapView.render();
+      return this;
+    },
   });
 });

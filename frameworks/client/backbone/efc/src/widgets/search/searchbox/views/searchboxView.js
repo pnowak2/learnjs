@@ -1,8 +1,8 @@
 define(function (require) {
   var _ = require('underscore'),
       Backbone = require('backbone'),
-      SearchCriteriaModel = require('app/widgets/search/searchbox/models/searchCriteriaModel'),
-      tpl = require('text!app/widgets/search/searchbox/templates/searchbox.html');
+      SearchCriteriaModel = require('../models/searchCriteriaModel'),
+      tpl = require('text!../templates/searchbox.html');
 
   var ENTER_KEY = 13;
 

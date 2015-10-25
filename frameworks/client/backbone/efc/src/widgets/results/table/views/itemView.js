@@ -2,8 +2,8 @@ define(function (require) {
   var _ = require('underscore'),
     Mustache = require('mustache'),
     Backbone = require('backbone'),
-    moduleEventBus = require('app/widgets/results/table/events/widgetEventBus'),
-    tpl = require('text!app/widgets/results/table/templates/result-table-item.html');
+    widgetEventBus = require('../events/widgetEventBus'),
+    tpl = require('text!../templates/result-table-item.html');
 
   return Backbone.View.extend({
     tagName: 'tr',
@@ -16,7 +16,7 @@ define(function (require) {
 
     didClickShowMap: function (e) {
       e.preventDefault();
-      moduleEventBus.trigger('results:actions:showmap', this.model.toJSON());
+      widgetEventBus.trigger('results:actions:showmap', this.model.toJSON());
     },
 
     render: function () {
