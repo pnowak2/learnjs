@@ -1,6 +1,7 @@
 define(function (require) {
   var _ = require('underscore'),
       Backbone = require('backbone'),
+      widgetEventBus = require('../events/widgetEventBus'),
       TabView = require('./tabView'),
       TabsCollection = require('../collections/tabsCollection');
 
@@ -33,7 +34,7 @@ define(function (require) {
         }
       });
 
-      this.trigger('tab-switcher:selected', identifier);
+      widgetEventBus.trigger('tab-switcher:selected', identifier);
     },
 
     selectTab: function (identifier) {

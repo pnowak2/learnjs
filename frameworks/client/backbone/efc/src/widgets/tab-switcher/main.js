@@ -1,5 +1,6 @@
 define(function (require) {
   var Widget = require('../../core/widget'),
+      widgetEventBus = require('./events/widgetEventBus'),
       TabSwitcherView = require('./views/tabSwitcherView'),
       tabSwitcherView = new TabSwitcherView;
 
@@ -7,7 +8,7 @@ define(function (require) {
     view: tabSwitcherView,
 
     initialize: function () {
-      this.listenTo(tabSwitcherView, 'tab-switcher:selected', function (identifier) {
+      this.listenTo(widgetEventBus, 'tab-switcher:selected', function (identifier) {
         this.trigger('tab-switcher:selected', identifier);
       });
     },
