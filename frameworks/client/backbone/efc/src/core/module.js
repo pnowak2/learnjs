@@ -1,7 +1,6 @@
 define(function (require) {
   var _ = require('underscore'),
       Backbone = require('backbone'),
-      mixins = require('./mixins');
       utils = require('./utils');
 
   var Module = function () {
@@ -12,7 +11,7 @@ define(function (require) {
     initialize: function () { }
   });
 
-  mixins.mixEvents(Module.prototype);
+  _.extend(Module.prototype, Backbone.Events);
 
   Module.extend = utils.extend;
 

@@ -1,8 +1,6 @@
 define(function (require) {
-	var mixins =  require('../../core/mixins'),
-			widgetEventBus = {};
+	var _ = require('underscore'),
+			eventBus = require('../../../../core/eventBus');
 
-	mixins.mixEvents(widgetEventBus);
-
-	return widgetEventBus;
+	return _.create(eventBus);
 });

@@ -14,32 +14,22 @@ define(function (require) {
       }
     });
 
-    success([{
-            id: 'id',
-            title: 'kalimera quillo',
-            description: 'description',
-            year: 'year',
-            countries: 'countries'
-          }]);
-
-    return;
-
-    // request
-    //   .done(function (response) {
-    //     var projects = _.map(response.aaData, function (responseItem) {
-    //       return {
-    //         id: responseItem[0],
-    //         title: responseItem[1],
-    //         description: responseItem[2],
-    //         year: responseItem[4],
-    //         countries: responseItem[5]
-    //       }
-    //     });
-    //     success.call(null, projects);
-    //   })
-    //   .fail(function (jqXHR, textStatus) {
-    //     failure.call(null, textStatus);
-    //   });
+    request
+      .done(function (response) {
+        var projects = _.map(response.aaData, function (responseItem) {
+          return {
+            id: responseItem[0],
+            title: responseItem[1],
+            description: responseItem[2],
+            year: responseItem[4],
+            countries: responseItem[5]
+          }
+        });
+        success.call(null, projects);
+      })
+      .fail(function (jqXHR, textStatus) {
+        failure.call(null, textStatus);
+      });
   }
 
   return {

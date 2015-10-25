@@ -1,6 +1,7 @@
 define(function(require) {
     var $ = require('jquery'),
-        mixins = require('./core/mixins'),
+        _ = require('underscore'),
+        notificationsMixin = require('./mixins/notifications'),
         Module = require('./core/module'),
 
         AppModule = Module.extend({
@@ -18,7 +19,7 @@ define(function(require) {
         }),
 
         appModule = new AppModule;
-        mixins.mixNotifications(AppModule.prototype);
+        _.extend(AppModule.prototype, notificationsMixin);
 
     return appModule;
 });

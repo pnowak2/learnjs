@@ -2,6 +2,7 @@ define(function (require) {
   var _ = require('underscore'),
       Backbone = require('backbone'),
       SearchCriteriaModel = require('../models/searchCriteriaModel'),
+      widgetEventBus = require('../events/widgetEventBus'),
       tpl = require('text!../templates/searchbox.html');
 
   var ENTER_KEY = 13;
