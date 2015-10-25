@@ -2,7 +2,7 @@ define(function (require) {
   var Module = require('app/core/module'),
     TableView = require('app/modules/results/table/views/tableView'),
     tableView = new TableView,
-    moduleEventBus = require('app/modules/results/table/events/eventBus');
+    moduleEventBus = require('app/modules/results/table/events/moduleEventBus');
 
   return Module.extend({
     view: tableView,

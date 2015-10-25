@@ -6,13 +6,9 @@ define(function (require) {
   return Module.extend({
     view: tabSwitcherView,
 
-    events: {
-      selected: 'tab-switcher:selected'
-    },
-
     initialize: function () {
       this.listenTo(tabSwitcherView, 'tab-switcher:selected', function (identifier) {
-        this.trigger(this.events.selected, identifier);
+        this.trigger('tab-switcher:selected', identifier);
       });
     },
 

@@ -7,14 +7,6 @@ define(function (require) {
       MapResultsModule = require('app/modules/results/map/main');
 
   return Module.extend({
-    app: {
-      ui: {
-        searchboxContainerSelector: '.efc-searchbox-container',
-        resultsContainerSelector: '.efc-results-container',
-        tabsContainerSelector: '.efc-tabs-container'
-      }
-    },
-
     initialize: function () {
       var tabSwitcherModule = new TabSwitcherModule;
       var searchboxModule = new SearchboxModule;
@@ -24,12 +16,12 @@ define(function (require) {
       tableResultsModule.view.$el.hide();
       mapResultsModule.view.$el.hide();
 
-      this.listenTo(searchboxModule, searchboxModule.events.search_keyword, function (searchCriteria) {
+      this.listenTo(searchboxModule, 'searchbox:keyword', function (searchCriteria) {
         console.log('search', searchCriteria);
         tableResultsModule.fetchData(searchCriteria);
       });
 
-      this.listenTo(searchboxModule, searchboxModule.events.search_invalid, function (errorMessage) {
+      this.listenTo(searchboxModule, 'searchbox:invalid', function (errorMessage) {
         console.log('error', errorMessage);
       });
 
@@ -38,7 +30,7 @@ define(function (require) {
         $('.efc-results-map').html(item.title);
       });
 
-      this.listenTo(tabSwitcherModule, tabSwitcherModule.events.selected, function (identifier) {
+      this.listenTo(tabSwitcherModule, 'tab-switcher:selected', function (identifier) {
         if (identifier === 'list') {
           tableResultsModule.view.$el.show();
           mapResultsModule.view.$el.hide();
@@ -50,10 +42,10 @@ define(function (require) {
 
       tabSwitcherModule.selectListTab();
 
-      $(this.app.ui.searchboxContainerSelector).html(searchboxModule.view.render().el);
-      $(this.app.ui.tabsContainerSelector).html(tabSwitcherModule.view.render().el);
-      $(this.app.ui.resultsContainerSelector).append(tableResultsModule.view.render().el);
-      $(this.app.ui.resultsContainerSelector).append(mapResultsModule.view.render().el);
+      $('.efc-searchbox-container').html(searchboxModule.view.render().el);
+      $('.efc-tabs-container').html(tabSwitcherModule.view.render().el);
+      $('.efc-results-container').append(tableResultsModule.view.render().el);
+      $('.efc-results-container').append(mapResultsModule.view.render().el);
     }
   });
 });

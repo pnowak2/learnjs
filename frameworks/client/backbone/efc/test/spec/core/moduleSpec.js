@@ -1,7 +1,7 @@
 define(function(require) {
 
 	var Module = require('app/core/module'),
-			utils = require('app/utils/utils'),
+			utils = require('app/core/utils'),
 			_ = require('underscore'),
 			Backbone = require('backbone');
 

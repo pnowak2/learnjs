@@ -1,6 +1,6 @@
 define(function(require) {
   var Backbone = require('backbone'),
-      appEventBus = require('app/core/appEventBus'),
+      appEventBus = require('app/events/appEventBus'),
       Router = Backbone.Router.extend({
         routes: {
           'search/:keyword': 'keywordSearch'
