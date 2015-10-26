@@ -76,7 +76,6 @@ describe('RESTful Persistence', function() {
 
 		request.respondWith(testResponses.search.success);
 
-
 		expect(successSpy).toHaveBeenCalled();
 		expect(errorSpy).not.toHaveBeenCalled();
 

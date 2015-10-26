@@ -12,7 +12,6 @@ define(function(require) {
       it('should extend from module', function() {
         expect(Widget.prototype).toEqual(jasmine.any(Module));
       });
-
     });
   });
 });
