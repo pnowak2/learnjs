@@ -9,13 +9,13 @@ requirejs.config({
   }
 });
 
-define(function (require) {
+define(function(require) {
   var app = require('app'),
-      Backbone = require('backbone'),
-      Router = require('./routers/router'),
-      ApplicationWidget = require('./widgets/application/main'),
-      applicationWidget,
-      router;
+    Backbone = require('backbone'),
+    Router = require('./routers/router'),
+    ApplicationWidget = require('./widgets/application/main'),
+    applicationWidget,
+    router;
 
   applicationWidget = new ApplicationWidget;
   router = new Router()

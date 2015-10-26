@@ -1,52 +1,52 @@
-define(function (require) {
+define(function(require) {
 
-	var Backbone = require('backbone'),
-			SearchboxView = require('app/widgets/search/searchbox/views/searchboxView'),
-			tpl = require('text!app/widgets/results/map/templates/result-map.html');
+  var Backbone = require('backbone'),
+    SearchboxView = require('app/widgets/search/searchbox/views/searchboxView'),
+    tpl = require('text!app/widgets/results/map/templates/result-map.html');
 
-	describe('SearchboxView', function() {
-		beforeEach(function () {
-			this.view = new SearchboxView;
-		});
+  describe('SearchboxView', function() {
+    beforeEach(function() {
+      this.view = new SearchboxView;
+    });
 
-		describe('prototype', function() {
-			it('should be defined', function() {
-				expect(SearchboxView.prototype).toEqual(jasmine.any(Backbone.View));
-			});
-		});
+    describe('prototype', function() {
+      it('should be defined', function() {
+        expect(SearchboxView.prototype).toEqual(jasmine.any(Backbone.View));
+      });
+    });
 
-		describe('instance', function() {
-			it('should have correct template', function() {
-				expect(tpl).toContainElement('a.link');
-			});
+    describe('instance', function() {
+      it('should have correct template', function() {
+        expect(tpl).toContainElement('a.link');
+      });
 
-			it('should have model', function() {
-				expect(this.view.model).toEqual(jasmine.any(Backbone.Model));
-			});
-		});
+      it('should have model', function() {
+        expect(this.view.model).toEqual(jasmine.any(Backbone.Model));
+      });
+    });
 
-		describe('render', function() {
-			it('should render', function() {
-				spyOn(this.view.model, 'toJSON').and.returnValue({
-						keyword: 'hello world'
-				});
+    describe('render', function() {
+      it('should render', function() {
+        spyOn(this.view.model, 'toJSON').and.returnValue({
+          keyword: 'hello world'
+        });
 
-				this.view.render();
+        this.view.render();
 
-				expect(this.view.el.innerHTML).toBeMatchedBy('input[type="text"]');
-			});
+        expect(this.view.el.innerHTML).toBeMatchedBy('input[type="text"]');
+      });
 
-			it('should serialize model', function() {
-				spyOn(this.view.model, 'toJSON');
-				spyOn(this.view, 'template');
+      it('should serialize model', function() {
+        spyOn(this.view.model, 'toJSON');
+        spyOn(this.view, 'template');
 
-				expect(this.view.model.toJSON).not.toHaveBeenCalled();
+        expect(this.view.model.toJSON).not.toHaveBeenCalled();
 
-				this.view.render();
+        this.view.render();
 
-				expect(this.view.model.toJSON).toHaveBeenCalled();
-			});
-		});
-	});
-	
+        expect(this.view.model.toJSON).toHaveBeenCalled();
+      });
+    });
+  });
+
 });

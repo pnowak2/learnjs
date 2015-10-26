@@ -1,6 +1,6 @@
-define(function (require) {
+define(function(require) {
   var _ = require('underscore'),
-      Backbone = require('backbone');
+    Backbone = require('backbone');
 
   return Backbone.View.extend({
     tagName: 'li',
@@ -12,19 +12,19 @@ define(function (require) {
       'click': 'didClickTab'
     },
 
-    initialize: function () {
+    initialize: function() {
       this.listenTo(this.model, 'change:selected', this.selectionDidChange);
     },
 
-    didClickTab: function () {
+    didClickTab: function() {
       this.model.set('selected', true);
     },
 
-    isTabSelected: function () {
+    isTabSelected: function() {
       return this.model.get('selected');
     },
 
-    selectionDidChange: function () {
+    selectionDidChange: function() {
       if (this.model.get('selected')) {
         this.trigger('tab:selected', this.model.get('identifier'));
       }
@@ -32,7 +32,7 @@ define(function (require) {
       this.$el.toggleClass('efc-selected', this.model.get('selected'));
     },
 
-    render: function () {
+    render: function() {
       this.$el.html(this.template(this.model.toJSON()));
 
       return this;

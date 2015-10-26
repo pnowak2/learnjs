@@ -1,17 +1,17 @@
-define(function (require) {
+define(function(require) {
   var Module = require('./module'),
-  		$ = require('jquery');
+    $ = require('jquery');
 
   return Module.extend({
     view: null,
 
-    render: function () { 
+    render: function() {
       this.view.render();
-      return this; 
+      return this;
     },
 
-    remove: function () {
-      if(this.view) {
+    remove: function() {
+      if (this.view) {
         this.view.remove();
       }
     }

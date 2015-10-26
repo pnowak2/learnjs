@@ -1,9 +1,9 @@
-define(function (require) {
+define(function(require) {
   var _ = require('underscore'),
-      Backbone = require('backbone'),
-      SearchCriteriaModel = require('../models/searchCriteriaModel'),
-      widgetEventBus = require('../events/widgetEventBus'),
-      tpl = require('text!../templates/searchbox.html');
+    Backbone = require('backbone'),
+    SearchCriteriaModel = require('../models/searchCriteriaModel'),
+    widgetEventBus = require('../events/widgetEventBus'),
+    tpl = require('text!../templates/searchbox.html');
 
   var ENTER_KEY = 13;
 
@@ -17,34 +17,36 @@ define(function (require) {
       'keypress input': 'keyPressed'
     },
 
-    initialize: function () {
+    initialize: function() {
       this.model = new SearchCriteriaModel;
       this.listenTo(this.model, 'invalid', this.validationDidFail);
     },
 
-    searchButtonClicked: function () {
+    searchButtonClicked: function() {
       this.performSearch();
     },
 
-    validationDidFail: function (e) {
+    validationDidFail: function(e) {
       widgetEventBus.trigger('searchbox:invalid', e.validationError);
     },
 
-    keyPressed: function (e) {
+    keyPressed: function(e) {
       if (e.which === ENTER_KEY) {
         e.preventDefault();
         this.performSearch();
       }
     },
 
-    performSearch: function () {
-      var isValid = this.model.set('keyword', this.keywordInput.val(), { validate: true });
-      if(isValid) {
+    performSearch: function() {
+      var isValid = this.model.set('keyword', this.keywordInput.val(), {
+        validate: true
+      });
+      if (isValid) {
         widgetEventBus.trigger('searchbox:keyword', this.model.toJSON());
       }
     },
 
-    render: function () {
+    render: function() {
       this.$el.html(this.template(this.model.toJSON()));
       this.keywordInput = this.$el.find('input');
 

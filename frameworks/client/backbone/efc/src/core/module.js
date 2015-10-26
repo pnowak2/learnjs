@@ -1,14 +1,14 @@
-define(function (require) {
+define(function(require) {
   var _ = require('underscore'),
-      Backbone = require('backbone'),
-      utils = require('./utils');
+    Backbone = require('backbone'),
+    utils = require('./utils');
 
-  var Module = function () {
+  var Module = function() {
     this.initialize.apply(this, arguments);
   }
- 
+
   _.extend(Module.prototype, {
-    initialize: function () { }
+    initialize: function() {}
   });
 
   _.extend(Module.prototype, Backbone.Events);

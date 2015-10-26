@@ -1,4 +1,4 @@
-define(function (require) {
+define(function(require) {
   var _ = require('underscore'),
     Mustache = require('mustache'),
     Backbone = require('backbone'),
@@ -12,35 +12,35 @@ define(function (require) {
 
     template: _.template(tpl),
 
-    initialize: function () {
+    initialize: function() {
       _.bindAll(this, 'fetchSuccess', 'fetchFailure');
       this.collection = new ProjectCollection;
       this.listenTo(this.collection, 'reset', this.render);
     },
 
-    fetchData: function (searchCriteria) {
+    fetchData: function(searchCriteria) {
       searchService.searchByKeyword(
         searchCriteria.keyword,
-        this.fetchSuccess, 
+        this.fetchSuccess,
         this.fetchFailure
       );
     },
 
-    fetchSuccess: function (projects) {
+    fetchSuccess: function(projects) {
       this.collection.reset(projects);
     },
 
-    fetchFailure: function (errorMessage) {
+    fetchFailure: function(errorMessage) {
 
     },
 
-    render: function () {
+    render: function() {
 
       this.$el.html(Mustache.render(tpl));
 
       var tbody = this.$el.find('tbody');
 
-      this.collection.each(function (itemModel) {
+      this.collection.each(function(itemModel) {
         var itemView = new ItemView({
           model: itemModel
         });
