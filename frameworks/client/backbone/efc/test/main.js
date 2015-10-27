@@ -40,6 +40,10 @@ require(['jasmine-boot', 'jasmine-jquery', 'jasmine-ajax'], function() {
     'spec/widgets/search/searchbox/mainSpec',
     'spec/widgets/search/searchbox/models/searchCriteriaModelSpec',
     'spec/widgets/search/searchbox/views/searchboxViewSpec',
+    //pager
+    'spec/widgets/pager/mainSpec',
+    'spec/widgets/pager/models/pagerModelSpec',
+    'spec/widgets/pager/views/pagerViewSpec',
     // search service
     'spec/services/search/searchServiceSpec'
   ], function() {
