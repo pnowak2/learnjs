@@ -3,13 +3,17 @@ module.exports = function(grunt) {
   grunt.initConfig({
     browserify: {
       specs: {
-        src: ["test/spec/**/*.js"],
-        dest: "test/specs.js",
+        src: ["test/specs/*.js"],
+        dest: "test/specs-suite.js",
         options: {
-          browserifyOptions: {
-            debug: false,
-            transform: ['babelify']
-          }
+          watch: true,
+          keepAlive: true,
+          transform: [
+            ["babelify", {
+              "plugins": ['external-helpers'],
+              "presets": ["es2015"]
+            }]
+          ]
         }
       }
     },
@@ -19,13 +23,13 @@ module.exports = function(grunt) {
           reporter: 'spec',
           clearRequireCache: true
         },
-        src: ['test/specs.js']
+        src: ['test/specs-suite.js']
       }
     },
     watch: {
       all: {
-        files: ['test/**/*.*'],
-        tasks: ['test']
+        files: ['test/specs-suite.js'],
+        tasks: ['mochaTest']
       },
     }
   });
@@ -34,6 +38,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['test']);
-  grunt.registerTask('test', ['browserify:specs', 'mochaTest']);
+  grunt.registerTask('default', ['mochaTest']);
 };
