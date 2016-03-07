@@ -14507,7 +14507,29 @@ describe('Strings and Regular expressions', function () {
   });
 
   describe('regular expressions', function () {
-    it('should behave...', function () {});
+    it('should duplicate regexp', function () {
+      var re1 = /ab/i,
+          re2 = new RegExp(re1, 'g');
+
+      expect(re1.toString()).to.equal('/ab/i');
+      // expect(re1.toString()).to.equal('/ab/g'); // does not work with babel
+    });
+
+    it('should have flags property', function () {
+      var re1 = /ab/i;
+
+      expect(re1.flags).to.equal('i');
+    });
+  });
+
+  describe('template literals', function () {
+    it('should be defined with backticks', function () {
+      expect('hello').to.equal('hello');
+    });
+
+    it('should be type of string', function () {
+      expect('hello').to.be.a('string');
+    });
   });
 });
 
