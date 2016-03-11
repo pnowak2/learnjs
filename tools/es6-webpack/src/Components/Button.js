@@ -25,4 +25,3 @@ export default class Button {
         $('.button').click(this.onClick.bind(this));
     }
 }
-

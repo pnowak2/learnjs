@@ -12,7 +12,7 @@ module.exports = {
     loaders: [{
       test: /\.js/,
       include: path.join(__dirname, '\src'),
-      loader: 'babel-loader'
+      loader: 'babel'
     }, {
     	test: /\.scss$/,
     	loaders: ['style', 'css', 'sass']
