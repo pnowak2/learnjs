@@ -1,4 +1,6 @@
+require("babel-helpers");
 require("babel-polyfill");
+
 var expect = require('chai').expect;
 
 describe('Strings and Regular expressions', function() {
@@ -69,8 +71,47 @@ describe('Strings and Regular expressions', function() {
       expect(`hello`).to.equal('hello');
     });
 
+    it('should use backticks inside string', function() {
+      expect(`hello\`world`).to.equal('hello`world')
+    });
+
     it('should be type of string', function() {
       expect(`hello`).to.be.a('string');
+    });
+  });
+
+  describe('multiline strings', function() {
+    it('should use pre es6 workaround', function() {
+      var message = ['multiline', 'string'].join('\n');
+      expect(message).to.equal('multiline\nstring');
+    });
+
+    it('should use es6 way for multiline strings', function() {
+      let multiline = `multiline
+        string`;
+      expect(multiline).to.equal(`multiline
+        string`)
+    });
+  });
+
+  describe('substitutions', function() {
+    it('should substitute variables inside template string', function() {
+      let name = 'peter',
+        message = `hello ${name}`;
+
+      expect(message).to.equal('hello peter');
+    });
+
+    it('should allow for small evaluation in substitution', function() {
+      expect(`2 + 2 is ${2+2}`).to.equal('2 + 2 is 4');
+    });
+  });
+
+  describe('tagged templates', function() {
+    it('should behave...', function() {
+      var tag = (literals, ...substitutions) => {
+
+      }
     });
   });
 });

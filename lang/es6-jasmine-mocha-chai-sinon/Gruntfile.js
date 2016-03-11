@@ -10,8 +10,8 @@ module.exports = function(grunt) {
           keepAlive: true,
           transform: [
             ["babelify", {
-              "plugins": ['external-helpers'],
-              "presets": ["es2015"]
+              "presets": ["es2015"],
+              "plugins": ["external-helpers"]
             }]
           ]
         }

@@ -5,7 +5,9 @@
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.6.4",
+    "babel-helpers": "^6.6.0",
     "babel-plugin-external-helpers": "*",
+    "babel-plugin-external-helpers-2": "^6.3.13",
     "babel-polyfill": "^6.6.1",
     "babel-preset-es2015": "*",
     "babelify": "*",
