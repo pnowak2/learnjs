@@ -1,7 +1,5 @@
-require("babel-helpers");
-require("babel-polyfill");
-
 var expect = require('chai').expect;
+var sinon = require('sinon');
 
 describe('Strings and Regular expressions', function() {
   describe('Unicode', function() {
@@ -18,8 +16,8 @@ describe('Strings and Regular expressions', function() {
     it('should be properly handling with code points', function() {
       var text = "𠮷";
       expect(text.charCodeAt(0)).to.equal(55362);
-      // expect(text.codePointAt(0)).to.equal(134071); // does not work with babel
-      // expect(String.fromCodePoint(134071)).to.equal('𠮷'); // does not work with babel
+      expect(text.codePointAt(0)).to.equal(134071); // does not work with babel
+      expect(String.fromCodePoint(134071)).to.equal('𠮷'); // does not work with babel
     });
 
     it('should handle properly unicode regexp', function() {
@@ -108,10 +106,27 @@ describe('Strings and Regular expressions', function() {
   });
 
   describe('tagged templates', function() {
-    it('should behave...', function() {
-      var tag = (literals, ...substitutions) => {
+    it('should call tag function with appropriate params', function() {
+      var tag = sinon.spy();
 
-      }
+      let replaced = 'replaced';
+
+      let text = tag `this is ${replaced} text`;
+
+      expect(tag.calledOnce).to.be.ok;
+      expect(tag.firstCall.args[0]).to.eql(['this is ', ' text']);
+      expect(tag.firstCall.args[1]).to.equal('replaced');
+    });
+  });
+
+  describe('raw values', function() {
+    it('should handle raw values properly', function() {
+      let message1 = `Multiline\nstring`,
+        message2 = String.raw `Multiline\nstring`;
+
+      expect(message1).to.eql(`Multiline
+string`);
+      expect(message2).to.eql('Multiline\\nstring');
     });
   });
 });
