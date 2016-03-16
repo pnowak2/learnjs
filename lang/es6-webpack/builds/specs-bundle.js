@@ -47,7 +47,8 @@
 	__webpack_require__(1);
 	__webpack_require__(53);
 	__webpack_require__(101);
-	module.exports = __webpack_require__(103);
+	__webpack_require__(103);
+	module.exports = __webpack_require__(105);
 
 
 /***/ },
@@ -18219,12 +18220,274 @@
 
 /***/ },
 /* 104 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _chai = __webpack_require__(11);
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	describe('Expanded object functionality', function () {
-	  it('should behave...', function () {});
+	  describe('Property initializer shorthand', function () {
+	    it('should use consize syntax', function () {
+	      var a = 'ab',
+	          b = 'bc';
+
+	      var obj = {
+	        a: a, b: b
+	      };
+
+	      (0, _chai.expect)(obj).to.eql({
+	        a: 'ab',
+	        b: 'bc'
+	      });
+	    });
+	  });
+
+	  describe('Concise methods', function () {
+	    it('should use shorter syntax', function () {
+	      var person = {
+	        name: 'peter',
+	        sayName: function sayName() {
+	          return this.name;
+	        }
+	      };
+
+	      (0, _chai.expect)(person.sayName()).to.eql('peter');
+	    });
+	  });
+
+	  describe('Computed property names', function () {
+	    it('should use dynamic property names', function () {
+	      var name = 'Name';
+
+	      var person = _defineProperty({}, 'prefix' + name, 'peter');
+
+	      (0, _chai.expect)(person.prefixName).to.eql('peter');
+	    });
+	  });
+
+	  describe('New Object methods', function () {
+	    describe('Object.is(arg1, arg2)', function () {
+	      it('should return true if two arguments are equivalent', function () {
+	        (0, _chai.expect)(Object.is(1, 1)).to.be.true;
+	        (0, _chai.expect)(Object.is(1, "1")).to.be.false;
+	        (0, _chai.expect)(Object.is(NaN, NaN)).to.be.true;
+	        (0, _chai.expect)(Object.is(+0, -0)).to.be.false;
+	      });
+	    });
+
+	    describe('Object.assign(receiver, supplier)', function () {
+	      it('classic es5 approach', function () {
+	        function mixin(receiver, supplier) {
+	          Object.keys(supplier).forEach(function (key) {
+	            receiver[key] = supplier[key];
+	          });
+
+	          return receiver;
+	        }
+
+	        var receiver = {},
+	            supplier = {
+	          name: 'peter',
+	          say: function say() {
+	            return this.name;
+	          }
+	        };
+
+	        mixin(receiver, supplier);
+
+	        (0, _chai.expect)(receiver.name).to.eql('peter');
+	        (0, _chai.expect)(receiver.say()).to.eql('peter');
+	      });
+
+	      it('should assign supplier props to receiver', function () {
+	        var receiver = {},
+	            supplier = {
+	          name: 'peter',
+	          say: function say() {
+	            return this.name;
+	          }
+	        };
+
+	        Object.assign(receiver, supplier, {
+	          other: 'boo'
+	        });
+
+	        (0, _chai.expect)(receiver.name).to.eql('peter');
+	        (0, _chai.expect)(receiver.other).to.eql('boo');
+	        (0, _chai.expect)(receiver.say()).to.eql('peter');
+	      });
+
+	      it('should allow for duplicate object literal properties', function () {
+	        var person = _defineProperty({
+	          name: "Nicholas"
+	        }, 'name', "Greg");
+	      });
+	    });
+	  });
+	  // no error in ES6 strict mode
+	  describe('More powerful prototypes', function () {
+	    beforeEach(function () {
+	      this.person = {
+	        getGreeting: function getGreeting() {
+	          return "Hello";
+	        }
+	      };
+
+	      this.dog = {
+	        getGreeting: function getGreeting() {
+	          return "Woof";
+	        }
+	      };
+	    });
+
+	    describe('Changing objects prototype', function () {
+	      it('should get object prototype', function () {
+	        var friend = Object.create(this.person);
+	        (0, _chai.expect)(Object.getPrototypeOf(friend)).to.equal(this.person);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Hello');
+	      });
+
+	      it('should set object prototype', function () {
+	        var friend = Object.create(this.person);
+	        (0, _chai.expect)(Object.getPrototypeOf(friend)).to.equal(this.person);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Hello');
+
+	        Object.setPrototypeOf(friend, this.dog);
+	        (0, _chai.expect)(Object.getPrototypeOf(friend)).to.equal(this.dog);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Woof');
+	      });
+	    });
+
+	    describe('Prototype and Super references', function () {
+	      it('es5 way to call super method', function () {
+	        var person = {
+	          getGreeting: function getGreeting() {
+	            return "Hello";
+	          }
+	        };
+
+	        var dog = {
+	          getGreeting: function getGreeting() {
+	            return "Woof";
+	          }
+	        };
+
+	        var friend = {
+	          getGreeting: function getGreeting() {
+	            // return this.__proto__.getGreeting.call(this) + ', hi!'; // with hidden __proto__ property
+	            return Object.getPrototypeOf(this).getGreeting.call(this) + ", hi!";
+	          }
+	        };
+
+	        Object.setPrototypeOf(friend, person);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Hello, hi!');
+
+	        Object.setPrototypeOf(friend, dog);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Woof, hi!');
+	      });
+
+	      it('es6 way with super (only with formal method syntax)', function () {
+	        var _obj;
+
+	        var person = {
+	          getGreeting: function getGreeting() {
+	            return "Hello";
+	          }
+	        };
+
+	        var dog = {
+	          getGreeting: function getGreeting() {
+	            return "Woof";
+	          }
+	        };
+
+	        var friend = _obj = {
+	          getGreeting: function getGreeting() {
+	            return _get(Object.getPrototypeOf(_obj), 'getGreeting', this).call(this) + ", hi!";
+	          }
+	        };
+
+	        Object.setPrototypeOf(friend, person);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Hello, hi!');
+
+	        Object.setPrototypeOf(friend, dog);
+	        (0, _chai.expect)(friend.getGreeting()).to.eql('Woof, hi!');
+	      });
+	    });
+	  });
+
+	  describe('Formal method definition', function () {
+	    it('should use shorthand syntax', function () {
+	      var person = {
+	        getGreeting: function getGreeting() {
+	          return 'hello';
+	        }
+	      };
+
+	      (0, _chai.expect)(person.getGreeting()).to.eql('hello');
+	    });
+
+	    it('should use super to call prototype method (only with format method definition)', function () {
+	      var _obj2;
+
+	      var person = {
+	        getGreeting: function getGreeting() {
+	          return 'hello';
+	        }
+	      },
+	          employee = _obj2 = {
+	        getGreeting: function getGreeting() {
+	          return _get(Object.getPrototypeOf(_obj2), 'getGreeting', this).call(this) + ', world';
+	        }
+	      };
+
+	      Object.setPrototypeOf(employee, person);
+
+	      (0, _chai.expect)(employee.getGreeting()).to.eql('hello, world');
+	    });
+	  });
+	});
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(106)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(11);
+
+	var _chai2 = _interopRequireDefault(_chai);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('Destructuring', function () {
+		describe('object destructuring', function () {
+			it('should behave...', function () {});
+		});
 	});
 
 /***/ }
