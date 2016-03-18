@@ -6,7 +6,8 @@ module.exports = {
     'mocha!./specs/2-stringsAndRegexp.spec.js',
     'mocha!./specs/3-functions.spec.js',
     'mocha!./specs/4-expanded-object-functionality.spec.js',
-    'mocha!./specs/5-destructuring.spec.js'
+    'mocha!./specs/5-destructuring.spec.js',
+    'mocha!./specs/6-symbols.spec.js'
   ],
   output: {
     path: 'builds',

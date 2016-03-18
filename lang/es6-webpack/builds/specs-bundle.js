@@ -48,7 +48,8 @@
 	__webpack_require__(53);
 	__webpack_require__(101);
 	__webpack_require__(103);
-	module.exports = __webpack_require__(105);
+	__webpack_require__(105);
+	module.exports = __webpack_require__(108);
 
 
 /***/ },
@@ -18478,14 +18479,351 @@
 
 	'use strict';
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 	var _chai = __webpack_require__(11);
 
 	var _chai2 = _interopRequireDefault(_chai);
 
+	var _sinon = __webpack_require__(55);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _sinonChai = __webpack_require__(107);
+
+	var _sinonChai2 = _interopRequireDefault(_sinonChai);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	_chai2.default.use(_sinonChai2.default);
 
 	describe('Destructuring', function () {
 		describe('object destructuring', function () {
+			it('should destructure properties', function () {
+				var source = {
+					name: 'chai',
+					pckg: 'standard'
+				};
+
+				var name = source.name;
+				var pckg = source.pckg;
+
+
+				(0, _chai.expect)(name).to.eql('chai');
+				(0, _chai.expect)(pckg).to.eql('standard');
+			});
+
+			it('should assign undefined to non existing property', function () {
+				var node = {
+					type: 'ID',
+					name: 'foo'
+				};
+
+				var type = node.type;
+				var name = node.name;
+				var value = node.value;
+
+
+				(0, _chai.expect)(type).to.eql('ID');
+				(0, _chai.expect)(name).to.eql('foo');
+				(0, _chai.expect)(value).to.be.undefined;
+			});
+
+			it('should use default value', function () {
+				var node = {
+					type: 'ID',
+					name: 'foo'
+				};
+
+				var type = node.type;
+				var name = node.name;
+				var _node$value = node.value;
+				var value = _node$value === undefined ? 'default' : _node$value;
+
+
+				(0, _chai.expect)(type).to.eql('ID');
+				(0, _chai.expect)(name).to.eql('foo');
+				(0, _chai.expect)(value).to.eql('default');
+			});
+
+			it('should assign to different local variable', function () {
+				var node = {
+					type: 'ID',
+					name: 'foo'
+				};
+
+				var localType = node.type;
+				var localName = node.name;
+
+
+				(0, _chai.expect)(localType).to.eql('ID');
+				(0, _chai.expect)(localName).to.eql('foo');
+			});
+
+			it('should use nested destructuring', function () {
+				var node = {
+					name: 'foo',
+					loc: {
+						start: {
+							line: 1
+						}
+					}
+				};
+
+				var localLine = node.loc.start.line;
+
+
+				(0, _chai.expect)(localLine).to.eql(1);
+			});
+
+			it('should use array destructuring', function () {
+				var colors = ['red', 'green', 'blue'];
+
+				var first = colors[0];
+				var last = colors[2];
+
+
+				(0, _chai.expect)(first).to.eql('red');
+				(0, _chai.expect)(last).to.eql('blue');
+			});
+
+			it('should use destructuring assignment', function () {
+				var colors = ['red', 'green', 'blue'],
+				    first = 'black',
+				    second = 'purple';
+
+				first = colors[0];
+				second = colors[1];
+
+
+				(0, _chai.expect)(first).to.eql('red');
+				(0, _chai.expect)(second).to.eql('green');
+			});
+
+			it('should swap elements', function () {
+				var a = 1,
+				    b = 2;
+
+				var _ref = [b, a];
+				a = _ref[0];
+				b = _ref[1];
+
+
+				(0, _chai.expect)(a).to.eql(2);
+				(0, _chai.expect)(b).to.eql(1);
+			});
+
+			it('should use nested destructuring', function () {
+				var colors = ["red", ["green", "lightgreen"], "blue"];
+
+				var first = colors[0];
+
+				var _colors$ = _slicedToArray(colors[1], 2);
+
+				var second = _colors$[1];
+
+
+				(0, _chai.expect)(first).to.eql('red');
+				(0, _chai.expect)(second).to.eql('lightgreen');
+			});
+
+			it('should use rest items', function () {
+				var colors = ['red', 'green', 'blue'];
+				var red = colors[0];
+				var rest = colors.slice(1);
+
+
+				(0, _chai.expect)(red).to.eql('red');
+				(0, _chai.expect)(rest).to.eql(['green', 'blue']);
+			});
+
+			it('should use destructured parameters', function () {
+				function greet(name, _ref2) {
+					var age = _ref2.age;
+					var position = _ref2.position;
+					var _ref2$boss = _ref2.boss;
+					var boss = _ref2$boss === undefined ? 'eac' : _ref2$boss;
+
+					(0, _chai.expect)(name).to.eql('peter');
+					(0, _chai.expect)(age).to.eql(36);
+					(0, _chai.expect)(position).to.eql('developer');
+					(0, _chai.expect)(boss).to.eql('eac');
+				}
+
+				greet('peter', {
+					age: 36,
+					position: 'developer'
+				});
+			});
+		});
+	});
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function (sinonChai) {
+	    "use strict";
+
+	    // Module systems magic dance.
+
+	    /* istanbul ignore else */
+	    if (true) {
+	        // NodeJS
+	        module.exports = sinonChai;
+	    } else if (typeof define === "function" && define.amd) {
+	        // AMD
+	        define(function () {
+	            return sinonChai;
+	        });
+	    } else {
+	        // Other environment (usually <script> tag): plug in to global chai instance directly.
+	        chai.use(sinonChai);
+	    }
+	}(function sinonChai(chai, utils) {
+	    "use strict";
+
+	    var slice = Array.prototype.slice;
+
+	    function isSpy(putativeSpy) {
+	        return typeof putativeSpy === "function" &&
+	               typeof putativeSpy.getCall === "function" &&
+	               typeof putativeSpy.calledWithExactly === "function";
+	    }
+
+	    function timesInWords(count) {
+	        return count === 1 ? "once" :
+	               count === 2 ? "twice" :
+	               count === 3 ? "thrice" :
+	               (count || 0) + " times";
+	    }
+
+	    function isCall(putativeCall) {
+	        return putativeCall && isSpy(putativeCall.proxy);
+	    }
+
+	    function assertCanWorkWith(assertion) {
+	        if (!isSpy(assertion._obj) && !isCall(assertion._obj)) {
+	            throw new TypeError(utils.inspect(assertion._obj) + " is not a spy or a call to a spy!");
+	        }
+	    }
+
+	    function getMessages(spy, action, nonNegatedSuffix, always, args) {
+	        var verbPhrase = always ? "always have " : "have ";
+	        nonNegatedSuffix = nonNegatedSuffix || "";
+	        if (isSpy(spy.proxy)) {
+	            spy = spy.proxy;
+	        }
+
+	        function printfArray(array) {
+	            return spy.printf.apply(spy, array);
+	        }
+
+	        return {
+	            affirmative: function () {
+	                return printfArray(["expected %n to " + verbPhrase + action + nonNegatedSuffix].concat(args));
+	            },
+	            negative: function () {
+	                return printfArray(["expected %n to not " + verbPhrase + action].concat(args));
+	            }
+	        };
+	    }
+
+	    function sinonProperty(name, action, nonNegatedSuffix) {
+	        utils.addProperty(chai.Assertion.prototype, name, function () {
+	            assertCanWorkWith(this);
+
+	            var messages = getMessages(this._obj, action, nonNegatedSuffix, false);
+	            this.assert(this._obj[name], messages.affirmative, messages.negative);
+	        });
+	    }
+
+	    function sinonPropertyAsBooleanMethod(name, action, nonNegatedSuffix) {
+	        utils.addMethod(chai.Assertion.prototype, name, function (arg) {
+	            assertCanWorkWith(this);
+
+	            var messages = getMessages(this._obj, action, nonNegatedSuffix, false, [timesInWords(arg)]);
+	            this.assert(this._obj[name] === arg, messages.affirmative, messages.negative);
+	        });
+	    }
+
+	    function createSinonMethodHandler(sinonName, action, nonNegatedSuffix) {
+	        return function () {
+	            assertCanWorkWith(this);
+
+	            var alwaysSinonMethod = "always" + sinonName[0].toUpperCase() + sinonName.substring(1);
+	            var shouldBeAlways = utils.flag(this, "always") && typeof this._obj[alwaysSinonMethod] === "function";
+	            var sinonMethod = shouldBeAlways ? alwaysSinonMethod : sinonName;
+
+	            var messages = getMessages(this._obj, action, nonNegatedSuffix, shouldBeAlways, slice.call(arguments));
+	            this.assert(this._obj[sinonMethod].apply(this._obj, arguments), messages.affirmative, messages.negative);
+	        };
+	    }
+
+	    function sinonMethodAsProperty(name, action, nonNegatedSuffix) {
+	        var handler = createSinonMethodHandler(name, action, nonNegatedSuffix);
+	        utils.addProperty(chai.Assertion.prototype, name, handler);
+	    }
+
+	    function exceptionalSinonMethod(chaiName, sinonName, action, nonNegatedSuffix) {
+	        var handler = createSinonMethodHandler(sinonName, action, nonNegatedSuffix);
+	        utils.addMethod(chai.Assertion.prototype, chaiName, handler);
+	    }
+
+	    function sinonMethod(name, action, nonNegatedSuffix) {
+	        exceptionalSinonMethod(name, name, action, nonNegatedSuffix);
+	    }
+
+	    utils.addProperty(chai.Assertion.prototype, "always", function () {
+	        utils.flag(this, "always", true);
+	    });
+
+	    sinonProperty("called", "been called", " at least once, but it was never called");
+	    sinonPropertyAsBooleanMethod("callCount", "been called exactly %1", ", but it was called %c%C");
+	    sinonProperty("calledOnce", "been called exactly once", ", but it was called %c%C");
+	    sinonProperty("calledTwice", "been called exactly twice", ", but it was called %c%C");
+	    sinonProperty("calledThrice", "been called exactly thrice", ", but it was called %c%C");
+	    sinonMethodAsProperty("calledWithNew", "been called with new");
+	    sinonMethod("calledBefore", "been called before %1");
+	    sinonMethod("calledAfter", "been called after %1");
+	    sinonMethod("calledOn", "been called with %1 as this", ", but it was called with %t instead");
+	    sinonMethod("calledWith", "been called with arguments %*", "%C");
+	    sinonMethod("calledWithExactly", "been called with exact arguments %*", "%C");
+	    sinonMethod("calledWithMatch", "been called with arguments matching %*", "%C");
+	    sinonMethod("returned", "returned %1");
+	    exceptionalSinonMethod("thrown", "threw", "thrown %1");
+	}));
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(109)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(11);
+
+	describe('Symbols', function () {
+		describe('creating symbols', function () {
 			it('should behave...', function () {});
 		});
 	});
