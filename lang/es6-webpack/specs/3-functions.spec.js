@@ -93,7 +93,7 @@ describe('Functions', function() {
   });
 
   describe('block level functions', function() {
-    it('should behave...', function() {
+    it('should be properly scoped', function() {
       if (true) {
         function doSomething() {
 

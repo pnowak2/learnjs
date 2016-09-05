@@ -18094,7 +18094,7 @@
 	  });
 
 	  describe('block level functions', function () {
-	    it('should behave...', function () {
+	    it('should be properly scoped', function () {
 	      if (true) {
 	        var _doSomething = function _doSomething() {};
 
@@ -18820,12 +18820,121 @@
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _chai = __webpack_require__(11);
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	describe('Symbols', function () {
-		describe('creating symbols', function () {
-			it('should behave...', function () {});
-		});
+	  describe('creating symbols', function () {
+	    it('should have no literal way to create symbol', function () {
+	      var firstName = Symbol();
+	      (0, _chai.expect)(firstName).to.be.ok;
+	    });
+
+	    it('should have symbols as object property identifier', function () {
+	      var firstName = Symbol();
+	      var person = {};
+
+	      person[firstName] = 'Peter';
+
+	      (0, _chai.expect)(person[firstName]).to.eql('Peter');
+	      (0, _chai.expect)(person.firstName).to.be.undefined;
+	    });
+
+	    it('should have description for debugging purposes', function () {
+	      var firstName = Symbol('first name');
+
+	      (0, _chai.expect)(firstName.toString()).to.eql('Symbol(first name)');
+	    });
+
+	    it('should check with typeof for Symbol', function () {
+	      (0, _chai.expect)(_typeof(Symbol())).to.eql('symbol');
+	    });
+	  });
+
+	  describe('Using Symbols', function () {
+	    beforeEach(function () {
+	      this.firstName = Symbol('first name');
+	    });
+
+	    it('should use symbol as computed property', function () {
+	      var person = _defineProperty({}, this.firstName, 'Peter');
+
+	      (0, _chai.expect)(person[this.firstName]).to.eql('Peter');
+	    });
+
+	    it('should use symbol with defineProperty', function () {
+	      var person = {};
+	      var lastName = Symbol('last name');
+
+	      Object.defineProperty(person, this.firstName, {
+	        value: 'Peter',
+	        writable: false
+	      });
+
+	      Object.defineProperties(person, _defineProperty({}, lastName, {
+	        value: 'Nowak',
+	        writable: false
+	      }));
+
+	      (0, _chai.expect)(person[this.firstName]).to.eql('Peter');
+	      (0, _chai.expect)(person[lastName]).to.eql('Nowak');
+	    });
+	  });
+
+	  describe('Sharing symbols', function () {
+	    it('should use Symbol.for()', function () {
+	      var uid = Symbol.for('uid');
+	      var obj = {};
+
+	      obj[uid] = '12345';
+
+	      (0, _chai.expect)(obj[Symbol.for('uid')]).to.eql('12345');
+	    });
+
+	    it('should use Symbol.keyFor()', function () {
+	      var uid = Symbol.for('uid');
+
+	      (0, _chai.expect)(Symbol.keyFor(uid)).to.eql('uid');
+	    });
+	  });
+
+	  describe('Retrieving symbol properties', function () {
+	    it('Object.getOwnPropertySymbols() should return array with symbols', function () {
+	      var _object;
+
+	      var uid = Symbol.for('uid');
+	      var name = Symbol.for('name');
+
+	      var object = (_object = {}, _defineProperty(_object, uid, '12345'), _defineProperty(_object, name, 'valor'), _object);
+
+	      var symbols = Object.getOwnPropertySymbols(object);
+
+	      (0, _chai.expect)(symbols).to.be.an('array');
+	      (0, _chai.expect)(symbols).to.have.length(2);
+	      (0, _chai.expect)(symbols[0]).to.equal(uid);
+	      (0, _chai.expect)(symbols[1]).to.equal(name);
+	    });
+	  });
+
+	  describe('Exposing internal operations with well known symbols', function () {
+	    it('Symbol.hasInstance() redefine', function () {
+	      var MyObject = function MyObject() {};
+
+	      Object.defineProperty(MyObject, Symbol.hasInstance, {
+	        value: function value(v) {
+	          return false;
+	        }
+	      });
+
+	      var obj = new MyObject();
+
+	      // does not work with babel
+	      // expect(obj instanceof MyObject).to.eql(false);
+	    });
+	  });
 	});
 
 /***/ }

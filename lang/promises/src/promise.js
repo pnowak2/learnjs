@@ -7,7 +7,7 @@
 			fulfill: null,
 			reject: null
 		};
-	}
+	};
 
 	Promz.prototype = {
 		transition: function (state, value) {
@@ -57,9 +57,9 @@
 			isValidState: function (state) {
 				return (state === this.validStates.PENDING ||
 					 			state === this.validStates.FULFILLED ||
-								state === this.validStates.REJECTED) 
+								state === this.validStates.REJECTED) ;
 			}
-		}
+		};
 	})();
 
 	Promz.Utils = (function () {
@@ -69,7 +69,7 @@
 			},
 
 			isFunction: function (val) {
-				return (val && typeof val === 'function')
+				return (val && typeof val === 'function');
 			},
 
 			isObject: function (val) {
@@ -79,6 +79,6 @@
 			isPromise: function (val) {
 				return (val && val instanceof Promz);
 			}
-		}
+		};
 	})();
 })(self);
