@@ -13,5 +13,8 @@
   "undef": true,
   "strict": "implied",
   "browser": true,
-  "devel": true
+  "devel": true,
+  "predef": [
+    "React"
+  ]
 }
