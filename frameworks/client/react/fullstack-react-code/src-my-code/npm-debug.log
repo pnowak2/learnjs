@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\PGM\\Executables\\stack\\node\\\\node.exe',
+1 verbose cli   'C:\\PGM\\Executables\\stack\\node\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'server' ]
+2 info using npm@3.8.1
+3 info using node@v0.12.7
+4 verbose stack Error: ENOENT, open 'C:\PGM\EVE\js\learnjs\frameworks\client\react\fullstack-react-code\src-my-code\package.json'
+4 verbose stack     at Error (native)
+5 verbose cwd C:\PGM\EVE\js\learnjs\frameworks\client\react\fullstack-react-code\src-my-code
+6 error Windows_NT 6.1.7601
+7 error argv "C:\\PGM\\Executables\\stack\\node\\\\node.exe" "C:\\PGM\\Executables\\stack\\node\\node_modules\\npm\\bin\\npm-cli.js" "run" "server"
+8 error node v0.12.7
+9 error npm  v3.8.1
+10 error path C:\PGM\EVE\js\learnjs\frameworks\client\react\fullstack-react-code\src-my-code\package.json
+11 error code ENOENT
+12 error errno -4058
+13 error enoent ENOENT, open 'C:\PGM\EVE\js\learnjs\frameworks\client\react\fullstack-react-code\src-my-code\package.json'
+14 error enoent ENOENT, open 'C:\PGM\EVE\js\learnjs\frameworks\client\react\fullstack-react-code\src-my-code\package.json'
+14 error enoent This is most likely not a problem with npm itself
+14 error enoent and is related to npm not being able to find a file.
+15 verbose exit [ -4058, true ]
