@@ -28,6 +28,12 @@ const TimersDashboard = React.createClass({
 		this.updateTimer(attrs);
 	},
 
+	handleTrashClick(timerId) {
+		this.setState({
+			timers: this.state.timers.filter((t) => t.id !== timerId)
+		})
+	},
+
 	createTimer(timer) {
 		const t = helpers.newTimer(timer);
 		this.setState({ 
@@ -57,6 +63,7 @@ const TimersDashboard = React.createClass({
 					<EditableTimerList 
 						timers={this.state.timers}
 						onFormSubmit={this.handleEditFormSubmit}
+						onTrashClick={this.handleTrashClick}
 					/>
 					<ToggleableTimerForm 
 						onFormSubmit={this.handleCreateFormSubmit}
@@ -79,6 +86,7 @@ const EditableTimerList = React.createClass({
 				elapsed={timer.elapsed}
 				runningSince={timer.runningSince}
 				onFormSubmit={this.props.onFormSubmit}
+				onTrashClick={this.props.onTrashClick}
 			/>
 		));
 
@@ -181,6 +189,7 @@ const EditableTimer = React.createClass({
 					elapsed={this.props.elapsed}
 					runningSince={this.props.runningSince}
 					onEditClick={this.handleEditClick}
+					onTrashClick={this.props.onTrashClick}
 				/>
 			);
 		}
@@ -236,6 +245,10 @@ const TimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
+	handleTrashClick() {
+		this.props.onTrashClick(this.props.id)
+	},
+
 	render() {
 		const elapsedString = helpers.renderElapsedString(this.props.elapsed);
 
@@ -263,7 +276,10 @@ const Timer = React.createClass({
 							<i className='edit icon'></i>
 						</span>
 
-						<span className='right floated trash icon'>
+						<span 
+							className='right floated trash icon'
+							onClick={this.handleTrashClick}
+						>
 							<i className='trash icon'></i>
 						</span>
 					</div>
