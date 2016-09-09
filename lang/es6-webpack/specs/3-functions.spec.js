@@ -9,16 +9,16 @@ describe('Functions', function() {
 
         expect(url).to.equal('/test');
         expect(timeout).to.equal(0);
-      }
+      };
 
       makeRequest();
     });
 
     it('ES6 way', function() {
-      let makeRequest = function(url = '/test', timeout = 0, callback) {
+      let makeRequest = function(url = '/test', timeout = 0, callback = function () {}) {
         expect(url).to.equal('/test');
         expect(timeout).to.equal(0);
-      }
+      };
 
       makeRequest();
     });
@@ -62,7 +62,7 @@ describe('Functions', function() {
     it('ES5 way', function() {
       function Person() {
         if (!(this instanceof Person)) {
-          throw new Error;
+          throw new Error();
         }
       }
 

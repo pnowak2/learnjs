@@ -369,21 +369,22 @@
 	  it('should hoist var declarations', function () {
 	    if (true) {
 	      var value = 'blue';
-	    } else {
-	      expect(value).to.be.ok;
 	    }
+
+	    expect(value).to.eql('blue');
 	  });
 
 	  it('should not hoist let declarations', function () {
 	    if (true) {
 	      var _value = 'blue';
-	    } else {
-	      expect(value).to.be.ok;
 	    }
+
+	    expect(typeof value === 'undefined' ? 'undefined' : _typeof(value)).to.eql('undefined');
 	  });
 
 	  it('should raise an error for redeclaration', function () {
 	    var count = 30;
+
 	    // let count = 15; // error
 	  });
 
@@ -8804,9 +8805,7 @@
 	  describe('tagged templates', function () {
 	    it('should call tag function with appropriate params', function () {
 	      var tag = sinon.spy();
-
 	      var replaced = 'replaced';
-
 	      var text = tag(_templateObject, replaced);
 
 	      expect(tag.calledOnce).to.be.ok;
@@ -18009,7 +18008,7 @@
 	      var makeRequest = function makeRequest() {
 	        var url = arguments.length <= 0 || arguments[0] === undefined ? '/test' : arguments[0];
 	        var timeout = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	        var callback = arguments[2];
+	        var callback = arguments.length <= 2 || arguments[2] === undefined ? function () {} : arguments[2];
 
 	        expect(url).to.equal('/test');
 	        expect(timeout).to.equal(0);

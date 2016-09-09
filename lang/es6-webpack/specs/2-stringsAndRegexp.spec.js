@@ -107,11 +107,9 @@ describe('Strings and Regular expressions', function() {
 
   describe('tagged templates', function() {
     it('should call tag function with appropriate params', function() {
-      var tag = sinon.spy();
-
+      let tag = sinon.spy();
       let replaced = 'replaced';
-
-      let text = tag `this is ${replaced} text`;
+      let text = tag`this is ${replaced} text`;
 
       expect(tag.calledOnce).to.be.ok;
       expect(tag.firstCall.args[0]).to.eql(['this is ', ' text']);

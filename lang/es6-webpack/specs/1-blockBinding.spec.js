@@ -4,21 +4,22 @@ describe('Block bindings', function() {
   it('should hoist var declarations', function() {
     if (true) {
       var value = 'blue';
-    } else {
-      expect(value).to.be.ok;
-    }
+    } 
+
+    expect(value).to.eql('blue');
   });
 
   it('should not hoist let declarations', function() {
     if (true) {
       let value = 'blue';
-    } else {
-      expect(value).to.be.ok;
-    }
+    } 
+
+    expect(typeof value).to.eql('undefined');
   });
 
   it('should raise an error for redeclaration', function() {
     var count = 30;
+
     // let count = 15; // error
   });
 
@@ -49,7 +50,7 @@ describe('Block bindings', function() {
   it('should prevent modification of objects', function() {
     const person = {
       name: 'peter'
-    }
+    };
 
     person.name = 'thomas';
     // person = {} // error
@@ -84,7 +85,7 @@ describe('Block bindings', function() {
       funcs.push(function(value) {
         return function() {
           return value * value;
-        }
+        };
       }(i));
     }
 
@@ -97,7 +98,7 @@ describe('Block bindings', function() {
     var funcs = [];
     for (let i = 0; i < 3; i++) {
       funcs.push(function() {
-        return i * i
+        return i * i;
       });
     }
 
