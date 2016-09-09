@@ -12,7 +12,7 @@ describe('Functions', function() {
       };
 
       makeRequest();
-    }) ;
+    });
 
     it('ES6 way', function() {
       let makeRequest = function(url = '/test', timeout = 0, callback = function () {}) {
