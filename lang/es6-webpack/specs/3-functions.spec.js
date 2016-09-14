@@ -25,7 +25,7 @@ describe('Functions', function() {
 
     it('should use default paremeter expressions', function() {
       function getValue() {
-        return 5
+        return 5;
       }
 
       function add(a, b = getValue()) {

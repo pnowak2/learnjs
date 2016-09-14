@@ -1,7 +1,4 @@
-import {
-  expect
-}
-from 'chai';
+import { expect } from 'chai';
 
 describe('Symbols', function() {
   describe('creating symbols', function() {

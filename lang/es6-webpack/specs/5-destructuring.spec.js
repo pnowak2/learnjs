@@ -10,12 +10,29 @@ describe('Destructuring', function() {
 			var source = {
 				name: 'chai',
 				pckg: 'standard'
-			}
+			};
 
 			let { name, pckg } = source;
 
 			expect(name).to.eql('chai');
 			expect(pckg).to.eql('standard');
+		});
+
+		it('should evaluate to right side of expression', function() {
+			let node = {
+			        type: 'Identifier',
+			        name: 'foo'
+			    },
+			    type = 'Literal',
+			    name = 5;
+
+			function outputInfo(value) {
+			    expect(value).to.eql(node);
+			}
+
+			outputInfo({ type, name } = node);
+			expect(type).to.eql('Identifier');
+			expect(name).to.eql('foo');
 		});
 
 		it('should assign undefined to non existing property', function() {
@@ -34,7 +51,8 @@ describe('Destructuring', function() {
 		it('should use default value', function() {
 			let node = {
 				type: 'ID',
-				name: 'foo'
+				name: 'foo',
+				value: void 0
 			};
 
 			let {type, name, value = 'default'} = node;
@@ -108,6 +126,16 @@ describe('Destructuring', function() {
 
 			expect(first).to.eql('red');
 			expect(second).to.eql('lightgreen');
+		});
+
+		it('should swap array elements', function() {
+			let a = 'a',
+				b = 'b';
+
+			[b, a] = [a, b];
+
+			expect(b).to.eql('a');
+			expect(a).to.eql('b');
 		});
 
 		it('should use rest items', function() {

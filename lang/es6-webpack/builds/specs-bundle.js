@@ -18329,6 +18329,7 @@
 	      });
 	    });
 	  });
+
 	  // no error in ES6 strict mode
 	  describe('More powerful prototypes', function () {
 	    beforeEach(function () {
@@ -18512,6 +18513,25 @@
 				(0, _chai.expect)(pckg).to.eql('standard');
 			});
 
+			it('should evaluate to right side of expression', function () {
+				var _node;
+
+				var node = {
+					type: 'Identifier',
+					name: 'foo'
+				},
+				    type = 'Literal',
+				    name = 5;
+
+				function outputInfo(value) {
+					(0, _chai.expect)(value).to.eql(node);
+				}
+
+				outputInfo((_node = node, type = _node.type, name = _node.name, _node));
+				(0, _chai.expect)(type).to.eql('Identifier');
+				(0, _chai.expect)(name).to.eql('foo');
+			});
+
 			it('should assign undefined to non existing property', function () {
 				var node = {
 					type: 'ID',
@@ -18531,7 +18551,8 @@
 			it('should use default value', function () {
 				var node = {
 					type: 'ID',
-					name: 'foo'
+					name: 'foo',
+					value: void 0
 				};
 
 				var type = node.type;
@@ -18626,6 +18647,19 @@
 				(0, _chai.expect)(second).to.eql('lightgreen');
 			});
 
+			it('should swap array elements', function () {
+				var a = 'a',
+				    b = 'b';
+
+				var _ref2 = [a, b];
+				b = _ref2[0];
+				a = _ref2[1];
+
+
+				(0, _chai.expect)(b).to.eql('a');
+				(0, _chai.expect)(a).to.eql('b');
+			});
+
 			it('should use rest items', function () {
 				var colors = ['red', 'green', 'blue'];
 				var red = colors[0];
@@ -18637,11 +18671,11 @@
 			});
 
 			it('should use destructured parameters', function () {
-				function greet(name, _ref2) {
-					var age = _ref2.age;
-					var position = _ref2.position;
-					var _ref2$boss = _ref2.boss;
-					var boss = _ref2$boss === undefined ? 'eac' : _ref2$boss;
+				function greet(name, _ref3) {
+					var age = _ref3.age;
+					var position = _ref3.position;
+					var _ref3$boss = _ref3.boss;
+					var boss = _ref3$boss === undefined ? 'eac' : _ref3$boss;
 
 					(0, _chai.expect)(name).to.eql('peter');
 					(0, _chai.expect)(age).to.eql(36);

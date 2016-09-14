@@ -1,7 +1,4 @@
-import {
-  expect
-}
-from 'chai'
+import { expect } from 'chai';
 
 describe('Expanded object functionality', function() {
   describe('Property initializer shorthand', function() {
@@ -105,6 +102,7 @@ describe('Expanded object functionality', function() {
       });
     });
   });
+
   describe('More powerful prototypes', function() {
     beforeEach(function() {
       this.person = {
@@ -118,7 +116,7 @@ describe('Expanded object functionality', function() {
           return "Woof";
         }
       };
-    })
+    });
 
     describe('Changing objects prototype', function() {
       it('should get object prototype', function() {
