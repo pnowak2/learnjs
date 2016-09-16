@@ -49,7 +49,8 @@
 	__webpack_require__(101);
 	__webpack_require__(103);
 	__webpack_require__(105);
-	module.exports = __webpack_require__(108);
+	__webpack_require__(108);
+	module.exports = __webpack_require__(110);
 
 
 /***/ },
@@ -18968,6 +18969,165 @@
 	      // expect(obj instanceof MyObject).to.eql(false);
 	    });
 	  });
+	});
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(111)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(11);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	describe('Sets and Maps', function () {
+		describe('ES5 approach', function () {
+			it('should simulate with object properties', function () {
+				var set = Object.create(null);
+
+				set.foo = true;
+
+				(0, _chai.expect)(set.foo).to.eql(true);
+			});
+		});
+
+		describe('Sets', function () {
+			it('should create the set', function () {
+				var set = new Set();
+
+				(0, _chai.expect)(set).to.be.an.instanceOf(Set);
+			});
+
+			it('should add to the set non unique values', function () {
+				var set = new Set();
+
+				(0, _chai.expect)(set.size).to.eql(0);
+
+				set.add(5);
+				set.add(5);
+
+				(0, _chai.expect)(set.size).to.eql(1);
+			});
+
+			it('should add to the set unique values', function () {
+				var set = new Set();
+
+				(0, _chai.expect)(set.size).to.eql(0);
+
+				set.add(5);
+				set.add('5');
+
+				(0, _chai.expect)(set.size).to.eql(2);
+			});
+
+			it('should initialize with array', function () {
+				var set = new Set([1, 2, 3]);
+
+				(0, _chai.expect)(set.size).to.eql(3);
+			});
+
+			it('should remove values', function () {
+				var set = new Set([1, 2, 3]);
+
+				(0, _chai.expect)(set.size).to.eql(3);
+
+				set.delete(2);
+
+				(0, _chai.expect)(set.size).to.eql(2);
+			});
+
+			it('should remove all values', function () {
+				var set = new Set([1, 2, 3]);
+
+				(0, _chai.expect)(set.size).to.eql(3);
+
+				set.clear();
+
+				(0, _chai.expect)(set.size).to.eql(0);
+			});
+
+			it('should check if contains value', function () {
+				var set = new Set([1, 2, 3]);
+				(0, _chai.expect)(set.has(3)).to.eql(true);
+			});
+
+			it('should convert set to array', function () {
+				var set = new Set([1, 2, 3]);
+
+				set.delete(3);
+
+				(0, _chai.expect)([].concat(_toConsumableArray(set))).to.eql([1, 2]);
+			});
+		});
+
+		describe('Weak Sets', function () {
+			it('should create weak set', function () {
+				var weakSet = new WeakSet(),
+				    key = {};
+
+				weakSet.add(key);
+
+				(0, _chai.expect)(weakSet.has(key)).to.be.true;
+			});
+
+			it('should not be possible to add not object to weak set', function () {
+				var weakSet = new WeakSet(),
+				    key = {};
+
+				(0, _chai.expect)(function () {
+					weakSet.add(5);
+				}).to.throw();
+			});
+
+			it('should not have reference to item once it was deleted', function () {
+				var weakSet = new WeakSet(),
+				    key = {};
+
+				weakSet.add(key);
+
+				key = null;
+
+				(0, _chai.expect)(weakSet.has(key)).to.be.false;
+			});
+		});
+
+		describe('Maps', function () {
+			it('should create map', function () {
+				var map = new Map();
+
+				(0, _chai.expect)(map).to.be.an.instanceOf(Map);
+			});
+
+			it('should set and get some values from map', function () {
+				var map = new Map();
+
+				map.set('foo', 'bar');
+				map.set('baz', 'dar');
+
+				(0, _chai.expect)(map.get('foo')).to.eql('bar');
+				(0, _chai.expect)(map.get('baz')).to.eql('dar');
+			});
+		});
 	});
 
 /***/ }
