@@ -127,5 +127,45 @@ describe('Sets and Maps', function() {
 			expect(map.get('foo')).to.eql('bar');
 			expect(map.get('baz')).to.eql('dar');
 		});
+
+		it('should check for item existence', function() {
+			let map = new Map();
+
+			map.set('foo', 'bar');
+
+			expect(map.has('foo')).to.be.true;
+		});
+
+		it('should delete item from map', function() {
+			let map = new Map();
+
+			map.set('foo', 'bar');
+			map.delete('foo');
+
+			expect(map.has('foo')).to.be.false;
+		});
+
+		it('should initialize map with data', function() {
+			let map = new Map([['foo', 'bar'], ['baz', 'bad']]);
+
+			expect(map.get('foo')).to.eql('bar');
+			expect(map.get('baz')).to.eql('bad');
+		});
+
+		it('should iterate through map items with forEach', function() {
+			let map = new Map([['foo', 'bar'], ['baz', 'bad']]);
+
+			map.forEach(function(value, key, ownerMap) {
+				expect(ownerMap.get(key)).to.eql(value);
+			});
+		});
+	});
+
+	describe('Weak Maps', function() {
+		it('should create weak map', function() {
+			let weakMap = new WeakMap();
+
+			expect(weakMap).to.be.instanceOf(WeakMap);
+		});
 	});
 });
