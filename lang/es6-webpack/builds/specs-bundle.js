@@ -51,7 +51,8 @@
 	__webpack_require__(151);
 	__webpack_require__(173);
 	__webpack_require__(175);
-	module.exports = __webpack_require__(186);
+	__webpack_require__(186);
+	module.exports = __webpack_require__(210);
 
 
 /***/ },
@@ -21306,7 +21307,49 @@
 		});
 
 		describe('Asynchronous Task Running', function () {
-			it('should behave...', function () {});
+			it('should run with iterator', function () {
+				function run(taskDef) {
+					// create the iterator, make available elsewhere
+					var task = taskDef();
+					// start the task
+					var result = task.next();
+					// recursive function to keep calling next()
+					function step() {
+						// if there's more to do
+						if (!result.done) {
+							result = task.next(result.value);
+							step();
+						}
+					}
+					// start the process
+					step();
+				}
+
+				run(_regenerator2.default.mark(function _callee2() {
+					var value;
+					return _regenerator2.default.wrap(function _callee2$(_context12) {
+						while (1) {
+							switch (_context12.prev = _context12.next) {
+								case 0:
+									_context12.next = 2;
+									return 1;
+
+								case 2:
+									value = _context12.sent;
+									_context12.next = 5;
+									return +3;
+
+								case 5:
+									value = _context12.sent;
+
+								case 6:
+								case 'end':
+									return _context12.stop();
+							}
+						}
+					}, _callee2, this);
+				}));
+			});
 		});
 	});
 
@@ -22650,6 +22693,37 @@
 	    get: function(){ return this; }
 	  });
 	};
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(211)
+	__webpack_require__(83);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(43);
+
+	describe('Classes', function () {
+	  it('should behave...', function () {});
+	});
 
 /***/ }
 /******/ ]);

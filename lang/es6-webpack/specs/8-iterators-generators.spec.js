@@ -331,8 +331,28 @@ describe('Iterators and Generators', function () {
 	});
 
 	describe('Asynchronous Task Running', () => {
-		it('should behave...', () => {
+		it('should run with iterator', () => {
+			function run(taskDef) {
+				// create the iterator, make available elsewhere
+				let task = taskDef();
+				// start the task
+				let result = task.next();
+				// recursive function to keep calling next()
+				function step() {
+					// if there's more to do
+					if (!result.done) {
+            result = task.next(result.value);
+            step();
+					}
+				}
+				// start the process
+				step();
+			}
 
+			run(function* () {
+				let value = yield 1;
+				value = yield + 3;
+			});
 		});
 	});
 });
