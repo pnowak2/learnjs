@@ -51,8 +51,7 @@
 	__webpack_require__(151);
 	__webpack_require__(173);
 	__webpack_require__(175);
-	__webpack_require__(186);
-	module.exports = __webpack_require__(210);
+	module.exports = __webpack_require__(186);
 
 
 /***/ },
@@ -20571,6 +20570,18 @@
 
 	'use strict';
 
+	var _toConsumableArray2 = __webpack_require__(177);
+
+	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+	var _slicedToArray2 = __webpack_require__(153);
+
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+	var _defineProperty2 = __webpack_require__(148);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 	var _regenerator = __webpack_require__(188);
 
 	var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -20579,133 +20590,724 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	describe('Iterators', function () {
-		var createIterator = function createIterator(items) {
-			var i = 0;
+	describe('Iterators and Generators', function () {
+		describe('Simple iterators', function () {
+			var createIterator = function createIterator(items) {
+				var i = 0;
 
-			return {
-				next: function next() {
-					var done = i >= items.length;
-					var value = done ? undefined : items[i++];
+				return {
+					next: function next() {
+						var done = i >= items.length;
+						var value = done ? undefined : items[i++];
 
-					return { done: done, value: value };
-				}
+						return { done: done, value: value };
+					}
+				};
 			};
-		};
 
-		it('should create ES5 iterator', function () {
-			var items = ['a', 'b', 'c'];
+			it('should create ES5 iterator', function () {
+				var items = ['a', 'b', 'c'];
 
-			var it = createIterator(items);
-			(0, _chai.expect)(it.next()).to.eql({
-				done: false,
-				value: 'a'
+				var it = createIterator(items);
+				(0, _chai.expect)(it.next()).to.eql({
+					done: false,
+					value: 'a'
+				});
+
+				(0, _chai.expect)(it.next()).to.eql({
+					done: false,
+					value: 'b'
+				});
+
+				(0, _chai.expect)(it.next()).to.eql({
+					done: false,
+					value: 'c'
+				});
+
+				(0, _chai.expect)(it.next()).to.eql({
+					done: true,
+					value: undefined
+				});
+
+				(0, _chai.expect)(it.next()).to.eql({
+					done: true,
+					value: undefined
+				});
 			});
 
-			(0, _chai.expect)(it.next()).to.eql({
-				done: false,
-				value: 'b'
-			});
+			it('should use yield keyword only in star interator functions', function () {
+				var _marked = [createIterator].map(_regenerator2.default.mark);
 
-			(0, _chai.expect)(it.next()).to.eql({
-				done: false,
-				value: 'c'
-			});
+				function createIterator() {
+					return _regenerator2.default.wrap(function createIterator$(_context) {
+						while (1) {
+							switch (_context.prev = _context.next) {
+								case 0:
+									_context.next = 2;
+									return 1;
 
-			(0, _chai.expect)(it.next()).to.eql({
-				done: true,
-				value: undefined
-			});
-
-			(0, _chai.expect)(it.next()).to.eql({
-				done: true,
-				value: undefined
-			});
-		});
-
-		it('should use yield keyword only in star interator functions', function () {
-			var _marked = [createIterator].map(_regenerator2.default.mark);
-
-			function createIterator() {
-				return _regenerator2.default.wrap(function createIterator$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								_context.next = 2;
-								return 1;
-
-							case 2:
-							case 'end':
-								return _context.stop();
+								case 2:
+								case 'end':
+									return _context.stop();
+							}
 						}
-					}
-				}, _marked[0], this);
-			}
+					}, _marked[0], this);
+				}
 
-			var it = createIterator();
+				var it = createIterator();
 
-			(0, _chai.expect)(it.next()).to.eql({
-				done: false,
-				value: 1
+				(0, _chai.expect)(it.next()).to.eql({
+					done: false,
+					value: 1
+				});
 			});
-		});
 
-		it('should use yield in for loop', function () {
-			var createIterator = _regenerator2.default.mark(function createIterator(items) {
-				var i;
-				return _regenerator2.default.wrap(function createIterator$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								i = 0;
+			it('should use yield in for loop', function () {
+				var createIterator = _regenerator2.default.mark(function createIterator(items) {
+					var i;
+					return _regenerator2.default.wrap(function createIterator$(_context2) {
+						while (1) {
+							switch (_context2.prev = _context2.next) {
+								case 0:
+									i = 0;
 
-							case 1:
-								if (!(i < items.length)) {
-									_context2.next = 7;
+								case 1:
+									if (!(i < items.length)) {
+										_context2.next = 7;
+										break;
+									}
+
+									_context2.next = 4;
+									return items[i];
+
+								case 4:
+									i++;
+									_context2.next = 1;
 									break;
-								}
 
-								_context2.next = 4;
-								return items[i];
-
-							case 4:
-								i++;
-								_context2.next = 1;
-								break;
-
-							case 7:
-							case 'end':
-								return _context2.stop();
+								case 7:
+								case 'end':
+									return _context2.stop();
+							}
 						}
-					}
-				}, createIterator, this);
+					}, createIterator, this);
+				});
+
+				var items = ['a', 'b', 'c'];
+				var iterator = createIterator(items);
+
+				(0, _chai.expect)(iterator.next()).to.eql({
+					done: false,
+					value: 'a'
+				});
+
+				(0, _chai.expect)(iterator.next()).to.eql({
+					done: false,
+					value: 'b'
+				});
+
+				(0, _chai.expect)(iterator.next()).to.eql({
+					done: false,
+					value: 'c'
+				});
+
+				(0, _chai.expect)(iterator.next()).to.eql({
+					done: true,
+					value: undefined
+				});
 			});
 
-			var items = ['a', 'b', 'c'];
-			var iterator = createIterator(items);
+			it('iterator as es6 object method', function () {
+				var o = {
+					createIterator: _regenerator2.default.mark(function createIterator() {
+						return _regenerator2.default.wrap(function createIterator$(_context3) {
+							while (1) {
+								switch (_context3.prev = _context3.next) {
+									case 0:
+										_context3.next = 2;
+										return 2;
 
-			(0, _chai.expect)(iterator.next()).to.eql({
-				done: false,
-				value: 'a'
-			});
+									case 2:
+									case 'end':
+										return _context3.stop();
+								}
+							}
+						}, createIterator, this);
+					})
+				};
 
-			(0, _chai.expect)(iterator.next()).to.eql({
-				done: false,
-				value: 'b'
-			});
+				var iterator = o.createIterator();
 
-			(0, _chai.expect)(iterator.next()).to.eql({
-				done: false,
-				value: 'c'
-			});
-
-			(0, _chai.expect)(iterator.next()).to.eql({
-				done: true,
-				value: undefined
+				(0, _chai.expect)(iterator.next()).to.eql({
+					done: false,
+					value: 2
+				});
 			});
 		});
 
-		it('', function () {});
+		describe('for-of', function () {
+			it('can iterate on array of numbers (built-in)', function () {
+				var result = '';
+				var _arr = [1, 2, 3];
+				for (var _i = 0; _i < _arr.length; _i++) {
+					var num = _arr[_i];
+					result += num;
+				}
+
+				(0, _chai.expect)(result).to.eql('123');
+			});
+
+			it('should access default iterator', function () {
+				var values = [1, 2, 3];
+				var iterator = values[Symbol.iterator]();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+			});
+
+			it('should provide IsIterable() method', function () {
+				var IsIterable = function IsIterable(object) {
+					return typeof object[Symbol.iterator] === 'function';
+				};
+
+				(0, _chai.expect)(IsIterable('abcd')).to.be.true;
+				(0, _chai.expect)(IsIterable([])).to.be.true;
+				(0, _chai.expect)(IsIterable(new Set())).to.be.true;
+				(0, _chai.expect)(IsIterable(new Map())).to.be.true;
+				(0, _chai.expect)(IsIterable(new WeakSet())).to.be.false;
+				(0, _chai.expect)(IsIterable(new WeakMap())).to.be.false;
+			});
+		});
+
+		describe('Creating Iterables', function () {
+			it('should create iterator for custom object', function () {
+				var obj = (0, _defineProperty3.default)({
+					items: ['a', 'b', 'c']
+				}, Symbol.iterator, _regenerator2.default.mark(function _callee() {
+					var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, item;
+
+					return _regenerator2.default.wrap(function _callee$(_context4) {
+						while (1) {
+							switch (_context4.prev = _context4.next) {
+								case 0:
+									_iteratorNormalCompletion = true;
+									_didIteratorError = false;
+									_iteratorError = undefined;
+									_context4.prev = 3;
+									_iterator = this.items[Symbol.iterator]();
+
+								case 5:
+									if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+										_context4.next = 12;
+										break;
+									}
+
+									item = _step.value;
+									_context4.next = 9;
+									return item;
+
+								case 9:
+									_iteratorNormalCompletion = true;
+									_context4.next = 5;
+									break;
+
+								case 12:
+									_context4.next = 18;
+									break;
+
+								case 14:
+									_context4.prev = 14;
+									_context4.t0 = _context4['catch'](3);
+									_didIteratorError = true;
+									_iteratorError = _context4.t0;
+
+								case 18:
+									_context4.prev = 18;
+									_context4.prev = 19;
+
+									if (!_iteratorNormalCompletion && _iterator.return) {
+										_iterator.return();
+									}
+
+								case 21:
+									_context4.prev = 21;
+
+									if (!_didIteratorError) {
+										_context4.next = 24;
+										break;
+									}
+
+									throw _iteratorError;
+
+								case 24:
+									return _context4.finish(21);
+
+								case 25:
+									return _context4.finish(18);
+
+								case 26:
+								case 'end':
+									return _context4.stop();
+							}
+						}
+					}, _callee, this, [[3, 14, 18, 26], [19,, 21, 25]]);
+				}));
+
+				var result = '';
+				var _iteratorNormalCompletion2 = true;
+				var _didIteratorError2 = false;
+				var _iteratorError2 = undefined;
+
+				try {
+					for (var _iterator2 = obj[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+						var o = _step2.value;
+
+						result += o;
+					}
+				} catch (err) {
+					_didIteratorError2 = true;
+					_iteratorError2 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion2 && _iterator2.return) {
+							_iterator2.return();
+						}
+					} finally {
+						if (_didIteratorError2) {
+							throw _iteratorError2;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('abc');
+			});
+		});
+
+		describe('Built-in Iterators for arrays, maps and sets', function () {
+			it('should use entries()', function () {
+				var colors = ['red', 'blue', 'green'];
+				var result = '';
+
+				var _iteratorNormalCompletion3 = true;
+				var _didIteratorError3 = false;
+				var _iteratorError3 = undefined;
+
+				try {
+					for (var _iterator3 = colors.entries()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+						var entry = _step3.value;
+
+						result += entry[0] + entry[1];
+					}
+				} catch (err) {
+					_didIteratorError3 = true;
+					_iteratorError3 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion3 && _iterator3.return) {
+							_iterator3.return();
+						}
+					} finally {
+						if (_didIteratorError3) {
+							throw _iteratorError3;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('0red1blue2green');
+			});
+
+			it('should use values()', function () {
+				var colors = new Map();
+				colors.set('red', 'czerwony');
+				colors.set('green', 'zielony');
+				colors.set('blue', 'niebieski');
+
+				var result = '';
+
+				var _iteratorNormalCompletion4 = true;
+				var _didIteratorError4 = false;
+				var _iteratorError4 = undefined;
+
+				try {
+					for (var _iterator4 = colors.values()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+						var val = _step4.value;
+
+						result += val;
+					}
+				} catch (err) {
+					_didIteratorError4 = true;
+					_iteratorError4 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion4 && _iterator4.return) {
+							_iterator4.return();
+						}
+					} finally {
+						if (_didIteratorError4) {
+							throw _iteratorError4;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('czerwonyzielonyniebieski');
+			});
+
+			it('should use keys()', function () {
+				var colors = new Map();
+				colors.set('red', 'czerwony');
+				colors.set('green', 'zielony');
+				colors.set('blue', 'niebieski');
+
+				var result = '';
+
+				var _iteratorNormalCompletion5 = true;
+				var _didIteratorError5 = false;
+				var _iteratorError5 = undefined;
+
+				try {
+					for (var _iterator5 = colors.keys()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+						var key = _step5.value;
+
+						result += key;
+					}
+				} catch (err) {
+					_didIteratorError5 = true;
+					_iteratorError5 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion5 && _iterator5.return) {
+							_iterator5.return();
+						}
+					} finally {
+						if (_didIteratorError5) {
+							throw _iteratorError5;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('redgreenblue');
+			});
+
+			it('should destructure in for of loop', function () {
+				var colors = new Map();
+				colors.set('red', 'czerwony');
+				colors.set('green', 'zielony');
+				colors.set('blue', 'niebieski');
+
+				var result = '';
+
+				var _iteratorNormalCompletion6 = true;
+				var _didIteratorError6 = false;
+				var _iteratorError6 = undefined;
+
+				try {
+					for (var _iterator6 = colors[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+						var _step6$value = (0, _slicedToArray3.default)(_step6.value, 2);
+
+						var key = _step6$value[0];
+						var value = _step6$value[1];
+
+						result += key + value;
+					}
+				} catch (err) {
+					_didIteratorError6 = true;
+					_iteratorError6 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion6 && _iterator6.return) {
+							_iterator6.return();
+						}
+					} finally {
+						if (_didIteratorError6) {
+							throw _iteratorError6;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('redczerwonygreenzielonyblueniebieski');
+			});
+
+			it('should have string iterator', function () {
+				var result = '';
+
+				var _iteratorNormalCompletion7 = true;
+				var _didIteratorError7 = false;
+				var _iteratorError7 = undefined;
+
+				try {
+					for (var _iterator7 = 'hello'[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+						var s = _step7.value;
+
+						result += s + '-';
+					}
+				} catch (err) {
+					_didIteratorError7 = true;
+					_iteratorError7 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion7 && _iterator7.return) {
+							_iterator7.return();
+						}
+					} finally {
+						if (_didIteratorError7) {
+							throw _iteratorError7;
+						}
+					}
+				}
+
+				(0, _chai.expect)(result).to.eql('h-e-l-l-o-');
+			});
+		});
+
+		describe('Spread operator and non-array iterables', function () {
+			it('should use spread operator to convert to array', function () {
+				var set = new Set([1, 2, 3, 3, 3, 4, 5]);
+
+				(0, _chai.expect)([].concat((0, _toConsumableArray3.default)(set))).to.eql([1, 2, 3, 4, 5]);
+			});
+
+			it('should use spread to concatenate arrays', function () {
+				var smallNumbers = [1, 2, 3],
+				    bigNumbers = [100, 101, 102],
+				    allNumbers = [0].concat(smallNumbers, bigNumbers);
+
+				(0, _chai.expect)(allNumbers).to.eql([0, 1, 2, 3, 100, 101, 102]);
+			});
+		});
+
+		describe('Advanced Iterator Funcionality', function () {
+			it('should pass arguments to iterator', function () {
+				var _marked2 = [createIterator].map(_regenerator2.default.mark);
+
+				function createIterator() {
+					var first, second;
+					return _regenerator2.default.wrap(function createIterator$(_context5) {
+						while (1) {
+							switch (_context5.prev = _context5.next) {
+								case 0:
+									_context5.next = 2;
+									return 1;
+
+								case 2:
+									first = _context5.sent;
+									_context5.next = 5;
+									return first + 2;
+
+								case 5:
+									second = _context5.sent;
+									_context5.next = 8;
+									return second + 3;
+
+								case 8:
+								case 'end':
+									return _context5.stop();
+							}
+						}
+					}, _marked2[0], this);
+				}
+
+				var iterator = createIterator();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+				(0, _chai.expect)(iterator.next(4).value).to.eql(6);
+				(0, _chai.expect)(iterator.next(5).value).to.eql(8);
+				(0, _chai.expect)(iterator.next().value).to.eql(undefined);
+			});
+
+			it('should throw errors in iterator', function () {
+				var _marked3 = [createIterator].map(_regenerator2.default.mark);
+
+				function createIterator() {
+					var first, second;
+					return _regenerator2.default.wrap(function createIterator$(_context6) {
+						while (1) {
+							switch (_context6.prev = _context6.next) {
+								case 0:
+									_context6.next = 2;
+									return 1;
+
+								case 2:
+									first = _context6.sent;
+									_context6.next = 5;
+									return first + 2;
+
+								case 5:
+									second = _context6.sent;
+									_context6.next = 8;
+									return second + 3;
+
+								case 8:
+								case 'end':
+									return _context6.stop();
+							}
+						}
+					}, _marked3[0], this);
+				}
+
+				var iterator = createIterator();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+				(0, _chai.expect)(iterator.next(4).value).to.eql(6);
+
+				(0, _chai.expect)(function () {
+					return iterator.throw(new Error('Boom'));
+				}).to.throw();
+			});
+
+			it('should catch errors in iterator, throw return iterator entry too!', function () {
+				var _marked4 = [createIterator].map(_regenerator2.default.mark);
+
+				function createIterator() {
+					var first, second;
+					return _regenerator2.default.wrap(function createIterator$(_context7) {
+						while (1) {
+							switch (_context7.prev = _context7.next) {
+								case 0:
+									_context7.next = 2;
+									return 1;
+
+								case 2:
+									first = _context7.sent;
+									second = void 0;
+									_context7.prev = 4;
+									_context7.next = 7;
+									return first + 2;
+
+								case 7:
+									second = _context7.sent;
+									_context7.next = 13;
+									break;
+
+								case 10:
+									_context7.prev = 10;
+									_context7.t0 = _context7['catch'](4);
+
+									second = 6;
+
+								case 13:
+									_context7.next = 15;
+									return second + 3;
+
+								case 15:
+								case 'end':
+									return _context7.stop();
+							}
+						}
+					}, _marked4[0], this, [[4, 10]]);
+				}
+
+				var iterator = createIterator();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+				(0, _chai.expect)(iterator.next(4).value).to.eql(6);
+				(0, _chai.expect)(iterator.throw(new Error('Boom')).value).to.eql(9);
+			});
+
+			it('should return early with return statement (will be last value got from iterator)', function () {
+				var _marked5 = [createIterator].map(_regenerator2.default.mark);
+
+				function createIterator() {
+					return _regenerator2.default.wrap(function createIterator$(_context8) {
+						while (1) {
+							switch (_context8.prev = _context8.next) {
+								case 0:
+									_context8.next = 2;
+									return 1;
+
+								case 2:
+									return _context8.abrupt('return', 'we are done');
+
+								case 5:
+								case 'end':
+									return _context8.stop();
+							}
+						}
+					}, _marked5[0], this);
+				}
+
+				var iterator = createIterator();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+				(0, _chai.expect)(iterator.next().value).to.eql('we are done');
+			});
+
+			it('should combine iterators', function () {
+				var _marked6 = [createNumbersIterator, createColorsIterator, createCombinedIterator].map(_regenerator2.default.mark);
+
+				function createNumbersIterator() {
+					return _regenerator2.default.wrap(function createNumbersIterator$(_context9) {
+						while (1) {
+							switch (_context9.prev = _context9.next) {
+								case 0:
+									_context9.next = 2;
+									return 1;
+
+								case 2:
+									_context9.next = 4;
+									return 2;
+
+								case 4:
+								case 'end':
+									return _context9.stop();
+							}
+						}
+					}, _marked6[0], this);
+				}
+
+				function createColorsIterator() {
+					return _regenerator2.default.wrap(function createColorsIterator$(_context10) {
+						while (1) {
+							switch (_context10.prev = _context10.next) {
+								case 0:
+									_context10.next = 2;
+									return 'red';
+
+								case 2:
+									_context10.next = 4;
+									return 'blue';
+
+								case 4:
+								case 'end':
+									return _context10.stop();
+							}
+						}
+					}, _marked6[1], this);
+				}
+
+				function createCombinedIterator() {
+					return _regenerator2.default.wrap(function createCombinedIterator$(_context11) {
+						while (1) {
+							switch (_context11.prev = _context11.next) {
+								case 0:
+									return _context11.delegateYield(createNumbersIterator(), 't0', 1);
+
+								case 1:
+									return _context11.delegateYield(createColorsIterator(), 't1', 2);
+
+								case 2:
+									_context11.next = 4;
+									return 'end';
+
+								case 4:
+								case 'end':
+									return _context11.stop();
+							}
+						}
+					}, _marked6[2], this);
+				}
+
+				var iterator = createCombinedIterator();
+
+				(0, _chai.expect)(iterator.next().value).to.eql(1);
+				(0, _chai.expect)(iterator.next().value).to.eql(2);
+				(0, _chai.expect)(iterator.next().value).to.eql('red');
+				(0, _chai.expect)(iterator.next().value).to.eql('blue');
+				(0, _chai.expect)(iterator.next().value).to.eql('end');
+			});
+		});
+
+		describe('Asynchronous Task Running', function () {
+			it('should behave...', function () {});
+		});
 	});
 
 /***/ },
@@ -22048,37 +22650,6 @@
 	    get: function(){ return this; }
 	  });
 	};
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(2);
-	mocha.setup("bdd");
-	__webpack_require__(211)
-	__webpack_require__(83);
-	if(false) {
-		module.hot.accept();
-		module.hot.dispose(function() {
-			mocha.suite.suites.length = 0;
-			var stats = document.getElementById('mocha-stats');
-			var report = document.getElementById('mocha-report');
-			stats.parentNode.removeChild(stats);
-			report.parentNode.removeChild(report);
-		});
-	}
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _chai = __webpack_require__(43);
-
-	describe('Generators', function () {
-		it('should behave...', function () {});
-	});
 
 /***/ }
 /******/ ]);

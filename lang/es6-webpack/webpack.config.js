@@ -9,8 +9,7 @@ module.exports = {
     'mocha!./specs/5-destructuring.spec.js',
     'mocha!./specs/6-symbols.spec.js',
     'mocha!./specs/7-setsAndMaps.spec.js',
-    'mocha!./specs/8-iterators.spec.js',
-    'mocha!./specs/9-generators.spec.js'
+    'mocha!./specs/8-iterators-generators.spec.js'
   ],
   output: {
     path: 'builds',
