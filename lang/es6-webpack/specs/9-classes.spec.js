@@ -124,6 +124,8 @@ describe('Classes', () => {
 
     it('should provide computed member names', () => {
       let methodName = 'sayName';
+      let customProp = 'myProp';
+
       class Person {
         constructor(name) {
           this.name = name;
@@ -132,11 +134,22 @@ describe('Classes', () => {
         [methodName]() {
           return this.name;
         }
+
+        get [customProp]() {
+          return 'hello prop';
+        }
       }
 
       let p = new Person('valor');
 
       expect(p.sayName()).to.eql('valor');
+      expect(p.myProp).to.eql('hello prop');
+    });
+  });
+
+  describe('Generator Methods', () => {
+    it('should ', () => {
+      
     });
   });
 });
