@@ -148,7 +148,7 @@ describe('Classes', () => {
   });
 
   describe('Generator Methods', () => {
-    it('should ', () => {
+    it('should do', () => {
       
     });
   });

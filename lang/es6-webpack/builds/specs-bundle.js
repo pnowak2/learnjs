@@ -22884,6 +22884,7 @@
 
 	    it('should provide computed member names', function () {
 	      var methodName = 'sayName';
+	      var customProp = 'myProp';
 
 	      var Person = function () {
 	        function Person(name) {
@@ -22897,6 +22898,11 @@
 	          value: function value() {
 	            return this.name;
 	          }
+	        }, {
+	          key: customProp,
+	          get: function get() {
+	            return 'hello prop';
+	          }
 	        }]);
 	        return Person;
 	      }();
@@ -22904,7 +22910,12 @@
 	      var p = new Person('valor');
 
 	      (0, _chai.expect)(p.sayName()).to.eql('valor');
+	      (0, _chai.expect)(p.myProp).to.eql('hello prop');
 	    });
+	  });
+
+	  describe('Generator Methods', function () {
+	    it('should do', function () {});
 	  });
 	});
 
