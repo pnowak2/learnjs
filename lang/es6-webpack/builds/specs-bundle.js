@@ -22719,11 +22719,240 @@
 
 	'use strict';
 
+	var _typeof2 = __webpack_require__(11);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	var _classCallCheck2 = __webpack_require__(212);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(213);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
 	var _chai = __webpack_require__(43);
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	describe('Classes', function () {
-	  it('should behave...', function () {});
+	  it('should implement ES5 Way', function () {
+	    function PersonType(name) {
+	      this.name = name;
+	    }
+
+	    PersonType.prototype.sayName = function () {
+	      return this.name;
+	    };
+
+	    var pt = new PersonType('piotr');
+
+	    (0, _chai.expect)(pt.sayName()).to.eql('piotr');
+	    (0, _chai.expect)(pt).to.be.instanceof(PersonType);
+	  });
+
+	  describe('Class Declarations', function () {
+	    it('should do class declaration without class keyword at all, same effect', function () {
+	      var PersonType = function () {
+	        var PersonType = function PersonType(name) {
+	          if (typeof new.target === 'undefined') {
+	            throw new Error('Constructor must be called with new.');
+	          }
+
+	          this.name = name;
+	        };
+
+	        Object.defineProperty(PersonType.prototype, 'sayName', {
+	          value: function value() {
+	            return this.name;
+	          },
+	          enumerable: false,
+	          writable: true,
+	          configurable: true
+	        });
+
+	        return PersonType;
+	      }();
+
+	      var pt = new PersonType('piotr');
+
+	      (0, _chai.expect)(pt.sayName()).to.eql('piotr');
+	      (0, _chai.expect)(pt).to.be.instanceof(PersonType);
+	    });
+
+	    it('should declare a class', function () {
+	      var PersonClass = function () {
+	        function PersonClass(name) {
+	          (0, _classCallCheck3.default)(this, PersonClass);
+
+	          this.name = name;
+	        }
+
+	        (0, _createClass3.default)(PersonClass, [{
+	          key: 'sayName',
+	          value: function sayName() {
+	            return this.name;
+	          }
+	        }]);
+	        return PersonClass;
+	      }();
+
+	      var pc = new PersonClass('piotr');
+
+	      (0, _chai.expect)(pc.sayName()).to.eql('piotr');
+	      (0, _chai.expect)(pc).to.be.instanceof(PersonClass);
+	      (0, _chai.expect)(typeof PersonClass === 'undefined' ? 'undefined' : (0, _typeof3.default)(PersonClass)).to.eql('function');
+	      (0, _chai.expect)((0, _typeof3.default)(pc.sayName)).to.eql('function');
+	    });
+	  });
+
+	  describe('Class Expression', function () {
+	    it('should use class expression', function () {
+	      var PersonClass = function () {
+	        function PersonClass(name) {
+	          (0, _classCallCheck3.default)(this, PersonClass);
+
+	          this.name = name;
+	        }
+
+	        (0, _createClass3.default)(PersonClass, [{
+	          key: 'sayName',
+	          value: function sayName() {
+	            return this.name;
+	          }
+	        }]);
+	        return PersonClass;
+	      }();
+
+	      var pc = new PersonClass('piotr');
+
+	      (0, _chai.expect)(pc.sayName());
+	    });
+	  });
+
+	  describe('Classes as First-Class Citizens', function () {
+	    it('should pass class as arg to function', function () {
+	      var createObj = function createObj(classDef) {
+	        return new classDef();
+	      };
+
+	      var obj = createObj(function () {
+	        function _class() {
+	          (0, _classCallCheck3.default)(this, _class);
+	        }
+
+	        (0, _createClass3.default)(_class, [{
+	          key: 'sayHi',
+	          value: function sayHi() {
+	            return 'Hi!';
+	          }
+	        }]);
+	        return _class;
+	      }());
+
+	      (0, _chai.expect)(obj.sayHi()).to.eql('Hi!');
+	    });
+
+	    it('should provide accessor properties', function () {
+	      var CustomHtmlElement = function () {
+	        function CustomHtmlElement(element) {
+	          (0, _classCallCheck3.default)(this, CustomHtmlElement);
+
+	          this.element = element;
+	        }
+
+	        (0, _createClass3.default)(CustomHtmlElement, [{
+	          key: 'html',
+	          get: function get() {
+	            return this.element.innerHTML;
+	          },
+	          set: function set(value) {
+	            this.element.innerHTML = value;
+	          }
+	        }]);
+	        return CustomHtmlElement;
+	      }();
+
+	      var el = new CustomHtmlElement({
+	        innerHTML: 'html'
+	      });
+
+	      (0, _chai.expect)(el.element.innerHTML).to.eql('html');
+
+	      (0, _chai.expect)(Object.getOwnPropertyDescriptor(CustomHtmlElement.prototype, 'html').get).to.be.a('function');
+	    });
+
+	    it('should provide computed member names', function () {
+	      var methodName = 'sayName';
+
+	      var Person = function () {
+	        function Person(name) {
+	          (0, _classCallCheck3.default)(this, Person);
+
+	          this.name = name;
+	        }
+
+	        (0, _createClass3.default)(Person, [{
+	          key: methodName,
+	          value: function value() {
+	            return this.name;
+	          }
+	        }]);
+	        return Person;
+	      }();
+
+	      var p = new Person('valor');
+
+	      (0, _chai.expect)(p.sayName()).to.eql('valor');
+	    });
+	  });
 	});
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(149);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = (function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	})();
 
 /***/ }
 /******/ ]);
