@@ -2,9 +2,9 @@
   "name": "typescript-handbook",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://github.com/vintem/TypescriptMochaWebpackDemo",
   "main": "index.js",
   "scripts": {
-    "postinstall": "typings install --overwrite --save",
     "test": "karma start"
   },
   "author": "",
