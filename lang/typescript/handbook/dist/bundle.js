@@ -44,13 +44,7 @@
 /* 0 */
 /***/ function(module, exports) {
 
-	var User = (function () {
-	    function User() {
-	        this.name = 'Piotr';
-	    }
-	    return User;
-	}());
-
+	
 
 /***/ }
 /******/ ]);
