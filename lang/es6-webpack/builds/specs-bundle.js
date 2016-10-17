@@ -22719,6 +22719,10 @@
 
 	'use strict';
 
+	var _regenerator = __webpack_require__(188);
+
+	var _regenerator2 = _interopRequireDefault(_regenerator);
+
 	var _typeof2 = __webpack_require__(11);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
@@ -22915,7 +22919,208 @@
 	  });
 
 	  describe('Generator Methods', function () {
-	    it('should do', function () {});
+	    it('should declare iterator method on class', function () {
+	      var Person = function () {
+	        function Person() {
+	          (0, _classCallCheck3.default)(this, Person);
+	        }
+
+	        (0, _createClass3.default)(Person, [{
+	          key: 'createIterator',
+	          value: _regenerator2.default.mark(function createIterator() {
+	            return _regenerator2.default.wrap(function createIterator$(_context) {
+	              while (1) {
+	                switch (_context.prev = _context.next) {
+	                  case 0:
+	                    _context.next = 2;
+	                    return 2;
+
+	                  case 2:
+	                    _context.next = 4;
+	                    return 5;
+
+	                  case 4:
+	                  case 'end':
+	                    return _context.stop();
+	                }
+	              }
+	            }, createIterator, this);
+	          })
+	        }]);
+	        return Person;
+	      }();
+
+	      var p = new Person();
+	      var pit = p.createIterator();
+
+	      (0, _chai.expect)(pit.next().value).to.eql(2);
+	    });
+
+	    it('should declare default iterator', function () {
+	      var Person = function () {
+	        function Person() {
+	          (0, _classCallCheck3.default)(this, Person);
+	        }
+
+	        (0, _createClass3.default)(Person, [{
+	          key: Symbol.iterator,
+	          value: _regenerator2.default.mark(function value() {
+	            return _regenerator2.default.wrap(function value$(_context2) {
+	              while (1) {
+	                switch (_context2.prev = _context2.next) {
+	                  case 0:
+	                    _context2.next = 2;
+	                    return 1;
+
+	                  case 2:
+	                    _context2.next = 4;
+	                    return 6;
+
+	                  case 4:
+	                  case 'end':
+	                    return _context2.stop();
+	                }
+	              }
+	            }, value, this);
+	          })
+	        }]);
+	        return Person;
+	      }();
+
+	      var p = new Person();
+	      var result = '';
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = p[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var x = _step.value;
+
+	          result += x;
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      (0, _chai.expect)(result).to.eql('16');
+	    });
+
+	    it('should declare default iterator with delegating to internal collection iterator', function () {
+	      var Person = function () {
+	        function Person() {
+	          (0, _classCallCheck3.default)(this, Person);
+
+	          this.items = new Set([1, 2, 3]);
+	        }
+
+	        (0, _createClass3.default)(Person, [{
+	          key: Symbol.iterator,
+	          value: _regenerator2.default.mark(function value() {
+	            return _regenerator2.default.wrap(function value$(_context3) {
+	              while (1) {
+	                switch (_context3.prev = _context3.next) {
+	                  case 0:
+	                    return _context3.delegateYield(this.items.values(), 't0', 1);
+
+	                  case 1:
+	                  case 'end':
+	                    return _context3.stop();
+	                }
+	              }
+	            }, value, this);
+	          })
+	        }]);
+	        return Person;
+	      }();
+
+	      var p = new Person();
+	      var result = '';
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+
+	      try {
+	        for (var _iterator2 = p[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var x = _step2.value;
+
+	          result += x;
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+
+	      (0, _chai.expect)(result).to.eql('123');
+	    });
+	  });
+
+	  describe('Static Members', function () {
+	    it('The ES5 way', function () {
+	      function Person(name) {
+	        this.name = name;
+	      }
+
+	      Person.create = function (name) {
+	        return new Person(name);
+	      };
+
+	      Person.prototype.say = function () {
+	        return this.name;
+	      };
+
+	      var p = Person.create('valor');
+
+	      (0, _chai.expect)(p.say()).to.eql('valor');
+	    });
+
+	    it('ES6 way with static keyword', function () {
+	      var Person = function () {
+	        function Person(name) {
+	          (0, _classCallCheck3.default)(this, Person);
+
+	          this.name = name;
+	        }
+
+	        (0, _createClass3.default)(Person, [{
+	          key: 'say',
+	          value: function say() {
+	            return this.name;
+	          }
+	        }], [{
+	          key: 'create',
+	          value: function create(name) {
+	            return new Person(name);
+	          }
+	        }]);
+	        return Person;
+	      }();
+
+	      var p = Person.create('piotr');
+
+	      (0, _chai.expect)(p.say()).to.eql('piotr');
+	    });
 	  });
 	});
 

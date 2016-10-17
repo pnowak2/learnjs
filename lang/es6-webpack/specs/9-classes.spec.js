@@ -148,8 +148,95 @@ describe('Classes', () => {
   });
 
   describe('Generator Methods', () => {
-    it('should do', () => {
-      
+    it('should declare iterator method on class', () => {
+      class Person {
+        *createIterator() {
+          yield 2;
+          yield 5;
+        }
+      }
+
+      let p = new Person();
+      let pit = p.createIterator();
+
+      expect(pit.next().value).to.eql(2);
+    });
+
+    it('should declare default iterator', () => {
+      class Person {
+        *[Symbol.iterator]() {
+          yield 1;
+          yield 6;
+        }
+      }
+
+      let p = new Person();
+      let result = '';
+      for (let x of p) {
+        result += x;
+      }
+
+      expect(result).to.eql('16');
+    });
+
+    it('should declare default iterator with delegating to internal collection iterator', () => {
+      class Person {
+        constructor() {
+          this.items = new Set([1, 2, 3]);
+        }
+
+        *[Symbol.iterator]() {
+          yield* this.items.values();
+        }
+      }
+
+      let p = new Person();
+      let result = '';
+      for (let x of p) {
+        result += x;
+      }
+
+      expect(result).to.eql('123');
+    });
+  });
+
+  describe('Static Members', () => {
+    it('The ES5 way', () => {
+      function Person(name) {
+        this.name = name;
+      }
+
+      Person.create = function (name) {
+        return new Person(name);
+      };
+
+      Person.prototype.say = function () {
+        return this.name;
+      };
+
+      var p = Person.create('valor');
+
+      expect(p.say()).to.eql('valor');
+    });
+
+    it('ES6 way with static keyword', () => {
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+
+        say() {
+          return this.name;
+        }
+
+        static create(name) {
+          return new Person(name);
+        }
+      }
+
+      let p = Person.create('piotr');
+
+      expect(p.say()).to.eql('piotr');
     });
   });
 });
