@@ -22719,6 +22719,18 @@
 
 	'use strict';
 
+	var _get2 = __webpack_require__(144);
+
+	var _get3 = _interopRequireDefault(_get2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(214);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(215);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
 	var _regenerator = __webpack_require__(188);
 
 	var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -23122,6 +23134,204 @@
 	      (0, _chai.expect)(p.say()).to.eql('piotr');
 	    });
 	  });
+
+	  describe('Inheritance with Derived Classes', function () {
+	    it('ES5 way', function () {
+	      function Rectangle(length, width) {
+	        this.length = length;
+	        this.width = width;
+	      }
+
+	      Rectangle.prototype.getArea = function () {
+	        return this.length * this.width;
+	      };
+
+	      function Square(length) {
+	        Rectangle.call(this, length, length);
+	      }
+
+	      Square.prototype = Object.create(Rectangle.prototype, {
+	        constructor: {
+	          value: Square,
+	          enumerable: true,
+	          writable: true,
+	          configurable: true
+	        }
+	      });
+
+	      var square = new Square(3);
+
+	      (0, _chai.expect)(square.getArea()).to.eql(9);
+	      (0, _chai.expect)(square).to.be.instanceOf(Rectangle);
+	      (0, _chai.expect)(square).to.be.instanceOf(Square);
+	    });
+
+	    it('ES6 way', function () {
+	      var Rectangle = function () {
+	        function Rectangle(length, width) {
+	          (0, _classCallCheck3.default)(this, Rectangle);
+
+	          this.length = length;
+	          this.width = width;
+	        }
+
+	        (0, _createClass3.default)(Rectangle, [{
+	          key: 'getArea',
+	          value: function getArea() {
+	            return this.length * this.width;
+	          }
+	        }]);
+	        return Rectangle;
+	      }();
+
+	      var Square = function (_Rectangle) {
+	        (0, _inherits3.default)(Square, _Rectangle);
+
+	        function Square(width) {
+	          (0, _classCallCheck3.default)(this, Square);
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Square).call(this, width, width));
+	        }
+
+	        return Square;
+	      }(Rectangle);
+
+	      var square = new Square(3);
+
+	      (0, _chai.expect)(square.getArea()).to.eql(9);
+	      (0, _chai.expect)(square).to.be.instanceOf(Rectangle);
+	      (0, _chai.expect)(square).to.be.instanceOf(Square);
+	    });
+
+	    it('should shadow class methods', function () {
+	      var Rectangle = function () {
+	        function Rectangle(length, width) {
+	          (0, _classCallCheck3.default)(this, Rectangle);
+
+	          this.length = length;
+	          this.width = width;
+	        }
+
+	        (0, _createClass3.default)(Rectangle, [{
+	          key: 'getArea',
+	          value: function getArea() {
+	            return this.length * this.width;
+	          }
+	        }]);
+	        return Rectangle;
+	      }();
+
+	      var Square = function (_Rectangle2) {
+	        (0, _inherits3.default)(Square, _Rectangle2);
+
+	        function Square(length) {
+	          (0, _classCallCheck3.default)(this, Square);
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Square).call(this, length, length));
+	        }
+
+	        (0, _createClass3.default)(Square, [{
+	          key: 'getArea',
+	          value: function getArea() {
+	            return (0, _get3.default)(Object.getPrototypeOf(Square.prototype), 'getArea', this).call(this);
+	          }
+	        }]);
+	        return Square;
+	      }(Rectangle);
+
+	      var square = new Square(4);
+
+	      (0, _chai.expect)(square.getArea()).to.eql(16);
+	    });
+
+	    it('inherited static members', function () {
+	      var Rectangle = function () {
+	        function Rectangle(length, width) {
+	          (0, _classCallCheck3.default)(this, Rectangle);
+
+	          this.length = length;
+	          this.width = width;
+	        }
+
+	        (0, _createClass3.default)(Rectangle, [{
+	          key: 'getArea',
+	          value: function getArea() {
+	            return this.length * this.width;
+	          }
+	        }], [{
+	          key: 'create',
+	          value: function create(length, width) {
+	            return new Rectangle(length, width);
+	          }
+	        }]);
+	        return Rectangle;
+	      }();
+
+	      var Square = function (_Rectangle3) {
+	        (0, _inherits3.default)(Square, _Rectangle3);
+
+	        function Square(length) {
+	          (0, _classCallCheck3.default)(this, Square);
+
+	          // same as Rectangle.call(this, length, length)
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Square).call(this, length, length));
+	        }
+
+	        return Square;
+	      }(Rectangle);
+
+	      var rect = Square.create(3, 4);
+
+	      (0, _chai.expect)(rect.getArea()).to.eql(12);
+	      (0, _chai.expect)(rect).to.be.instanceOf(Rectangle);
+	      (0, _chai.expect)(rect).not.to.be.instanceOf(Square);
+	    });
+
+	    it('should derive classes from expressions', function () {
+	      function Rectangle(length, width) {
+	        this.length = length;
+	        this.width = width;
+	      }
+
+	      Rectangle.prototype.getArea = function () {
+	        return this.length * this.width;
+	      };
+
+	      var Square = function (_Rectangle4) {
+	        (0, _inherits3.default)(Square, _Rectangle4);
+
+	        function Square(width) {
+	          (0, _classCallCheck3.default)(this, Square);
+
+	          // same as Rectangle.call(this, length, length)
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Square).call(this, width, width));
+	        }
+
+	        return Square;
+	      }(Rectangle);
+
+	      var square = new Square(5);
+
+	      (0, _chai.expect)(square.getArea()).to.eql(25);
+	    });
+
+	    it('should inherit from built-ins', function () {
+	      var MyArray = function (_Array) {
+	        (0, _inherits3.default)(MyArray, _Array);
+
+	        function MyArray() {
+	          (0, _classCallCheck3.default)(this, MyArray);
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(MyArray).apply(this, arguments));
+	        }
+
+	        return MyArray;
+	      }(Array);
+
+	      var colors = new MyArray();
+
+	      colors.push('red');
+
+	      (0, _chai.expect)(colors[0]).to.eql('red');
+	    });
+	  });
 	});
 
 /***/ },
@@ -23169,6 +23379,56 @@
 	    return Constructor;
 	  };
 	})();
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _typeof2 = __webpack_require__(11);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+	};
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _Object$create = __webpack_require__(190)["default"];
+
+	var _Object$setPrototypeOf = __webpack_require__(192)["default"];
+
+	exports["default"] = function (subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+	  }
+
+	  subClass.prototype = _Object$create(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _Object$setPrototypeOf ? _Object$setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	};
+
+	exports.__esModule = true;
 
 /***/ }
 /******/ ]);

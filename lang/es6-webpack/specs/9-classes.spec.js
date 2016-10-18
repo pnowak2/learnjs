@@ -239,4 +239,153 @@ describe('Classes', () => {
       expect(p.say()).to.eql('piotr');
     });
   });
+
+  describe('Inheritance with Derived Classes', () => {
+    it('ES5 way', () => {
+      function Rectangle(length, width) {
+        this.length = length;
+        this.width = width;
+      }
+
+      Rectangle.prototype.getArea = function () {
+        return this.length * this.width;
+      };
+
+      function Square(length) {
+        Rectangle.call(this, length, length);
+      }
+
+      Square.prototype = Object.create(Rectangle.prototype, {
+        constructor: {
+          value: Square,
+          enumerable: true,
+          writable: true,
+          configurable: true
+        }
+      });
+
+      var square = new Square(3);
+
+      expect(square.getArea()).to.eql(9);
+      expect(square).to.be.instanceOf(Rectangle);
+      expect(square).to.be.instanceOf(Square);
+    });
+
+    it('ES6 way', () => {
+      class Rectangle {
+        constructor(length, width) {
+          this.length = length;
+          this.width = width;
+        }
+
+        getArea() {
+          return this.length * this.width;
+        }
+      }
+
+      class Square extends Rectangle {
+        constructor(width) {
+          super(width, width);
+        }
+      }
+
+      let square = new Square(3);
+
+      expect(square.getArea()).to.eql(9);
+      expect(square).to.be.instanceOf(Rectangle);
+      expect(square).to.be.instanceOf(Square);
+    });
+
+    it('should shadow class methods', () => {
+      class Rectangle {
+        constructor(length, width) {
+          this.length = length;
+          this.width = width;
+        }
+
+        getArea() {
+          return this.length * this.width;
+        }
+      }
+
+      class Square extends Rectangle {
+        constructor(length) {
+          super(length, length);
+        }
+
+        getArea() {
+          return super.getArea();
+        }
+      }
+
+      var square = new Square(4);
+
+      expect(square.getArea()).to.eql(16);
+
+    });
+
+    it('inherited static members', () => {
+      class Rectangle {
+        constructor(length, width) {
+          this.length = length;
+          this.width = width;
+        }
+
+        getArea() {
+          return this.length * this.width;
+        }
+
+        static create(length, width) {
+          return new Rectangle(length, width);
+        }
+      }
+
+      class Square extends Rectangle {
+        constructor(length) {
+          // same as Rectangle.call(this, length, length)
+          super(length, length);
+        }
+      }
+
+      var rect = Square.create(3, 4);
+
+      expect(rect.getArea()).to.eql(12);
+      expect(rect).to.be.instanceOf(Rectangle);
+      expect(rect).not.to.be.instanceOf(Square);
+    });
+
+    it('should derive classes from expressions', () => {
+      function Rectangle(length, width) {
+        this.length = length;
+        this.width = width;
+      }
+
+      Rectangle.prototype.getArea = function () {
+        return this.length * this.width;
+      };
+
+      class Square extends Rectangle {
+        constructor(width) {
+          // same as Rectangle.call(this, length, length)
+          super(width, width);
+        }
+      }
+
+      let square = new Square(5);
+
+      expect(square.getArea()).to.eql(25);
+    });
+
+    it('should inherit from built-ins', () => {
+      class MyArray extends Array {
+
+      }
+
+      var colors = new MyArray();
+
+      colors.push('red');
+
+      expect(colors[0]).to.eql('red');
+    });
+  });
 });
