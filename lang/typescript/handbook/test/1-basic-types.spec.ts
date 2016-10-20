@@ -104,21 +104,21 @@ describe('Basic Types', () => {
     });
   });
 
-  // describe('Null and undefined', () => {
-  //   it('should use Null', () => {
-  //     let u: undefined = undefined;
-  //     let n: null = null;
+  describe('Null and undefined', () => {
+    it('should use Null', () => {
+      let u: undefined = undefined;
+      let n: null = null;
 
-  //     expect(u).to.be.undefined;
-  //     expect(n).to.be.null; 
-  //   });
-  // });
+      expect(u).to.be.undefined;
+      expect(n).to.be.null; 
+    });
+  });
 
-  // describe('Never', () => {
-  //   function fn() : never {
-  //     throw new Error();
-  //   }
-  // });
+  describe('Never', () => {
+    function fn() : never {
+      throw new Error();
+    }
+  });
 
   describe('Type Assertions', () => {
     it('should use like casting types with angle brackets', () => {

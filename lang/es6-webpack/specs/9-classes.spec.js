@@ -388,4 +388,52 @@ describe('Classes', () => {
       expect(colors[0]).to.eql('red');
     });
   });
+
+  describe('Symbol.species', () => {
+    xit('should use Symbol.species property (cannot get it working with babel)', () => {
+      class MyArray extends Array {
+        static get [Symbol.species]() {
+          return this;
+        }
+      }
+
+      var colors = new MyArray('red', 'green', 'blue');
+
+      expect(colors[2]).to.eql('blue');
+
+      expect(colors.slice(1)).to.be.instanceOf(MyArray);
+    });
+  });
+
+  describe('Using new.target in Class Constructors', () => {
+    it('should check for target', () => {
+      class Rectangle {
+        constructor(length, width) {
+          if(new.target !== Rectangle) {
+            throw new Error('Should be Rectangle');
+          }
+          this.length = length;
+          this.width = width;
+        }
+
+        getArea() {
+          return this.length * this.width;
+        }
+      }
+
+      class Square extends Rectangle {
+        constructor(width) {
+          super(width, width);
+        }
+      }
+     
+      expect(function () {
+        var s = new Square(5);
+      }).to.throw();
+
+      expect(function () {
+        var s = new Rectangle(2, 6);
+      }).not.to.throw();
+    });
+  });
 });

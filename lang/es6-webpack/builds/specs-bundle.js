@@ -52,7 +52,9 @@
 	__webpack_require__(173);
 	__webpack_require__(175);
 	__webpack_require__(186);
-	module.exports = __webpack_require__(210);
+	__webpack_require__(210);
+	__webpack_require__(216);
+	module.exports = __webpack_require__(218);
 
 
 /***/ },
@@ -23332,6 +23334,76 @@
 	      (0, _chai.expect)(colors[0]).to.eql('red');
 	    });
 	  });
+
+	  describe('Symbol.species', function () {
+	    xit('should use Symbol.species property (cannot get it working with babel)', function () {
+	      var MyArray = function (_Array2) {
+	        (0, _inherits3.default)(MyArray, _Array2);
+
+	        function MyArray() {
+	          (0, _classCallCheck3.default)(this, MyArray);
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(MyArray).apply(this, arguments));
+	        }
+
+	        (0, _createClass3.default)(MyArray, null, [{
+	          key: Symbol.species,
+	          get: function get() {
+	            return this;
+	          }
+	        }]);
+	        return MyArray;
+	      }(Array);
+
+	      var colors = new MyArray('red', 'green', 'blue');
+
+	      (0, _chai.expect)(colors[2]).to.eql('blue');
+
+	      (0, _chai.expect)(colors.slice(1)).to.be.instanceOf(MyArray);
+	    });
+	  });
+
+	  describe('Using new.target in Class Constructors', function () {
+	    it('should check for target', function () {
+	      var Rectangle = function () {
+	        function Rectangle(length, width) {
+	          (0, _classCallCheck3.default)(this, Rectangle);
+
+	          if (new.target !== Rectangle) {
+	            throw new Error('Should be Rectangle');
+	          }
+	          this.length = length;
+	          this.width = width;
+	        }
+
+	        (0, _createClass3.default)(Rectangle, [{
+	          key: 'getArea',
+	          value: function getArea() {
+	            return this.length * this.width;
+	          }
+	        }]);
+	        return Rectangle;
+	      }();
+
+	      var Square = function (_Rectangle5) {
+	        (0, _inherits3.default)(Square, _Rectangle5);
+
+	        function Square(width) {
+	          (0, _classCallCheck3.default)(this, Square);
+	          return (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Square).call(this, width, width));
+	        }
+
+	        return Square;
+	      }(Rectangle);
+
+	      (0, _chai.expect)(function () {
+	        var s = new Square(5);
+	      }).to.throw();
+
+	      (0, _chai.expect)(function () {
+	        var s = new Rectangle(2, 6);
+	      }).not.to.throw();
+	    });
+	  });
 	});
 
 /***/ },
@@ -23429,6 +23501,208 @@
 	    return Constructor;
 	  };
 	})();
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(217)
+	__webpack_require__(83);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _defineProperty2 = __webpack_require__(148);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	var _regenerator = __webpack_require__(188);
+
+	var _regenerator2 = _interopRequireDefault(_regenerator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var expect = __webpack_require__(43).expect;
+
+	describe('Improved Array Capabilities', function () {
+	  describe('api', function () {
+	    describe('.of()', function () {
+	      it('creates array of passed arguments', function () {
+	        var arr = Array.of(1, 2, 3);
+
+	        expect(arr[2]).to.eql(3);
+	      });
+	    });
+
+	    describe('.from()', function () {
+	      it('creates array from array-like objects', function () {
+	        function f() {
+	          var arr = Array.from(arguments);
+	          expect(arr[2]).to.eql(3);
+	        }
+
+	        f(1, 2, 3);
+	      });
+
+	      it('should work with iterables', function () {
+	        var obj = (0, _defineProperty3.default)({}, Symbol.iterator, _regenerator2.default.mark(function _callee() {
+	          return _regenerator2.default.wrap(function _callee$(_context) {
+	            while (1) {
+	              switch (_context.prev = _context.next) {
+	                case 0:
+	                  _context.next = 2;
+	                  return 1;
+
+	                case 2:
+	                  _context.next = 4;
+	                  return 2;
+
+	                case 4:
+	                  _context.next = 6;
+	                  return 3;
+
+	                case 6:
+	                case 'end':
+	                  return _context.stop();
+	              }
+	            }
+	          }, _callee, this);
+	        }));
+
+	        var arr = Array.from(obj);
+
+	        expect(arr[2]).to.eql(3);
+	      });
+
+	      it('creates array from array-like objects and maps each value', function () {
+	        function f() {
+	          var arr = Array.from(arguments, function (value) {
+	            return value * value;
+	          });
+	          expect(arr[2]).to.eql(9);
+	        }
+
+	        f(1, 2, 3);
+	      });
+	    });
+
+	    describe('.find()', function () {
+	      it('should find the first value matching criteria', function () {
+	        var found = [1, 2, 3, 4, 5, 6].find(function (value) {
+	          return value > 4;
+	        });
+
+	        expect(found).to.eql(5);
+	      });
+	    });
+
+	    describe('.findIndex()', function () {
+	      it('should find the index of first value matching criteria', function () {
+	        var found = ['foo', 'bar', 'baz'].findIndex(function (value) {
+	          return value === 'bar';
+	        });
+
+	        expect(found).to.eql(1);
+	      });
+	    });
+
+	    describe('.fill()', function () {
+	      it('should fill array with values', function () {
+	        var arr = [1, 2, 3, 4];
+
+	        expect(arr.fill(6)).to.eql([6, 6, 6, 6]);
+	      });
+	    });
+
+	    describe('.copyWithin()', function () {
+	      it('should copies elements from the same array to given location defined by start and stop index', function () {
+	        var arr = [1, 2, 3, 4, 5, 6, 7];
+
+	        expect(arr.copyWithin(2, 5, 6)).to.eql([1, 2, 6, 4, 5, 6, 7]);
+	      });
+	    });
+	  });
+
+	  describe('Array Buffers', function () {
+	    it('should create array buffer with size of 10 bytes', function () {
+	      var buf = new ArrayBuffer(10);
+
+	      expect(buf).to.be.instanceOf(ArrayBuffer);
+	    });
+
+	    describe('api', function () {
+	      describe('.byteLength', function () {
+	        it('should return byte length of array buffer', function () {
+	          var buf = new ArrayBuffer(10);
+
+	          expect(buf.byteLength).to.eql(10);
+	        });
+	      });
+
+	      describe('.slice()', function () {
+	        it('should return new buffer with sliced part', function () {
+	          var buf = new ArrayBuffer(10);
+	          var sliced = buf.slice(4, 6);
+
+	          expect(sliced.byteLength).to.eql(2);
+	          expect(sliced).to.be.instanceOf(ArrayBuffer);
+	        });
+	      });
+
+	      describe('More for buffers maybe later..', function () {
+	        it('to be continued (or not :))', function () {});
+	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(219)
+	__webpack_require__(83);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var expect = __webpack_require__(43).expect;
+
+	describe('Promises', function () {
+	  describe('', function () {
+	    it('', function () {});
+	  });
+	});
 
 /***/ }
 /******/ ]);
