@@ -2,7 +2,8 @@ var path = require('path');
 
 module.exports = {
   entry: [
-    'mocha!./specs/1-think-functionally.spec.js'
+    'mocha!./specs/1-think-functionally.spec.js',
+    'mocha!./specs/2-higher-order-javascript.spec.js'
   ],
   output: {
     path: 'builds',
@@ -12,6 +13,10 @@ module.exports = {
     loaders: [{
       test: /\.spec.js/,
       include: path.join(__dirname, 'specs'),
+      loader: 'babel'
+    }, {
+      test: /\.js/,
+      include: path.join(__dirname, 'src'),
       loader: 'babel'
     }]
   }
