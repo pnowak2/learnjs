@@ -315,11 +315,5 @@ describe('2 Higher Order Javascript', () => {
 
       expect(inner()).to.eql('I see outer inner and params');
     });
-
-    describe('2.4.1 Problems iwht the global scope', () => {
-      it('should..', () => {
-
-      });
-    });
   });
 });

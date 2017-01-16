@@ -26486,10 +26486,6 @@
 
 	      (0, _chai.expect)(inner()).to.eql('I see outer inner and params');
 	    });
-
-	    describe('2.4.1 Problems iwht the global scope', function () {
-	      it('should..', function () {});
-	    });
 	  });
 	});
 
@@ -50892,6 +50888,11 @@
 	      return this._lastname;
 	    }
 	  }, {
+	    key: "fullname",
+	    get: function get() {
+	      return this.firstname + " " + this.lastname;
+	    }
+	  }, {
 	    key: "address",
 	    get: function get() {
 	      return this._address;
@@ -52377,8 +52378,42 @@
 
 	var _chai = __webpack_require__(11);
 
+	var _person = __webpack_require__(463);
+
+	var _person2 = _interopRequireDefault(_person);
+
+	var _address = __webpack_require__(535);
+
+	var _address2 = _interopRequireDefault(_address);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	describe('3 Few data structures, many operations', function () {
-	  it('should..', function () {});
+	  var p1 = new _person2.default('Haskell', 'Curry', '111-11-1111');
+	  p1.address = new _address2.default('US');
+	  p1.birthYear = 1900;
+
+	  var p2 = new _person2.default('Barkley', 'Rosser', '222-22-2222');
+	  p2.address = new _address2.default('Greece');
+	  p2.birthYear = 1907;
+
+	  var p3 = new _person2.default('John', 'von Neumann', '333-33-3333');
+	  p3.address = new _address2.default('Hungary');
+	  p3.birthYear = 1903;
+
+	  var p4 = new _person2.default('Alonzo', 'Church', '444-44-4444');
+	  p4.address = new _address2.default('US');
+	  p4.birthYear = 1903;
+
+	  describe('3.3.1 Understanding lambda expressions', function () {
+	    it('should create compact function notation', function () {
+	      var name = function name(p) {
+	        return p.fullname;
+	      };
+
+	      (0, _chai.expect)(name(p1)).to.eql('Haskell Curry');
+	    });
+	  });
 	});
 
 /***/ }

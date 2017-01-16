@@ -19,6 +19,10 @@ export default class Person {
     return this._lastname;
   }
 
+  get fullname() {
+    return `${this.firstname} ${this.lastname}`;
+  }
+
   get address() {
     return this._address;
   }
