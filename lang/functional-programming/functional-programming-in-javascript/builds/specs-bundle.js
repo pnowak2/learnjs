@@ -92,8 +92,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\mocha\\mocha.css", function() {
-			var newContent = require("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\mocha\\mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -52378,6 +52378,10 @@
 
 	var _chai = __webpack_require__(11);
 
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	var _person = __webpack_require__(463);
 
 	var _person2 = _interopRequireDefault(_person);
@@ -52392,7 +52396,7 @@
 	  var p1 = new _person2.default('Haskell', 'Curry', '111-11-1111');
 	  p1.address = new _address2.default('US');
 	  p1.birthYear = 1900;
-
+	  '';
 	  var p2 = new _person2.default('Barkley', 'Rosser', '222-22-2222');
 	  p2.address = new _address2.default('Greece');
 	  p2.birthYear = 1907;
@@ -52405,13 +52409,68 @@
 	  p4.address = new _address2.default('US');
 	  p4.birthYear = 1903;
 
-	  describe('3.3.1 Understanding lambda expressions', function () {
-	    it('should create compact function notation', function () {
-	      var name = function name(p) {
-	        return p.fullname;
-	      };
+	  describe('3.3 Function chaining', function () {
+	    describe('3.3.1 Understanding lambda expressions', function () {
+	      it('should create compact function notation', function () {
+	        var name = function name(p) {
+	          return p.fullname;
+	        };
 
-	      (0, _chai.expect)(name(p1)).to.eql('Haskell Curry');
+	        (0, _chai.expect)(name(p1)).to.eql('Haskell Curry');
+	      });
+	    });
+
+	    describe('3.3.2 Transforming data with _.map', function () {
+	      it('should transform array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2];
+
+	        result = _lodash2.default.map(persons, function (s) {
+	          return s !== null && s !== undefined ? s.fullname : '';
+	        });
+
+	        (0, _chai.expect)(result).to.eql(['Haskell Curry', 'Barkley Rosser']);
+	      });
+	    });
+
+	    describe('3.3.3 Gathering results with _.reduce', function () {
+	      it('should reduce array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2, p3, p4];
+
+	        result = persons.reduce(function (stat, person) {
+	          var country = person.address.country;
+	          stat[country] = _lodash2.default.isUndefined(stat[country]) ? 1 : stat[country] + 1;
+	          return stat;
+	        }, {});
+
+	        (0, _chai.expect)(result).to.eql({
+	          'US': 2,
+	          'Greece': 1,
+	          'Hungary': 1
+	        });
+	      });
+	    });
+
+	    describe('3.3.4 Removing unwanted elements with _.filter', function () {
+	      it('should filter array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2, p3, p4];
+
+	        result = (0, _lodash2.default)(persons).filter(function (p) {
+	          return p.birthYear > 1903;
+	        }).map(function (p) {
+	          return p.fullname;
+	        }).value();
+
+	        (0, _chai.expect)(result).to.eql(['Barkley Rosser']);
+	      });
+	    });
+	  });
+
+	  describe('3.4 Reasoning about your code', function () {
+	    describe('3.4.1 Declarative and lazy function chains', function () {
+	      it('should use imperative version', function () {});
 	    });
 	  });
 	});
