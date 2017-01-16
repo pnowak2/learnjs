@@ -52470,7 +52470,46 @@
 
 	  describe('3.4 Reasoning about your code', function () {
 	    describe('3.4.1 Declarative and lazy function chains', function () {
-	      it('should use imperative version', function () {});
+	      it('should use functional version', function () {
+	        var names = ['alonzo church', 'Haskell curry', 'stephen_kleene', 'John Von Neumann', 'stephen_kleene'];
+
+	        var isValid = function isValid(p) {
+	          return p !== undefined;
+	        };
+
+	        var result = _lodash2.default.chain(names).filter(isValid).map(function (s) {
+	          return s.replace(/_/, ' ');
+	        }).uniq().map(_lodash2.default.startCase).sort().value();
+
+	        (0, _chai.expect)(result).to.eql(['Alonzo Church', 'Haskell Curry', 'John Von Neumann', 'Stephen Kleene']);
+	      });
+	    });
+
+	    describe('3.4.2 SQL-like data: functions as data', function () {
+	      it('should use sql like query', function () {
+	        _lodash2.default.mixin({
+	          'select': _lodash2.default.pluck,
+	          'from': _lodash2.default.chain,
+	          'where': _lodash2.default.filter,
+	          'groupBy': _lodash2.default.sortByOrder
+	        });
+
+	        var persons = [p1, p2, p3, p4];
+
+	        var result = _lodash2.default.from(persons).where(function (p) {
+	          return p.birthYear > 1900 && p.address.country !== 'US';
+	        }).filter('firstname', 'birthYear').map(function (p) {
+	          return p.firstname;
+	        }).value();
+
+	        (0, _chai.expect)(result).to.eql(['Barkley', 'John']);
+	      });
+	    });
+	  });
+
+	  describe('3.5 Learning to think recursively', function () {
+	    describe('3.5.x ...', function () {
+	      it('should..', function () {});
 	    });
 	  });
 	});

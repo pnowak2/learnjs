@@ -79,8 +79,54 @@ describe('3 Few data structures, many operations', () => {
 
   describe('3.4 Reasoning about your code', () => {
     describe('3.4.1 Declarative and lazy function chains', () => {
-      it('should use imperative version', () => {
+      it('should use functional version', () => {
+        var names = [
+          'alonzo church',
+          'Haskell curry',
+          'stephen_kleene',
+          'John Von Neumann',
+          'stephen_kleene'
+        ];
 
+        let isValid = p => p !== undefined;
+
+        let result = _.chain(names)
+          .filter(isValid)
+          .map(s => s.replace(/_/, ' '))
+          .uniq()
+          .map(_.startCase)
+          .sort()
+          .value();
+
+        expect(result).to.eql(['Alonzo Church', 'Haskell Curry', 'John Von Neumann', 'Stephen Kleene']);
+      });
+    });
+
+    describe('3.4.2 SQL-like data: functions as data', () => {
+      it('should use sql like query', () => {
+        _.mixin({
+          'select': _.pluck,
+          'from': _.chain,
+          'where': _.filter,
+          'groupBy': _.sortByOrder
+        });
+
+        var persons = [p1, p2, p3, p4];
+
+        let result = _.from(persons)
+          .where(p => p.birthYear > 1900 && p.address.country !== 'US')
+          .filter('firstname', 'birthYear')
+          .map(p => p.firstname)
+          .value();
+
+        expect(result).to.eql(['Barkley', 'John']);
+      });
+    });
+  });
+
+  describe('3.5 Learning to think recursively', () => {
+    describe('3.5.x ...', () => {
+      it('should..', () => {
       });
     });
   });
