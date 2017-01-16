@@ -46,7 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(55);
-	module.exports = __webpack_require__(536);
+	__webpack_require__(536);
+	module.exports = __webpack_require__(538);
 
 
 /***/ },
@@ -92,8 +93,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -52542,6 +52543,55 @@
 
 	        (0, _chai.expect)(sum(nums)).to.eql(10);
 	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 538 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(539)
+	__webpack_require__(53);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 539 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(11);
+
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _person = __webpack_require__(463);
+
+	var _person2 = _interopRequireDefault(_person);
+
+	var _address = __webpack_require__(535);
+
+	var _address2 = _interopRequireDefault(_address);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('4 Toward modular, reusable code', function () {
+	  describe('4.x ...', function () {
+	    describe('4.x.x ...', function () {
+	      it('should ...', function () {});
 	    });
 	  });
 	});
