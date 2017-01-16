@@ -125,8 +125,39 @@ describe('3 Few data structures, many operations', () => {
   });
 
   describe('3.5 Learning to think recursively', () => {
-    describe('3.5.x ...', () => {
-      it('should..', () => {
+    describe('3.5.2 Learning to think recursively', () => {
+      it('should take imperative approach', () => {
+
+        var nums = [1, 2, 3, 4];
+        var acc = 0;
+        for (let i = 0; i < nums.length; i++) {
+          acc += nums[i];
+        }
+
+        expect(acc).to.eql(10);
+      });
+
+      it('should take functional approach', () => {
+        var nums = [1, 2, 3, 4];
+        var result = _(nums).reduce(function(acc, current) {
+          return acc + current;
+        }, 0);
+
+        expect(result).to.eql(10);
+      });
+
+      it('should take recursive approach', () => {
+        var nums = [1, 2, 3, 4];
+
+        function sum(arr) {
+          if(_.isEmpty(arr)) {
+            return 0;
+          }
+
+          return _.first(arr) + sum(_.tail(arr));
+        }
+
+        expect(sum(nums)).to.eql(10);
       });
     });
   });

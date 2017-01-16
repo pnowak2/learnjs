@@ -92,8 +92,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -52508,8 +52508,40 @@
 	  });
 
 	  describe('3.5 Learning to think recursively', function () {
-	    describe('3.5.x ...', function () {
-	      it('should..', function () {});
+	    describe('3.5.2 Learning to think recursively', function () {
+	      it('should take imperative approach', function () {
+
+	        var nums = [1, 2, 3, 4];
+	        var acc = 0;
+	        for (var i = 0; i < nums.length; i++) {
+	          acc += nums[i];
+	        }
+
+	        (0, _chai.expect)(acc).to.eql(10);
+	      });
+
+	      it('should take functional approach', function () {
+	        var nums = [1, 2, 3, 4];
+	        var result = (0, _lodash2.default)(nums).reduce(function (acc, current) {
+	          return acc + current;
+	        }, 0);
+
+	        (0, _chai.expect)(result).to.eql(10);
+	      });
+
+	      it('should take recursive approach', function () {
+	        var nums = [1, 2, 3, 4];
+
+	        function sum(arr) {
+	          if (_lodash2.default.isEmpty(arr)) {
+	            return 0;
+	          }
+
+	          return _lodash2.default.first(arr) + sum(_lodash2.default.tail(arr));
+	        }
+
+	        (0, _chai.expect)(sum(nums)).to.eql(10);
+	      });
 	    });
 	  });
 	});
