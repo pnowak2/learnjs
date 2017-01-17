@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { FormSkuComponent } from './form-sku/form-sku.component';
 import { FormBuilderSkuComponent } from './form-builder-sku/form-builder-sku.component';
+import { FormValidationsComponent } from './form-validations/form-validations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormSkuComponent,
-    FormBuilderSkuComponent
+    FormBuilderSkuComponent,
+    FormValidationsComponent
   ],
   imports: [
     BrowserModule,

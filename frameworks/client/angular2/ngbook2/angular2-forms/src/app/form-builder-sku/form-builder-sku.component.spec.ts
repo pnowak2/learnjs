@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -14,8 +14,9 @@ describe('FormBuilderSkuComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FormBuilderSkuComponent],
       imports: [
-        FormsModule
-      ],
+        FormsModule,
+        ReactiveFormsModule
+      ]
     })
       .compileComponents();
   }));

@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { FormSkuComponent } from './form-sku/form-sku.component';
 import { FormBuilderSkuComponent } from './form-builder-sku/form-builder-sku.component';
+import { FormValidationsComponent } from './form-validations/form-validations.component';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -12,10 +13,12 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         FormSkuComponent,
-        FormBuilderSkuComponent
+        FormBuilderSkuComponent,
+        FormValidationsComponent
       ],
       imports: [
         FormsModule,
+        ReactiveFormsModule
       ],
     });
     TestBed.compileComponents();
