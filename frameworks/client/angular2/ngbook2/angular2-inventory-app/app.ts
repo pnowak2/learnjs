@@ -45,20 +45,20 @@ class InventoryApp {
       new Product(
         'ASSMAL2',
         'Assmal Current Generation',
-        '/resources/images/products/black-hat.jpg',
+        '/resources/images/products/blue-jacket.jpg',
         ['Woman', 'Shoes', 'Running Shoes'],
         229.99),
       new Product(
         'ASSMAL One',
         'Assmal Old Generation',
-        '/resources/images/products/black-hat.jpg',
+        '/resources/images/products/black-shoes.jpg',
         ['Men', 'Accessories', 'Hats'],
         329.99)
     ];
   }
 
   productWasSelected(product: Product): void {
-    console.log('Product clicked: ' + product);
+    console.log('Product clicked: ' + product.name);
   }
 }
 
@@ -100,10 +100,75 @@ class ProductsList {
   }
 }
 
+@Component({
+  selector: 'product-row',
+  inputs: ['product'],
+  host: { 'class': 'item' },
+  template: `
+    <product-image [product]="product"></product-image>
+    <div class="content">
+      <div class="header">{{ product.name }}</div>
+      <div class="meta">
+        <div class="product-sku">SKU# {{ product.sku }}</div>
+      </div>
+      <div class="description">
+        <product-department [product]="product"></product-department>
+      </div>
+    </div>
+    <price-display [price]="product.price"></price-display>
+  `
+})
+class ProductRow {
+  product: Product;
+}
+
+@Component({
+  selector: 'product-image',
+  host: { 'class': 'ui small image' },
+  inputs: ['product'],
+  template: `
+    <img class="product-image" [src]="product.imageUrl">
+  `
+})
+class ProductImage {
+  product: Product;
+}
+
+@Component({
+  selector: 'price-display',
+  inputs: ['price'],
+  template: `
+    <div class="price-display">\${{ price }}</div>
+  `
+})
+class PriceDisplay {
+  price: number;
+}
+
+@Component({
+  selector: 'product-department',
+  inputs: ['product'],
+  template: `
+    <div class="product-department">
+      <span *ngFor="let name of product.department; let i=index">
+        <a href="#">{{ name }}</a>
+        <span>{{i < (product.department.length - 1) ? '>' : ''}}</span>
+      </span>
+    </div>
+  `
+})
+class ProductDepartment {
+  product: Product;
+}
+
 @NgModule({
   declarations: [
     InventoryApp,
-    ProductsList
+    ProductsList,
+    ProductRow,
+    ProductImage,
+    PriceDisplay,
+    ProductDepartment
   ],
   imports: [BrowserModule],
   bootstrap: [InventoryApp]
