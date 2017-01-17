@@ -60,3 +60,9 @@
 cf {
     *zoom: 1;
 }
+
+/* Custom styles from book */
+.bordered {
+  border: 1px dashed black;
+  background-color: #eee;
+}
