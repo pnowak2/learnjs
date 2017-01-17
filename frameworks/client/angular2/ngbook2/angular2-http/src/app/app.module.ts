@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { SimpleHttpComponent } from './simple-http/simple-http.component';
-import { YoutubeSearchComponent } from './youtube-search/youtube-search.component';
+import { YoutubeSearchComponent, youTubeServiceInjectables } from './youtube-search/youtube-search.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { YoutubeSearchComponent } from './youtube-search/youtube-search.componen
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [youTubeServiceInjectables],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

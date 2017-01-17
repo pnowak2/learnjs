@@ -4,13 +4,15 @@ import { TestBed, async } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { SimpleHttpComponent } from './simple-http/simple-http.component';
+import { YoutubeSearchComponent } from './youtube-search/youtube-search.component';
 
 describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        SimpleHttpComponent
+        SimpleHttpComponent,
+        YoutubeSearchComponent
       ],
       imports: [HttpModule]
     });
