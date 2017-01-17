@@ -1,6 +1,48 @@
 const ProductList = React.createClass({
+  getInitialState() {
+    return {
+      products: []
+    }
+  },
+
+  componentDidMount() {
+    this.updateState();
+  },
+
+  updateState() {
+    const products = Data.sort((a, b) => {
+      return b.votes - a.votes;
+    });
+
+    this.setState({
+      products: products
+    })
+  },
+
+  handleProductUpVote(productId) {
+    Data.forEach((el) => {
+      if(el.id === productId) {
+        el.votes = el.votes + 1;
+        return;
+      }
+    });
+
+    this.updateState();
+  },
+
+  handleProductDownVote(productId) {
+    Data.forEach((el) => {
+      if(el.id === productId) {
+        el.votes = el.votes - 1;
+        return;
+      }
+    });
+
+    this.updateState();
+  },
+
   render: function () {
-    const products = Data.map((product) => {
+    const products = this.state.products.map((product) => {
       return (
         <Product
           key={'product-' + product.id}
@@ -11,6 +53,8 @@ const ProductList = React.createClass({
           votes={product.votes}
           submitter_avatar_url={product.submitter_avatar_url}
           product_image_url={product.product_image_url}
+          onUpVote={this.handleProductUpVote}
+          onDownVote={this.handleProductDownVote}
           />
       );
     });
@@ -23,6 +67,14 @@ const ProductList = React.createClass({
 });
 
 const Product = React.createClass({
+  handleUpVote() {
+    this.props.onUpVote(this.props.id);
+  },
+
+  handleDownVote() {
+    this.props.onDownVote(this.props.id);
+  },
+
   render: function () {
     return (
       <div className='item'>
@@ -31,8 +83,11 @@ const Product = React.createClass({
         </div>
         <div className='middle aligned content'>
           <div className='header'>
-            <a>
+            <a onClick={this.handleUpVote}>
               <i className='large caret up icon'></i>
+            </a>
+            <a onClick={this.handleDownVote}>
+              <i className='large caret down icon'></i>
             </a>
             {this.props.votes}
           </div>
