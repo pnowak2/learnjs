@@ -1,0 +1,36 @@
+<div class="ui raised segment">
+  <h2 class="ui header">Demo Form Validations</h2>
+
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)" class="ui form">
+    <div class="field" [class.error]="!sku.valid && sku.touched">
+      <label for="skuInput">SKU</label>
+      <input type="text" 
+             id="skuInput" 
+             placeholder="SKU" 
+             [formControl]="myForm.controls['sku']">
+      <div *ngIf="!sku.valid" class="ui error message visible">SKU is invalid</div>
+      <div *ngIf="sku.hasError('required')" class="ui error message visible">SKU is required</div>
+      <div *ngIf="sku.hasError('invalidSku')" class="ui error message visible">SKU is invalid with custom validations</div>
+      <div *ngIf="myForm.hasError('required', 'sku')" class="ui error message visible">SKU is required (using myForm)</div>
+    </div>
+
+    <div class="field">
+        <label for="productNameInput">Product Name</label>
+        <input type="text" 
+              id="productNameInput" 
+              placeholder="Product Name" 
+              [formControl]="myForm.controls['productName']"
+              [(ngModel)]="productName">
+        <div class="ui info message visible">
+          The product name is: {{ productName }}
+        </div>
+    </div>
+
+    <div *ngIf="!myForm.valid" class="ui error message visible">
+      Form is invalid
+    </div>
+
+    <button type="submit" class="ui button">Submit</button>
+  </form>
+
+</div>
