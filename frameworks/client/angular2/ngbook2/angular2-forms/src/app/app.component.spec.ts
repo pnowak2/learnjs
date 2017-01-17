@@ -4,13 +4,15 @@ import { TestBed, async } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { FormSkuComponent } from './form-sku/form-sku.component';
+import { FormBuilderSkuComponent } from './form-builder-sku/form-builder-sku.component';
 
 describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        FormSkuComponent
+        FormSkuComponent,
+        FormBuilderSkuComponent
       ],
       imports: [
         FormsModule,
