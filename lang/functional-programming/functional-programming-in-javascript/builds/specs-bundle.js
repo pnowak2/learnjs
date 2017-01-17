@@ -52578,6 +52578,10 @@
 
 	var _chai = __webpack_require__(11);
 
+	var _ramda = __webpack_require__(154);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
 	var _lodash = __webpack_require__(51);
 
 	var _lodash2 = _interopRequireDefault(_lodash);

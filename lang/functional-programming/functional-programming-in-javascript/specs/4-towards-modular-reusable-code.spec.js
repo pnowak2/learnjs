@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import R from 'ramda';
 import _ from 'lodash';
 import Person from '../src/model/person';
 import Address from '../src/model/address';
