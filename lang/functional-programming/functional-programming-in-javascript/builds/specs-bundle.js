@@ -52538,7 +52538,7 @@
 	            return 0;
 	          }
 
-	          return _lodash2.default.first(arr) + sum(_lodash2.default.tail(arr));
+	          return _lodash2.default.head(arr) + sum(_lodash2.default.tail(arr));
 	        }
 
 	        (0, _chai.expect)(sum(nums)).to.eql(10);
@@ -52572,6 +52572,10 @@
 
 	'use strict';
 
+	var _slicedToArray2 = __webpack_require__(541);
+
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
 	var _chai = __webpack_require__(11);
 
 	var _lodash = __webpack_require__(51);
@@ -52586,15 +52590,327 @@
 
 	var _address2 = _interopRequireDefault(_address);
 
+	var _tuple = __webpack_require__(540);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	describe('4 Toward modular, reusable code', function () {
-	  describe('4.x ...', function () {
-	    describe('4.x.x ...', function () {
-	      it('should ...', function () {});
+	  describe('4.2 Requirements for compatible functions', function () {
+	    describe('4.2.1 Type-compatible functions', function () {
+	      it('should build manual function pipeline', function () {
+	        // trim :: String -> String
+	        var trim = function trim(str) {
+	          return str.replace(/^\s*|\s*$/g, '');
+	        };
+	        // normalize :: String -> String
+	        var normalize = function normalize(str) {
+	          return str.replace(/\-/g, '');
+	        };
+
+	        var result = normalize(trim(' 444-44-4444 ')); //-> '444444444'
+
+	        (0, _chai.expect)(result).to.eql('444444444');
+	      });
+	    });
+
+	    describe('4.2.2 Functions and arity: the case for tuples', function () {
+	      describe('Tuple data type', function () {
+	        it('should provide function', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(MyTuple).to.be.a('function');
+	        });
+
+	        it('should not throw for defined values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(true, 'Success');
+	          }).not.to.throw();
+	        });
+
+	        it('should throw for null & undefined values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(null, undefined);
+	          }).to.throw();
+	        });
+
+	        it('should throw for incorrect arity with types & values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(true, 'success', 'too much');
+	          }).to.throw();
+	        });
+
+	        it('should access tuple values with underscore number property', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(myTuple._1).to.eql(true);
+	          (0, _chai.expect)(myTuple._2).to.eql('success');
+	        });
+
+	        it('should freeze access tuple values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(function () {
+	            myTuple._1 = false;
+	          }).to.throw();
+	        });
+
+	        it('should provide .values() method to get array of values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(myTuple.values()).to.eql([true, 'success']);
+	        });
+	      });
+
+	      describe('Using tuples', function () {
+	        it('should use tuples for isValid() function', function () {
+	          var Status = (0, _tuple.Tuple)(Boolean, String);
+
+	          // trim :: String  -> String
+	          var trim = function trim(str) {
+	            return str.replace(/^\s*|\s*$/g, '');
+	          };
+	          // normalize :: String  -> String
+	          var normalize = function normalize(str) {
+	            return str.replace(/\-/g, '');
+	          };
+
+	          // isValid :: String -> Status
+	          var isValid = function isValid(str) {
+	            if (str.length === 0) {
+	              return new Status(false, 'Invald input. Expected non-empty value!');
+	            } else {
+	              return new Status(true, 'Success!');
+	            }
+	          };
+
+	          var result = isValid(normalize(trim('  444-44-4444 ')));
+
+	          (0, _chai.expect)(result.values()).to.eql([true, 'Success!']);
+
+	          (0, _chai.expect)(result._1).to.eql(true);
+	          (0, _chai.expect)(result._2).to.eql('Success!');
+
+	          var _result$values = result.values(),
+	              _result$values2 = (0, _slicedToArray3.default)(_result$values, 2),
+	              isSuccessfull = _result$values2[0],
+	              validationInfo = _result$values2[1];
+
+	          (0, _chai.expect)(isSuccessfull).to.eql(true);
+	          (0, _chai.expect)(validationInfo).to.eql('Success!');
+	        });
+	      });
 	    });
 	  });
+
+	  describe('4.3 Curried function evaluation', function () {
+	    var StringPair = (0, _tuple.Tuple)(String, String);
+
+	    it('.curry2() - should provide manual currying with two arguments', function () {});
+	  });
 	});
+
+/***/ },
+/* 540 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var Tuple = exports.Tuple = function Tuple() /* types */{
+	  var typeInfo = Array.prototype.slice.call(arguments, 0);
+
+	  var _T = function _T() /* values */{
+	    var _this = this;
+
+	    var values = Array.prototype.slice.call(arguments, 0);
+
+	    if (values.some(function (val) {
+	      return val === null || val === undefined;
+	    })) {
+	      throw new ReferenceError('Tuples may not have any null values');
+	    }
+
+	    if (values.length !== typeInfo.length) {
+	      throw new TypeError('Tuple arity does not match its prototype');
+	    }
+
+	    values.map(function (val, index) {
+	      _this['_' + (index + 1)] = val;
+	    });
+
+	    Object.freeze(this);
+	  };
+
+	  _T.prototype.values = function () {
+	    return Object.keys(this).map(function (key) {
+	      return this[key];
+	    }, this);
+	  };
+
+	  return _T;
+	};
+
+/***/ },
+/* 541 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _isIterable2 = __webpack_require__(542);
+
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+	var _getIterator2 = __webpack_require__(546);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+
+	    return _arr;
+	  }
+
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ },
+/* 542 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(543), __esModule: true };
+
+/***/ },
+/* 543 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(544);
+
+/***/ },
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(545)
+	  , ITERATOR  = __webpack_require__(495)('iterator')
+	  , Iterators = __webpack_require__(477);
+	module.exports = __webpack_require__(64).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(485)
+	  , TAG = __webpack_require__(495)('toStringTag')
+	  // ES3 wrong here
+	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function(it, key){
+	  try {
+	    return it[key];
+	  } catch(e){ /* empty */ }
+	};
+
+	module.exports = function(it){
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+/***/ },
+/* 546 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(547), __esModule: true };
+
+/***/ },
+/* 547 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(548);
+
+/***/ },
+/* 548 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(69)
+	  , get      = __webpack_require__(549);
+	module.exports = __webpack_require__(64).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 549 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(545)
+	  , ITERATOR  = __webpack_require__(495)('iterator')
+	  , Iterators = __webpack_require__(477);
+	module.exports = __webpack_require__(64).getIteratorMethod = function(it){
+	  if(it != undefined)return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
 
 /***/ }
 /******/ ]);

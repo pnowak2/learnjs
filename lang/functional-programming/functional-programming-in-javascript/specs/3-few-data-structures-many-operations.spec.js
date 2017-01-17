@@ -154,7 +154,7 @@ describe('3 Few data structures, many operations', () => {
             return 0;
           }
 
-          return _.first(arr) + sum(_.tail(arr));
+          return _.head(arr) + sum(_.tail(arr));
         }
 
         expect(sum(nums)).to.eql(10);
