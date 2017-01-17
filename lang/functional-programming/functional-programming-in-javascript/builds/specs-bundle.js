@@ -46,7 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(55);
-	module.exports = __webpack_require__(536);
+	__webpack_require__(536);
+	module.exports = __webpack_require__(538);
 
 
 /***/ },
@@ -92,8 +93,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\mocha\\mocha.css", function() {
-			var newContent = require("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\functional-programming-in-javascript\\node_modules\\mocha\\mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -52378,6 +52379,10 @@
 
 	var _chai = __webpack_require__(11);
 
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	var _person = __webpack_require__(463);
 
 	var _person2 = _interopRequireDefault(_person);
@@ -52392,7 +52397,7 @@
 	  var p1 = new _person2.default('Haskell', 'Curry', '111-11-1111');
 	  p1.address = new _address2.default('US');
 	  p1.birthYear = 1900;
-
+	  '';
 	  var p2 = new _person2.default('Barkley', 'Rosser', '222-22-2222');
 	  p2.address = new _address2.default('Greece');
 	  p2.birthYear = 1907;
@@ -52405,16 +52410,511 @@
 	  p4.address = new _address2.default('US');
 	  p4.birthYear = 1903;
 
-	  describe('3.3.1 Understanding lambda expressions', function () {
-	    it('should create compact function notation', function () {
-	      var name = function name(p) {
-	        return p.fullname;
-	      };
+	  describe('3.3 Function chaining', function () {
+	    describe('3.3.1 Understanding lambda expressions', function () {
+	      it('should create compact function notation', function () {
+	        var name = function name(p) {
+	          return p.fullname;
+	        };
 
-	      (0, _chai.expect)(name(p1)).to.eql('Haskell Curry');
+	        (0, _chai.expect)(name(p1)).to.eql('Haskell Curry');
+	      });
+	    });
+
+	    describe('3.3.2 Transforming data with _.map', function () {
+	      it('should transform array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2];
+
+	        result = _lodash2.default.map(persons, function (s) {
+	          return s !== null && s !== undefined ? s.fullname : '';
+	        });
+
+	        (0, _chai.expect)(result).to.eql(['Haskell Curry', 'Barkley Rosser']);
+	      });
+	    });
+
+	    describe('3.3.3 Gathering results with _.reduce', function () {
+	      it('should reduce array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2, p3, p4];
+
+	        result = persons.reduce(function (stat, person) {
+	          var country = person.address.country;
+	          stat[country] = _lodash2.default.isUndefined(stat[country]) ? 1 : stat[country] + 1;
+	          return stat;
+	        }, {});
+
+	        (0, _chai.expect)(result).to.eql({
+	          'US': 2,
+	          'Greece': 1,
+	          'Hungary': 1
+	        });
+	      });
+	    });
+
+	    describe('3.3.4 Removing unwanted elements with _.filter', function () {
+	      it('should filter array without for loops', function () {
+	        var result = [];
+	        var persons = [p1, p2, p3, p4];
+
+	        result = (0, _lodash2.default)(persons).filter(function (p) {
+	          return p.birthYear > 1903;
+	        }).map(function (p) {
+	          return p.fullname;
+	        }).value();
+
+	        (0, _chai.expect)(result).to.eql(['Barkley Rosser']);
+	      });
+	    });
+	  });
+
+	  describe('3.4 Reasoning about your code', function () {
+	    describe('3.4.1 Declarative and lazy function chains', function () {
+	      it('should use functional version', function () {
+	        var names = ['alonzo church', 'Haskell curry', 'stephen_kleene', 'John Von Neumann', 'stephen_kleene'];
+
+	        var isValid = function isValid(p) {
+	          return p !== undefined;
+	        };
+
+	        var result = _lodash2.default.chain(names).filter(isValid).map(function (s) {
+	          return s.replace(/_/, ' ');
+	        }).uniq().map(_lodash2.default.startCase).sort().value();
+
+	        (0, _chai.expect)(result).to.eql(['Alonzo Church', 'Haskell Curry', 'John Von Neumann', 'Stephen Kleene']);
+	      });
+	    });
+
+	    describe('3.4.2 SQL-like data: functions as data', function () {
+	      it('should use sql like query', function () {
+	        _lodash2.default.mixin({
+	          'select': _lodash2.default.pluck,
+	          'from': _lodash2.default.chain,
+	          'where': _lodash2.default.filter,
+	          'groupBy': _lodash2.default.sortByOrder
+	        });
+
+	        var persons = [p1, p2, p3, p4];
+
+	        var result = _lodash2.default.from(persons).where(function (p) {
+	          return p.birthYear > 1900 && p.address.country !== 'US';
+	        }).filter('firstname', 'birthYear').map(function (p) {
+	          return p.firstname;
+	        }).value();
+
+	        (0, _chai.expect)(result).to.eql(['Barkley', 'John']);
+	      });
+	    });
+	  });
+
+	  describe('3.5 Learning to think recursively', function () {
+	    describe('3.5.2 Learning to think recursively', function () {
+	      it('should take imperative approach', function () {
+
+	        var nums = [1, 2, 3, 4];
+	        var acc = 0;
+	        for (var i = 0; i < nums.length; i++) {
+	          acc += nums[i];
+	        }
+
+	        (0, _chai.expect)(acc).to.eql(10);
+	      });
+
+	      it('should take functional approach', function () {
+	        var nums = [1, 2, 3, 4];
+	        var result = (0, _lodash2.default)(nums).reduce(function (acc, current) {
+	          return acc + current;
+	        }, 0);
+
+	        (0, _chai.expect)(result).to.eql(10);
+	      });
+
+	      it('should take recursive approach', function () {
+	        var nums = [1, 2, 3, 4];
+
+	        function sum(arr) {
+	          if (_lodash2.default.isEmpty(arr)) {
+	            return 0;
+	          }
+
+	          return _lodash2.default.head(arr) + sum(_lodash2.default.tail(arr));
+	        }
+
+	        (0, _chai.expect)(sum(nums)).to.eql(10);
+	      });
 	    });
 	  });
 	});
+
+/***/ },
+/* 538 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(539)
+	__webpack_require__(53);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 539 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _slicedToArray2 = __webpack_require__(541);
+
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+	var _chai = __webpack_require__(11);
+
+	var _ramda = __webpack_require__(154);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _person = __webpack_require__(463);
+
+	var _person2 = _interopRequireDefault(_person);
+
+	var _address = __webpack_require__(535);
+
+	var _address2 = _interopRequireDefault(_address);
+
+	var _tuple = __webpack_require__(540);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('4 Toward modular, reusable code', function () {
+	  describe('4.2 Requirements for compatible functions', function () {
+	    describe('4.2.1 Type-compatible functions', function () {
+	      it('should build manual function pipeline', function () {
+	        // trim :: String -> String
+	        var trim = function trim(str) {
+	          return str.replace(/^\s*|\s*$/g, '');
+	        };
+	        // normalize :: String -> String
+	        var normalize = function normalize(str) {
+	          return str.replace(/\-/g, '');
+	        };
+
+	        var result = normalize(trim(' 444-44-4444 ')); //-> '444444444'
+
+	        (0, _chai.expect)(result).to.eql('444444444');
+	      });
+	    });
+
+	    describe('4.2.2 Functions and arity: the case for tuples', function () {
+	      describe('Tuple data type', function () {
+	        it('should provide function', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(MyTuple).to.be.a('function');
+	        });
+
+	        it('should not throw for defined values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(true, 'Success');
+	          }).not.to.throw();
+	        });
+
+	        it('should throw for null & undefined values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(null, undefined);
+	          }).to.throw();
+	        });
+
+	        it('should throw for incorrect arity with types & values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+
+	          (0, _chai.expect)(function () {
+	            var myTuple = new MyTuple(true, 'success', 'too much');
+	          }).to.throw();
+	        });
+
+	        it('should access tuple values with underscore number property', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(myTuple._1).to.eql(true);
+	          (0, _chai.expect)(myTuple._2).to.eql('success');
+	        });
+
+	        it('should freeze access tuple values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(function () {
+	            myTuple._1 = false;
+	          }).to.throw();
+	        });
+
+	        it('should provide .values() method to get array of values', function () {
+	          var MyTuple = (0, _tuple.Tuple)(Boolean, String);
+	          var myTuple = new MyTuple(true, 'success');
+
+	          (0, _chai.expect)(myTuple.values()).to.eql([true, 'success']);
+	        });
+	      });
+
+	      describe('Using tuples', function () {
+	        it('should use tuples for isValid() function', function () {
+	          var Status = (0, _tuple.Tuple)(Boolean, String);
+
+	          // trim :: String  -> String
+	          var trim = function trim(str) {
+	            return str.replace(/^\s*|\s*$/g, '');
+	          };
+	          // normalize :: String  -> String
+	          var normalize = function normalize(str) {
+	            return str.replace(/\-/g, '');
+	          };
+
+	          // isValid :: String -> Status
+	          var isValid = function isValid(str) {
+	            if (str.length === 0) {
+	              return new Status(false, 'Invald input. Expected non-empty value!');
+	            } else {
+	              return new Status(true, 'Success!');
+	            }
+	          };
+
+	          var result = isValid(normalize(trim('  444-44-4444 ')));
+
+	          (0, _chai.expect)(result.values()).to.eql([true, 'Success!']);
+
+	          (0, _chai.expect)(result._1).to.eql(true);
+	          (0, _chai.expect)(result._2).to.eql('Success!');
+
+	          var _result$values = result.values(),
+	              _result$values2 = (0, _slicedToArray3.default)(_result$values, 2),
+	              isSuccessfull = _result$values2[0],
+	              validationInfo = _result$values2[1];
+
+	          (0, _chai.expect)(isSuccessfull).to.eql(true);
+	          (0, _chai.expect)(validationInfo).to.eql('Success!');
+	        });
+	      });
+	    });
+	  });
+
+	  describe('4.3 Curried function evaluation', function () {
+	    var StringPair = (0, _tuple.Tuple)(String, String);
+
+	    it('.curry2() - should provide manual currying with two arguments', function () {});
+	  });
+	});
+
+/***/ },
+/* 540 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var Tuple = exports.Tuple = function Tuple() /* types */{
+	  var typeInfo = Array.prototype.slice.call(arguments, 0);
+
+	  var _T = function _T() /* values */{
+	    var _this = this;
+
+	    var values = Array.prototype.slice.call(arguments, 0);
+
+	    if (values.some(function (val) {
+	      return val === null || val === undefined;
+	    })) {
+	      throw new ReferenceError('Tuples may not have any null values');
+	    }
+
+	    if (values.length !== typeInfo.length) {
+	      throw new TypeError('Tuple arity does not match its prototype');
+	    }
+
+	    values.map(function (val, index) {
+	      _this['_' + (index + 1)] = val;
+	    });
+
+	    Object.freeze(this);
+	  };
+
+	  _T.prototype.values = function () {
+	    return Object.keys(this).map(function (key) {
+	      return this[key];
+	    }, this);
+	  };
+
+	  return _T;
+	};
+
+/***/ },
+/* 541 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _isIterable2 = __webpack_require__(542);
+
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+	var _getIterator2 = __webpack_require__(546);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+
+	    return _arr;
+	  }
+
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ },
+/* 542 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(543), __esModule: true };
+
+/***/ },
+/* 543 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(544);
+
+/***/ },
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(545)
+	  , ITERATOR  = __webpack_require__(495)('iterator')
+	  , Iterators = __webpack_require__(477);
+	module.exports = __webpack_require__(64).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(485)
+	  , TAG = __webpack_require__(495)('toStringTag')
+	  // ES3 wrong here
+	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function(it, key){
+	  try {
+	    return it[key];
+	  } catch(e){ /* empty */ }
+	};
+
+	module.exports = function(it){
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+/***/ },
+/* 546 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(547), __esModule: true };
+
+/***/ },
+/* 547 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(548);
+
+/***/ },
+/* 548 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(69)
+	  , get      = __webpack_require__(549);
+	module.exports = __webpack_require__(64).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 549 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(545)
+	  , ITERATOR  = __webpack_require__(495)('iterator')
+	  , Iterators = __webpack_require__(477);
+	module.exports = __webpack_require__(64).getIteratorMethod = function(it){
+	  if(it != undefined)return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
 
 /***/ }
 /******/ ]);
