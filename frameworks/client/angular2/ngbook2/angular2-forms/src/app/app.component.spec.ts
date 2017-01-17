@@ -2,12 +2,14 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { FormSkuComponent } from './form-sku/form-sku.component';
 
 describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        FormSkuComponent
       ],
     });
     TestBed.compileComponents();
