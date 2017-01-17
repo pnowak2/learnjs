@@ -12,4 +12,8 @@ export class FormSkuComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit(form: any): void {
+    console.log(form);
+  }
+
 }
