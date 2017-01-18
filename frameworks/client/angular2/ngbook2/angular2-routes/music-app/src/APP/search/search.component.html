@@ -26,6 +26,19 @@
                   {{ t.artists[0].name }}
                 </a>
               </h3>
+              <br>
+              <p>
+                <a [routerLink]="['/tracks', t.id]">
+                  {{ t.name }}
+                </a>
+              </p>
+            </div>
+            <div class="attribution">
+              <h4>
+                <a [routerLink]="['/albums', t.album.id]">
+                  {{ t.album.name }}
+                </a>
+              </h4>
             </div>
           </div>
         </div>

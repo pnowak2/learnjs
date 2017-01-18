@@ -1,7 +1,8 @@
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
+import 'rxjs/Rx';
 
-export class SpotifyService {
+@Injectable() export class SpotifyService {
   constructor(public http: Http) {
   }
 
