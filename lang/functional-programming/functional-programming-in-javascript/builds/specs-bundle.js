@@ -52572,7 +52572,7 @@
 
 	'use strict';
 
-	var _slicedToArray2 = __webpack_require__(541);
+	var _slicedToArray2 = __webpack_require__(540);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
@@ -52594,7 +52594,9 @@
 
 	var _address2 = _interopRequireDefault(_address);
 
-	var _tuple = __webpack_require__(540);
+	var _tuple = __webpack_require__(549);
+
+	var _curry = __webpack_require__(550);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52716,68 +52718,119 @@
 	  });
 
 	  describe('4.3 Curried function evaluation', function () {
-	    var StringPair = (0, _tuple.Tuple)(String, String);
+	    it('.curry2() - should provide manual currying with two arguments', function () {
+	      var name = (0, _curry.curry2)(function (last, first) {
+	        return new _curry.StringPair(last, first);
+	      });
 
-	    it('.curry2() - should provide manual currying with two arguments', function () {});
+	      (0, _chai.expect)(name('A')('B').values()).to.eql(['A', 'B']);
+
+	      var withLast = name('Curry');
+	      var withFirst = withLast('Haskell');
+
+	      (0, _chai.expect)(withLast).to.be.a('function');
+	      (0, _chai.expect)(withFirst).to.be.instanceof(_curry.StringPair);
+	      (0, _chai.expect)(withFirst.values()).to.eql(['Curry', 'Haskell']);
+	    });
+
+	    describe('4.3.1 Emulating function factories', function () {
+	      it('should emulate interfaces with currying', function () {
+	        var fetchStudentFromArray = _ramda2.default.curry(function (arr, ssn) {
+	          return arr + ' ' + ssn;
+	        });
+
+	        var fetchStudentFromObj = _ramda2.default.curry(function (obj, ssn) {
+	          return obj + ' ' + ssn;
+	        });
+
+	        var studentFactoryFinder = function studentFactoryFinder(useObj) {
+	          if (useObj) {
+	            return fetchStudentFromObj('object');
+	          } else {
+	            return fetchStudentFromArray('array');
+	          }
+	        };
+
+	        var finder = studentFactoryFinder(true);
+	        (0, _chai.expect)(finder('piotr')).to.eql('object piotr');
+
+	        finder = studentFactoryFinder(false);
+	        (0, _chai.expect)(finder('andrzej')).to.eql('array andrzej');
+	      });
+	    });
+	  });
+	  describe('4.4 Partial application and parameter binding', function () {
+
+	    describe('Partial Application', function () {
+	      it('should use partial application (all arguments not provided will be set to undefined as opposed to currying where function is called when all params are provided)', function () {
+	        var add = function add(a, b, c) {
+	          return a + b + c;
+	        };
+
+	        var addTo5And3 = _lodash2.default.partial(add, '5', '3');
+
+	        (0, _chai.expect)(addTo5And3('2')).to.eql('532');
+	        (0, _chai.expect)(addTo5And3()).to.eql('53undefined');
+	      });
+
+	      it('should use partial with placeholder', function () {
+	        var add = function add(a, b, c) {
+	          return a + b + c;
+	        };
+
+	        var addTo5And3 = _lodash2.default.partial(add, _lodash2.default, '5', '3');
+
+	        (0, _chai.expect)(addTo5And3('2')).to.eql('253');
+	      });
+	    });
+
+	    describe('Binding', function () {
+	      it('should use partial application and provide this object context', function () {
+	        function greet(greeting, punctuation) {
+	          return greeting + ' ' + this.user + punctuation;
+	        }
+
+	        var object = { 'user': 'fred' };
+
+	        var bound = _lodash2.default.bind(greet, object, 'hi');
+
+	        (0, _chai.expect)(bound('!')).to.eql('hi fred!');
+	      });
+
+	      it('should use partial application with placeholder and provide this object context', function () {
+	        function greet(greeting, punctuation) {
+	          return greeting + ' ' + this.user + punctuation;
+	        }
+
+	        var object = { 'user': 'fred' };
+
+	        var bound = _lodash2.default.bind(greet, object, _lodash2.default, '!');
+
+	        (0, _chai.expect)(bound('hi')).to.eql('hi fred!');
+	      });
+	    });
+	  });
+
+	  describe('4.5 Composing function pipelines', function () {
+	    describe('4.5.x ', function () {
+	      it('should ..', function () {});
+	    });
 	  });
 	});
 
 /***/ },
 /* 540 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var Tuple = exports.Tuple = function Tuple() /* types */{
-	  var typeInfo = Array.prototype.slice.call(arguments, 0);
-
-	  var _T = function _T() /* values */{
-	    var _this = this;
-
-	    var values = Array.prototype.slice.call(arguments, 0);
-
-	    if (values.some(function (val) {
-	      return val === null || val === undefined;
-	    })) {
-	      throw new ReferenceError('Tuples may not have any null values');
-	    }
-
-	    if (values.length !== typeInfo.length) {
-	      throw new TypeError('Tuple arity does not match its prototype');
-	    }
-
-	    values.map(function (val, index) {
-	      _this['_' + (index + 1)] = val;
-	    });
-
-	    Object.freeze(this);
-	  };
-
-	  _T.prototype.values = function () {
-	    return Object.keys(this).map(function (key) {
-	      return this[key];
-	    }, this);
-	  };
-
-	  return _T;
-	};
-
-/***/ },
-/* 541 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _isIterable2 = __webpack_require__(542);
+	var _isIterable2 = __webpack_require__(541);
 
 	var _isIterable3 = _interopRequireDefault(_isIterable2);
 
-	var _getIterator2 = __webpack_require__(546);
+	var _getIterator2 = __webpack_require__(545);
 
 	var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -52822,24 +52875,24 @@
 	}();
 
 /***/ },
+/* 541 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(542), __esModule: true };
+
+/***/ },
 /* 542 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(543), __esModule: true };
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(543);
 
 /***/ },
 /* 543 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(498);
-	__webpack_require__(469);
-	module.exports = __webpack_require__(544);
-
-/***/ },
-/* 544 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var classof   = __webpack_require__(545)
+	var classof   = __webpack_require__(544)
 	  , ITERATOR  = __webpack_require__(495)('iterator')
 	  , Iterators = __webpack_require__(477);
 	module.exports = __webpack_require__(64).isIterable = function(it){
@@ -52850,7 +52903,7 @@
 	};
 
 /***/ },
-/* 545 */
+/* 544 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
@@ -52878,25 +52931,25 @@
 	};
 
 /***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(546), __esModule: true };
+
+/***/ },
 /* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(547), __esModule: true };
+	__webpack_require__(498);
+	__webpack_require__(469);
+	module.exports = __webpack_require__(547);
 
 /***/ },
 /* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(498);
-	__webpack_require__(469);
-	module.exports = __webpack_require__(548);
-
-/***/ },
-/* 548 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var anObject = __webpack_require__(69)
-	  , get      = __webpack_require__(549);
+	  , get      = __webpack_require__(548);
 	module.exports = __webpack_require__(64).getIterator = function(it){
 	  var iterFn = get(it);
 	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
@@ -52904,16 +52957,82 @@
 	};
 
 /***/ },
-/* 549 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(545)
+	var classof   = __webpack_require__(544)
 	  , ITERATOR  = __webpack_require__(495)('iterator')
 	  , Iterators = __webpack_require__(477);
 	module.exports = __webpack_require__(64).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
 	    || Iterators[classof(it)];
+	};
+
+/***/ },
+/* 549 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var Tuple = exports.Tuple = function Tuple() /* types */{
+	  var typeInfo = Array.prototype.slice.call(arguments, 0);
+
+	  var _T = function _T() /* values */{
+	    var _this = this;
+
+	    var values = Array.prototype.slice.call(arguments, 0);
+
+	    if (values.some(function (val) {
+	      return val === null || val === undefined;
+	    })) {
+	      throw new ReferenceError('Tuples may not have any null values');
+	    }
+
+	    if (values.length !== typeInfo.length) {
+	      throw new TypeError('Tuple arity does not match its prototype');
+	    }
+
+	    values.map(function (val, index) {
+	      _this['_' + (index + 1)] = val;
+	    });
+
+	    Object.freeze(this);
+	  };
+
+	  _T.prototype.values = function () {
+	    return Object.keys(this).map(function (key) {
+	      return this[key];
+	    }, this);
+	  };
+
+	  return _T;
+	};
+
+/***/ },
+/* 550 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.curry2 = exports.StringPair = undefined;
+
+	var _tuple = __webpack_require__(549);
+
+	var StringPair = exports.StringPair = (0, _tuple.Tuple)(String, String);
+
+	var curry2 = exports.curry2 = function curry2(fn) {
+	  return function (firstArg) {
+	    return function (secondArg) {
+	      return new StringPair(firstArg, secondArg);
+	    };
+	  };
 	};
 
 /***/ }
