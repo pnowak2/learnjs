@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Routes } from '@angular/router';
+import { Routes, Router, ActivatedRoute } from '@angular/router';
 import { MainComponent } from '../main/main.component';
 import { ByIdComponent } from '../by-id/by-id.component';
 import { InterestComponent } from '../interest/interest.component';
@@ -8,9 +8,9 @@ import { SportifyComponent } from '../sportify/sportify.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: 'main', component: MainComponent },
-  { path: ':id', component: ByIdComponent },
   { path: 'interest', component: InterestComponent },
   { path: 'sportify', component: SportifyComponent },
+  { path: ':id', component: ByIdComponent }  
 ];
 
 @Component({
@@ -20,9 +20,15 @@ export const routes: Routes = [
 })
 export class ProductsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
   }
 
+  goToProduct(id: string): void {
+    this.router.navigate(['./', id], { relativeTo: this.route });
+  }
 }

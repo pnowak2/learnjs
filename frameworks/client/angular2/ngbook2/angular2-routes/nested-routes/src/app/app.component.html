@@ -1,5 +1,7 @@
-<h1>
-  {{title}}
-</h1>
+<h1>Nested Routing</h1>
+
+<a [routerLink]="['home']">Home</a>
+<a [routerLink]="['products']">Products</a>
+<a [routerLink]="['products', 'interest']">Products / Interest</a>
 
 <router-outlet></router-outlet>
