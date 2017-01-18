@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Routes, Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-by-id',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./by-id.component.css']
 })
 export class ByIdComponent implements OnInit {
+  id: string;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.route.params.subscribe((p: any[]) => {
+      this.id = p['id'];
+    })
   }
 
 }
