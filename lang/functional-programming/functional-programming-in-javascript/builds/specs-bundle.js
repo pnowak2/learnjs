@@ -52894,6 +52894,38 @@
 	        (0, _chai.expect)(smartestStudent(students, grades)).to.eql('Turing');
 	      });
 	    });
+
+	    describe('4.5.4 Coping with pure and impure code', function () {
+	      it('should use curry to separate invariant parts of the code', function () {
+	        var findObject = _ramda2.default.curry(function (db, id) {
+	          return { db: db, id: id };
+	        });
+
+	        var findStudent = findObject('DATABASE');
+	        var csv = function csv(student) {
+	          return student.db + ', ' + student.id;
+	        };
+
+	        var showStudent = _ramda2.default.compose(csv, findStudent);
+
+	        (0, _chai.expect)(showStudent('#42')).to.eql('DATABASE, #42');
+	      });
+
+	      it('should use R.pipe as reversed direction of R.compose', function () {
+	        var findObject = _ramda2.default.curry(function (db, id) {
+	          return { db: db, id: id };
+	        });
+
+	        var findStudent = findObject('DATABASE');
+	        var csv = function csv(student) {
+	          return student.db + ', ' + student.id;
+	        };
+
+	        var showStudent = _ramda2.default.pipe(findStudent, csv);
+
+	        (0, _chai.expect)(showStudent('#42')).to.eql('DATABASE, #42');
+	      });
+	    });
 	  });
 	});
 

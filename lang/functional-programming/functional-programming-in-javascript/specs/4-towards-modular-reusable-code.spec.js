@@ -280,5 +280,37 @@ describe('4 Toward modular, reusable code', () => {
         expect(smartestStudent(students, grades)).to.eql('Turing');
       });
     });
+
+    describe('4.5.4 Coping with pure and impure code', () => {
+      it('should use curry to separate invariant parts of the code', () => {
+        const findObject = R.curry(function(db, id) {
+          return {db, id};
+        });
+
+        const findStudent = findObject('DATABASE');
+        const csv = (student) => {
+          return `${student.db}, ${student.id}`;
+        }
+        
+        const showStudent = R.compose(csv, findStudent);
+
+        expect(showStudent('#42')).to.eql('DATABASE, #42');
+      });
+
+      it('should use R.pipe as reversed direction of R.compose', () => {
+        const findObject = R.curry(function(db, id) {
+          return {db, id};
+        });
+
+        const findStudent = findObject('DATABASE');
+        const csv = (student) => {
+          return `${student.db}, ${student.id}`;
+        }
+        
+        const showStudent = R.pipe(findStudent, csv);
+
+        expect(showStudent('#42')).to.eql('DATABASE, #42');
+      });
+    });
   });
 });
