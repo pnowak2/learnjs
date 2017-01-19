@@ -207,9 +207,77 @@ describe('4 Toward modular, reusable code', () => {
   });
 
   describe('4.5 Composing function pipelines', () => {
-    describe('4.5.x ', () => {
-      it('should ..', () => {
+    function compose(/* fns */) {
+      let args = arguments;
+      let start = args.length - 1;
 
+      return function () {
+        let i = start;
+        let result = args[start].apply(this, arguments);
+        while (i--) {
+          result = args[i].apply(this, [result]);
+        }
+
+        return result;
+      }
+    }
+
+    describe('4.5.2 Functional composition: separating description from evaluation', () => {
+      it('should use own implementation of compose', () => {
+        const str = `We can only see a short distance
+           ahead but we can see plenty there
+           that needs to be done`;
+
+        const explode = (str) => str.split(/\s+/);
+        const count = (arr) => arr.length;
+
+        const countWords = compose(count, explode);
+
+        expect(countWords(str)).to.eql(19);
+      });
+
+      it('should combine simple functions to achieve more complex effect with Ramda.compose', () => {
+        const str = `We can only see a short distance
+           ahead but we can see plenty there
+           that needs to be done`;
+
+        const explode = (str) => str.split(/\s+/);
+        const count = (arr) => arr.length;
+
+        const countWords = R.compose(count, explode);
+
+        expect(countWords(str)).to.eql(19);
+      });
+
+      it('should validate ssn with compose', () => {
+        const trim = (str) => str.replace(/^\s*|\s*$/g, '');
+        const normalize = (str) => str.replace(/\-/g, '');
+        const validLength = (param, str) => str.length === param;
+        const checkLengthSsn = _.partial(validLength, 9);
+
+        const cleanInput = R.compose(normalize, trim);
+        const isValidSsn = R.compose(checkLengthSsn, cleanInput);
+
+        expect(cleanInput(' 444-44-4444 ')).to.eql('444444444');
+        expect(isValidSsn(' 444-44-4444 ')).to.be.true;
+        expect(isValidSsn(' 444-44-5-4444 ')).to.be.false;
+      });
+    });
+
+    describe('4.5.3 Composition with functional libraries', () => {
+      it('should use Ramda functions which are configured with currying in mind', () => {
+        const students = ['Rosser', 'Turing', 'Kleene', 'Church'];
+        const grades = [80, 100, 90, 99];
+
+        const smartestStudent = R.compose(
+          R.head, // 'Turing'
+          R.pluck(0), // ['Turing', 'Church', 'Kleene', 'Rosser']
+          R.reverse, // [['Turing', 100], ['Church', 99], ['Kleene', 90], ['Rosser', 80]]
+          R.sortBy(R.prop(1)), // [['Rosser', 80], ['Kleene', 90], ['Church', 99], ['Turing', 100]]
+          R.zip // [['Rosser', 80], ['Turing', 100], ['Kleene', 90], ['Church', 99]]
+        );
+
+        expect(smartestStudent(students, grades)).to.eql('Turing');
       });
     });
   });

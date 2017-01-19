@@ -52812,8 +52812,87 @@
 	  });
 
 	  describe('4.5 Composing function pipelines', function () {
-	    describe('4.5.x ', function () {
-	      it('should ..', function () {});
+	    function compose() /* fns */{
+	      var args = arguments;
+	      var start = args.length - 1;
+
+	      return function () {
+	        var i = start;
+	        var result = args[start].apply(this, arguments);
+	        while (i--) {
+	          result = args[i].apply(this, [result]);
+	        }
+
+	        return result;
+	      };
+	    }
+
+	    describe('4.5.2 Functional composition: separating description from evaluation', function () {
+	      it('should use own implementation of compose', function () {
+	        var str = 'We can only see a short distance\n           ahead but we can see plenty there\n           that needs to be done';
+
+	        var explode = function explode(str) {
+	          return str.split(/\s+/);
+	        };
+	        var count = function count(arr) {
+	          return arr.length;
+	        };
+
+	        var countWords = compose(count, explode);
+
+	        (0, _chai.expect)(countWords(str)).to.eql(19);
+	      });
+
+	      it('should combine simple functions to achieve more complex effect with Ramda.compose', function () {
+	        var str = 'We can only see a short distance\n           ahead but we can see plenty there\n           that needs to be done';
+
+	        var explode = function explode(str) {
+	          return str.split(/\s+/);
+	        };
+	        var count = function count(arr) {
+	          return arr.length;
+	        };
+
+	        var countWords = _ramda2.default.compose(count, explode);
+
+	        (0, _chai.expect)(countWords(str)).to.eql(19);
+	      });
+
+	      it('should validate ssn with compose', function () {
+	        var trim = function trim(str) {
+	          return str.replace(/^\s*|\s*$/g, '');
+	        };
+	        var normalize = function normalize(str) {
+	          return str.replace(/\-/g, '');
+	        };
+	        var validLength = function validLength(param, str) {
+	          return str.length === param;
+	        };
+	        var checkLengthSsn = _lodash2.default.partial(validLength, 9);
+
+	        var cleanInput = _ramda2.default.compose(normalize, trim);
+	        var isValidSsn = _ramda2.default.compose(checkLengthSsn, cleanInput);
+
+	        (0, _chai.expect)(cleanInput(' 444-44-4444 ')).to.eql('444444444');
+	        (0, _chai.expect)(isValidSsn(' 444-44-4444 ')).to.be.true;
+	        (0, _chai.expect)(isValidSsn(' 444-44-5-4444 ')).to.be.false;
+	      });
+	    });
+
+	    describe('4.5.3 Composition with functional libraries', function () {
+	      it('should use Ramda functions which are configured with currying in mind', function () {
+	        var students = ['Rosser', 'Turing', 'Kleene', 'Church'];
+	        var grades = [80, 100, 90, 99];
+
+	        var smartestStudent = _ramda2.default.compose(_ramda2.default.head, // 'Turing'
+	        _ramda2.default.pluck(0), // ['Turing', 'Church', 'Kleene', 'Rosser']
+	        _ramda2.default.reverse, // [['Turing', 100], ['Church', 99], ['Kleene', 90], ['Rosser', 80]]
+	        _ramda2.default.sortBy(_ramda2.default.prop(1)), // [['Rosser', 80], ['Kleene', 90], ['Church', 99], ['Turing', 100]]
+	        _ramda2.default.zip // [['Rosser', 80], ['Turing', 100], ['Kleene', 90], ['Church', 99]]
+	        );
+
+	        (0, _chai.expect)(smartestStudent(students, grades)).to.eql('Turing');
+	      });
 	    });
 	  });
 	});
