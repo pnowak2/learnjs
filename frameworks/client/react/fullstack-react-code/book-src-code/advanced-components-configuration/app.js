@@ -28,7 +28,54 @@ const Component = React.createClass({
   }
 });
 
+const A = React.createClass({
+  propTypes: {
+    name: React.PropTypes.string
+  },
+
+  contextTypes: {
+    name: React.PropTypes.string
+  },
+
+  componentDidUpdate(prevProps, prevState, nextContext) {
+    console.log(nextContext);
+    console.log('didupdate');
+  },
+
+  render() {
+    return (
+      <div> name: {this.context.name}, A</div>
+    );
+  }
+});
+
+const B = React.createClass({
+  render() {
+    return (
+      <div><A />B</div>
+    );
+  }
+});
+
+const C = React.createClass({
+  childContextTypes: {
+    name: React.PropTypes.string
+  },
+
+  getChildContext() {
+    return {
+      name: 'name from parent'
+    }
+  },
+
+  render() {
+    return (
+      <div><B />C</div>
+    );
+  }
+});
+
 ReactDOM.render(
-  <Component name={'nazwa'} totalCount={5} />,
+  <C />,
   document.getElementById('content')
 );
