@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import R from 'ramda';
 import _ from 'lodash';
+import sinon from 'sinon';
 import Person from '../src/model/person';
 import Address from '../src/model/address';
 import { Tuple } from '../src/model/tuple';
@@ -283,33 +284,147 @@ describe('4 Toward modular, reusable code', () => {
 
     describe('4.5.4 Coping with pure and impure code', () => {
       it('should use curry to separate invariant parts of the code', () => {
-        const findObject = R.curry(function(db, id) {
-          return {db, id};
+        const findObject = R.curry(function (db, id) {
+          return { db, id };
         });
 
         const findStudent = findObject('DATABASE');
         const csv = (student) => {
           return `${student.db}, ${student.id}`;
         }
-        
+
         const showStudent = R.compose(csv, findStudent);
 
         expect(showStudent('#42')).to.eql('DATABASE, #42');
       });
 
       it('should use R.pipe as reversed direction of R.compose', () => {
-        const findObject = R.curry(function(db, id) {
-          return {db, id};
+        const findObject = R.curry(function (db, id) {
+          return { db, id };
         });
 
         const findStudent = findObject('DATABASE');
         const csv = (student) => {
           return `${student.db}, ${student.id}`;
         }
-        
+
         const showStudent = R.pipe(findStudent, csv);
 
         expect(showStudent('#42')).to.eql('DATABASE, #42');
+      });
+    });
+
+    describe('4.5.5 Introducing point-free programming', () => {
+      it('should not use arguments, just flow of actions', () => {
+        let arr = ['B', 'D', 'C', 'C', 'A'];
+
+        const program = R.pipe(
+          R.map(R.toLower),
+          R.uniq,
+          R.sortBy(R.identity)
+        );
+
+        expect(program(arr)).to.eql(['a', 'b', 'c', 'd']);
+      });
+    });
+  });
+
+  describe('4.6 Managing control flow with functional combinators', () => {
+    describe('4.6.1 Identity (I-combinator)', () => {
+      it('should return same value as provided as an argument', () => {
+        const identity = (a) => a;
+
+        expect(identity('foo')).to.eql('foo');
+      });
+    });
+
+    describe('4.6.2 Tap (K-combinator)', () => {
+      it('should return same value as provided as an argument and call given function with this argument. Used to return same value in stream and perform side effect on it with given function', () => {
+        const tap = function (fn, obj) {
+          fn(obj);
+          return obj;
+        };
+
+        var spy = sinon.spy();
+
+        const tapped = tap(spy, 'counting..');
+
+        expect(tapped).to.eql('counting..');
+        expect(spy.calledWith('counting..')).to.be.true;
+      });
+    });
+
+    describe('4.6.3 Alternation (OR-combinator)', () => {
+      it('should make conditional logic. Returns result of first function given arg which has defined return value', () => {
+        const alt = (fn1, fn2) => {
+          return (val) => {
+            return fn1(val) || fn2(val);
+          }
+        }
+
+        const a = arg => arg === 'yes' ? 'fine' : null;
+        const b = arg => arg === 'no' ? 'nope' : null;
+
+        const alted = alt(a, b);
+
+        expect(alted('yes')).to.eql('fine');
+        expect(alted('no')).to.eql('nope');
+      });
+
+      it('should do alternative implementation with currying', () => {
+        const alt = R.curry(function (fn1, fn2, obj) {
+          return fn1(obj) || fn2(obj);
+        });
+
+        const a = arg => arg === 'yes' ? 'fine' : null;
+        const b = arg => arg === 'no' ? 'nope' : null;
+
+        const alted = alt(a, b);
+
+        expect(alted('yes')).to.eql('fine');
+        expect(alted('no')).to.eql('nope');
+      });
+    });
+
+    describe('4.6.4 Sequence (S-combinator)', () => {
+      it('should run all passed functions agains given argument. Does not return value, can use tap to bridge with rest of stream.', () => {
+        const seq = function (/* functions */) {
+          const funcs = Array.prototype.slice(arguments);
+
+          return function (val) {
+            funcs.forEach(function (fn) {
+              fn(val);
+            });
+          };
+
+          const spy1 = sinon.spy();
+          const spy2 = sinon.spy();
+          const spy3 = sinon.spy();
+
+          const sequed = seq(spy1, spy2, spy3);
+
+          expect(sequed('boo!')).to.be.undefined;
+
+          expect(spy1.calledWith('boo!')).to.be.true;
+          expect(spy2.calledWith('boo!')).to.be.true;
+          expect(spy3.calledWith('boo!')).to.be.true;
+        };
+      });
+    });
+
+    describe('4.6.5 Fork (join) combinator', () => {
+      it('should call join function with result of func1 and func2 functions, provided an argument', () => {
+        const fork = (join, fn1, fn2) => {
+          return (arg) => {
+            return join(fn1(arg), fn2(arg));
+          }
+        }
+
+        const grades = [1, 2, 3];
+
+        const computeAverageGrade = fork(R.divide, R.sum, R.length);
+
+        expect(computeAverageGrade(grades)).to.eql(2);
       });
     });
   });

@@ -52586,6 +52586,10 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
+	var _sinon = __webpack_require__(77);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
 	var _person = __webpack_require__(463);
 
 	var _person2 = _interopRequireDefault(_person);
@@ -52924,6 +52928,126 @@
 	        var showStudent = _ramda2.default.pipe(findStudent, csv);
 
 	        (0, _chai.expect)(showStudent('#42')).to.eql('DATABASE, #42');
+	      });
+	    });
+
+	    describe('4.5.5 Introducing point-free programming', function () {
+	      it('should not use arguments, just flow of actions', function () {
+	        var arr = ['B', 'D', 'C', 'C', 'A'];
+
+	        var program = _ramda2.default.pipe(_ramda2.default.map(_ramda2.default.toLower), _ramda2.default.uniq, _ramda2.default.sortBy(_ramda2.default.identity));
+
+	        (0, _chai.expect)(program(arr)).to.eql(['a', 'b', 'c', 'd']);
+	      });
+	    });
+	  });
+
+	  describe('4.6 Managing control flow with functional combinators', function () {
+	    describe('4.6.1 Identity (I-combinator)', function () {
+	      it('should return same value as provided as an argument', function () {
+	        var identity = function identity(a) {
+	          return a;
+	        };
+
+	        (0, _chai.expect)(identity('foo')).to.eql('foo');
+	      });
+	    });
+
+	    describe('4.6.2 Tap (K-combinator)', function () {
+	      it('should return same value as provided as an argument and call given function with this argument. Used to return same value in stream and perform side effect on it with given function', function () {
+	        var tap = function tap(fn, obj) {
+	          fn(obj);
+	          return obj;
+	        };
+
+	        var spy = _sinon2.default.spy();
+
+	        var tapped = tap(spy, 'counting..');
+
+	        (0, _chai.expect)(tapped).to.eql('counting..');
+	        (0, _chai.expect)(spy.calledWith('counting..')).to.be.true;
+	      });
+	    });
+
+	    describe('4.6.3 Alternation (OR-combinator)', function () {
+	      it('should make conditional logic. Returns result of first function given arg which has defined return value', function () {
+	        var alt = function alt(fn1, fn2) {
+	          return function (val) {
+	            return fn1(val) || fn2(val);
+	          };
+	        };
+
+	        var a = function a(arg) {
+	          return arg === 'yes' ? 'fine' : null;
+	        };
+	        var b = function b(arg) {
+	          return arg === 'no' ? 'nope' : null;
+	        };
+
+	        var alted = alt(a, b);
+
+	        (0, _chai.expect)(alted('yes')).to.eql('fine');
+	        (0, _chai.expect)(alted('no')).to.eql('nope');
+	      });
+
+	      it('should do alternative implementation with currying', function () {
+	        var alt = _ramda2.default.curry(function (fn1, fn2, obj) {
+	          return fn1(obj) || fn2(obj);
+	        });
+
+	        var a = function a(arg) {
+	          return arg === 'yes' ? 'fine' : null;
+	        };
+	        var b = function b(arg) {
+	          return arg === 'no' ? 'nope' : null;
+	        };
+
+	        var alted = alt(a, b);
+
+	        (0, _chai.expect)(alted('yes')).to.eql('fine');
+	        (0, _chai.expect)(alted('no')).to.eql('nope');
+	      });
+	    });
+
+	    describe('4.6.4 Sequence (S-combinator)', function () {
+	      it('should run all passed functions agains given argument. Does not return value, can use tap to bridge with rest of stream.', function () {
+	        var seq = function seq() /* functions */{
+	          var funcs = Array.prototype.slice(arguments);
+
+	          return function (val) {
+	            funcs.forEach(function (fn) {
+	              fn(val);
+	            });
+	          };
+
+	          var spy1 = _sinon2.default.spy();
+	          var spy2 = _sinon2.default.spy();
+	          var spy3 = _sinon2.default.spy();
+
+	          var sequed = seq(spy1, spy2, spy3);
+
+	          (0, _chai.expect)(sequed('boo!')).to.be.undefined;
+
+	          (0, _chai.expect)(spy1.calledWith('boo!')).to.be.true;
+	          (0, _chai.expect)(spy2.calledWith('boo!')).to.be.true;
+	          (0, _chai.expect)(spy3.calledWith('boo!')).to.be.true;
+	        };
+	      });
+	    });
+
+	    describe('4.6.5 Fork (join) combinator', function () {
+	      it('should call join function with result of func1 and func2 functions, provided an argument', function () {
+	        var fork = function fork(join, fn1, fn2) {
+	          return function (arg) {
+	            return join(fn1(arg), fn2(arg));
+	          };
+	        };
+
+	        var grades = [1, 2, 3];
+
+	        var computeAverageGrade = fork(_ramda2.default.divide, _ramda2.default.sum, _ramda2.default.length);
+
+	        (0, _chai.expect)(computeAverageGrade(grades)).to.eql(2);
 	      });
 	    });
 	  });
