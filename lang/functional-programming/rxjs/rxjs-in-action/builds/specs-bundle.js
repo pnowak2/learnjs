@@ -44,7 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	__webpack_require__(1);
+	module.exports = __webpack_require__(132);
 
 
 /***/ },
@@ -90,8 +91,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\mocha\\mocha.css", function() {
-			var newContent = require("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\mocha\\mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -10677,6 +10678,47 @@
 	};
 	process.umask = function() { return 0; };
 
+
+/***/ },
+/* 132 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(133)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('2 Reacting with RxJS', function () {
+	  describe('2.x ..', function () {
+	    describe('2.x.x xx', function () {
+	      it('should..', function (done) {});
+	    });
+	  });
+	});
 
 /***/ }
 /******/ ]);
