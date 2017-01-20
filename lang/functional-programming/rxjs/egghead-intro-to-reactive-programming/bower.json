@@ -1,0 +1,17 @@
+{
+  "name": "es6-webpack",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Piotr Nowak <p.nowak2@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/pnowak2/learnjs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
