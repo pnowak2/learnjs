@@ -5,7 +5,7 @@ describe('1 Thinking Reactively', () => {
   describe('1.1 Synchronous versus asynchronous computing', () => {
     describe('1.1.5 Event Emitters', () => {
       it('should use node EventEmitter', (done) => {
-        class Calculator extends EventEmitter {}
+        class Calculator extends EventEmitter { }
 
         const calc = new Calculator();
 
@@ -19,4 +19,19 @@ describe('1 Thinking Reactively', () => {
       });
     });
   });
+
+  describe("1.2 Better Callback With Promises", () => {
+    it('should use promise to do async operations without callback hell (but cannot abort, retry, etc..)', () => {
+      let promiseA = new Promise((resolve, fail) => {
+        resolve('a');
+      }).then((val) => {
+        return Promise.resolve(val + 'b');
+      }).then((val) => {
+        expect(val).to.eql('ab');
+      });
+
+      return promiseA;
+    });
+  });
+
 });
