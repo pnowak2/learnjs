@@ -34,4 +34,17 @@ describe('1 Thinking Reactively', () => {
     });
   });
 
+  describe("1.4 The RxJS (Reactive Extensions for JavaScript)", () => {
+    describe("1.4.1 Thinking in streams: data flows & propagation", () => {
+      it('should not be propagation of change in imperative programming', () => {
+        var a = 20;
+        var b = 22;
+        var c = a + b; //-> 42
+        a = 100;
+
+        expect(c).to.eql(42);
+      });
+    })
+  });
+
 });
