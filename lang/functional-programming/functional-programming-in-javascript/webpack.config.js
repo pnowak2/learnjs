@@ -5,7 +5,8 @@ module.exports = {
     'mocha!./specs/1-think-functionally.spec.js',
     'mocha!./specs/2-higher-order-javascript.spec.js',
     'mocha!./specs/3-few-data-structures-many-operations.spec.js',
-    'mocha!./specs/4-towards-modular-reusable-code.spec.js'
+    'mocha!./specs/4-towards-modular-reusable-code.spec.js',
+    'mocha!./specs/5-design-patterns-against-complexity.spec',
   ],
   output: {
     path: 'builds',

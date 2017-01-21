@@ -47,7 +47,8 @@
 	__webpack_require__(1);
 	__webpack_require__(55);
 	__webpack_require__(536);
-	module.exports = __webpack_require__(538);
+	__webpack_require__(538);
+	module.exports = __webpack_require__(551);
 
 
 /***/ },
@@ -93,8 +94,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/functional-programming-in-javascript/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -53010,7 +53011,7 @@
 	    });
 
 	    describe('4.6.4 Sequence (S-combinator)', function () {
-	      it('should run all passed functions agains given argument. Does not return value, can use tap to bridge with rest of stream.', function () {
+	      it('should run all passed functions against given argument. Does not return value, can use tap to bridge with rest of stream.', function () {
 	        var seq = function seq() /* functions */{
 	          var funcs = Array.prototype.slice(arguments);
 
@@ -53269,6 +53270,141 @@
 	    };
 	  };
 	};
+
+/***/ },
+/* 551 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(552)
+	__webpack_require__(53);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 552 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _chai = __webpack_require__(11);
+
+	var _ramda = __webpack_require__(154);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _sinon = __webpack_require__(77);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('5 Design Patterns Against Complexity', function () {
+	  describe('5.1 Shortfalls of imperative error handling', function () {
+	    describe('5.1.1 Error handling with try-catch', function () {
+	      it('should do try-catch in js', function () {
+	        try {
+	          throw new Error('boo!');
+	        } catch (e) {
+	          (0, _chai.expect)(e.message).to.eql('boo!');
+	        }
+	      });
+	    });
+	  });
+
+	  describe('5.2 Building a better solution: functors', function () {
+	    var Wrapper = function () {
+	      function Wrapper(value) {
+	        (0, _classCallCheck3.default)(this, Wrapper);
+
+	        this._value = value;
+	      }
+
+	      (0, _createClass3.default)(Wrapper, [{
+	        key: 'map',
+	        value: function map(fn) {
+	          return fn(this._value);
+	        }
+	      }, {
+	        key: 'fmap',
+	        value: function fmap(fn) {
+	          return wrap(fn(this._value));
+	        }
+	      }, {
+	        key: 'toString',
+	        value: function toString() {
+	          return 'Wrapper (' + this._value + ')';
+	        }
+	      }]);
+	      return Wrapper;
+	    }();
+
+	    var wrap = function wrap(val) {
+	      return new Wrapper(val);
+	    };
+
+	    describe('5.2.1 Wrapping unsafe values', function () {
+	      it('should create simple Wrapper', function () {
+	        var wrappedValue = wrap('hello world');
+
+	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.identity)).to.eql('hello world');
+	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.toUpper)).to.eql('HELLO WORLD');
+	      });
+
+	      it('should create a functor with fmap(). Returns wrapped value after fn from map was applied', function () {
+	        var wrappedValue = wrap('another world');
+	        // const result = '';
+	        var result = wrappedValue.fmap(_ramda2.default.toUpper).fmap(_ramda2.default.split(' ')).fmap(_ramda2.default.tap(function (val) {
+	          return console.log(val);
+	        })).map(_ramda2.default.identity);
+
+	        (0, _chai.expect)(result).to.eql(['ANOTHER', 'WORLD']);
+	      });
+
+	      it('should make simple add function with functor', function () {
+	        var add = _ramda2.default.curry(function (a, b) {
+	          return a + b;
+	        });
+	        var times = _ramda2.default.curry(function (n, a) {
+	          return n * a;
+	        });
+
+	        var add3 = add(3);
+
+	        var two = wrap(2);
+
+	        (0, _chai.expect)(two.fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(times(3)).fmap(_ramda2.default.tap(console.log)).map(_ramda2.default.identity)).to.eql(24);
+	      });
+	    });
+	  });
+
+	  describe('5.3 Functional error handling using monads', function () {
+	    describe('5.3.1 Monads: from control flow to data flow', function () {
+	      it('should..', function () {});
+	    });
+	  });
+	});
 
 /***/ }
 /******/ ]);
