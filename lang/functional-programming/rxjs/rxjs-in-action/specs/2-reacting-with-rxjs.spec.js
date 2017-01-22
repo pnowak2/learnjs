@@ -102,8 +102,18 @@ describe('2 Reacting with RxJS', () => {
           })
       });
 
-      it('should use Multi-Value, Asynchronous', () => {
-        
+      it('should use Multi-Value, Asynchronous', (done) => {
+        class Calculator extends EventEmitter { }
+
+        const calc = new Calculator();
+
+        Rx.Observable.fromEvent(calc, 'add')
+          .subscribe((val) => {
+            expect(val).to.eql([2, 3]);
+            done();
+          });
+
+        calc.emit('add', [2, 3]);
       });
     });
   });

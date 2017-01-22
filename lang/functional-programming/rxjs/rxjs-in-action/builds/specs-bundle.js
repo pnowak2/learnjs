@@ -10704,6 +10704,18 @@
 
 	'use strict';
 
+	var _classCallCheck2 = __webpack_require__(11);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(12);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(81);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
 	var _chai = __webpack_require__(89);
 
 	var _events = __webpack_require__(129);
@@ -10835,7 +10847,27 @@
 	        });
 	      });
 
-	      it('should use Multi-Value, Asynchronous', function () {});
+	      it('should use Multi-Value, Asynchronous', function (done) {
+	        var Calculator = function (_EventEmitter) {
+	          (0, _inherits3.default)(Calculator, _EventEmitter);
+
+	          function Calculator() {
+	            (0, _classCallCheck3.default)(this, Calculator);
+	            return (0, _possibleConstructorReturn3.default)(this, (Calculator.__proto__ || Object.getPrototypeOf(Calculator)).apply(this, arguments));
+	          }
+
+	          return Calculator;
+	        }(_events2.default);
+
+	        var calc = new Calculator();
+
+	        _rxjs2.default.Observable.fromEvent(calc, 'add').subscribe(function (val) {
+	          (0, _chai.expect)(val).to.eql([2, 3]);
+	          done();
+	        });
+
+	        calc.emit('add', [2, 3]);
+	      });
 	    });
 	  });
 	});
