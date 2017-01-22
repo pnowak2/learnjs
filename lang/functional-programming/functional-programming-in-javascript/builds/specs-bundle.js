@@ -53318,78 +53318,15 @@
 
 	var _sinon2 = _interopRequireDefault(_sinon);
 
+	var _functorWrapper = __webpack_require__(553);
+
+	var _monadFunctorWrapper = __webpack_require__(554);
+
+	var _maybe = __webpack_require__(555);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	describe('5 Design Patterns Against Complexity', function () {
-	  var Wrapper = function () {
-	    function Wrapper(value) {
-	      (0, _classCallCheck3.default)(this, Wrapper);
-
-	      this._value = value;
-	    }
-
-	    (0, _createClass3.default)(Wrapper, [{
-	      key: 'map',
-	      value: function map(fn) {
-	        return fn(this._value);
-	      }
-	    }, {
-	      key: 'fmap',
-	      value: function fmap(fn) {
-	        return wrap(fn(this._value));
-	      }
-	    }, {
-	      key: 'toString',
-	      value: function toString() {
-	        return 'Wrapper (' + this._value + ')';
-	      }
-	    }]);
-	    return Wrapper;
-	  }();
-
-	  var wrap = function wrap(val) {
-	    return new Wrapper(val);
-	  };
-
-	  var MWrapper = function () {
-	    function MWrapper(value) {
-	      (0, _classCallCheck3.default)(this, MWrapper);
-
-	      this._value = value;
-	    }
-
-	    (0, _createClass3.default)(MWrapper, [{
-	      key: 'map',
-	      value: function map(fn) {
-	        return MWrapper.of(fn(this._value));
-	      }
-	    }, {
-	      key: 'join',
-	      value: function join() {
-	        if (!(this._value instanceof MWrapper)) {
-	          return this;
-	        }
-
-	        return this._value.join();
-	      }
-	    }, {
-	      key: 'toString',
-	      value: function toString() {
-	        return 'MWrapper (' + this._value + ')';
-	      }
-	    }], [{
-	      key: 'of',
-	      value: function of(a) {
-	        return new MWrapper(a);
-	      }
-	    }]);
-	    return MWrapper;
-	  }();
-
-	  var mwrap = function mwrap(val) {
-	    return new MWrapper(val);
-	  };
-
 	  describe('5.1 Shortfalls of imperative error handling', function () {
 	    describe('5.1.1 Error handling with try-catch', function () {
 	      it('should do try-catch in js', function () {
@@ -53405,14 +53342,14 @@
 	  describe('5.2 Building a better solution: functors', function () {
 	    describe('5.2.1 Wrapping unsafe values', function () {
 	      it('should create simple Wrapper', function () {
-	        var wrappedValue = wrap('hello world');
+	        var wrappedValue = (0, _functorWrapper.wrap)('hello world');
 
 	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.identity)).to.eql('hello world');
 	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.toUpper)).to.eql('HELLO WORLD');
 	      });
 
 	      it('should create a functor with fmap(). Returns wrapped value after fn from map was applied', function () {
-	        var wrappedValue = wrap('another world');
+	        var wrappedValue = (0, _functorWrapper.wrap)('another world');
 	        // const result = '';
 	        var result = wrappedValue.fmap(_ramda2.default.toUpper).fmap(_ramda2.default.split(' ')).fmap(_ramda2.default.tap(function (val) {
 	          return console.log(val);
@@ -53431,7 +53368,7 @@
 
 	        var add3 = add(3);
 
-	        var two = wrap(2);
+	        var two = (0, _functorWrapper.wrap)(2);
 
 	        (0, _chai.expect)(two.fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(times(3)).fmap(_ramda2.default.tap(console.log)).map(_ramda2.default.identity)).to.eql(24);
 	      });
@@ -53491,17 +53428,17 @@
 	        };
 
 	        var findStudent = function findStudent() {
-	          return wrap(new Student('piotr', new Address('bruxelles')));
+	          return (0, _functorWrapper.wrap)(new Student('piotr', new Address('bruxelles')));
 	        };
 
 	        var getAddress = function getAddress(student) {
-	          return wrap(student.fmap(_ramda2.default.prop('address')));
+	          return (0, _functorWrapper.wrap)(student.fmap(_ramda2.default.prop('address')));
 	        };
 
 	        var studentAddress = _ramda2.default.compose(getAddress, findStudent);
 
-	        (0, _chai.expect)(studentAddress()).to.be.instanceof(Wrapper);
-	        (0, _chai.expect)(studentAddress().map(_ramda2.default.identity)).to.be.instanceof(Wrapper);
+	        (0, _chai.expect)(studentAddress()).to.be.instanceof(_functorWrapper.Wrapper);
+	        (0, _chai.expect)(studentAddress().map(_ramda2.default.identity)).to.be.instanceof(_functorWrapper.Wrapper);
 	        (0, _chai.expect)(studentAddress().map(_ramda2.default.identity).map(_ramda2.default.identity).city).to.eql('bruxelles');
 	      });
 	    });
@@ -53513,7 +53450,7 @@
 	          return this;
 	        };
 	        Empty.prototype.fmap = function () {
-	          return wrap(this);
+	          return (0, _functorWrapper.wrap)(this);
 	        };
 	        var empty = function empty() {
 	          return new Empty();
@@ -53523,10 +53460,10 @@
 	          return Number.isFinite(n) && n % 2 === 0;
 	        };
 	        var half = function half(val) {
-	          return isEven(val) ? wrap(val / 2) : empty();
+	          return isEven(val) ? (0, _functorWrapper.wrap)(val / 2) : empty();
 	        };
 
-	        (0, _chai.expect)(half(4)).to.be.instanceof(Wrapper);
+	        (0, _chai.expect)(half(4)).to.be.instanceof(_functorWrapper.Wrapper);
 	        (0, _chai.expect)(half(4).map(_ramda2.default.identity)).to.eql(2);
 
 	        (0, _chai.expect)(half(5)).to.be.instanceof(Empty);
@@ -53538,19 +53475,19 @@
 	      });
 
 	      it('should check new MWrapper (monad)', function () {
-	        var result = MWrapper.of('Hello Monads').map(_ramda2.default.toUpper).map(_ramda2.default.identity);
+	        var result = _monadFunctorWrapper.MonadWrapper.of('Hello Monads').map(_ramda2.default.toUpper).map(_ramda2.default.identity);
 
 	        (0, _chai.expect)(result._value).to.eql('HELLO MONADS');
 	      });
 
-	      it('should use MWrapper.join() to flatten nested structures of MWrappers', function () {
-	        var fortyTwo = mwrap(42);
-	        var doubleWrappedFortyTwo = mwrap(fortyTwo);
-	        var tripleWrappedFortyTwo = mwrap(doubleWrappedFortyTwo);
+	      it('should use MonadWrapper.join() to flatten nested structures of MWrappers', function () {
+	        var fortyTwo = (0, _monadFunctorWrapper.monadwrap)(42);
+	        var doubleWrappedFortyTwo = (0, _monadFunctorWrapper.monadwrap)(fortyTwo);
+	        var tripleWrappedFortyTwo = (0, _monadFunctorWrapper.monadwrap)(doubleWrappedFortyTwo);
 
-	        (0, _chai.expect)(tripleWrappedFortyTwo).to.be.instanceof(MWrapper);
-	        (0, _chai.expect)(tripleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
-	        (0, _chai.expect)(tripleWrappedFortyTwo._value._value).to.be.instanceof(MWrapper);
+	        (0, _chai.expect)(tripleWrappedFortyTwo).to.be.instanceof(_monadFunctorWrapper.MonadWrapper);
+	        (0, _chai.expect)(tripleWrappedFortyTwo._value).to.be.instanceof(_monadFunctorWrapper.MonadWrapper);
+	        (0, _chai.expect)(tripleWrappedFortyTwo._value._value).to.be.instanceof(_monadFunctorWrapper.MonadWrapper);
 
 	        (0, _chai.expect)(tripleWrappedFortyTwo.join()._value).to.eql(42);
 	      });
@@ -53563,10 +53500,442 @@
 	    });
 
 	    describe('5.3.2 Error handling with Maybe and Either monads', function () {
-	      it('should..', function () {});
+	      describe('Just Monad', function () {
+	        describe('API', function () {
+	          describe('.of()', function () {
+	            it('should wrap value to Just type', function () {
+	              (0, _chai.expect)(_maybe.Maybe.of(5)).to.be.instanceof(_maybe.Just);
+	              (0, _chai.expect)(_maybe.Maybe.of(5)).to.be.instanceof(_maybe.Maybe);
+	            });
+
+	            it('should lift value to functor and retrieve with .value', function () {
+	              (0, _chai.expect)(_maybe.Maybe.of(5).value).to.eql(5);
+	            });
+	          });
+
+	          describe('.just()', function () {
+	            it('should wrap value to Just type', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5)).to.be.instanceof(_maybe.Just);
+	              (0, _chai.expect)(_maybe.Maybe.just(5)).to.be.instanceof(_maybe.Maybe);
+	            });
+
+	            it('should lift value to functor and retrieve with .value', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5).value).to.eql(5);
+	            });
+	          });
+
+	          describe('.fromNullable()', function () {
+	            it('should return Just if val is defined', function () {
+	              (0, _chai.expect)(_maybe.Maybe.fromNullable('foo')).to.be.instanceof(_maybe.Just);
+	            });
+
+	            it('should return Just with proper value if val is defined', function () {
+	              (0, _chai.expect)(_maybe.Maybe.fromNullable('foo').value).to.eql('foo');
+	            });
+
+	            it('should return Nothing if val is not defined', function () {
+	              (0, _chai.expect)(_maybe.Maybe.fromNullable(null)).to.be.instanceof(_maybe.Nothing);
+	            });
+	          });
+
+	          describe('.isJust()', function () {
+	            it('should return true for Just instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5).isJust).to.be.true;
+	            });
+
+	            it('should return false for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing().isJust).to.be.false;
+	            });
+	          });
+
+	          describe('.isNothing()', function () {
+	            it('should return true for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing().isNothing).to.be.true;
+	            });
+
+	            it('should return false for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5).isNothing).to.be.false;
+	            });
+	          });
+
+	          describe('.map()', function () {
+	            it('should return wrapped instance of value', function () {
+	              var result = _maybe.Maybe.just(5).map(function (val) {
+	                return val * val;
+	              });
+
+	              (0, _chai.expect)(result).to.be.instanceof(_maybe.Just);
+	            });
+
+	            it('should map value provided', function () {
+	              var result = _maybe.Maybe.just(5).map(function (val) {
+	                return val * val;
+	              });
+
+	              (0, _chai.expect)(result.value).to.eql(25);
+	            });
+	          });
+
+	          describe('.getOrElse()', function () {
+	            it('should return always wrapped value', function () {
+	              var result = _maybe.Maybe.just(5).getOrElse(6);
+
+	              (0, _chai.expect)(result).to.eql(5);
+	            });
+
+	            it('should return wrapped value even if other is provided', function () {
+	              var result = _maybe.Maybe.just(5).getOrElse(6);
+
+	              (0, _chai.expect)(result).to.eql(5);
+	            });
+	          });
+
+	          describe('.filter()', function () {
+	            it('should return Nothing if filter function returned false', function () {
+	              var result = _maybe.Maybe.just('hello').filter(function (val) {
+	                return val !== 'hello';
+	              });
+
+	              (0, _chai.expect)(result).to.be.instanceof(_maybe.Nothing);
+	            });
+
+	            it('should return value if filter function returned true', function () {
+	              var result = _maybe.Maybe.just('hello').filter(function (val) {
+	                return val === 'hello';
+	              });
+
+	              (0, _chai.expect)(result).to.be.instanceof(_maybe.Just);
+	              (0, _chai.expect)(result.value).to.eql('hello');
+	            });
+	          });
+	        });
+	      });
+
+	      describe('Nothing Monad', function () {
+	        describe('API', function () {
+	          describe('.nothing()', function () {
+	            it('should return Nothing type', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing()).to.be.instanceof(_maybe.Nothing);
+	            });
+
+	            it('should have value undefined', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing()._value).to.be.undefined;
+	            });
+
+	            it('should throw if tried to get value', function () {
+	              (0, _chai.expect)(function () {
+	                _maybe.Maybe.nothing().value;
+	              }).to.throw();
+	            });
+	          });
+
+	          describe('.isJust()', function () {
+	            it('should return true for Just instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5).isJust).to.be.true;
+	            });
+
+	            it('should return false for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing().isJust).to.be.false;
+	            });
+	          });
+
+	          describe('.isNothing()', function () {
+	            it('should return true for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.nothing().isNothing).to.be.true;
+	            });
+
+	            it('should return false for Nothing instance', function () {
+	              (0, _chai.expect)(_maybe.Maybe.just(5).isNothing).to.be.false;
+	            });
+	          });
+
+	          describe('.getOrElse()', function () {
+	            it('should return always other value', function () {
+	              var result = _maybe.Maybe.nothing().getOrElse(6);
+
+	              (0, _chai.expect)(result).to.eql(6);
+	            });
+	          });
+
+	          describe('.filter()', function () {
+	            it('should return undefined if filter function returned false', function () {
+	              var result = _maybe.Maybe.nothing().filter(_ramda2.default.identity);
+
+	              (0, _chai.expect)(result).to.be.undefined;
+	            });
+	          });
+	        });
+	      });
 	    });
 	  });
 	});
+
+/***/ },
+/* 553 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.wrap = exports.Wrapper = undefined;
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Wrapper = exports.Wrapper = function () {
+	    function Wrapper(value) {
+	        (0, _classCallCheck3.default)(this, Wrapper);
+
+	        this._value = value;
+	    }
+
+	    (0, _createClass3.default)(Wrapper, [{
+	        key: "map",
+	        value: function map(fn) {
+	            return fn(this._value);
+	        }
+	    }, {
+	        key: "fmap",
+	        value: function fmap(fn) {
+	            return wrap(fn(this._value));
+	        }
+	    }, {
+	        key: "toString",
+	        value: function toString() {
+	            return "Wrapper (" + this._value + ")";
+	        }
+	    }]);
+	    return Wrapper;
+	}();
+
+	var wrap = exports.wrap = function wrap(val) {
+	    return new Wrapper(val);
+	};
+
+/***/ },
+/* 554 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.monadwrap = exports.MonadWrapper = undefined;
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MonadWrapper = exports.MonadWrapper = function () {
+	    function MonadWrapper(value) {
+	        (0, _classCallCheck3.default)(this, MonadWrapper);
+
+	        this._value = value;
+	    }
+
+	    (0, _createClass3.default)(MonadWrapper, [{
+	        key: "map",
+	        value: function map(fn) {
+	            return MonadWrapper.of(fn(this._value));
+	        }
+	    }, {
+	        key: "join",
+	        value: function join() {
+	            if (!(this._value instanceof MonadWrapper)) {
+	                return this;
+	            }
+
+	            return this._value.join();
+	        }
+	    }, {
+	        key: "toString",
+	        value: function toString() {
+	            return "MWrapper (" + this._value + ")";
+	        }
+	    }], [{
+	        key: "of",
+	        value: function of(a) {
+	            return new MonadWrapper(a);
+	        }
+	    }]);
+	    return MonadWrapper;
+	}();
+
+	var monadwrap = exports.monadwrap = function monadwrap(val) {
+	    return new MonadWrapper(val);
+	};
+
+/***/ },
+/* 555 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Nothing = exports.Just = exports.Maybe = undefined;
+
+	var _possibleConstructorReturn2 = __webpack_require__(465);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(527);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Maybe = exports.Maybe = function () {
+	  function Maybe() {
+	    (0, _classCallCheck3.default)(this, Maybe);
+	  }
+
+	  (0, _createClass3.default)(Maybe, [{
+	    key: "isNothing",
+	    get: function get() {
+	      return false;
+	    }
+	  }, {
+	    key: "isJust",
+	    get: function get() {
+	      return false;
+	    }
+	  }], [{
+	    key: "just",
+	    value: function just(a) {
+	      return new Just(a);
+	    }
+	  }, {
+	    key: "nothing",
+	    value: function nothing() {
+	      return new Nothing();
+	    }
+	  }, {
+	    key: "fromNullable",
+	    value: function fromNullable(a) {
+	      return a !== null ? Maybe.just(a) : Maybe.nothing();
+	    }
+	  }, {
+	    key: "of",
+	    value: function of(a) {
+	      return Maybe.just(a);
+	    }
+	  }]);
+	  return Maybe;
+	}();
+
+	var Just = exports.Just = function (_Maybe) {
+	  (0, _inherits3.default)(Just, _Maybe);
+
+	  function Just(value) {
+	    (0, _classCallCheck3.default)(this, Just);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Just.__proto__ || Object.getPrototypeOf(Just)).call(this));
+
+	    _this._value = value;
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(Just, [{
+	    key: "map",
+	    value: function map(fn) {
+	      return Maybe.of(fn(this._value));
+	    }
+	  }, {
+	    key: "getOrElse",
+	    value: function getOrElse() {
+	      return this._value;
+	    }
+	  }, {
+	    key: "filter",
+	    value: function filter(fn) {
+	      return Maybe.fromNullable(fn(this._value) ? this.value : null);
+	    }
+	  }, {
+	    key: "toString",
+	    value: function toString() {
+	      return "Maybe.Just(" + this._value + ")";
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this._value;
+	    }
+	  }, {
+	    key: "isJust",
+	    get: function get() {
+	      return true;
+	    }
+	  }]);
+	  return Just;
+	}(Maybe);
+
+	var Nothing = exports.Nothing = function (_Maybe2) {
+	  (0, _inherits3.default)(Nothing, _Maybe2);
+
+	  function Nothing() {
+	    (0, _classCallCheck3.default)(this, Nothing);
+	    return (0, _possibleConstructorReturn3.default)(this, (Nothing.__proto__ || Object.getPrototypeOf(Nothing)).apply(this, arguments));
+	  }
+
+	  (0, _createClass3.default)(Nothing, [{
+	    key: "map",
+	    value: function map(fn) {
+	      return this;
+	    }
+	  }, {
+	    key: "getOrElse",
+	    value: function getOrElse(other) {
+	      return other;
+	    }
+	  }, {
+	    key: "filter",
+	    value: function filter() {
+	      return this._value;
+	    }
+	  }, {
+	    key: "toString",
+	    value: function toString() {
+	      return "Maybe.Nothing";
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      throw new TypeError("Can't extract the value of a Nothing");
+	    }
+	  }, {
+	    key: "isNothing",
+	    get: function get() {
+	      return true;
+	    }
+	  }]);
+	  return Nothing;
+	}(Maybe);
 
 /***/ }
 /******/ ]);

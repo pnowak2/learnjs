@@ -2,56 +2,11 @@ import { expect } from 'chai';
 import R from 'ramda';
 import _ from 'lodash';
 import sinon from 'sinon';
+import { Wrapper, wrap } from '../src/model/functor-wrapper';
+import { MonadWrapper, monadwrap } from '../src/model/monad-functor-wrapper';
+import { Maybe, Just, Nothing } from '../src/model/monads/maybe.monad';
 
 describe('5 Design Patterns Against Complexity', () => {
-
-  class Wrapper {
-    constructor(value) {
-      this._value = value
-    }
-
-    map(fn) {
-      return fn(this._value)
-    }
-
-    fmap(fn) {
-      return wrap(fn(this._value));
-    }
-
-    toString() {
-      return `Wrapper (${this._value})`;
-    }
-  }
-
-  const wrap = (val) => new Wrapper(val);
-
-  class MWrapper {
-    constructor(value) {
-      this._value = value
-    }
-
-    static of(a) {
-      return new MWrapper(a);
-    }
-
-    map(fn) {
-      return MWrapper.of(fn(this._value));
-    }
-
-    join() {
-      if (!(this._value instanceof MWrapper)) {
-        return this;
-      }
-
-      return this._value.join();
-    }
-
-    toString() {
-      return `MWrapper (${this._value})`;
-    }
-  }
-  const mwrap = (val) => new MWrapper(val);
-
   describe('5.1 Shortfalls of imperative error handling', () => {
     describe('5.1.1 Error handling with try-catch', () => {
       it('should do try-catch in js', () => {
@@ -191,22 +146,22 @@ describe('5 Design Patterns Against Complexity', () => {
       });
 
       it('should check new MWrapper (monad)', () => {
-        const result = MWrapper.of('Hello Monads')
+        const result = MonadWrapper.of('Hello Monads')
           .map(R.toUpper)
           .map(R.identity);
 
         expect(result._value).to.eql('HELLO MONADS');
       });
 
-      it('should use MWrapper.join() to flatten nested structures of MWrappers', () => {
-        const fortyTwo = mwrap(42);
-        const doubleWrappedFortyTwo = mwrap(fortyTwo);
-        const tripleWrappedFortyTwo = mwrap(doubleWrappedFortyTwo);
-        
-        expect(tripleWrappedFortyTwo).to.be.instanceof(MWrapper);
-        expect(tripleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
-        expect(tripleWrappedFortyTwo._value._value).to.be.instanceof(MWrapper);
-        
+      it('should use MonadWrapper.join() to flatten nested structures of MWrappers', () => {
+        const fortyTwo = monadwrap(42);
+        const doubleWrappedFortyTwo = monadwrap(fortyTwo);
+        const tripleWrappedFortyTwo = monadwrap(doubleWrappedFortyTwo);
+
+        expect(tripleWrappedFortyTwo).to.be.instanceof(MonadWrapper);
+        expect(tripleWrappedFortyTwo._value).to.be.instanceof(MonadWrapper);
+        expect(tripleWrappedFortyTwo._value._value).to.be.instanceof(MonadWrapper);
+
         expect(tripleWrappedFortyTwo.join()._value).to.eql(42);
       });
 
@@ -218,8 +173,171 @@ describe('5 Design Patterns Against Complexity', () => {
     });
 
     describe('5.3.2 Error handling with Maybe and Either monads', () => {
-      it('should..', () => {
-        
+      describe('Just Monad', () => {
+        describe('API', () => {
+          describe('.of()', () => {
+            it('should wrap value to Just type', () => {
+              expect(Maybe.of(5)).to.be.instanceof(Just);
+              expect(Maybe.of(5)).to.be.instanceof(Maybe);
+            });
+
+            it('should lift value to functor and retrieve with .value', () => {
+              expect(Maybe.of(5).value).to.eql(5);
+            });
+          });
+
+          describe('.just()', () => {
+            it('should wrap value to Just type', () => {
+              expect(Maybe.just(5)).to.be.instanceof(Just);
+              expect(Maybe.just(5)).to.be.instanceof(Maybe);
+            });
+
+            it('should lift value to functor and retrieve with .value', () => {
+              expect(Maybe.just(5).value).to.eql(5);
+            });
+          });
+
+          describe('.fromNullable()', () => {
+            it('should return Just if val is defined', () => {
+              expect(Maybe.fromNullable('foo')).to.be.instanceof(Just);
+            });
+
+            it('should return Just with proper value if val is defined', () => {
+              expect(Maybe.fromNullable('foo').value).to.eql('foo');
+            });
+
+            it('should return Nothing if val is not defined', () => {
+              expect(Maybe.fromNullable(null)).to.be.instanceof(Nothing);
+            });
+          });
+
+          describe('.isJust()', () => {
+            it('should return true for Just instance', () => {
+              expect(Maybe.just(5).isJust).to.be.true;
+            });
+
+            it('should return false for Nothing instance', () => {
+              expect(Maybe.nothing().isJust).to.be.false;
+            });
+          });
+
+          describe('.isNothing()', () => {
+            it('should return true for Nothing instance', () => {
+              expect(Maybe.nothing().isNothing).to.be.true;
+            });
+
+            it('should return false for Nothing instance', () => {
+              expect(Maybe.just(5).isNothing).to.be.false;
+            });
+          });
+
+          describe('.map()', () => {
+            it('should return wrapped instance of value', () => {
+              let result = Maybe.just(5)
+                .map(val => val * val);
+
+              expect(result).to.be.instanceof(Just);
+            });
+
+            it('should map value provided', () => {
+              let result = Maybe.just(5)
+                .map(val => val * val);
+
+              expect(result.value).to.eql(25)
+            });
+          });
+
+          describe('.getOrElse()', () => {
+            it('should return always wrapped value', () => {
+              let result = Maybe.just(5)
+                .getOrElse(6);
+
+              expect(result).to.eql(5);
+            });
+
+            it('should return wrapped value even if other is provided', () => {
+              let result = Maybe.just(5)
+                .getOrElse(6);
+
+              expect(result).to.eql(5);
+            });
+          });
+
+          describe('.filter()', () => {
+            it('should return Nothing if filter function returned false', () => {
+              let result = Maybe.just('hello')
+                .filter(val => val !== 'hello');
+
+              expect(result).to.be.instanceof(Nothing);
+            });
+
+            it('should return value if filter function returned true', () => {
+              let result = Maybe.just('hello')
+                .filter(val => val === 'hello');
+
+              expect(result).to.be.instanceof(Just);
+              expect(result.value).to.eql('hello');
+            });
+          });
+        });
+      });
+
+      describe('Nothing Monad', () => {
+        describe('API', () => {
+          describe('.nothing()', () => {
+            it('should return Nothing type', () => {
+              expect(Maybe.nothing()).to.be.instanceof(Nothing);
+            });
+
+            it('should have value undefined', () => {
+              expect(Maybe.nothing()._value).to.be.undefined;
+            });
+
+            it('should throw if tried to get value', () => {
+              expect(function () {
+                Maybe.nothing().value;
+              }).to.throw();
+            });
+          });
+
+          describe('.isJust()', () => {
+            it('should return true for Just instance', () => {
+              expect(Maybe.just(5).isJust).to.be.true;
+            });
+
+            it('should return false for Nothing instance', () => {
+              expect(Maybe.nothing().isJust).to.be.false;
+            });
+          });
+
+          describe('.isNothing()', () => {
+            it('should return true for Nothing instance', () => {
+              expect(Maybe.nothing().isNothing).to.be.true;
+            });
+
+            it('should return false for Nothing instance', () => {
+              expect(Maybe.just(5).isNothing).to.be.false;
+            });
+          });
+
+          describe('.getOrElse()', () => {
+            it('should return always other value', () => {
+              let result = Maybe.nothing()
+                .getOrElse(6);
+
+              expect(result).to.eql(6);
+            });
+          });
+
+          describe('.filter()', () => {
+            it('should return undefined if filter function returned false', () => {
+              let result = Maybe.nothing()
+                .filter(R.identity);
+
+              expect(result).to.be.undefined;
+            });
+          });
+        });
       });
     });
   });
