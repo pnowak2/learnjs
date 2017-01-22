@@ -201,9 +201,13 @@ describe('5 Design Patterns Against Complexity', () => {
       it('should use MWrapper.join() to flatten nested structures of MWrappers', () => {
         const fortyTwo = mwrap(42);
         const doubleWrappedFortyTwo = mwrap(fortyTwo);
+        const tripleWrappedFortyTwo = mwrap(doubleWrappedFortyTwo);
         
-        expect(doubleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
-        expect(doubleWrappedFortyTwo.join()._value).to.eql(42);
+        expect(tripleWrappedFortyTwo).to.be.instanceof(MWrapper);
+        expect(tripleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
+        expect(tripleWrappedFortyTwo._value._value).to.be.instanceof(MWrapper);
+        
+        expect(tripleWrappedFortyTwo.join()._value).to.eql(42);
       });
 
       it('should use array flatten analogy', () => {

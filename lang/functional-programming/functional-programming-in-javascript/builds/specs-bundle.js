@@ -53546,9 +53546,13 @@
 	      it('should use MWrapper.join() to flatten nested structures of MWrappers', function () {
 	        var fortyTwo = mwrap(42);
 	        var doubleWrappedFortyTwo = mwrap(fortyTwo);
+	        var tripleWrappedFortyTwo = mwrap(doubleWrappedFortyTwo);
 
-	        (0, _chai.expect)(doubleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
-	        (0, _chai.expect)(doubleWrappedFortyTwo.join()._value).to.eql(42);
+	        (0, _chai.expect)(tripleWrappedFortyTwo).to.be.instanceof(MWrapper);
+	        (0, _chai.expect)(tripleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
+	        (0, _chai.expect)(tripleWrappedFortyTwo._value._value).to.be.instanceof(MWrapper);
+
+	        (0, _chai.expect)(tripleWrappedFortyTwo.join()._value).to.eql(42);
 	      });
 
 	      it('should use array flatten analogy', function () {
