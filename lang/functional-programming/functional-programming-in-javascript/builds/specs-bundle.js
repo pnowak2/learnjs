@@ -53649,6 +53649,15 @@
 	            });
 	          });
 
+	          describe('.map()', function () {
+	            it('should return (nothing) itself', function () {
+	              var nthg = _maybe.Maybe.nothing();
+	              var result = nthg.map(_ramda2.default.identity);
+
+	              (0, _chai.expect)(result).to.equal(nthg);
+	            });
+	          });
+
 	          describe('.getOrElse()', function () {
 	            it('should return always other value', function () {
 	              var result = _maybe.Maybe.nothing().getOrElse(6);

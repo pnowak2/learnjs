@@ -320,6 +320,15 @@ describe('5 Design Patterns Against Complexity', () => {
             });
           });
 
+          describe('.map()', () => {
+            it('should return (nothing) itself', () => {
+              let nthg = Maybe.nothing();
+              let result = nthg.map(R.identity);
+
+              expect(result).to.equal(nthg);
+            });
+          });
+
           describe('.getOrElse()', () => {
             it('should return always other value', () => {
               let result = Maybe.nothing()
