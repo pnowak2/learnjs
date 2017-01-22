@@ -47,7 +47,8 @@
 	__webpack_require__(1);
 	__webpack_require__(55);
 	__webpack_require__(536);
-	module.exports = __webpack_require__(538);
+	__webpack_require__(538);
+	module.exports = __webpack_require__(551);
 
 
 /***/ },
@@ -53269,6 +53270,299 @@
 	    };
 	  };
 	};
+
+/***/ },
+/* 551 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(552)
+	__webpack_require__(53);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 552 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _chai = __webpack_require__(11);
+
+	var _ramda = __webpack_require__(154);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _sinon = __webpack_require__(77);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('5 Design Patterns Against Complexity', function () {
+	  var Wrapper = function () {
+	    function Wrapper(value) {
+	      (0, _classCallCheck3.default)(this, Wrapper);
+
+	      this._value = value;
+	    }
+
+	    (0, _createClass3.default)(Wrapper, [{
+	      key: 'map',
+	      value: function map(fn) {
+	        return fn(this._value);
+	      }
+	    }, {
+	      key: 'fmap',
+	      value: function fmap(fn) {
+	        return wrap(fn(this._value));
+	      }
+	    }, {
+	      key: 'toString',
+	      value: function toString() {
+	        return 'Wrapper (' + this._value + ')';
+	      }
+	    }]);
+	    return Wrapper;
+	  }();
+
+	  var wrap = function wrap(val) {
+	    return new Wrapper(val);
+	  };
+
+	  var MWrapper = function () {
+	    function MWrapper(value) {
+	      (0, _classCallCheck3.default)(this, MWrapper);
+
+	      this._value = value;
+	    }
+
+	    (0, _createClass3.default)(MWrapper, [{
+	      key: 'map',
+	      value: function map(fn) {
+	        return MWrapper.of(fn(this._value));
+	      }
+	    }, {
+	      key: 'join',
+	      value: function join() {
+	        if (!(this._value instanceof MWrapper)) {
+	          return this;
+	        }
+
+	        return this._value.join();
+	      }
+	    }, {
+	      key: 'toString',
+	      value: function toString() {
+	        return 'MWrapper (' + this._value + ')';
+	      }
+	    }], [{
+	      key: 'of',
+	      value: function of(a) {
+	        return new MWrapper(a);
+	      }
+	    }]);
+	    return MWrapper;
+	  }();
+
+	  var mwrap = function mwrap(val) {
+	    return new MWrapper(val);
+	  };
+
+	  describe('5.1 Shortfalls of imperative error handling', function () {
+	    describe('5.1.1 Error handling with try-catch', function () {
+	      it('should do try-catch in js', function () {
+	        try {
+	          throw new Error('boo!');
+	        } catch (e) {
+	          (0, _chai.expect)(e.message).to.eql('boo!');
+	        }
+	      });
+	    });
+	  });
+
+	  describe('5.2 Building a better solution: functors', function () {
+	    describe('5.2.1 Wrapping unsafe values', function () {
+	      it('should create simple Wrapper', function () {
+	        var wrappedValue = wrap('hello world');
+
+	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.identity)).to.eql('hello world');
+	        (0, _chai.expect)(wrappedValue.map(_ramda2.default.toUpper)).to.eql('HELLO WORLD');
+	      });
+
+	      it('should create a functor with fmap(). Returns wrapped value after fn from map was applied', function () {
+	        var wrappedValue = wrap('another world');
+	        // const result = '';
+	        var result = wrappedValue.fmap(_ramda2.default.toUpper).fmap(_ramda2.default.split(' ')).fmap(_ramda2.default.tap(function (val) {
+	          return console.log(val);
+	        })).map(_ramda2.default.identity);
+
+	        (0, _chai.expect)(result).to.eql(['ANOTHER', 'WORLD']);
+	      });
+
+	      it('should make simple add function with functor', function () {
+	        var add = _ramda2.default.curry(function (a, b) {
+	          return a + b;
+	        });
+	        var times = _ramda2.default.curry(function (n, a) {
+	          return n * a;
+	        });
+
+	        var add3 = add(3);
+
+	        var two = wrap(2);
+
+	        (0, _chai.expect)(two.fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(add3).fmap(_ramda2.default.tap(console.log)).fmap(times(3)).fmap(_ramda2.default.tap(console.log)).map(_ramda2.default.identity)).to.eql(24);
+	      });
+	    });
+	  });
+
+	  describe('5.3 Functional error handling using monads', function () {
+	    var Student = function () {
+	      function Student(name, address) {
+	        (0, _classCallCheck3.default)(this, Student);
+
+	        this._name = name;
+	        this._address = address;
+	      }
+
+	      (0, _createClass3.default)(Student, [{
+	        key: 'name',
+	        get: function get() {
+	          return this._name;
+	        }
+	      }, {
+	        key: 'address',
+	        get: function get() {
+	          return this._address;
+	        }
+	      }]);
+	      return Student;
+	    }();
+
+	    var Address = function () {
+	      function Address(city) {
+	        (0, _classCallCheck3.default)(this, Address);
+
+	        this._city = city;
+	      }
+
+	      (0, _createClass3.default)(Address, [{
+	        key: 'city',
+	        get: function get() {
+	          return this._city;
+	        }
+	      }]);
+	      return Address;
+	    }();
+
+	    describe('Reveal problem with nested functors with wrap()', function () {
+	      it('should check Student and Address Classes', function () {
+	        var s = new Student('piotr', new Address('bruxelles'));
+
+	        (0, _chai.expect)(s.name).to.eql('piotr');
+	        (0, _chai.expect)(s.address.city).to.eql('bruxelles');
+	      });
+
+	      it('should notice problem with nested Wrapper (functors)', function () {
+	        var find = function find(db, ssn) {
+	          return new Student('piotr', new Address('bruxelles'));
+	        };
+
+	        var findStudent = function findStudent() {
+	          return wrap(new Student('piotr', new Address('bruxelles')));
+	        };
+
+	        var getAddress = function getAddress(student) {
+	          return wrap(student.fmap(_ramda2.default.prop('address')));
+	        };
+
+	        var studentAddress = _ramda2.default.compose(getAddress, findStudent);
+
+	        (0, _chai.expect)(studentAddress()).to.be.instanceof(Wrapper);
+	        (0, _chai.expect)(studentAddress().map(_ramda2.default.identity)).to.be.instanceof(Wrapper);
+	        (0, _chai.expect)(studentAddress().map(_ramda2.default.identity).map(_ramda2.default.identity).city).to.eql('bruxelles');
+	      });
+	    });
+
+	    describe('5.3.1 Monads: from control flow to data flow', function () {
+	      it('should create Empty monad with Wrapper', function () {
+	        var Empty = function Empty(_) {};
+	        Empty.prototype.map = function () {
+	          return this;
+	        };
+	        Empty.prototype.fmap = function () {
+	          return wrap(this);
+	        };
+	        var empty = function empty() {
+	          return new Empty();
+	        };
+
+	        var isEven = function isEven(n) {
+	          return Number.isFinite(n) && n % 2 === 0;
+	        };
+	        var half = function half(val) {
+	          return isEven(val) ? wrap(val / 2) : empty();
+	        };
+
+	        (0, _chai.expect)(half(4)).to.be.instanceof(Wrapper);
+	        (0, _chai.expect)(half(4).map(_ramda2.default.identity)).to.eql(2);
+
+	        (0, _chai.expect)(half(5)).to.be.instanceof(Empty);
+	        (0, _chai.expect)(half(5).map(_ramda2.default.identity)).to.be.instanceof(Empty);
+
+	        (0, _chai.expect)(half(16).fmap(function (val) {
+	          return val / 2;
+	        }).map(_ramda2.default.identity)).to.eql(4);
+	      });
+
+	      it('should check new MWrapper (monad)', function () {
+	        var result = MWrapper.of('Hello Monads').map(_ramda2.default.toUpper).map(_ramda2.default.identity);
+
+	        (0, _chai.expect)(result._value).to.eql('HELLO MONADS');
+	      });
+
+	      it('should use MWrapper.join() to flatten nested structures of MWrappers', function () {
+	        var fortyTwo = mwrap(42);
+	        var doubleWrappedFortyTwo = mwrap(fortyTwo);
+
+	        (0, _chai.expect)(doubleWrappedFortyTwo._value).to.be.instanceof(MWrapper);
+	        (0, _chai.expect)(doubleWrappedFortyTwo.join()._value).to.eql(42);
+	      });
+
+	      it('should use array flatten analogy', function () {
+	        var result = _ramda2.default.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+
+	        (0, _chai.expect)(result).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+	      });
+	    });
+
+	    describe('5.3.2 Error handling with Maybe and Either monads', function () {
+	      it('should..', function () {});
+	    });
+	  });
+	});
 
 /***/ }
 /******/ ]);
