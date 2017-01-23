@@ -348,6 +348,123 @@ describe('5 Design Patterns Against Complexity', () => {
           });
         });
       });
+
+      describe('Using Maybe Monad (to prevent null checks and error handling)', () => {
+        it('should return optional (Maybe.Nothing) from uncertain function', () => {
+          const find = (id) => {
+            return null;
+          }
+
+          const findStudent = (id) => {
+            return Maybe.fromNullable(find(id))
+          }
+
+          expect(findStudent('5')).to.be.instanceof(Nothing);
+        });
+
+        it('should return optional (Maybe.Just) from uncertain function', () => {
+          const find = (id) => {
+            return 'student' + id;
+          }
+
+          const findStudent = (id) => {
+            return Maybe.fromNullable(find(id))
+          }
+
+          expect(findStudent('2')).to.be.instanceof(Just);
+          expect(findStudent('2').value).to.eql('student2');
+        });
+
+        it('should protect from nulls', () => {
+          const find = (id) => {
+            return null;
+          }
+
+          const findStudent = (id) => {
+            return Maybe.fromNullable(find(id))
+          }
+
+          let result = findStudent('5').getOrElse('student other');
+
+          expect(result).to.eql('student other');
+        });
+
+        it('should use in chains with optimistic find', () => {
+          const find = (id) => {
+            return {
+              id: 5,
+              name: 'piotr',
+              school: {
+                address: {
+                  country: 'Poland'
+                }
+              }
+            };
+          }
+
+          const safeFindStudent = (id) => {
+            return Maybe.fromNullable(find(id))
+          }
+
+          const getCountry = (student) => student
+            .map(R.prop('school'))
+            .map(R.prop('address'))
+            .map(R.prop('country'))
+            .getOrElse('Country does not exist!');
+
+          const countryFromStudent = R.compose(
+            getCountry,
+            safeFindStudent
+          )
+
+          let result = countryFromStudent('5');
+
+          expect(result).to.eql('Poland');
+        });
+
+        it('should use in chains with pesimistic find', () => {
+          const find = (id) => {
+            return null;
+          }
+
+          const safeFindStudent = (id) => {
+            return Maybe.fromNullable(find(id));
+          }
+
+          const getCountry = (student) => student
+            .map(R.prop('school'))
+            .map(R.prop('address'))
+            .map(R.prop('country'))
+            .getOrElse('Country does not exist!');
+
+          const countryFromStudent = R.compose(
+            getCountry,
+            safeFindStudent
+          )
+
+          let result = countryFromStudent('5');
+
+          expect(result).to.eql('Country does not exist!');
+        });
+
+        it('should use function lifting to make the function return Monad instead of its value', () => {
+          const lift = R.curry(function (f, value) {
+            return Maybe.fromNullable(value).map(f); 
+          });
+
+          let r = lift((arg) => arg);
+
+          expect(r(88)).to.be.instanceof(Just);
+          expect(r(88).value).to.eql(88);
+
+        });
+      });
+
+      describe('Using Either monad to recover from failure', () => {
+        it('', () => {
+          
+        });
+      });
     });
   });
 });
