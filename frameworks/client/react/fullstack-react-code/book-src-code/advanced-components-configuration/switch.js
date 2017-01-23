@@ -19,14 +19,14 @@ const Switch = React.createClass({
   renderChoice(choice) {
     let cssClasses = [];
 
-    if(this.state.payMethod === choice) {
+    if (this.state.payMethod === choice) {
       cssClasses.push('active');
     }
 
     return (
       <div className="choice"
-           className={cssClasses}
-           onClick={this.select(choice)}>
+        className={cssClasses}
+        onClick={this.select(choice)}>
         {choice}
       </div>
     );
@@ -35,13 +35,38 @@ const Switch = React.createClass({
   render() {
     return (
       <div className="switch">
-        {this.renderChoice(CREDITCARD)}
-        {this.renderChoice(BTC)}
+        <Choice 
+          active={this.state.payMethod === CREDITCARD}
+          onClick={this.select(CREDITCARD)}
+          label="Pay with Creditcard"
+        />
+
+        <Choice 
+          active={this.state.payMethod === BTC}
+          onClick={this.select(BTC)}
+          label="Pay with Bitcoin"
+        />
         Pay with: {this.state.payMethod}
       </div>
     );
   }
 });
+
+const Choice = (props) => {
+  let cssClasses = [];
+
+  if(props.active) {
+    cssClasses.push('active')
+  }
+
+  return (
+    <div className="choice"
+      className={cssClasses}
+      onClick={props.onClick}>
+      {props.label}
+    </div>
+  );
+}
 
 ReactDOM.render(
   <Switch />,
