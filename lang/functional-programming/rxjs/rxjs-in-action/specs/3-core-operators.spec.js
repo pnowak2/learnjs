@@ -7,7 +7,7 @@ describe('3 Core Operators', () => {
   describe('3.1 Evaluating and cancelling stream', () => {
     describe('3.1.x', () => {
       it('should..', () => {
-
+        
       });
     });
   });

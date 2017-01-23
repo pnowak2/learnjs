@@ -10,3 +10,7 @@ export class UserService {
     this.currentUser.next(newUser);
   }
 }
+
+export var userServiceInjectables: Array<any> = [
+  UserService
+];
