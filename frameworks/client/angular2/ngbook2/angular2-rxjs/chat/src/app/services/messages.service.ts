@@ -66,6 +66,6 @@ export class MessagesService {
   }
 }
 
-export let messagesServiceInjectables: Array<any> = [
+export var messagesServiceInjectables: Array<any> = [
   MessagesService
 ]

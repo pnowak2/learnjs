@@ -6,6 +6,9 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { ChatThreadsComponent } from './chat-threads/chat-threads.component';
 import { Subject, BehaviorSubject } from 'rxjs';
+import { MessagesService } from './services/messages.service';
+import { ThreadsService } from './services/threads.service';
+import { UserService } from './services/user.service';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -16,6 +19,7 @@ describe('AppComponent', () => {
         ChatWindowComponent,
         ChatThreadsComponent
       ],
+      providers: [MessagesService, ThreadsService, UserService]
     });
     TestBed.compileComponents();
   });

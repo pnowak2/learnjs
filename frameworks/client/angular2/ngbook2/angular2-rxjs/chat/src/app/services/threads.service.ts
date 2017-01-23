@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import * as _ from 'underscore';
 import { Message } from '../models/message';
 import { User } from '../models/user';
 import { Thread } from '../models/thread';
 import { MessagesService } from './messages.service';
+import * as _ from 'underscore';
 
 @Injectable()
 export class ThreadsService {
