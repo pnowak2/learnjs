@@ -1,7 +1,15 @@
 const Parent = React.createClass({
   render() {
     return (
-      <Container component={<p />}>hello</Container>
+      <Container component={<MyCustom/>}><div>hello</div></Container>
+    );
+  }
+});
+
+const MyCustom = React.createClass({
+  render() {
+    return (
+      <div>my custom</div>
     );
   }
 });
