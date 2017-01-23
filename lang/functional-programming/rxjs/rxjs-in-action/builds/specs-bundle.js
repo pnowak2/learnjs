@@ -92,8 +92,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
+		module.hot.accept("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\mocha\\mocha.css", function() {
+			var newContent = require("!!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\css-loader\\index.js!C:\\Users\\nowapio\\AppData\\Local\\Local Documents - no backup\\Workspace\\js\\learnjs\\lang\\functional-programming\\rxjs\\rxjs-in-action\\node_modules\\mocha\\mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
