@@ -48,7 +48,8 @@
 	__webpack_require__(55);
 	__webpack_require__(536);
 	__webpack_require__(538);
-	module.exports = __webpack_require__(551);
+	__webpack_require__(551);
+	module.exports = __webpack_require__(557);
 
 
 /***/ },
@@ -53324,6 +53325,8 @@
 
 	var _maybe = __webpack_require__(555);
 
+	var _either = __webpack_require__(556);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	describe('5 Design Patterns Against Complexity', function () {
@@ -53779,9 +53782,31 @@
 	      });
 
 	      describe('Using Either monad to recover from failure', function () {
-	        it('', function () {});
+	        it('should use it to store error in case it occurs (more info about what happened)', function () {
+	          var find = function find(id) {
+	            return null;
+	          };
+
+	          var findStudent = function findStudent(id) {
+	            if (id) {
+	              return _either.Either.right(id);
+	            }
+	            return _either.Either.left('Not found !');
+	          };
+
+	          var result = findStudent().map(function (val) {
+	            return val * val;
+	          });
+
+	          (0, _chai.expect)(result).to.be.instanceof(_either.Left);
+	          (0, _chai.expect)(result.getOrElse('problem')).to.eql('problem');
+	        });
 	      });
 	    });
+	  });
+
+	  describe('5.4 Monadic chains and compositions', function () {
+	    it('should', function () {});
 	  });
 	});
 
@@ -54051,6 +54076,219 @@
 	  }]);
 	  return Nothing;
 	}(Maybe);
+
+/***/ },
+/* 556 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Right = exports.Left = exports.Either = undefined;
+
+	var _possibleConstructorReturn2 = __webpack_require__(465);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(527);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _classCallCheck2 = __webpack_require__(57);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(58);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Either = exports.Either = function () {
+	  function Either(value) {
+	    (0, _classCallCheck3.default)(this, Either);
+
+	    this._value = value;
+	  }
+
+	  (0, _createClass3.default)(Either, [{
+	    key: "value",
+	    get: function get() {
+	      return this._value;
+	    }
+	  }], [{
+	    key: "left",
+	    value: function left(a) {
+	      return new Left(a);
+	    }
+	  }, {
+	    key: "right",
+	    value: function right(a) {
+	      return new Right(a);
+	    }
+	  }, {
+	    key: "fromNullable",
+	    value: function fromNullable(val) {
+	      return val !== null ? Either.right(val) : Either.left(val);
+	    }
+	  }, {
+	    key: "of",
+	    value: function of(a) {
+	      return Either.right(a);
+	    }
+	  }]);
+	  return Either;
+	}();
+
+	var Left = exports.Left = function (_Either) {
+	  (0, _inherits3.default)(Left, _Either);
+
+	  function Left() {
+	    (0, _classCallCheck3.default)(this, Left);
+	    return (0, _possibleConstructorReturn3.default)(this, (Left.__proto__ || Object.getPrototypeOf(Left)).apply(this, arguments));
+	  }
+
+	  (0, _createClass3.default)(Left, [{
+	    key: "map",
+	    value: function map(_) {
+	      return this; // noop
+	    }
+	  }, {
+	    key: "getOrElse",
+	    value: function getOrElse(other) {
+	      return other;
+	    }
+	  }, {
+	    key: "orElse",
+	    value: function orElse(other) {
+	      return Either.right(other);
+	    }
+	  }, {
+	    key: "chain",
+	    value: function chain(f) {
+	      return f(this.value);
+	    }
+	  }, {
+	    key: "getOrElseThrow",
+	    value: function getOrElseThrow(a) {
+	      throw new Error(a);
+	    }
+	  }, {
+	    key: "filter",
+	    value: function filter(f) {
+	      return this;
+	    }
+	  }, {
+	    key: "toString",
+	    value: function toString() {
+	      return "Either.Left(" + this._value + ")";
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      throw new TypeError("Can't extract the value of a Left(a).");
+	    }
+	  }]);
+	  return Left;
+	}(Either);
+
+	var Right = exports.Right = function (_Either2) {
+	  (0, _inherits3.default)(Right, _Either2);
+
+	  function Right() {
+	    (0, _classCallCheck3.default)(this, Right);
+	    return (0, _possibleConstructorReturn3.default)(this, (Right.__proto__ || Object.getPrototypeOf(Right)).apply(this, arguments));
+	  }
+
+	  (0, _createClass3.default)(Right, [{
+	    key: "map",
+	    value: function map(f) {
+	      return Either.of(f(this._value));
+	    }
+	  }, {
+	    key: "getOrElse",
+	    value: function getOrElse(other) {
+	      return this._value;
+	    }
+	  }, {
+	    key: "orElse",
+	    value: function orElse(other) {
+	      return this;
+	    }
+	  }, {
+	    key: "chain",
+	    value: function chain(f) {
+	      return f(this._value);
+	    }
+	  }, {
+	    key: "getOrElseThrow",
+	    value: function getOrElseThrow(_) {
+	      return this._value;
+	    }
+	  }, {
+	    key: "filter",
+	    value: function filter(f) {
+	      return Either.fromNullable(f(this._value) ? this._value : null);
+	    }
+	  }, {
+	    key: "toString",
+	    value: function toString() {
+	      return "Either.Right(" + this._value + ")";
+	    }
+	  }]);
+	  return Right;
+	}(Either);
+
+/***/ },
+/* 557 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(558)
+	__webpack_require__(53);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 558 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(11);
+
+	var _ramda = __webpack_require__(154);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _lodash = __webpack_require__(51);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _sinon = __webpack_require__(77);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('6 Bulletproofing your code', function () {
+	  describe('6.x', function () {
+	    describe('6.x.x', function () {
+	      it('should', function () {});
+	    });
+	  });
+	});
 
 /***/ }
 /******/ ]);

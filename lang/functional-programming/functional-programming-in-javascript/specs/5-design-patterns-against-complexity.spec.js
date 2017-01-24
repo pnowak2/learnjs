@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import { Wrapper, wrap } from '../src/model/functor-wrapper';
 import { MonadWrapper, monadwrap } from '../src/model/monad-functor-wrapper';
 import { Maybe, Just, Nothing } from '../src/model/monads/maybe.monad';
+import { Either, Left, Right } from '../src/model/monads/either.monad';
 
 describe('5 Design Patterns Against Complexity', () => {
   describe('5.1 Shortfalls of imperative error handling', () => {
@@ -449,7 +450,7 @@ describe('5 Design Patterns Against Complexity', () => {
 
         it('should use function lifting to make the function return Monad instead of its value', () => {
           const lift = R.curry(function (f, value) {
-            return Maybe.fromNullable(value).map(f); 
+            return Maybe.fromNullable(value).map(f);
           });
 
           let r = lift((arg) => arg);
@@ -461,10 +462,32 @@ describe('5 Design Patterns Against Complexity', () => {
       });
 
       describe('Using Either monad to recover from failure', () => {
-        it('', () => {
-          
+        it('should use it to store error in case it occurs (more info about what happened)', () => {
+          const find = (id) => {
+            return null;
+          }
+
+          const findStudent = (id) => {
+            if (id) {
+              return Either.right(id);
+            }
+            return Either.left('Not found !')
+          }
+
+          let result = findStudent()
+            .map(val => val * val);
+
+          expect(result).to.be.instanceof(Left);
+          expect(result.getOrElse('problem')).to.eql('problem')
         });
       });
+    });
+  });
+
+
+  describe('5.4 Monadic chains and compositions', () => {
+    it('should', () => {
+
     });
   });
 });

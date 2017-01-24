@@ -18,7 +18,8 @@ const routes = [
   Two,
   Three,
   Four,
-  Six
+  Six,
+  Seven
 ];
 
 const location = window.location;

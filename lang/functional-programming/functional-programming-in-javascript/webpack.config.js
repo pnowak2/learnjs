@@ -7,6 +7,7 @@ module.exports = {
     'mocha!./specs/3-few-data-structures-many-operations.spec.js',
     'mocha!./specs/4-towards-modular-reusable-code.spec.js',
     'mocha!./specs/5-design-patterns-against-complexity.spec',
+    'mocha!./specs/6-bulletproofing-your-code.spec.js'
   ],
   output: {
     path: 'builds',
