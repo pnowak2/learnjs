@@ -9,23 +9,26 @@ module.exports = React.createClass({
 
   getInitialState() {
     return {
-      fields: {},
-      fieldErrors: {},
+      fields: { name: '', email: ''},
+      fieldErrors: { },
       people: [],
     };
   },
 
   onFormSubmit(evt) {
-    const people = [ ...this.state.people ];
+    const people = [
+      ...this.state.people
+    ];
     const person = this.state.fields;
     const fieldErrors = this.validate(person);
-    this.setState({ fieldErrors });
+    
+    this.setState({fieldErrors})
     evt.preventDefault();
 
-    if (Object.keys(fieldErrors).length) return;
+    if(Object.keys(fieldErrors).length) return;
 
     people.push(person);
-    this.setState({ people, fields: {} });
+    this.setState({ people, fields: { name: '', email: ''} });
   },
 
   onInputChange(evt) {
@@ -36,9 +39,12 @@ module.exports = React.createClass({
 
   validate(person) {
     const errors = {};
-    if (!person.name) errors.name = 'Name Required';
-    if (!person.email) errors.email = 'Email Required';
-    if (person.email && !isEmail(person.email)) errors.email = 'Invalid Email';
+    if(!person.name) errors.name = 'Name required';
+    if(!person.email) errors.email = 'Email required';
+    if(person.email && !isEmail(person.email)) {
+      errors.email = 'Invalid Email';
+    }
+
     return errors;
   },
 
@@ -48,7 +54,6 @@ module.exports = React.createClass({
         <h1>Sign Up Sheet</h1>
 
         <form onSubmit={this.onFormSubmit}>
-
           <input
             placeholder='Name'
             name='name'
@@ -56,9 +61,7 @@ module.exports = React.createClass({
             onChange={this.onInputChange}
           />
 
-          <span style={{ color: 'red' }}>{ this.state.fieldErrors.name }</span>
-
-          <br />
+          <span style={{ color: 'red' }}> {this.state.fieldErrors.name} </span>
 
           <input
             placeholder='Email'
@@ -67,9 +70,7 @@ module.exports = React.createClass({
             onChange={this.onInputChange}
           />
 
-          <span style={{ color: 'red' }}>{ this.state.fieldErrors.email }</span>
-
-          <br />
+          <span style={{ color: 'red' }}> {this.state.fieldErrors.email} </span>
 
           <input type='submit' />
         </form>

@@ -5,7 +5,7 @@ import sinon from 'sinon';
 
 describe('6 Bulletproofing your code', () => {
   describe('6.x', () => {
-    describe('6.x.x', () => {
+    describe('6.3.1', () => {
       it('should', () => {
         
       });

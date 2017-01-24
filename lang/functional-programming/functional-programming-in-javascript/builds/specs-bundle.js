@@ -54284,7 +54284,7 @@
 
 	describe('6 Bulletproofing your code', function () {
 	  describe('6.x', function () {
-	    describe('6.x.x', function () {
+	    describe('6.3.1', function () {
 	      it('should', function () {});
 	    });
 	  });
