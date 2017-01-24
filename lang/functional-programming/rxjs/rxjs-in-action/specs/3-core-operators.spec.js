@@ -21,7 +21,7 @@ describe('3 Core Operators', () => {
             }, () => { }, done);
         });
 
-        it('should play with marble', () => {
+        it('should play with marble2', () => {
           const addSixPercent = x => x + (x * .06);
 
           const rxs = new Rx.TestScheduler(function (actual, expected) {
