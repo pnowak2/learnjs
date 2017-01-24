@@ -53675,6 +53675,112 @@
 	          });
 	        });
 	      });
+
+	      describe('Using Maybe Monad (to prevent null checks and error handling)', function () {
+	        it('should return optional (Maybe.Nothing) from uncertain function', function () {
+	          var find = function find(id) {
+	            return null;
+	          };
+
+	          var findStudent = function findStudent(id) {
+	            return _maybe.Maybe.fromNullable(find(id));
+	          };
+
+	          (0, _chai.expect)(findStudent('5')).to.be.instanceof(_maybe.Nothing);
+	        });
+
+	        it('should return optional (Maybe.Just) from uncertain function', function () {
+	          var find = function find(id) {
+	            return 'student' + id;
+	          };
+
+	          var findStudent = function findStudent(id) {
+	            return _maybe.Maybe.fromNullable(find(id));
+	          };
+
+	          (0, _chai.expect)(findStudent('2')).to.be.instanceof(_maybe.Just);
+	          (0, _chai.expect)(findStudent('2').value).to.eql('student2');
+	        });
+
+	        it('should protect from nulls', function () {
+	          var find = function find(id) {
+	            return null;
+	          };
+
+	          var findStudent = function findStudent(id) {
+	            return _maybe.Maybe.fromNullable(find(id));
+	          };
+
+	          var result = findStudent('5').getOrElse('student other');
+
+	          (0, _chai.expect)(result).to.eql('student other');
+	        });
+
+	        it('should use in chains with optimistic find', function () {
+	          var find = function find(id) {
+	            return {
+	              id: 5,
+	              name: 'piotr',
+	              school: {
+	                address: {
+	                  country: 'Poland'
+	                }
+	              }
+	            };
+	          };
+
+	          var safeFindStudent = function safeFindStudent(id) {
+	            return _maybe.Maybe.fromNullable(find(id));
+	          };
+
+	          var getCountry = function getCountry(student) {
+	            return student.map(_ramda2.default.prop('school')).map(_ramda2.default.prop('address')).map(_ramda2.default.prop('country')).getOrElse('Country does not exist!');
+	          };
+
+	          var countryFromStudent = _ramda2.default.compose(getCountry, safeFindStudent);
+
+	          var result = countryFromStudent('5');
+
+	          (0, _chai.expect)(result).to.eql('Poland');
+	        });
+
+	        it('should use in chains with pesimistic find', function () {
+	          var find = function find(id) {
+	            return null;
+	          };
+
+	          var safeFindStudent = function safeFindStudent(id) {
+	            return _maybe.Maybe.fromNullable(find(id));
+	          };
+
+	          var getCountry = function getCountry(student) {
+	            return student.map(_ramda2.default.prop('school')).map(_ramda2.default.prop('address')).map(_ramda2.default.prop('country')).getOrElse('Country does not exist!');
+	          };
+
+	          var countryFromStudent = _ramda2.default.compose(getCountry, safeFindStudent);
+
+	          var result = countryFromStudent('5');
+
+	          (0, _chai.expect)(result).to.eql('Country does not exist!');
+	        });
+
+	        it('should use function lifting to make the function return Monad instead of its value', function () {
+	          var lift = _ramda2.default.curry(function (f, value) {
+	            return _maybe.Maybe.fromNullable(value).map(f);
+	          });
+
+	          var r = lift(function (arg) {
+	            return arg;
+	          });
+
+	          (0, _chai.expect)(r(88)).to.be.instanceof(_maybe.Just);
+	          (0, _chai.expect)(r(88).value).to.eql(88);
+	        });
+	      });
+
+	      describe('Using Either monad to recover from failure', function () {
+	        it('', function () {});
+	      });
 	    });
 	  });
 	});
