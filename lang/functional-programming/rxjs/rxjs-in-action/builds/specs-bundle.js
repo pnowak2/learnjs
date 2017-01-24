@@ -54234,9 +54234,39 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	describe('3 Core Operators', function () {
-	  describe('3.1 Evaluating and cancelling stream', function () {
-	    describe('3.1.x', function () {
-	      it('should..', function () {});
+	  describe('3.2 Popular RxJS observable operators', function () {
+	    describe('3.2.1 Introducing the core operators', function () {
+	      describe('.map()', function () {
+	        it('should map one set of values to another set, same size', function (done) {
+
+	          var addSixPercent = function addSixPercent(x) {
+	            return x + x * .06;
+	          };
+
+	          var expected = [10.6, 21.2, 31.8, 42.4],
+	              i = 0;
+
+	          _rxjs2.default.Observable.of(10.0, 20.0, 30.0, 40.0).map(addSixPercent).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+
+	        it('should play with marble', function () {
+	          var addSixPercent = function addSixPercent(x) {
+	            return x + x * .06;
+	          };
+
+	          var rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	            (0, _chai.expect)(actual).to.deep.equal(expected);
+	          });
+
+	          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
+	          var expected = '-a|';
+
+	          rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
+	          rxs.flush();
+	        });
+	      });
 	    });
 	  });
 	});
