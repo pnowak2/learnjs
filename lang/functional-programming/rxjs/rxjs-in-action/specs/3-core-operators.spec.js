@@ -3,6 +3,10 @@ import Rx from 'rxjs';
 import R from 'ramda';
 import sinon from 'sinon';
 
+const rxs = new Rx.TestScheduler(function (actual, expected) {
+  expect(actual).to.deep.equal(expected);
+});
+
 describe('3 Core Operators', () => {
   describe('3.2 Popular RxJS observable operators', () => {
     describe('3.2.1 Introducing the core operators', () => {
@@ -22,14 +26,10 @@ describe('3 Core Operators', () => {
         });
 
         it('should play with marble2', () => {
-          const addSixPercent = x => x + (x * .06);
-
-          const rxs = new Rx.TestScheduler(function (actual, expected) {
-            expect(actual).to.deep.equal(expected);
-          });
-
           var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
           var expected = '-a|';
+
+          const addSixPercent = x => x + (x * .06);
 
           rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
           rxs.flush();

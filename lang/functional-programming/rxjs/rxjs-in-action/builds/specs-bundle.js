@@ -54233,6 +54233,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	  (0, _chai.expect)(actual).to.deep.equal(expected);
+	});
+
 	describe('3 Core Operators', function () {
 	  describe('3.2 Popular RxJS observable operators', function () {
 	    describe('3.2.1 Introducing the core operators', function () {
@@ -54252,16 +54256,12 @@
 	        });
 
 	        it('should play with marble2', function () {
+	          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
+	          var expected = '-a|';
+
 	          var addSixPercent = function addSixPercent(x) {
 	            return x + x * .06;
 	          };
-
-	          var rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	            (0, _chai.expect)(actual).to.deep.equal(expected);
-	          });
-
-	          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
-	          var expected = '-a|';
 
 	          rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
 	          rxs.flush();
