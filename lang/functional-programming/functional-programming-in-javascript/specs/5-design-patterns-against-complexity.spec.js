@@ -483,11 +483,4 @@ describe('5 Design Patterns Against Complexity', () => {
       });
     });
   });
-
-
-  describe('5.4 Monadic chains and compositions', () => {
-    it('should', () => {
-
-    });
-  });
 });
