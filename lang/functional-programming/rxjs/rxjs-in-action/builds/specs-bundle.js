@@ -54231,13 +54231,13 @@
 
 	var _sinon2 = _interopRequireDefault(_sinon);
 
+	var _rxTest = __webpack_require__(868);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	  (0, _chai.expect)(actual).to.deep.equal(expected);
-	});
-
 	describe('3 Core Operators', function () {
+	  // afterEach(() => rxs.flush());
+
 	  describe('3.2 Popular RxJS observable operators', function () {
 	    describe('3.2.1 Introducing the core operators', function () {
 	      describe('.map()', function () {
@@ -54255,21 +54255,52 @@
 	          }, function () {}, done);
 	        });
 
-	        it('should play with marble2', function () {
-	          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
-	          var expected = '-a|';
+	        it('should also test with marble diagrams', function () {
+	          var e1 = (0, _rxTest.hot)('-x-|', { x: 10.0 });
+	          var expected = '-y-|';
 
 	          var addSixPercent = function addSixPercent(x) {
 	            return x + x * .06;
 	          };
 
-	          rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
-	          rxs.flush();
+	          (0, _rxTest.expectObservable)(e1.map(addSixPercent)).toBe(expected, { y: 10.6 });
+	          _rxTest.rxs.flush();
 	        });
 	      });
 	    });
 	  });
 	});
+
+/***/ },
+/* 867 */,
+/* 868 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.expectSubscriptions = exports.expectObservable = exports.cold = exports.hot = exports.rxs = undefined;
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var rxs = exports.rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	  (0, _chai.expect)(actual).to.deep.equal(expected);
+	});
+
+	var hot = exports.hot = rxs.createHotObservable.bind(rxs);
+	var cold = exports.cold = rxs.createColdObservable.bind(rxs);
+	var expectObservable = exports.expectObservable = rxs.expectObservable.bind(rxs);
+	var expectSubscriptions = exports.expectSubscriptions = rxs.expectSubscriptions.bind(rxs);
+
+	// rxs.flush();
 
 /***/ }
 /******/ ]);

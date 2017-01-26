@@ -2,12 +2,11 @@ import { expect } from 'chai';
 import Rx from 'rxjs';
 import R from 'ramda';
 import sinon from 'sinon';
-
-const rxs = new Rx.TestScheduler(function (actual, expected) {
-  expect(actual).to.deep.equal(expected);
-});
+import {rxs, hot, expectObservable, expectSubscriptions} from '../src/rx-test';
 
 describe('3 Core Operators', () => {
+  // afterEach(() => rxs.flush());
+
   describe('3.2 Popular RxJS observable operators', () => {
     describe('3.2.1 Introducing the core operators', () => {
       describe('.map()', () => {
@@ -25,14 +24,14 @@ describe('3 Core Operators', () => {
             }, () => { }, done);
         });
 
-        it('should play with marble2', () => {
-          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
-          var expected = '-a|';
+        it('should also test with marble diagrams', () => {
+          var e1 =   hot('-x-|', { x: 10.0 });
+          var expected = '-y-|';
 
           const addSixPercent = x => x + (x * .06);
 
-          rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
-          rxs.flush();
+          expectObservable(e1.map(addSixPercent)).toBe(expected, { y: 10.6 });
+          rxs.flush()
         });
       });
     });
