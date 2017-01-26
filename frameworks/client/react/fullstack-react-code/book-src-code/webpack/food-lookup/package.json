@@ -18,7 +18,9 @@
     "sql.js": "^0.3.2"
   },
   "scripts": {
-    "server": "babel-node start-server.js"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "babel-node start-server.js",
+    "client": "babel-node start-client.js"
   },
   "devDependencies": {
     "concurrently": "3.1.0"
