@@ -54241,6 +54241,7 @@
 	  describe('3.2 Popular RxJS observable operators', function () {
 	    describe('3.2.1 Introducing the core operators', function () {
 	      describe('.map()', function () {
+
 	        it('should map one set of values to another set, same size', function (done) {
 
 	          var addSixPercent = function addSixPercent(x) {
@@ -54266,6 +54267,18 @@
 	          (0, _rxTest.expectObservable)(e1.map(addSixPercent)).toBe(expected, { y: 10.6 });
 	          _rxTest.rxs.flush();
 	        });
+
+	        it('should map string', function () {
+	          var a = (0, _rxTest.cold)('--1--2--3--|');
+	          var expected = '--x--y--z--|';
+
+	          var r = a.map(function (x) {
+	            return x + '!';
+	          });
+
+	          (0, _rxTest.expectObservable)(r).toBe(expected, { x: '1!', y: '2!', z: '3!' });
+	          _rxTest.rxs.flush();
+	        });
 	      });
 	    });
 	  });
@@ -54281,7 +54294,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.expectSubscriptions = exports.expectObservable = exports.cold = exports.hot = exports.rxs = undefined;
+	exports.cold = exports.hot = exports.rxs = undefined;
+	exports.expectObservable = expectObservable;
+	exports.expectSubscriptions = expectSubscriptions;
 
 	var _chai = __webpack_require__(89);
 
@@ -54295,10 +54310,21 @@
 	  (0, _chai.expect)(actual).to.deep.equal(expected);
 	});
 
-	var hot = exports.hot = rxs.createHotObservable.bind(rxs);
-	var cold = exports.cold = rxs.createColdObservable.bind(rxs);
-	var expectObservable = exports.expectObservable = rxs.expectObservable.bind(rxs);
-	var expectSubscriptions = exports.expectSubscriptions = rxs.expectSubscriptions.bind(rxs);
+	var hot = exports.hot = function hot() {
+	  return rxs.createHotObservable.apply(rxs, arguments);
+	};
+
+	var cold = exports.cold = function cold() {
+	  return rxs.createColdObservable.apply(rxs, arguments);
+	};
+
+	function expectObservable() {
+	  return rxs.expectObservable.apply(rxs, arguments);
+	}
+
+	function expectSubscriptions() {
+	  return rxs.expectSubscriptions.apply(rxs, arguments);
+	}
 
 	// rxs.flush();
 

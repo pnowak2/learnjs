@@ -1,8 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+describe('App', () => {
+  it('should have the `th` "Items"', () => {
+    const wrapper = shallow(
+      <App />
+    );
+
+    expect(wrapper.contains(<th>Items</th>)).toBe(true);
+  });
 });
