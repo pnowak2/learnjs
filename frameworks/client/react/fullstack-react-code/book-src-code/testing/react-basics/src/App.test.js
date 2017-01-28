@@ -10,4 +10,12 @@ describe('App', () => {
 
     expect(wrapper.contains(<th>Items</th>)).toBe(true);
   });
+
+  it('should have button element', () => {
+    const wrapper = shallow(
+      <App />
+    );
+
+    expect(wrapper.containsMatchingElement(<button>Add item</button>)).toBe(true);
+  });
 });
