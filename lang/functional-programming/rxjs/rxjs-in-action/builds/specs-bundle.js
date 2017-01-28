@@ -54231,7 +54231,9 @@
 
 	var _sinon2 = _interopRequireDefault(_sinon);
 
-	var _rxTest = __webpack_require__(868);
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54243,7 +54245,6 @@
 	      describe('.map()', function () {
 
 	        it('should map one set of values to another set, same size', function (done) {
-
 	          var addSixPercent = function addSixPercent(x) {
 	            return x + x * .06;
 	          };
@@ -54256,77 +54257,96 @@
 	          }, function () {}, done);
 	        });
 
-	        it('should also test with marble diagrams', function () {
-	          var e1 = (0, _rxTest.hot)('-x-|', { x: 10.0 });
-	          var expected = '-y-|';
+	        it('should map array of strings', function (done) {
+	          var expected = [['hello', 'world'], ['its', 'me']],
+	              i = 0;
 
-	          var addSixPercent = function addSixPercent(x) {
-	            return x + x * .06;
-	          };
+	          _rxjs2.default.Observable.from(['hello world', 'its me']).map(function (str) {
+	            return str.split(' ');
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
 
-	          (0, _rxTest.expectObservable)(e1.map(addSixPercent)).toBe(expected, { y: 10.6 });
-	          _rxTest.rxs.flush();
+	      describe('.filter()', function () {
+	        it('should remove unwanted elements', function (done) {
+	          var expected = [2, 3, 4],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from(['a', 2, 'hello', 3, Object, 4]).filter(function (x) {
+	            return !isNaN(x);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
 	        });
 
-	        it('should map string', function () {
-	          var a = (0, _rxTest.cold)('--1--2--3--|');
-	          var expected = '--x--y--z--|';
+	        it('should remove unwanted elements using Rx.Observable.fromEvent', function (done) {
+	          var expected = [2, 3, 4],
+	              i = 0;
 
-	          var r = a.map(function (x) {
-	            return x + '!';
-	          });
+	          var emitter = new _events2.default();
 
-	          (0, _rxTest.expectObservable)(r).toBe(expected, { x: '1!', y: '2!', z: '3!' });
-	          _rxTest.rxs.flush();
+	          _rxjs2.default.Observable.fromEvent(emitter, 'items').take(6).filter(function (x) {
+	            return !isNaN(x);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+
+	          emitter.emit('items', 'a');
+	          emitter.emit('items', 2);
+	          emitter.emit('items', 'hello');
+	          emitter.emit('items', 3);
+	          emitter.emit('items', Object);
+	          emitter.emit('items', 4);
+	        });
+
+	        it('should filter job candidates', function (done) {
+	          var expected = [{ name: 'Brendan Eich', experience: 'JavaScript Inventor' }],
+	              i = 0;
+
+	          var candidates = [{ name: 'Brendan Eich', experience: 'JavaScript Inventor' }, { name: 'Emmet Brown', experience: 'Historian' }, { name: 'George Lucas', experience: 'Sci-fi writer' }, { name: 'Alberto Perez', experience: 'Zumba Instructor' }, { name: 'Bjarne Stroustrup', experience: 'C++ Developer' }];
+
+	          var hasJsExperience = function hasJsExperience(exp) {
+	            return exp.toLowerCase().includes('javascript');
+	          };
+
+	          _rxjs2.default.Observable.from(candidates).take(5).filter(function (c) {
+	            return hasJsExperience(c.experience);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
+
+	      describe('.reduce(). Accumulates everything then emits event.', function () {
+	        it('should sum all spendings', function (done) {
+	          var expected = [725],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').reduce(function (acc, amount) {
+	            return acc + amount;
+	          }, 0).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
+
+	      describe('.scan()', function () {
+	        it('should..', function (done) {
+	          var expected = [725],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').reduce(function (acc, amount) {
+	            return acc + amount;
+	          }, 0).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
 	        });
 	      });
 	    });
 	  });
 	});
-
-/***/ },
-/* 867 */,
-/* 868 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.cold = exports.hot = exports.rxs = undefined;
-	exports.expectObservable = expectObservable;
-	exports.expectSubscriptions = expectSubscriptions;
-
-	var _chai = __webpack_require__(89);
-
-	var _rxjs = __webpack_require__(137);
-
-	var _rxjs2 = _interopRequireDefault(_rxjs);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var rxs = exports.rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	  (0, _chai.expect)(actual).to.deep.equal(expected);
-	});
-
-	var hot = exports.hot = function hot() {
-	  return rxs.createHotObservable.apply(rxs, arguments);
-	};
-
-	var cold = exports.cold = function cold() {
-	  return rxs.createColdObservable.apply(rxs, arguments);
-	};
-
-	function expectObservable() {
-	  return rxs.expectObservable.apply(rxs, arguments);
-	}
-
-	function expectSubscriptions() {
-	  return rxs.expectSubscriptions.apply(rxs, arguments);
-	}
-
-	// rxs.flush();
 
 /***/ }
 /******/ ]);
