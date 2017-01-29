@@ -92,8 +92,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -54333,17 +54333,23 @@
 	      });
 
 	      describe('.scan()', function () {
-	        it('should..', function (done) {
-	          var expected = [725],
+	        it('should work like reduce, but emit event on each reduction step with intermediate value', function (done) {
+	          var expected = [-320, 680, 725],
 	              i = 0;
 
-	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').reduce(function (acc, amount) {
+	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').scan(function (acc, amount) {
 	            return acc + amount;
 	          }, 0).subscribe(function (x) {
 	            (0, _chai.expect)(expected[i++]).to.eql(x);
 	          }, function () {}, done);
 	        });
 	      });
+	    });
+	  });
+
+	  describe('3.3 Sequencing operator pipelines with aggregates', function () {
+	    describe('3.3.x', function () {
+	      it('should..', function () {});
 	    });
 	  });
 	});

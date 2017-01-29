@@ -114,8 +114,8 @@ describe('3 Core Operators', () => {
       });
 
       describe('.scan()', () => {
-        it('should..', (done) => {
-          let expected = [725],
+        it('should work like reduce, but emit event on each reduction step with intermediate value', (done) => {
+          let expected = [-320, 680, 725],
             i = 0;
 
           Rx.Observable.from([
@@ -124,11 +124,19 @@ describe('3 Core Operators', () => {
             { date: '2016', amount: 45.0 },
           ]).take(3)
             .pluck('amount')
-            .reduce((acc, amount) => acc + amount, 0)
+            .scan((acc, amount) => acc + amount, 0)
             .subscribe((x) => {
               expect(expected[i++]).to.eql(x)
             }, () => { }, done);
         });
+      });
+    });
+  });
+
+  describe('3.3 Sequencing operator pipelines with aggregates', () => {
+    describe('3.3.x', () => {
+      it('should..', () => {
+        
       });
     });
   });
