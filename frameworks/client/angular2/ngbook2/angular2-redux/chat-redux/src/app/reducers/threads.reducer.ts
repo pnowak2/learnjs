@@ -20,10 +20,10 @@ const initialState: ThreadsState = {
 }
 
 export const ThreadsReducer = function (state: ThreadsState = initialState, action: Action): ThreadsState {
-  const thread = (action as ThreadActions.AddThreadAction).thread;
-
   switch (action.type) {
     case ThreadActions.ADD_THREAD: {
+      const thread = (action as ThreadActions.AddThreadAction).thread;
+
       if (state.ids.includes(thread.id)) {
         return state;
       }
