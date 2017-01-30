@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Store } from 'redux';
 import { AppStore } from '../../reducers/app-store';
 import { AppState } from '../../reducers/index';
+import { getUnreadMessagesCount } from '../../reducers/threads.reducer';
 
 @Component({
   selector: 'chat-navbar',
@@ -13,10 +14,11 @@ export class ChatNavbarComponent implements OnInit {
 
   constructor( @Inject(AppStore) private store: Store<AppState>) {
     store.subscribe(() => this.updateState());
+    this.updateState();
   }
 
   updateState() {
-    this.unreadMessagesCount = 5;
+    this.unreadMessagesCount = getUnreadMessagesCount(this.store.getState());
   }
 
   ngOnInit() {
