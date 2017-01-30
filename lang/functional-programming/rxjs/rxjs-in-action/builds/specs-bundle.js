@@ -46,7 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(132);
-	module.exports = __webpack_require__(865);
+	__webpack_require__(865);
+	module.exports = __webpack_require__(867);
 
 
 /***/ },
@@ -10978,7 +10979,7 @@
 
 	          var val = 0;
 	          function progress() {
-	            if (val < 100) {
+	            if (val < 10) {
 	              observer.next(++val);
 	              setTimeout(progress, SPEED);
 	            } else {
@@ -10992,7 +10993,7 @@
 	        var spy = _sinon2.default.spy();
 
 	        progressBar$.subscribe(spy, spy, function () {
-	          (0, _chai.expect)(spy.callCount).to.eql(100);
+	          (0, _chai.expect)(spy.callCount).to.eql(10);
 	          done();
 	        });
 	      });
@@ -54348,8 +54349,137 @@
 	  });
 
 	  describe('3.3 Sequencing operator pipelines with aggregates', function () {
-	    describe('3.3.x', function () {
-	      it('should..', function () {});
+	    function exclude(predicate) {
+	      var _this = this;
+
+	      return _rxjs2.default.Observable.create(function (subscriber) {
+	        var source = _this;
+
+	        return source.subscribe(function (value) {
+	          try {
+	            if (!predicate(value)) {
+	              subscriber.next(value);
+	            }
+	          } catch (err) {
+	            subscriber.error(err);
+	          }
+	        }, function (err) {
+	          return subscriber.error(err);
+	        }, function () {
+	          return subscriber.complete();
+	        });
+	      });
+	    }
+
+	    _rxjs2.default.Observable.prototype.exclude = exclude;
+
+	    describe('Self-contained pipelines and referential transparency', function () {
+	      it('should build own operator - exclude', function (done) {
+	        var expected = [1, 3, 5],
+	            i = 0;
+
+	        _rxjs2.default.Observable.from([1, 2, 3, 4, 5]).take(5).exclude(function (x) {
+	          return x % 2 === 0;
+	        }).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+
+	      it('should use do() operator', function (done) {
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.from([1, 2, 3, 4, 5]).take(5).exclude(function (x) {
+	          return x % 2 === 0;
+	        }).do(function (x) {
+	          return spy(x);
+	        }).subscribe(function () {}, function () {}, function () {
+	          (0, _chai.expect)(spy.calledThrice).to.be.true;
+	          (0, _chai.expect)(spy.calledWith(1)).to.be.true;
+	          (0, _chai.expect)(spy.calledWith(3)).to.be.true;
+	          (0, _chai.expect)(spy.calledWith(5)).to.be.true;
+	          done();
+	        });
+	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 867 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(868)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 868 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('4 It’s About Time You Used RxJS', function () {
+	  describe('4.2 Understanding async timing with JavaScript', function () {
+	    describe('4.2.3 The JavaScript timing interfaces ', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      it('should user timer() to delay events', function (done) {
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.timer(1000).subscribe(function () {
+	          spy();
+	        }, function () {}, function () {
+	          (0, _chai.expect)(spy.calledOnce).to.be.true;
+	          done();
+	        });
+
+	        clock.tick(1000);
+	      });
+	    });
+
+	    describe('4.3 Back to the future with RxJS', function () {
+	      describe('4.3.x', function () {
+	        it('should', function () {});
+	      });
 	    });
 	  });
 	});

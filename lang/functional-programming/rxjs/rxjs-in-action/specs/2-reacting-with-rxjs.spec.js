@@ -206,7 +206,7 @@ describe('2 Reacting with RxJS', () => {
 
           let val = 0;
           function progress() {
-            if (val < 100) {
+            if (val < 10) {
               observer.next(++val)
               setTimeout(progress, SPEED)
             } else {
@@ -223,7 +223,7 @@ describe('2 Reacting with RxJS', () => {
           spy,
           spy,
           () => {
-            expect(spy.callCount).to.eql(100);
+            expect(spy.callCount).to.eql(10);
             done();
           }
         )

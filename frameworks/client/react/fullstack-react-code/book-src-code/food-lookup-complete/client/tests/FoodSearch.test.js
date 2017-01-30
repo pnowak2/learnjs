@@ -3,7 +3,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import FoodSearch from '../src/FoodSearch';
-import  Client from '../src/Client';
+import Client from '../src/Client';
 
 jest.mock('../src/Client');
 
@@ -54,13 +54,47 @@ describe('FoodSearch', () => {
     });
 
     describe('and API returns results', () => {
+      const foods = [
+        {
+          description: 'Broccolini',
+          kcal: '100',
+          protein_g: '11',
+          fat_g: '21',
+          carbohydrate_g: '31'
+        },
+        {
+          description: 'Broccoli rabe',
+          kcal: '200',
+          protein_g: '12',
+          fat_g: '22',
+          carbohydrate_g: '32'
+        }
+      ]
+
       beforeEach(() => {
-        // ... simulate API returning results
+        const invocationArgs = Client.search.mock.calls[0];
+        const cb = invocationArgs[1];
+        cb(foods);
+        wrapper.update();
       });
 
-      // ... specs
+      it('should set the state property foods', () => {
+        expect(wrapper.state().foods).toEqual(foods);
+      });
 
-      describe('then user clicks food item', () => {
+      it('should display two rows', () => {
+        expect(wrapper.find('tbody tr').length).toEqual(2);
+      });
+
+      it('should render the description of first food', () => {
+        expect(wrapper.html()).toContain(foods[0].description)
+      });
+
+      it('should render the description of second food', () => {
+        expect(wrapper.html()).toContain(foods[1].description)
+      });
+
+      describe('then user clicaks food item', () => {
         beforeEach(() => {
           // ... simulate user clicking food item
         });

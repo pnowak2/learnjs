@@ -134,9 +134,54 @@ describe('3 Core Operators', () => {
   });
 
   describe('3.3 Sequencing operator pipelines with aggregates', () => {
-    describe('3.3.x', () => {
-      it('should..', () => {
-        
+    function exclude(predicate) {
+      return Rx.Observable.create(subscriber => {
+        let source = this;
+
+        return source.subscribe(value => {
+          try {
+            if (!predicate(value)) {
+              subscriber.next(value);
+            }
+          }
+          catch (err) {
+            subscriber.error(err);
+          }
+        },
+          err => subscriber.error(err),
+          () => subscriber.complete());
+      })
+    }
+
+    Rx.Observable.prototype.exclude = exclude;
+
+    describe('Self-contained pipelines and referential transparency', () => {
+      it('should build own operator - exclude', (done) => {
+        let expected = [1, 3, 5],
+          i = 0;
+
+        Rx.Observable.from([1, 2, 3, 4, 5])
+          .take(5)
+          .exclude(x => x % 2 === 0)
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+      });
+
+      it('should use do() operator', (done) => {
+        let spy = sinon.spy();
+
+        Rx.Observable.from([1, 2, 3, 4, 5])
+          .take(5)
+          .exclude(x => x % 2 === 0)
+          .do(x => spy(x))
+          .subscribe(() => {}, () => {}, () => {
+            expect(spy.calledThrice).to.be.true;
+            expect(spy.calledWith(1)).to.be.true;
+            expect(spy.calledWith(3)).to.be.true;
+            expect(spy.calledWith(5)).to.be.true;
+            done();
+          });
       });
     });
   });
