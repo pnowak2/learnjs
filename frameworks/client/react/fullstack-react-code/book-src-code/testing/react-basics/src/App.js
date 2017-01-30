@@ -1,7 +1,7 @@
 import React from 'react';
 
 const App = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       items: [],
       item: '',
@@ -22,13 +22,13 @@ const App = React.createClass({
       item: '',
     });
   },
-  render: function() {
+  render: function () {
     const submitDisabled = !this.state.item;
-    return(
+    return (
       <div
         className='ui text container'
         id='app'
-      >
+        >
         <table className='ui selectable structured large table'>
           <thead>
             <tr>
@@ -40,7 +40,7 @@ const App = React.createClass({
               this.state.items.map((item, idx) => (
                 <tr
                   key={idx}
-                >
+                  >
                   <td>{item}</td>
                 </tr>
               ))
@@ -52,22 +52,22 @@ const App = React.createClass({
                 <form
                   className='ui form'
                   onSubmit={this.addItem}
-                >
-                <div className='field'>
-                  <input
-                    className='prompt'
-                    type='text'
-                    placeholder='Add item...'
-                    value={this.state.item}
-                    onChange={this.onItemChange}
-                  />
-                </div>
-                <button
-                  className='ui button'
-                  type='submit'
-                  disabled={submitDisabled}
-                >
-                  Add item
+                  >
+                  <div className='field'>
+                    <input
+                      className='prompt'
+                      type='text'
+                      placeholder='Add item...'
+                      value={this.state.item}
+                      onChange={this.onItemChange}
+                      />
+                  </div>
+                  <button
+                    className='ui button'
+                    type='submit'
+                    disabled={submitDisabled}
+                    >
+                    Add item
                 </button>
                 </form>
               </th>

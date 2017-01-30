@@ -54363,24 +54363,27 @@
 
 	      beforeEach(function () {
 	        _jscheck2.default.clear();
-	        // JSC.on_report((str) => console.log(str));
+	        _jscheck2.default.on_report(function (str) {
+	          return console.log(str);
+	        });
 	      });
 
 	      it('should use multiple values as input according to specification', function () {
 
 	        _jscheck2.default.on_pass(function (object) {
-	          // expect(object.pass).to.eql(true);
+	          (0, _chai.expect)(object.pass).to.eql(true);
 	          console.log('pass');
 	        });
 
 	        _jscheck2.default.on_fail(function (object) {
 	          (0, _chai.expect)(object.pass).to.eql(true);
+	          console.log('failed', object);
 	          throw new Error('fd');
 	        });
 
 	        _jscheck2.default.test('Compute Average Grade', function (verdict, grades, expected) {
 	          return verdict(computeAverageGrade(grades) === expected);
-	        }, [_jscheck2.default.array(_jscheck2.default.integer(20), _jscheck2.default.number(90, 100)), 'B'], function (grades, grade) {
+	        }, [_jscheck2.default.array(_jscheck2.default.integer(20), _jscheck2.default.number(90, 100)), 'A'], function (grades, grade) {
 	          return 'Testing for an ' + grade + ' on grades: ' + grades;
 	        });
 	      });

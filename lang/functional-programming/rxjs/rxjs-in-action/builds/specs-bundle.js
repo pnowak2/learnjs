@@ -92,8 +92,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/css-loader/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -54231,18 +54231,20 @@
 
 	var _sinon2 = _interopRequireDefault(_sinon);
 
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	  (0, _chai.expect)(actual).to.deep.equal(expected);
-	});
-
 	describe('3 Core Operators', function () {
+	  // afterEach(() => rxs.flush());
+
 	  describe('3.2 Popular RxJS observable operators', function () {
 	    describe('3.2.1 Introducing the core operators', function () {
 	      describe('.map()', function () {
-	        it('should map one set of values to another set, same size', function (done) {
 
+	        it('should map one set of values to another set, same size', function (done) {
 	          var addSixPercent = function addSixPercent(x) {
 	            return x + x * .06;
 	          };
@@ -54255,18 +54257,99 @@
 	          }, function () {}, done);
 	        });
 
-	        it('should play with marble2', function () {
-	          var e1 = rxs.createHotObservable('-a|', { a: 10.0 });
-	          var expected = '-a|';
+	        it('should map array of strings', function (done) {
+	          var expected = [['hello', 'world'], ['its', 'me']],
+	              i = 0;
 
-	          var addSixPercent = function addSixPercent(x) {
-	            return x + x * .06;
-	          };
-
-	          rxs.expectObservable(e1.map(addSixPercent)).toBe(expected, { a: 10.6 });
-	          rxs.flush();
+	          _rxjs2.default.Observable.from(['hello world', 'its me']).map(function (str) {
+	            return str.split(' ');
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
 	        });
 	      });
+
+	      describe('.filter()', function () {
+	        it('should remove unwanted elements', function (done) {
+	          var expected = [2, 3, 4],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from(['a', 2, 'hello', 3, Object, 4]).filter(function (x) {
+	            return !isNaN(x);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+
+	        it('should remove unwanted elements using Rx.Observable.fromEvent', function (done) {
+	          var expected = [2, 3, 4],
+	              i = 0;
+
+	          var emitter = new _events2.default();
+
+	          _rxjs2.default.Observable.fromEvent(emitter, 'items').take(6).filter(function (x) {
+	            return !isNaN(x);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+
+	          emitter.emit('items', 'a');
+	          emitter.emit('items', 2);
+	          emitter.emit('items', 'hello');
+	          emitter.emit('items', 3);
+	          emitter.emit('items', Object);
+	          emitter.emit('items', 4);
+	        });
+
+	        it('should filter job candidates', function (done) {
+	          var expected = [{ name: 'Brendan Eich', experience: 'JavaScript Inventor' }],
+	              i = 0;
+
+	          var candidates = [{ name: 'Brendan Eich', experience: 'JavaScript Inventor' }, { name: 'Emmet Brown', experience: 'Historian' }, { name: 'George Lucas', experience: 'Sci-fi writer' }, { name: 'Alberto Perez', experience: 'Zumba Instructor' }, { name: 'Bjarne Stroustrup', experience: 'C++ Developer' }];
+
+	          var hasJsExperience = function hasJsExperience(exp) {
+	            return exp.toLowerCase().includes('javascript');
+	          };
+
+	          _rxjs2.default.Observable.from(candidates).take(5).filter(function (c) {
+	            return hasJsExperience(c.experience);
+	          }).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
+
+	      describe('.reduce(). Accumulates everything then emits event.', function () {
+	        it('should sum all spendings', function (done) {
+	          var expected = [725],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').reduce(function (acc, amount) {
+	            return acc + amount;
+	          }, 0).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
+
+	      describe('.scan()', function () {
+	        it('should work like reduce, but emit event on each reduction step with intermediate value', function (done) {
+	          var expected = [-320, 680, 725],
+	              i = 0;
+
+	          _rxjs2.default.Observable.from([{ date: '2014', amount: -320.0 }, { date: '2015', amount: 1000.0 }, { date: '2016', amount: 45.0 }]).take(3).pluck('amount').scan(function (acc, amount) {
+	            return acc + amount;
+	          }, 0).subscribe(function (x) {
+	            (0, _chai.expect)(expected[i++]).to.eql(x);
+	          }, function () {}, done);
+	        });
+	      });
+	    });
+	  });
+
+	  describe('3.3 Sequencing operator pipelines with aggregates', function () {
+	    describe('3.3.x', function () {
+	      it('should..', function () {});
 	    });
 	  });
 	});

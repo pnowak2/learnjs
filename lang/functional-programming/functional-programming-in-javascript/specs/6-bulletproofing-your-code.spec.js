@@ -85,18 +85,19 @@ describe('6 Bulletproofing your code', () => {
 
       beforeEach(() => {
         JSC.clear();
-        // JSC.on_report((str) => console.log(str));
+        JSC.on_report((str) => console.log(str));
       });
 
       it('should use multiple values as input according to specification', () => {
 
         JSC.on_pass((object) => {
-          // expect(object.pass).to.eql(true);
+          expect(object.pass).to.eql(true);
           console.log('pass')
         });
 
         JSC.on_fail((object) => {
           expect(object.pass).to.eql(true);
+          console.log('failed', object)
           throw new Error('fd');
         });
           
@@ -106,7 +107,7 @@ describe('6 Bulletproofing your code', () => {
             return verdict(computeAverageGrade(grades) === expected);
           },
           [
-            JSC.array(JSC.integer(20), JSC.number(90, 100)), 'B'
+            JSC.array(JSC.integer(20), JSC.number(90, 100)), 'A'
           ],
           function (grades, grade) {
             return 'Testing for an ' + grade + ' on grades: ' + grades;
