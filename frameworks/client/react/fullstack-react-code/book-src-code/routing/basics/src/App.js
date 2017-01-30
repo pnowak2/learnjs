@@ -1,31 +1,62 @@
 import React from 'react';
+import createHistory from 'history/createBrowserHistory';
+
+const history = createHistory();
+
+const Match = ({ pattern, component: Component}) => {
+  const pathname = window.location.pathname;
+
+  if (pathname.match(pattern)) {
+    return (
+      <Component />
+    )
+  } else {
+    return null;
+  }
+}
+
+const Link = ({ to, children }) => (
+  <a
+    onClick={(e) => {
+      e.preventDefault();
+      history.push(to);
+    }}
+    href={to}>
+    {children}
+  </a>
+)
 
 class App extends React.Component {
+  componentDidMount() {
+    history.listen(() => this.forceUpdate());
+  }
+
   render() {
     return (
       <div
         className='ui text container'
-      >
+        >
         <h2 className='ui dividing header'>
           Which body of water?
         </h2>
 
         <ul>
           <li>
-            <a href='/atlantic'>
+            <Link to='/atlantic'>
               <code>/atlantic</code>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/pacific'>
+            <Link to='/pacific'>
               <code>/pacific</code>
-            </a>
+            </Link>
           </li>
         </ul>
 
         <hr />
 
-        {/* We'll insert the Match components here */}
+        <Match pattern='/atlantic' component={Atlantic} />
+        <Match pattern='/pacific' component={Pacific} />
       </div>
     );
   }
