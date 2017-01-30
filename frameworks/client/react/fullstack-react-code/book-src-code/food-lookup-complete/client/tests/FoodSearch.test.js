@@ -9,15 +9,18 @@ jest.mock('../src/Client');
 
 describe('FoodSearch', () => {
   let wrapper;
+  const onFoodClick = jest.fn();
 
   beforeEach(() => {
     wrapper = shallow(
-      <FoodSearch />
+      <FoodSearch
+        onFoodClick={onFoodClick} />
     )
   });
 
   afterEach(() => {
     Client.search.mockClear();
+    onFoodClick.mockClear();
   });
 
   it('should not display the remove icon', () => {
@@ -94,25 +97,39 @@ describe('FoodSearch', () => {
         expect(wrapper.html()).toContain(foods[1].description)
       });
 
-      describe('then user clicaks food item', () => {
+      describe('then user clicks food item', () => {
         beforeEach(() => {
-          // ... simulate user clicking food item
+          const foodRow = wrapper.find('tbody tr').first();
+          foodRow.simulate('click');
         });
 
-        // ... specs
+        it('should call prop onFoodClick with food', () => {
+          const food = foods[0];
+          expect(onFoodClick.mock.calls[0]).toEqual([food]);
+        });
       });
 
       describe('then user types more', () => {
+        const value = 'broccx';
+        
         beforeEach(() => {
-          // ... simulate user typing "x"
+          const input = wrapper.find('input').first();
+          input.simulate('change', {
+            target: { value: value }
+          })
         });
 
         describe('and API returns no results', () => {
           beforeEach(() => {
-            // ... simulate API returning no results
+            const secondInvocationArgs = Client.search.mock.calls[1];
+            const cb = secondInvocationArgs[1];
+            cb([]);
+            wrapper.update();
           });
 
-          // ... specs
+          it('should set the state property food', () => {
+            expect(wrapper.state().foods).toEqual([]);
+          });
         });
       });
     });
