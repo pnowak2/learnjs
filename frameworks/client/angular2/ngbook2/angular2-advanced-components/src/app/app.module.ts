@@ -8,6 +8,8 @@ import { InlineStyleComponent } from './styles/inline-style/inline-style.compone
 import { StyleUrlsComponent } from './styles/style-urls/style-urls.component';
 import { ShadowDomComponent } from './styles/shadow-dom/shadow-dom.component';
 import { NoEncapsulationComponent } from './styles/no-encapsulation/no-encapsulation.component';
+import { PopupDirective } from './host/popup.directive';
+import { SampleAppComponent } from './host/sample-app/sample-app.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { NoEncapsulationComponent } from './styles/no-encapsulation/no-encapsula
     InlineStyleComponent,
     StyleUrlsComponent,
     ShadowDomComponent,
-    NoEncapsulationComponent
+    NoEncapsulationComponent,
+    PopupDirective,
+    SampleAppComponent
   ],
   imports: [
     BrowserModule,
