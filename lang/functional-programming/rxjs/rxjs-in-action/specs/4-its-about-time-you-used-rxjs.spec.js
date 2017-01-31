@@ -33,12 +33,104 @@ describe('4 It’s About Time You Used RxJS', () => {
         clock.tick(1000);
 
       });
+
+      it('should user interval() to send events periodically', (done) => {
+        let spy = sinon.spy();
+
+        Rx.Observable.interval(1000)
+          .skip(1)
+          .take(3)
+          .subscribe((x) => {
+            spy(x);
+          },
+          () => { },
+          () => {
+            expect(spy.calledThrice).to.be.true;
+
+            expect(spy.calledWith(1)).to.be.true;
+            expect(spy.calledWith(2)).to.be.true;
+            expect(spy.calledWith(3)).to.be.true;
+            done();
+          });
+
+        clock.tick(4000);
+
+      });
     });
 
-    describe('4.3 Back to the future with RxJS', () => {
-      describe('4.3.x', () => {
-        it('should', () => {
-          
+    describe('4.4 Handling user input', () => {
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      describe('4.4.1 Debouncing', () => {
+        it('should emit event after fast burst is done, emmiting last value', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .create((subscriber) => {
+              subscriber.next('one');
+              clock.tick(1001);
+
+              subscriber.next('two');
+              subscriber.next('three');
+              subscriber.next('four');
+              subscriber.next('five');
+
+              subscriber.complete();
+            })
+            .debounceTime(1000)
+            .map(x => x.toUpperCase())
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.calledTwice).to.be.true;
+              expect(spy.calledWith('ONE')).to.be.true;
+              expect(spy.calledWith('FIVE')).to.be.true;
+              done();
+            });
+        });
+      });
+
+      describe('4.4.2 Throttling', () => {
+        it('should', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .create((subscriber) => {
+              subscriber.next('one');
+              subscriber.next('two');
+              subscriber.next('three');
+
+              clock.tick(1001);
+              
+              subscriber.next('four');
+              subscriber.next('five');
+
+              clock.tick(1001);
+
+              subscriber.complete();
+            })
+            .throttleTime(1000)
+            .map(x => x.toUpperCase())
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.calledTwice).to.be.true;
+              expect(spy.calledWith('ONE')).to.be.true;
+              expect(spy.calledWith('FOUR')).to.be.true;
+              done();
+            });
         });
       });
     });

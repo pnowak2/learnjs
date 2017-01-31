@@ -54474,11 +54474,91 @@
 
 	        clock.tick(1000);
 	      });
+
+	      it('should user interval() to send events periodically', function (done) {
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.interval(1000).skip(1).take(3).subscribe(function (x) {
+	          spy(x);
+	        }, function () {}, function () {
+	          (0, _chai.expect)(spy.calledThrice).to.be.true;
+
+	          (0, _chai.expect)(spy.calledWith(1)).to.be.true;
+	          (0, _chai.expect)(spy.calledWith(2)).to.be.true;
+	          (0, _chai.expect)(spy.calledWith(3)).to.be.true;
+	          done();
+	        });
+
+	        clock.tick(4000);
+	      });
 	    });
 
-	    describe('4.3 Back to the future with RxJS', function () {
-	      describe('4.3.x', function () {
-	        it('should', function () {});
+	    describe('4.4 Handling user input', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      describe('4.4.1 Debouncing', function () {
+	        it('should emit event after fast burst is done, emmiting last value', function (done) {
+	          var spy = _sinon2.default.spy();
+
+	          _rxjs2.default.Observable.create(function (subscriber) {
+	            subscriber.next('one');
+	            clock.tick(1001);
+
+	            subscriber.next('two');
+	            subscriber.next('three');
+	            subscriber.next('four');
+	            subscriber.next('five');
+
+	            subscriber.complete();
+	          }).debounceTime(1000).map(function (x) {
+	            return x.toUpperCase();
+	          }).subscribe(function (x) {
+	            spy(x);
+	          }, function () {}, function () {
+	            (0, _chai.expect)(spy.calledTwice).to.be.true;
+	            (0, _chai.expect)(spy.calledWith('ONE')).to.be.true;
+	            (0, _chai.expect)(spy.calledWith('FIVE')).to.be.true;
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('4.4.2 Throttling', function () {
+	        it('should', function (done) {
+	          var spy = _sinon2.default.spy();
+
+	          _rxjs2.default.Observable.create(function (subscriber) {
+	            subscriber.next('one');
+	            subscriber.next('two');
+	            subscriber.next('three');
+
+	            clock.tick(1001);
+
+	            subscriber.next('four');
+	            subscriber.next('five');
+
+	            clock.tick(1001);
+
+	            subscriber.complete();
+	          }).throttleTime(1000).map(function (x) {
+	            return x.toUpperCase();
+	          }).subscribe(function (x) {
+	            spy(x);
+	          }, function () {}, function () {
+	            (0, _chai.expect)(spy.calledTwice).to.be.true;
+	            (0, _chai.expect)(spy.calledWith('ONE')).to.be.true;
+	            (0, _chai.expect)(spy.calledWith('FOUR')).to.be.true;
+	            done();
+	          });
+	        });
 	      });
 	    });
 	  });
