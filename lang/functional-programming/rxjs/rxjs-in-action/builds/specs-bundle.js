@@ -54472,7 +54472,7 @@
 	          done();
 	        });
 
-	        clock.tick(1000);
+	        clock.tick(3000);
 	      });
 
 	      it('should user interval() to send events periodically', function (done) {
@@ -54532,7 +54532,7 @@
 	      });
 
 	      describe('4.4.2 Throttling', function () {
-	        it('should', function (done) {
+	        it('should throttle events', function (done) {
 	          var spy = _sinon2.default.spy();
 
 	          _rxjs2.default.Observable.create(function (subscriber) {
@@ -54556,6 +54556,77 @@
 	            (0, _chai.expect)(spy.calledTwice).to.be.true;
 	            (0, _chai.expect)(spy.calledWith('ONE')).to.be.true;
 	            (0, _chai.expect)(spy.calledWith('FOUR')).to.be.true;
+	            done();
+	          });
+	        });
+	      });
+	    });
+
+	    describe('4.5 Buffering in RxJS', function () {
+	      describe('.buffer(observable)', function () {
+	        it('should emit at once, when buffer observable emits an event', function (done) {
+	          var spy = _sinon2.default.spy();
+
+	          _rxjs2.default.Observable.timer(0, 50).buffer(_rxjs2.default.Observable.timer(500)).subscribe(function (x) {
+	            spy(x);
+	          }, function () {}, function () {
+	            (0, _chai.expect)(spy.calledOnce).to.be.true;
+	            (0, _chai.expect)(spy.calledWith([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])).to.be.true;
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.bufferCount(number)', function () {
+	        it('should emit at once, when specified numbers of events takes place', function (done) {
+	          var spy = _sinon2.default.spy();
+
+	          _rxjs2.default.Observable.timer(0, 5).take(10) // 10 events triggered
+	          .bufferCount(5) // will send only 2 events
+	          .subscribe(function (x) {
+	            spy(x);
+	          }, function () {}, function () {
+	            (0, _chai.expect)(spy.calledTwice).to.be.true;
+	            (0, _chai.expect)(spy.calledWith([0, 1, 2, 3, 4])).to.be.true;
+	            (0, _chai.expect)(spy.calledWith([5, 6, 7, 8, 9])).to.be.true;
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.bufferWhen(selector)', function () {
+	        var clock = void 0;
+
+	        beforeEach(function () {
+	          clock = _sinon2.default.useFakeTimers();
+	        });
+
+	        afterEach(function () {
+	          clock.restore();
+	        });
+
+	        it('should open the buffer immediately, then closes when observable returned by selector returns value', function (done) {
+	          var spy = _sinon2.default.spy();
+
+	          _rxjs2.default.Observable.create(function (subscriber) {
+	            subscriber.next('one');
+	            subscriber.next('two');
+	            subscriber.next('three');
+
+	            clock.tick(60);
+
+	            subscriber.next('four');
+	            subscriber.next('five');
+
+	            subscriber.complete();
+	          }).bufferWhen(function () {
+	            return _rxjs2.default.Observer.timer(50);
+	          }).subscribe(function (x) {
+	            spy(x);
+	          }, function () {}, function () {
+	            (0, _chai.expect)(spy.calledTwice).to.be.true;
+	            // expect(spy.calledWith([0, 1, 2, 3, 4])).to.be.true;
+	            // expect(spy.calledWith([5, 6, 7, 8, 9])).to.be.true;
 	            done();
 	          });
 	        });

@@ -30,7 +30,7 @@ describe('4 It’s About Time You Used RxJS', () => {
             done();
           });
 
-        clock.tick(1000);
+        clock.tick(3000);
 
       });
 
@@ -101,7 +101,7 @@ describe('4 It’s About Time You Used RxJS', () => {
       });
 
       describe('4.4.2 Throttling', () => {
-        it('should', (done) => {
+        it('should throttle events', (done) => {
           let spy = sinon.spy();
 
           Rx.Observable
@@ -111,7 +111,7 @@ describe('4 It’s About Time You Used RxJS', () => {
               subscriber.next('three');
 
               clock.tick(1001);
-              
+
               subscriber.next('four');
               subscriber.next('five');
 
@@ -129,6 +129,89 @@ describe('4 It’s About Time You Used RxJS', () => {
               expect(spy.calledTwice).to.be.true;
               expect(spy.calledWith('ONE')).to.be.true;
               expect(spy.calledWith('FOUR')).to.be.true;
+              done();
+            });
+        });
+      });
+    });
+
+    describe('4.5 Buffering in RxJS', () => {
+      describe('.buffer(observable)', () => {
+        it('should emit at once, when buffer observable emits an event', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .timer(0, 50)
+            .buffer(Rx.Observable.timer(500))
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.calledOnce).to.be.true;
+              expect(spy.calledWith([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])).to.be.true;
+              done();
+            });
+        });
+      });
+
+      describe('.bufferCount(number)', () => {
+        it('should emit at once, when specified numbers of events takes place', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .timer(0, 5)
+            .take(10) // 10 events triggered
+            .bufferCount(5) // will send only 2 events
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.calledTwice).to.be.true;
+              expect(spy.calledWith([0, 1, 2, 3, 4])).to.be.true;
+              expect(spy.calledWith([5, 6, 7, 8, 9])).to.be.true;
+              done();
+            });
+        });
+      });
+
+      describe('.bufferWhen(selector)', () => {
+        let clock;
+
+        beforeEach(() => {
+          clock = sinon.useFakeTimers();
+        });
+
+        afterEach(() => {
+          clock.restore();
+        });
+
+        it('should open the buffer immediately, then closes when observable returned by selector returns value', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .create((subscriber) => {
+              subscriber.next('one');
+              subscriber.next('two');
+              subscriber.next('three');
+
+              clock.tick(60)
+
+              subscriber.next('four');
+              subscriber.next('five');
+
+              subscriber.complete();
+            })
+            .bufferWhen(() => Rx.Observer.timer(50))
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.calledTwice).to.be.true;
+              // expect(spy.calledWith([0, 1, 2, 3, 4])).to.be.true;
+              // expect(spy.calledWith([5, 6, 7, 8, 9])).to.be.true;
               done();
             });
         });
