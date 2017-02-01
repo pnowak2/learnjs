@@ -1,10 +1,8 @@
 import React from 'react';
 import createHistory from 'history/createBrowserHistory';
 
-const history = createHistory();
-
-const Match = ({ pattern, component: Component}) => {
-  const pathname = window.location.pathname;
+const Match = ({ pattern, component: Component}, { location }) => {
+  const pathname = location.pathname;
 
   if (pathname.match(pattern)) {
     return (
@@ -15,49 +13,102 @@ const Match = ({ pattern, component: Component}) => {
   }
 }
 
-const Link = ({ to, children }) => (
+Match.contextTypes = {
+  location: React.PropTypes.object
+}
+
+const Link = ({ to, children }, { history }) => (
   <a
     onClick={(e) => {
       e.preventDefault();
       history.push(to);
-    }}
+    } }
     href={to}>
     {children}
   </a>
 )
 
-class App extends React.Component {
+Link.contextTypes = {
+  history: React.PropTypes.object
+}
+
+class Redirect extends React.Component {
+  static contextTypes = {
+    history: React.PropTypes.object
+  }
+
   componentDidMount() {
-    history.listen(() => this.forceUpdate());
+    const history = this.context.history;
+    const to = this.props.to;
+    history.push(to);
   }
 
   render() {
+    return null;
+  }
+}
+
+class Router extends React.Component {
+  static childContextTypes = {
+    history: React.PropTypes.object,
+    location: React.PropTypes.object
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.history = createHistory();
+    this.history.listen(() => this.forceUpdate());
+  }
+
+  getChildContext() {
+    return {
+      history: this.history,
+      location: window.location
+    }
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+class App extends React.Component {
+  render() {
     return (
-      <div
-        className='ui text container'
-        >
-        <h2 className='ui dividing header'>
-          Which body of water?
-        </h2>
+      <Router>
+        <div
+          className='ui text container'
+          >
+          <h2 className='ui dividing header'>
+            Which body of water?
+          </h2>
 
-        <ul>
-          <li>
-            <Link to='/atlantic'>
-              <code>/atlantic</code>
-            </Link>
-          </li>
-          <li>
-            <Link to='/pacific'>
-              <code>/pacific</code>
-            </Link>
-          </li>
-        </ul>
+          <ul>
+            <li>
+              <Link to='/atlantic'>
+                <code>/atlantic</code>
+              </Link>
+            </li>
+            <li>
+              <Link to='/pacific'>
+                <code>/pacific</code>
+              </Link>
+            </li>
+            <li>
+              <Link to='/black-sea'>
+                <code>/black-sea</code>
+              </Link>
+            </li>
+          </ul>
 
-        <hr />
+          <hr />
 
-        <Match pattern='/atlantic' component={Atlantic} />
-        <Match pattern='/pacific' component={Pacific} />
-      </div>
+          <Match pattern='/atlantic' component={Atlantic} />
+          <Match pattern='/pacific' component={Pacific} />
+          <Match pattern='/black-sea' component={BlackSea} />
+        </div>
+      </Router>
     );
   }
 }
@@ -81,5 +132,34 @@ const Pacific = () => (
     </p>
   </div>
 );
+
+class BlackSea extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      counter: 3
+    }
+  }
+
+  componentDidMount() {
+    setInterval(() => (
+      this.setState({ counter: this.state.counter - 1 })
+    ), 1000);
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Black Sea</h3>
+        <p>Nothing to sea [sic] here...</p>
+        <p>Redirecting in {this.state.counter}...</p>
+        {
+          (this.state.counter < 1) ? <Redirect to="/" /> : null
+        }
+      </div>
+    );
+  }
+}
 
 export default App;
