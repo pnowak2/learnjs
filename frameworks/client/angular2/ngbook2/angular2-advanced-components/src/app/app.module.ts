@@ -14,6 +14,11 @@ import { ContentProjectionComponent } from './content-projection/content-project
 import { MessageDirective } from './content-projection/message.directive';
 import { TabComponent } from './tabs/tab/tab.component';
 import { TabsetComponent } from './tabs/tabset/tabset.component';
+import { OnInitComponent } from './lifecycle/on-init/on-init.component';
+import { TabappComponent } from './tabs/tabapp/tabapp.component';
+import { OninitAppComponent } from './lifecycle/on-init/oninit-app.component';
+import { OnchangesAppComponent } from './lifecycle/on-changes/onchanges-app.component';
+import { OnChangesComponent } from './lifecycle/on-changes/on-changes.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,12 @@ import { TabsetComponent } from './tabs/tabset/tabset.component';
     ContentProjectionComponent,
     MessageDirective,
     TabComponent,
-    TabsetComponent
+    TabsetComponent,
+    OnInitComponent,
+    TabappComponent,
+    OninitAppComponent,
+    OnchangesAppComponent,
+    OnChangesComponent
   ],
   imports: [
     BrowserModule,
