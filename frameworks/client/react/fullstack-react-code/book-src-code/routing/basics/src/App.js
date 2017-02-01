@@ -1,77 +1,83 @@
 import React from 'react';
-import createHistory from 'history/createBrowserHistory';
+import Router from 'react-router/BrowserRouter';
+import Match from 'react-router/Match';
+import Miss from 'react-router/Miss';
+import Link from 'react-router/Link';
+import Redirect from 'react-router/Redirect';
 
-const Match = ({ pattern, component: Component}, { location }) => {
-  const pathname = location.pathname;
+// Same as imported from react router below
 
-  if (pathname.match(pattern)) {
-    return (
-      <Component />
-    )
-  } else {
-    return null;
-  }
-}
+// const Match = ({ pattern, component: Component}, { location }) => {
+//   const pathname = location.pathname;
 
-Match.contextTypes = {
-  location: React.PropTypes.object
-}
+//   if (pathname.match(pattern)) {
+//     return (
+//       <Component />
+//     )
+//   } else {
+//     return null;
+//   }
+// }
 
-const Link = ({ to, children }, { history }) => (
-  <a
-    onClick={(e) => {
-      e.preventDefault();
-      history.push(to);
-    } }
-    href={to}>
-    {children}
-  </a>
-)
+// Match.contextTypes = {
+//   location: React.PropTypes.object
+// }
 
-Link.contextTypes = {
-  history: React.PropTypes.object
-}
+// const Link = ({ to, children }, { history }) => (
+//   <a
+//     onClick={(e) => {
+//       e.preventDefault();
+//       history.push(to);
+//     } }
+//     href={to}>
+//     {children}
+//   </a>
+// )
 
-class Redirect extends React.Component {
-  static contextTypes = {
-    history: React.PropTypes.object
-  }
+// Link.contextTypes = {
+//   history: React.PropTypes.object
+// }
 
-  componentDidMount() {
-    const history = this.context.history;
-    const to = this.props.to;
-    history.push(to);
-  }
+// class Redirect extends React.Component {
+//   static contextTypes = {
+//     history: React.PropTypes.object
+//   }
 
-  render() {
-    return null;
-  }
-}
+//   componentDidMount() {
+//     const history = this.context.history;
+//     const to = this.props.to;
+//     history.push(to);
+//   }
 
-class Router extends React.Component {
-  static childContextTypes = {
-    history: React.PropTypes.object,
-    location: React.PropTypes.object
-  }
+//   render() {
+//     return null;
+//   }
+// }
 
-  constructor(props) {
-    super(props);
+// class Router extends React.Component {
+//   static childContextTypes = {
+//     history: React.PropTypes.object,
+//     location: React.PropTypes.object
+//   }
 
-    this.history = createHistory();
-    this.history.listen(() => this.forceUpdate());
-  }
+//   constructor(props) {
+//     super(props);
 
-  getChildContext() {
-    return {
-      history: this.history,
-      location: window.location
-    }
-  }
+//     this.history = createHistory();
+//     this.history.listen(() => this.forceUpdate());
+//   }
 
-  render() {
-    return this.props.children;
-  }
-}
+//   getChildContext() {
+//     return {
+//       history: this.history,
+//       location: window.location
+//     }
+//   }
+
+//   render() {
+//     return this.props.children;
+//   }
+// }
 
 class App extends React.Component {
   render() {
@@ -105,8 +111,28 @@ class App extends React.Component {
           <hr />
 
           <Match pattern='/atlantic' component={Atlantic} />
+          <Match pattern='/atlantic/ocean' render={() => (
+            <div>
+              <h3>Atlantic Ocean - Again!</h3>
+              <p>
+                The Atlantic Ocean covers approximately 29% of the world's water sufrace area.
+              </p>
+            </div>
+          )} />
           <Match pattern='/pacific' component={Pacific} />
           <Match pattern='/black-sea' component={BlackSea} />
+          <Match exactly pattern='/' render={() => (
+            <h3>
+              Welcome ! Select a body of saline water above.
+            </h3>
+          )} />
+          <Miss render={({location}) => (
+            <div className='ui inverted red segment'>
+              <h3>
+                Error! No matches for <code>{location.pathname}</code>
+              </h3>
+            </div>
+          )} />
         </div>
       </Router>
     );
