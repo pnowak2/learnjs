@@ -10,6 +10,10 @@ import { ShadowDomComponent } from './styles/shadow-dom/shadow-dom.component';
 import { NoEncapsulationComponent } from './styles/no-encapsulation/no-encapsulation.component';
 import { PopupDirective } from './host/popup.directive';
 import { SampleAppComponent } from './host/sample-app/sample-app.component';
+import { ContentProjectionComponent } from './content-projection/content-projection.component';
+import { MessageDirective } from './content-projection/message.directive';
+import { TabComponent } from './tabs/tab/tab.component';
+import { TabsetComponent } from './tabs/tabset/tabset.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import { SampleAppComponent } from './host/sample-app/sample-app.component';
     ShadowDomComponent,
     NoEncapsulationComponent,
     PopupDirective,
-    SampleAppComponent
+    SampleAppComponent,
+    ContentProjectionComponent,
+    MessageDirective,
+    TabComponent,
+    TabsetComponent
   ],
   imports: [
     BrowserModule,

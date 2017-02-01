@@ -1,6 +1,6 @@
-<div class="ui message" popup>
+<div class="ui message" message="Clicked the message" #popup1="popupDirective" popup>
   <div class="header">
-    Learning Directives
+    <h3>Learning Directives</h3>
   </div>
 
   <p>
@@ -8,4 +8,14 @@
   </p>
 </div>
 
-<i class="alarm icon" popup>&bull;Icon</i>
+<i class="alarm icon" message="Clicked the i icon" #p2="popupDirective" popup>&bull;Icon</i>
+
+<div style="margin-top: 20px">
+  <button (click)="popup1.displayMessage()">
+    Display popup for message element
+  </button>
+
+  <button (click)="p2.displayMessage()">
+    Display popup for i icon
+  </button>
+</div>
