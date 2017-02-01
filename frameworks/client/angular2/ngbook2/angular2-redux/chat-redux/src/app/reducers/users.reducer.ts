@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import { Action } from 'redux';
 import { User } from '../models/user';
 import * as UserActions from '../actions/user.actions';
@@ -22,3 +23,10 @@ export const UsersReducer = (state: UsersState = initialState, action: Action): 
       return state;
   }
 }
+
+
+export const getUsersState = (state): UsersState => state.users;
+
+export const getCurrentUser = createSelector(
+  getUsersState,
+  ( state: UsersState ) => state.currentUser );
