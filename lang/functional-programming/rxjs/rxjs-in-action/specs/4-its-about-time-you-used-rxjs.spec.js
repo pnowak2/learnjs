@@ -201,17 +201,64 @@ describe('4 It’s About Time You Used RxJS', () => {
               subscriber.next('four');
               subscriber.next('five');
 
+              clock.tick(40);
+
               subscriber.complete();
             })
-            .bufferWhen(() => Rx.Observer.timer(50))
+            .bufferWhen(() => Rx.Observable.timer(50))
             .subscribe((x) => {
               spy(x);
             },
             () => { },
             () => {
-              expect(spy.calledTwice).to.be.true;
-              // expect(spy.calledWith([0, 1, 2, 3, 4])).to.be.true;
-              // expect(spy.calledWith([5, 6, 7, 8, 9])).to.be.true;
+              expect(spy.calledThrice).to.be.true;
+              expect(spy.calledWith(['one', 'two', 'three'])).to.be.true;
+              expect(spy.calledWith(['four', 'five'])).to.be.true;
+              done();
+            });
+        });
+      });
+
+      describe('.bufferTime(time)', () => {
+        let clock;
+
+        beforeEach(() => {
+          clock = sinon.useFakeTimers();
+        });
+
+        afterEach(() => {
+          clock.restore();
+        });
+
+        it('should hold the data in buffer for specific time, then emits observable array', (done) => {
+          let spy = sinon.spy();
+
+          Rx.Observable
+            .create((subscriber) => {
+              subscriber.next('one');
+              subscriber.next('two');
+              
+              clock.tick(20)
+              
+              subscriber.next('three');
+              subscriber.next('four');
+
+              clock.tick(20);
+
+              subscriber.next('five');
+
+              subscriber.complete();
+            })
+            .bufferTime(20)
+            .subscribe((x) => {
+              spy(x);
+            },
+            () => { },
+            () => {
+              expect(spy.callCount).to.eql(3);
+              expect(spy.calledWith(['one', 'two'])).to.be.true;
+              expect(spy.calledWith(['three', 'four'])).to.be.true;
+              expect(spy.calledWith(['five'])).to.be.true;
               done();
             });
         });
