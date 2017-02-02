@@ -1,63 +1,140 @@
 import React from 'react';
-import createHistory from 'history/createBrowserHistory';
+import Router from 'react-router/BrowserRouter';
+import Match from 'react-router/Match';
+import Miss from 'react-router/Miss';
+import Link from 'react-router/Link';
+import Redirect from 'react-router/Redirect';
 
-const history = createHistory();
+// Same as imported from react router below
 
-const Match = ({ pattern, component: Component}) => {
-  const pathname = window.location.pathname;
+// const Match = ({ pattern, component: Component}, { location }) => {
+//   const pathname = location.pathname;
 
-  if (pathname.match(pattern)) {
-    return (
-      <Component />
-    )
-  } else {
-    return null;
-  }
-}
+//   if (pathname.match(pattern)) {
+//     return (
+//       <Component />
+//     )
+//   } else {
+//     return null;
+//   }
+// }
 
-const Link = ({ to, children }) => (
-  <a
-    onClick={(e) => {
-      e.preventDefault();
-      history.push(to);
-    }}
-    href={to}>
-    {children}
-  </a>
-)
+// Match.contextTypes = {
+//   location: React.PropTypes.object
+// }
+
+// const Link = ({ to, children }, { history }) => (
+//   <a
+//     onClick={(e) => {
+//       e.preventDefault();
+//       history.push(to);
+//     } }
+//     href={to}>
+//     {children}
+//   </a>
+// )
+
+// Link.contextTypes = {
+//   history: React.PropTypes.object
+// }
+
+// class Redirect extends React.Component {
+//   static contextTypes = {
+//     history: React.PropTypes.object
+//   }
+
+//   componentDidMount() {
+//     const history = this.context.history;
+//     const to = this.props.to;
+//     history.push(to);
+//   }
+
+//   render() {
+//     return null;
+//   }
+// }
+
+// class Router extends React.Component {
+//   static childContextTypes = {
+//     history: React.PropTypes.object,
+//     location: React.PropTypes.object
+//   }
+
+//   constructor(props) {
+//     super(props);
+
+//     this.history = createHistory();
+//     this.history.listen(() => this.forceUpdate());
+//   }
+
+//   getChildContext() {
+//     return {
+//       history: this.history,
+//       location: window.location
+//     }
+//   }
+
+//   render() {
+//     return this.props.children;
+//   }
+// }
 
 class App extends React.Component {
-  componentDidMount() {
-    history.listen(() => this.forceUpdate());
-  }
-
   render() {
     return (
-      <div
-        className='ui text container'
-        >
-        <h2 className='ui dividing header'>
-          Which body of water?
-        </h2>
+      <Router>
+        <div
+          className='ui text container'
+          >
+          <h2 className='ui dividing header'>
+            Which body of water?
+          </h2>
 
-        <ul>
-          <li>
-            <Link to='/atlantic'>
-              <code>/atlantic</code>
-            </Link>
-          </li>
-          <li>
-            <Link to='/pacific'>
-              <code>/pacific</code>
-            </Link>
-          </li>
-        </ul>
+          <ul>
+            <li>
+              <Link to='/atlantic'>
+                <code>/atlantic</code>
+              </Link>
+            </li>
+            <li>
+              <Link to='/pacific'>
+                <code>/pacific</code>
+              </Link>
+            </li>
+            <li>
+              <Link to='/black-sea'>
+                <code>/black-sea</code>
+              </Link>
+            </li>
+          </ul>
 
-        <hr />
+          <hr />
 
-        <Match pattern='/atlantic' component={Atlantic} />
-        <Match pattern='/pacific' component={Pacific} />
-      </div>
+          <Match pattern='/atlantic' component={Atlantic} />
+          <Match pattern='/atlantic/ocean' render={() => (
+            <div>
+              <h3>Atlantic Ocean - Again!</h3>
+              <p>
+                The Atlantic Ocean covers approximately 29% of the world's water sufrace area.
+              </p>
+            </div>
+          )} />
+          <Match pattern='/pacific' component={Pacific} />
+          <Match pattern='/black-sea' component={BlackSea} />
+          <Match exactly pattern='/' render={() => (
+            <h3>
+              Welcome ! Select a body of saline water above.
+            </h3>
+          )} />
+          <Miss render={({location}) => (
+            <div className='ui inverted red segment'>
+              <h3>
+                Error! No matches for <code>{location.pathname}</code>
+              </h3>
+            </div>
+          )} />
+        </div>
+      </Router>
     );
   }
 }
@@ -81,5 +158,34 @@ const Pacific = () => (
     </p>
   </div>
 );
+
+class BlackSea extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      counter: 3
+    }
+  }
+
+  componentDidMount() {
+    setInterval(() => (
+      this.setState({ counter: this.state.counter - 1 })
+    ), 1000);
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Black Sea</h3>
+        <p>Nothing to sea [sic] here...</p>
+        <p>Redirecting in {this.state.counter}...</p>
+        {
+          (this.state.counter < 1) ? <Redirect to="/" /> : null
+        }
+      </div>
+    );
+  }
+}
 
 export default App;
