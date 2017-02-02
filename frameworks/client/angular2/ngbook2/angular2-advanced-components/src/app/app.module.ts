@@ -22,6 +22,9 @@ import { OnChangesComponent } from './lifecycle/on-changes/on-changes.component'
 import { DoCheckItemComponent } from './lifecycle/docheck/do-check-item/do-check-item.component';
 import { DoCheckAppComponent } from './lifecycle/docheck/do-check-app/do-check-app.component';
 import { DoCheckComponent } from './lifecycle/docheck/do-check/do-check.component';
+import { AllCallbacksComponent } from './lifecycle/all-callbacks/all-callbacks.component';
+import { NgBookIfDirective } from './advanced-templates/ng-book-if.directive';
+import { AppTesterComponent } from './advanced-templates/app-tester/app-tester.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { DoCheckComponent } from './lifecycle/docheck/do-check/do-check.componen
     OnChangesComponent,
     DoCheckItemComponent,
     DoCheckAppComponent,
-    DoCheckComponent
+    DoCheckComponent,
+    AllCallbacksComponent,
+    NgBookIfDirective,
+    AppTesterComponent
   ],
   imports: [
     BrowserModule,
