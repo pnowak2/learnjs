@@ -12,7 +12,7 @@ export class OnChangesComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: {[propName: string]: SimpleChange}): void {
-    console.log('changes', changes);
+    console.log('changes', changes[0]);
   }
 
 }

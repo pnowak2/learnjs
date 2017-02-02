@@ -20,5 +20,4 @@ export class TabsetComponent implements AfterContentInit {
     this.tabs.toArray().forEach((t) => t.active = false);
     tab.active = true;
   }
-
 }

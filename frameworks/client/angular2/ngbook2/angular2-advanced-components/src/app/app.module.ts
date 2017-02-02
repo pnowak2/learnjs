@@ -19,6 +19,9 @@ import { TabappComponent } from './tabs/tabapp/tabapp.component';
 import { OninitAppComponent } from './lifecycle/on-init/oninit-app.component';
 import { OnchangesAppComponent } from './lifecycle/on-changes/onchanges-app.component';
 import { OnChangesComponent } from './lifecycle/on-changes/on-changes.component';
+import { DoCheckItemComponent } from './lifecycle/docheck/do-check-item/do-check-item.component';
+import { DoCheckAppComponent } from './lifecycle/docheck/do-check-app/do-check-app.component';
+import { DoCheckComponent } from './lifecycle/docheck/do-check/do-check.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { OnChangesComponent } from './lifecycle/on-changes/on-changes.component'
     TabappComponent,
     OninitAppComponent,
     OnchangesAppComponent,
-    OnChangesComponent
+    OnChangesComponent,
+    DoCheckItemComponent,
+    DoCheckAppComponent,
+    DoCheckComponent
   ],
   imports: [
     BrowserModule,

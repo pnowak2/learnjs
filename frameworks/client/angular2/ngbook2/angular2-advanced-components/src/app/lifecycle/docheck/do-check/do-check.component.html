@@ -1,0 +1,8 @@
+<do-check-item [comment]="comment"
+  *ngFor="let comment of comments"
+  (onRemove)="removeComment($event)">
+</do-check-item>
+
+<button class="ui primary button" (click)="addComment()">
+  Add
+</button>
