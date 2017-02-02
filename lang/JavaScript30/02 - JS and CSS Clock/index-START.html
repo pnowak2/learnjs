@@ -1,73 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
-    </div>
+<div class="clock">
+  <div class="clock__inner">
+    <div class="clock__second"></div>
+    <div class="clock__minute"></div>
+    <div class="clock__hour"></div>
+  </div>
+</div>
 
 
   <style>
-    html {
-      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
-      background-size:cover;
-      font-family:'helvetica neue';
-      text-align: center;
-      font-size: 10px;
-    }
+  body {
+  background-color: #333;
+}
 
-    body {
-      font-size: 2rem;
-      display:flex;
-      flex:1;
-      min-height: 100vh;
-      align-items: center;
-    }
+.clock {
+  width: 40rem;
+  height: 40rem;
+  background-color: grey;
+  margin: 10rem auto;
+  position: relative;
+  padding: 1rem;
+  border-radius: 50%;
+}
 
-    .clock {
-      width: 30rem;
-      height: 30rem;
-      border:20px solid white;
-      border-radius:50%;
-      margin:50px auto;
-      position: relative;
-      padding:2rem;
-      box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
-        inset 0 0 0 3px #EFEFEF,
-        inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
-    }
+.clock__inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 50%;
+}
 
-    .clock-face {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
-    }
+.clock__second {
+  background-color: red;
+  height: .2em;
+}
 
-    .hand {
-      width:50%;
-      height:6px;
-      background:black;
-      position: absolute;
-      top:50%;
-    }
+.clock__minute {
+  background-color: black;
+  height: .3em;
+}
 
+.clock__hour{
+  background-color: black;
+  height: .5em;
+}
+
+.clock__second, .clock__minute, .clock__hour {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  margin-top: -.5em;
+  transform-origin: 100%;
+  transform: rotate(90deg);
+  transition: all .1s;
+  transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+}
   </style>
 
-  <script>
+<script>
+var clock = {
+  start: function () {
+    setInterval(function () {
+        let secondEl = document.querySelector('.clock__second');
+        let minuteEl = document.querySelector('.clock__minute');
+        let hourEl = document.querySelector('.clock__hour');
+      
+        let now = new Date();
+        let seconds = now.getSeconds();
+        let minutes = now.getMinutes();
+        let hours = now.getHours();
+        let secondsAngle = (seconds * 6) + 90;
+        let minutesAngle = (minutes * 6) + 90;
+        let hoursAngle = (hours * 30) + 90;
+
+        secondEl.style['transform'] = `rotate(${secondsAngle}deg)`;               minuteEl.style['transform'] = `rotate(${minutesAngle}deg)`;
+        hourEl.style['transform'] = `rotate(${hoursAngle}deg)`;
+
+    }, 1000);
+  }
+}
+
+clock.start();
+
 
 
   </script>
 </body>
+
 </html>
