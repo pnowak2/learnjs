@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Router from 'react-router/BrowserRouter';
 
-import App from './components-complete/App';
+import App from './components/App';
 
 import './styles/index.css';
 import '../semantic/dist/semantic.css';
