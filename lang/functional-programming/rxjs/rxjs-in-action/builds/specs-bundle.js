@@ -54727,6 +54727,8 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      console.log('act..', actual);
+	      console.log('exp..', actual);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -54751,6 +54753,49 @@
 	        var expected = '-a-b-c|';
 
 	        rxs.expectObservable(e1.merge(e2)).toBe(expected);
+	      });
+
+	      it('should merge in order when synchronous data sources are used', function (done) {
+	        var expected = [1, 2, 3, 'a', 'b', 'c'],
+	            i = 0;
+
+	        var source1$ = _rxjs2.default.Observable.of(1, 2, 3);
+	        var source2$ = _rxjs2.default.Observable.of('a', 'b', 'c');
+
+	        _rxjs2.default.Observable.merge(source1$, source2$).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+	    });
+
+	    describe('5.1.2 Preserve order of events by concatenating streams', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      it('should preserve order of streams while merging them', function (done) {
+	        var expected = [[1, 2, 3], 'a', 'b', 'c'],
+	            i = 0;
+
+	        var source1$ = _rxjs2.default.Observable.create(function (observer) {
+	          setTimeout(function () {
+	            observer.next([1, 2, 3]);
+	            observer.complete();
+	          }, 3000);
+	        });
+	        var source2$ = _rxjs2.default.Observable.of('a', 'b', 'c');
+
+	        _rxjs2.default.Observable.concat(source1$, source2$).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+
+	        clock.tick(3000);
 	      });
 	    });
 	  });

@@ -8,6 +8,8 @@ describe('5 Applied Reactive Streams', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
+      console.log('act..', actual);
+      console.log('exp..', actual);
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -36,6 +38,53 @@ describe('5 Applied Reactive Streams', () => {
         rxs.expectObservable(
           e1.merge(e2)
         ).toBe(expected);
+      });
+
+      it('should merge in order when synchronous data sources are used', (done) => {
+        let expected = [1, 2, 3, 'a', 'b', 'c'],
+          i = 0;
+
+        let source1$ = Rx.Observable.of(1, 2, 3);
+        let source2$ = Rx.Observable.of('a', 'b', 'c');
+
+        Rx.Observable.merge(source1$, source2$)
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+      });
+    });
+
+    describe('5.1.2 Preserve order of events by concatenating streams', () => {
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      it('should preserve order of streams while merging them', (done) => {
+        let expected = [[1, 2, 3], 'a', 'b', 'c'],
+          i = 0;
+
+        const source1$ = Rx.Observable.create((observer) => {
+          setTimeout(function () {
+            observer.next([1, 2, 3]);
+            observer.complete();
+          }, 3000);
+        });
+        const source2$ = Rx.Observable.of('a', 'b', 'c');
+
+        Rx.Observable
+          .concat(source1$, source2$)
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+
+        clock.tick(3000);
+
       });
     });
   });
