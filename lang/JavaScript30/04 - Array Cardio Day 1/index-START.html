@@ -32,16 +32,50 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
 
+    const inv1500s = inventors.filter((inventor) => {
+      return inventor.year >= 1500 && inventor.year < 1600;
+    });
+
+    console.log(inv1500s);
+
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+
+    const firstAndLast = inventors.map((inventor) => {
+      return {
+        first: inventor.first,
+        last: inventor.last
+      }
+    })
+
+    console.log(firstAndLast);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
 
+    const sortedByBirth = inventors.sort(function(a, b) {
+      return a.year - b.year;
+    });
+
+    console.log(sortedByBirth);
+
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
 
+    const howManyYearsLive = inventors.reduce((total, inv) => {
+      return total + (inv.passed - inv.year);
+    }, 0);
+
+    console.log(howManyYearsLive);
+
     // 5. Sort the inventors by years lived
+
+    const howManyYearsLiveSorted = inventors
+    .sort(function(a, b) {
+      return (a.passed - a.year) - (b.passed - b.year);
+    });
+
+    console.log(howManyYearsLiveSorted);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
@@ -50,10 +84,30 @@
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const peopleSortedByLastName = people
+      .sort(function(a, b) {
+        const aLast = a.split(', ')[1];
+        const bLast = b.split(', ')[1];
+
+        return aLast - bLast;
+      })
+
+    console.log(peopleSortedByLastName);
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const summed = data.reduce((acc, item) => {
+      if(acc[item]) {
+        acc[item] = acc[item] + 1;
+      } else {
+        acc[item] = 1
+      }
+
+      return acc;
+    }, {});
+    console.log(summed);
   </script>
 </body>
 </html>
