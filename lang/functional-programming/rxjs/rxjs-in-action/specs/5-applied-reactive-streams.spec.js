@@ -87,5 +87,65 @@ describe('5 Applied Reactive Streams', () => {
 
       });
     });
+
+    describe('5.1.3 Switch to the latest observable data', () => {
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      it('should switch to another stream, given by previous operation (mapTo in this case)', (done) => {
+        let expected = [0, 1, 2, 3, 4, 5/*, ... */],
+          i = 0;
+
+        Rx.Observable
+          .from(['a', 'b', 'c'])
+          .mapTo(Rx.Observable.timer(100))
+          .switch()
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+
+        clock.tick(200);
+      });
+    });
+  });
+
+  describe('5.2 Unwinding nested observables: .mergeMap()', () => {
+    describe('5.2.1 Flattening nested observables', () => {
+      it('should flatten nested observables to provider subscriber final result without further processing', (done) => {
+        let expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+          i = 0;
+
+        Rx.Observable
+          .of('a', 'b', 'c')
+          .mergeMap((x) => {
+            return Rx.Observable.of(x + ' ajax call')
+          })
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+      });
+
+      it('should first map and then merge (flat) map', (done) => {
+        let expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+          i = 0;
+
+        // equivalent (i think so)
+
+        Rx.Observable
+          .of('a', 'b', 'c')
+          .map(x => Rx.Observable.of(x + ' ajax call'))
+          .mergeMap(R.identity) // same as x => x
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+      });
+    });
   });
 });

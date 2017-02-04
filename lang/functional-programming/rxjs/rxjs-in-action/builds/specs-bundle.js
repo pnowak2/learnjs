@@ -54798,6 +54798,58 @@
 	        clock.tick(3000);
 	      });
 	    });
+
+	    describe('5.1.3 Switch to the latest observable data', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      it('should switch to another stream, given by previous operation (mapTo in this case)', function (done) {
+	        var expected = [0, 1, 2, 3, 4, 5 /*, ... */],
+	            i = 0;
+
+	        _rxjs2.default.Observable.from(['a', 'b', 'c']).mapTo(_rxjs2.default.Observable.timer(100)).switch().subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+
+	        clock.tick(200);
+	      });
+	    });
+	  });
+
+	  describe('5.2 Unwinding nested observables: .mergeMap()', function () {
+	    describe('5.2.1 Flattening nested observables', function () {
+	      it('should flatten nested observables to provider subscriber final result without further processing', function (done) {
+	        var expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+	            i = 0;
+
+	        _rxjs2.default.Observable.of('a', 'b', 'c').mergeMap(function (x) {
+	          return _rxjs2.default.Observable.of(x + ' ajax call');
+	        }).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+
+	      it('should first map and then merge (flat) map', function (done) {
+	        var expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+	            i = 0;
+
+	        // equivalent (i think so)
+
+	        _rxjs2.default.Observable.of('a', 'b', 'c').map(function (x) {
+	          return _rxjs2.default.Observable.of(x + ' ajax call');
+	        }).mergeMap(_ramda2.default.identity) // same as x => x
+	        .subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+	    });
 	  });
 	});
 
