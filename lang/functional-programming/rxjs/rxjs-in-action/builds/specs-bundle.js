@@ -54825,7 +54825,7 @@
 
 	  describe('5.2 Unwinding nested observables: .mergeMap()', function () {
 	    describe('5.2.1 Flattening nested observables', function () {
-	      it('should flatten nested observables to provider subscriber final result without further processing', function (done) {
+	      it('should flatten nested observables to provider, subscriber gets final result without further processing', function (done) {
 	        var expected = ['a ajax call', 'b ajax call', 'c ajax call'],
 	            i = 0;
 
@@ -54846,6 +54846,34 @@
 	          return _rxjs2.default.Observable.of(x + ' ajax call');
 	        }).mergeMap(_ramda2.default.identity) // same as x => x
 	        .subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+
+	      it('should be same as subscribing in nested call (not recommended)', function (done) {
+	        var expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+	            i = 0;
+
+	        // equivalent (i think so)
+
+	        _rxjs2.default.Observable.of('a', 'b', 'c').map(function (x) {
+	          return _rxjs2.default.Observable.of(x + ' ajax call');
+	        }).subscribe(function (x) {
+	          x.subscribe(function (y) {
+	            (0, _chai.expect)(expected[i++]).to.eql(y);
+	          });
+	        }, function () {}, done);
+	      });
+	    });
+	  });
+
+	  describe('5.3 Mastering asynchronous streams', function () {
+	    describe('5.3.1 distinctUntilChanged()', function () {
+	      it('should emit value only if sequencial values are distinct', function (done) {
+	        var expected = ['a', 'b', 'c'],
+	            i = 0;
+
+	        _rxjs2.default.Observable.of('a', 'a', 'a', 'b', 'b', 'c').distinctUntilChanged().subscribe(function (x) {
 	          (0, _chai.expect)(expected[i++]).to.eql(x);
 	        }, function () {}, done);
 	      });

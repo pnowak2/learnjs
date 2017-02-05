@@ -118,7 +118,7 @@ describe('5 Applied Reactive Streams', () => {
 
   describe('5.2 Unwinding nested observables: .mergeMap()', () => {
     describe('5.2.1 Flattening nested observables', () => {
-      it('should flatten nested observables to provider subscriber final result without further processing', (done) => {
+      it('should flatten nested observables to provider, subscriber gets final result without further processing', (done) => {
         let expected = ['a ajax call', 'b ajax call', 'c ajax call'],
           i = 0;
 
@@ -142,6 +142,38 @@ describe('5 Applied Reactive Streams', () => {
           .of('a', 'b', 'c')
           .map(x => Rx.Observable.of(x + ' ajax call'))
           .mergeMap(R.identity) // same as x => x
+          .subscribe((x) => {
+            expect(expected[i++]).to.eql(x)
+          }, () => { }, done);
+      });
+
+      it('should be same as subscribing in nested call (not recommended)', (done) => {
+        let expected = ['a ajax call', 'b ajax call', 'c ajax call'],
+          i = 0;
+
+        // equivalent (i think so)
+
+        Rx.Observable
+          .of('a', 'b', 'c')
+          .map(x => Rx.Observable.of(x + ' ajax call'))
+          .subscribe((x) => {
+            x.subscribe((y) => {
+              expect(expected[i++]).to.eql(y)
+            })
+          }, () => { }, done);
+      });
+    });
+  });
+
+  describe('5.3 Mastering asynchronous streams', () => {
+    describe('5.3.1 distinctUntilChanged()', () => {
+      it('should emit value only if sequencial values are distinct', (done) => {
+        let expected = ['a', 'b', 'c'],
+          i = 0;
+
+        Rx.Observable
+          .of('a', 'a', 'a', 'b', 'b', 'c')
+          .distinctUntilChanged()
           .subscribe((x) => {
             expect(expected[i++]).to.eql(x)
           }, () => { }, done);
