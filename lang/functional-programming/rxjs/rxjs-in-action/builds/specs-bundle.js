@@ -54850,7 +54850,7 @@
 	        }, function () {}, done);
 	      });
 
-	      it('should be same as subscribing in nested call (not recommended)', function (done) {
+	      it('should be same as subscribing in nested call (not recommended), thats why mergeMap (flatMap - alias) is used', function (done) {
 	        var expected = ['a ajax call', 'b ajax call', 'c ajax call'],
 	            i = 0;
 

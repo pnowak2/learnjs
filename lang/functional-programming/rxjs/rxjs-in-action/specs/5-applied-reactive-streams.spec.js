@@ -147,7 +147,7 @@ describe('5 Applied Reactive Streams', () => {
           }, () => { }, done);
       });
 
-      it('should be same as subscribing in nested call (not recommended)', (done) => {
+      it('should be same as subscribing in nested call (not recommended), thats why mergeMap (flatMap - alias) is used', (done) => {
         let expected = ['a ajax call', 'b ajax call', 'c ajax call'],
           i = 0;
 
