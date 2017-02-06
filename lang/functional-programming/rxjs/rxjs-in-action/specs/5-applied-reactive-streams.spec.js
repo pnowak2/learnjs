@@ -8,8 +8,8 @@ describe('5 Applied Reactive Streams', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
-      console.log('act..', actual);
-      console.log('exp..', actual);
+      // console.log('act..', actual);
+      // console.log('exp..', actual);
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -177,6 +177,58 @@ describe('5 Applied Reactive Streams', () => {
           .subscribe((x) => {
             expect(expected[i++]).to.eql(x)
           }, () => { }, done);
+      });
+    });
+  });
+
+  describe('5.4 Drag and drop with concatMap', () => {
+    describe('5.4.1 Different ways for same thing', () => {
+      it('Using mergeMap()', () => {
+        var down = rxs.createHotObservable('-d-----|');
+        var up =   rxs.createHotObservable('-----u-|');
+        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+        var expected =                     '--mmm--|';
+
+        rxs.expectObservable(
+          down.mergeMap(() => move.takeUntil(up))
+        ).toBe(expected);
+      });
+
+      it('Using concatMap()', () => {
+        var down = rxs.createHotObservable('-d-----|');
+        var up =   rxs.createHotObservable('-----u-|');
+        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+        var expected =                     '--mmm--|';
+
+        rxs.expectObservable(
+          down.concatMap(() => move.takeUntil(up))
+        ).toBe(expected);
+      });
+
+      it('Using map and mergeMap()', () => {
+        var down = rxs.createHotObservable('-d-----|');
+        var up =   rxs.createHotObservable('-----u-|');
+        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+        var expected =                     '--mmm--|';
+
+        rxs.expectObservable(
+          down
+            .mapTo(move.takeUntil(up))
+            .mergeMap(x => x)
+        ).toBe(expected);
+      });
+
+      it('Using switch()', () => {
+        var down = rxs.createHotObservable('-d-----|');
+        var up =   rxs.createHotObservable('-----u-|');
+        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+        var expected =                     '--mmm--|';
+
+        rxs.expectObservable(
+          down
+            .mapTo(move.takeUntil(up))
+            .switch()
+        ).toBe(expected);
       });
     });
   });

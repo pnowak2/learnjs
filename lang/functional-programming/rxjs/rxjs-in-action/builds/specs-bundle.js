@@ -54727,8 +54727,8 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      console.log('act..', actual);
-	      console.log('exp..', actual);
+	      // console.log('act..', actual);
+	      // console.log('exp..', actual);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -54876,6 +54876,52 @@
 	        _rxjs2.default.Observable.of('a', 'a', 'a', 'b', 'b', 'c').distinctUntilChanged().subscribe(function (x) {
 	          (0, _chai.expect)(expected[i++]).to.eql(x);
 	        }, function () {}, done);
+	      });
+	    });
+	  });
+
+	  describe('5.4 Drag and drop with concatMap', function () {
+	    describe('5.4.1 Different ways for same thing', function () {
+	      it('Using mergeMap()', function () {
+	        var down = rxs.createHotObservable('-d-----|');
+	        var up = rxs.createHotObservable('-----u-|');
+	        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+	        var expected = '--mmm--|';
+
+	        rxs.expectObservable(down.mergeMap(function () {
+	          return move.takeUntil(up);
+	        })).toBe(expected);
+	      });
+
+	      it('Using concatMap()', function () {
+	        var down = rxs.createHotObservable('-d-----|');
+	        var up = rxs.createHotObservable('-----u-|');
+	        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+	        var expected = '--mmm--|';
+
+	        rxs.expectObservable(down.concatMap(function () {
+	          return move.takeUntil(up);
+	        })).toBe(expected);
+	      });
+
+	      it('Using map and mergeMap()', function () {
+	        var down = rxs.createHotObservable('-d-----|');
+	        var up = rxs.createHotObservable('-----u-|');
+	        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+	        var expected = '--mmm--|';
+
+	        rxs.expectObservable(down.mapTo(move.takeUntil(up)).mergeMap(function (x) {
+	          return x;
+	        })).toBe(expected);
+	      });
+
+	      it('Using switch()', function () {
+	        var down = rxs.createHotObservable('-d-----|');
+	        var up = rxs.createHotObservable('-----u-|');
+	        var move = rxs.createHotObservable('--mmmmmmmmmmm|');
+	        var expected = '--mmm--|';
+
+	        rxs.expectObservable(down.mapTo(move.takeUntil(up)).switch()).toBe(expected);
 	      });
 	    });
 	  });
