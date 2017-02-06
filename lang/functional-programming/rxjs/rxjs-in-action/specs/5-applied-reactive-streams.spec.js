@@ -66,7 +66,7 @@ describe('5 Applied Reactive Streams', () => {
       });
 
       it('should preserve order of streams while merging them', (done) => {
-        let expected = [[1, 2, 3], 'a', 'b', 'c'],
+        let expected = ['a', 'b', 'c', [1, 2, 3]],
           i = 0;
 
         const source1$ = Rx.Observable.create((observer) => {
@@ -78,7 +78,7 @@ describe('5 Applied Reactive Streams', () => {
         const source2$ = Rx.Observable.of('a', 'b', 'c');
 
         Rx.Observable
-          .concat(source1$, source2$)
+          .concat(source2$, source1$)
           .subscribe((x) => {
             expect(expected[i++]).to.eql(x)
           }, () => { }, done);

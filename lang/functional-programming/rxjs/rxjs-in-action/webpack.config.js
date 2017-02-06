@@ -6,7 +6,8 @@ module.exports = {
     'mocha!./specs/2-reacting-with-rxjs.spec.js',
     'mocha!./specs/3-core-operators.spec.js',
     'mocha!./specs/4-its-about-time-you-used-rxjs.spec.js',
-    'mocha!./specs/5-applied-reactive-streams.spec.js'
+    'mocha!./specs/5-applied-reactive-streams.spec.js',
+    'mocha!./specs/6-coordinating business processes.spec.js',
   ],
   output: {
     path: 'builds',

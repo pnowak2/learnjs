@@ -48,7 +48,8 @@
 	__webpack_require__(132);
 	__webpack_require__(865);
 	__webpack_require__(867);
-	module.exports = __webpack_require__(869);
+	__webpack_require__(869);
+	module.exports = __webpack_require__(871);
 
 
 /***/ },
@@ -54780,7 +54781,7 @@
 	      });
 
 	      it('should preserve order of streams while merging them', function (done) {
-	        var expected = [[1, 2, 3], 'a', 'b', 'c'],
+	        var expected = ['a', 'b', 'c', [1, 2, 3]],
 	            i = 0;
 
 	        var source1$ = _rxjs2.default.Observable.create(function (observer) {
@@ -54791,7 +54792,7 @@
 	        });
 	        var source2$ = _rxjs2.default.Observable.of('a', 'b', 'c');
 
-	        _rxjs2.default.Observable.concat(source1$, source2$).subscribe(function (x) {
+	        _rxjs2.default.Observable.concat(source2$, source1$).subscribe(function (x) {
 	          (0, _chai.expect)(expected[i++]).to.eql(x);
 	        }, function () {}, done);
 
@@ -54922,6 +54923,102 @@
 	        var expected = '--mmm--|';
 
 	        rxs.expectObservable(down.mapTo(move.takeUntil(up)).switch()).toBe(expected);
+	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 871 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(872)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 872 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('6 Coordinating business processes', function () {
+	  var rxs = void 0;
+	  beforeEach(function () {
+	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      // console.log('act..', actual);
+	      // console.log('exp..', actual);
+	      (0, _chai.expect)(actual).to.deep.equal(expected);
+	    });
+	  });
+
+	  afterEach(function () {
+	    rxs.flush();
+	  });
+
+	  describe('6.1 Web hooks and the observer pattern', function () {
+
+	    function startWith(value) {
+	      var _this = this;
+
+	      return _rxjs2.default.Observable.create(function (subscriber) {
+	        var source = _this;
+
+	        subscriber.next(value);
+	        return source.subscribe(subscriber);
+	      });
+	    }
+
+	    _rxjs2.default.Observable.prototype.myStartWith = startWith;
+
+	    describe('6.1.2 Hooked on observables', function () {
+	      it('should use range to emit contigous numbers', function (done) {
+	        var expected = [1, 2, 3, 4, 5],
+	            i = 0;
+
+	        _rxjs2.default.Observable.range(1, 5).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
+	      });
+
+	      it('should write own hook - myStartWith()', function (done) {
+	        var expected = [0, 1, 2, 3, 4, 5],
+	            i = 0;
+
+	        _rxjs2.default.Observable.range(1, 5).startWith(0).subscribe(function (x) {
+	          (0, _chai.expect)(expected[i++]).to.eql(x);
+	        }, function () {}, done);
 	      });
 	    });
 	  });
