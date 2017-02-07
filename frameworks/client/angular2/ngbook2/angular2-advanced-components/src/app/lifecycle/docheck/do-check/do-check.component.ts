@@ -30,7 +30,7 @@ export class DoCheckComponent implements DoCheck {
 
     if(changes) {
       changes.forEachAddedItem((r: CollectionChangeRecord) => console.log('Added', r.item));
-      changes.forEachRemovedItem((r: CollectionChangeRecord) => console.log('Added', r.item));
+      changes.forEachRemovedItem((r: CollectionChangeRecord) => console.log('Removed', r.item));
     }
   }
 

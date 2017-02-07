@@ -8,8 +8,6 @@ describe('5 Applied Reactive Streams', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
-      // console.log('act..', actual);
-      // console.log('exp..', actual);
       expect(actual).to.deep.equal(expected);
     });
   });
