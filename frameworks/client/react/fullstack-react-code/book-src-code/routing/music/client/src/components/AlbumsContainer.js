@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Album from './Album';
 import { client } from '../Client';
+import VerticalMenu from './VerticalMenu';
+import Match from 'react-router/Match';
 
 const ALBUM_IDS = [
   '23O4F21GDWiGd33tFN3ZgI',
@@ -35,7 +37,7 @@ class AlbumsContainer extends Component {
           fetched: true,
           albums: albums,
         })
-       ));
+      ));
   }
 
   render() {
@@ -50,19 +52,19 @@ class AlbumsContainer extends Component {
             className='ui six wide column'
             style={{ maxWidth: 250 }}
           >
-            {/* VerticalMenu will go here */}
+            <VerticalMenu albums={this.state.albums} />
           </div>
           <div className='ui ten wide column'>
-            {
-              this.state.albums.map((a) => (
-                <div
-                  className='row'
-                  key={a.id}
-                >
-                  <Album album={a} />
-                </div>
-              ))
-            }
+            <Match
+              pattern='/albums/:albumId'
+              render={({ params }) => {
+                const album = this.state.albums.find(
+                  (a) => a.id === params.albumId
+                ); return (
+                  <Album
+                    album={album}
+                  />);
+              }} />
           </div>
         </div>
       );
