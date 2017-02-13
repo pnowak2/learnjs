@@ -54953,6 +54953,14 @@
 
 	'use strict';
 
+	var _classCallCheck2 = __webpack_require__(11);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(873);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
 	var _chai = __webpack_require__(89);
 
 	var _rxjs = __webpack_require__(137);
@@ -55020,9 +55028,149 @@
 	          (0, _chai.expect)(expected[i++]).to.eql(x);
 	        }, function () {}, done);
 	      });
+
+	      it('should use finally()', function (done) {
+	        var expected = [1, 2, 3];
+	        var i = 0;
+
+	        _rxjs2.default.Observable.create(function (observer) {
+	          observer.next(1);
+	          observer.next(2);
+	          observer.next(3);
+	          observer.complete();
+	        }).finally(done).subscribe(function (val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        });
+	      });
+
+	      describe('using()', function () {
+	        it('should use to create observable and resource which will be given timespan of being the stream and disposed when stream is unsubscribed from.', function (done) {
+	          var disposeSpy = _sinon2.default.spy();
+
+	          var DisposableResource = function () {
+	            function DisposableResource(value) {
+	              (0, _classCallCheck3.default)(this, DisposableResource);
+
+	              this.value = value;
+	              this.disposed = false;
+	            }
+
+	            (0, _createClass3.default)(DisposableResource, [{
+	              key: 'getValue',
+	              value: function getValue() {
+	                if (this.disposed) {
+	                  throw new Error('Object is disposed');
+	                }
+
+	                return this.value;
+	              }
+
+	              // required method
+
+	            }, {
+	              key: 'unsubscribe',
+	              value: function unsubscribe() {
+	                disposeSpy();
+	                if (!this.disposed) {
+	                  this.disposed = true;
+	                  this.value = null;
+	                }
+	              }
+	            }]);
+	            return DisposableResource;
+	          }();
+
+	          var source$ = _rxjs2.default.Observable.using(function () {
+	            return new DisposableResource(42);
+	          }, function (resource) {
+	            return _rxjs2.default.Observable.create(function (observer) {
+	              observer.next(resource.getValue());
+	              observer.next(resource.getValue());
+	              observer.complete();
+	            });
+	          });
+
+	          var expected = [84, 84],
+	              i = 0;
+
+	          var subscription = source$.map(function (val) {
+	            return val * 2;
+	          }).subscribe(function (val) {
+	            (0, _chai.expect)(val).to.eql(expected[i++]);
+	          }, null, function () {
+	            done();
+	          });
+
+	          subscription.unsubscribe();
+
+	          // expect(disposeSpy.calledOnce).to.be.true(); no properly tested in time..
+	        });
+	      });
+	    });
+	  });
+
+	  describe('6.2 Joining parallel streams with combineLatest and forkJoin', function () {
+	    describe('6.2.2 Combining parallel streams', function () {
+	      it('should..', function () {});
 	    });
 	  });
 	});
+
+/***/ },
+/* 873 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(874);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
+
+/***/ },
+/* 874 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(875), __esModule: true };
+
+/***/ },
+/* 875 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(876);
+	var $Object = __webpack_require__(24).Object;
+	module.exports = function defineProperty(it, key, desc){
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+/***/ },
+/* 876 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(22);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(32), 'Object', {defineProperty: __webpack_require__(28).f});
 
 /***/ }
 /******/ ]);
