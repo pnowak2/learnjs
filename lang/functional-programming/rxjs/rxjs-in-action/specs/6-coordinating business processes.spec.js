@@ -8,8 +8,8 @@ describe('6 Coordinating business processes', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
-      // console.log('act..', actual);
-      // console.log('exp..', actual);
+      console.log('act..', actual);
+      console.log('exp..', actual);
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -128,8 +128,14 @@ describe('6 Coordinating business processes', () => {
 
   describe('6.2 Joining parallel streams with combineLatest and forkJoin', () => {
     describe('6.2.2 Combining parallel streams', () => {
-      it('should..', () => {
-        
+      it('should use combineLatest', () => {
+        var e1 = rxs.createHotObservable('-a--b--c-|');
+        var e2 = rxs.createHotObservable('--d--e--f-|');
+        var expected = '--(ad)-(bd)(be)-(ce)(cf)|';
+
+        rxs.expectObservable(
+          Rx.Observable.combineLatest(e1, e2)
+        ).toBe(expected);
       });
     });
   });

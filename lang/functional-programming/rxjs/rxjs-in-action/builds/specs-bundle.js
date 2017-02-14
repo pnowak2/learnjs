@@ -54985,8 +54985,8 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      // console.log('act..', actual);
-	      // console.log('exp..', actual);
+	      console.log('act..', actual);
+	      console.log('exp..', actual);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -55111,7 +55111,13 @@
 
 	  describe('6.2 Joining parallel streams with combineLatest and forkJoin', function () {
 	    describe('6.2.2 Combining parallel streams', function () {
-	      it('should..', function () {});
+	      it('should use combineLatest', function () {
+	        var e1 = rxs.createHotObservable('-a--b--c-|');
+	        var e2 = rxs.createHotObservable('--d--e--f-|');
+	        var expected = '--(ad)-(bd)(be)-(ce)(cf)|';
+
+	        rxs.expectObservable(_rxjs2.default.Observable.combineLatest(e1, e2)).toBe(expected);
+	      });
 	    });
 	  });
 	});
