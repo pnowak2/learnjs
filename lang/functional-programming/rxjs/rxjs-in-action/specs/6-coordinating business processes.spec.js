@@ -9,7 +9,7 @@ describe('6 Coordinating business processes', () => {
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
       console.log('act..', actual);
-      console.log('exp..', actual);
+      console.log('exp..', expected);
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -128,14 +128,38 @@ describe('6 Coordinating business processes', () => {
 
   describe('6.2 Joining parallel streams with combineLatest and forkJoin', () => {
     describe('6.2.2 Combining parallel streams', () => {
-      it('should use combineLatest', () => {
-        var e1 = rxs.createHotObservable('-a--b--c-|');
-        var e2 = rxs.createHotObservable('--d--e--f-|');
-        var expected = '--(ad)-(bd)(be)-(ce)(cf)|';
+      it('should use combineLatest wich emits every time event happened on all streams, even before any of them is finished', () => {
+        var e1 = rxs.createHotObservable('-a-----b---c-|');
+        var e2 = rxs.createHotObservable('---------e--f-|');
+        var expected =                   '---------C-DE-|';
+        var values = { C: ['b', 'e'], D: ['c', 'e'], E: ['c', 'f'] };
 
         rxs.expectObservable(
           Rx.Observable.combineLatest(e1, e2)
+        ).toBe(expected, values);
+      });
+
+      it('should compare to merge', () => {
+        var e1 = rxs.createHotObservable('-a-----b---c-|');
+        var e2 = rxs.createHotObservable('---------e--f-|');
+        var expected =                   '-a-----b-e-cf-|';
+
+        rxs.expectObservable(
+          Rx.Observable.merge(e1, e2)
         ).toBe(expected);
+      });
+    });
+
+    describe('6.2.3 More coordination with fork-join', () => {
+      it('should emit when all streams are finished, and emit last values from each of them', () => {
+        var e1 = rxs.createHotObservable('-c-|');
+        var e2 = rxs.createHotObservable('(--f|)');
+        var expected =                   '---(A|)';
+        var values = { A: ['c', 'f'] };
+
+        rxs.expectObservable(
+          Rx.Observable.forkJoin(e1, e2)
+        ).toBe(expected, values);
       });
     });
   });
