@@ -54728,8 +54728,6 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      // console.log('act..', actual);
-	      // console.log('exp..', actual);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
