@@ -25,6 +25,11 @@ import { DoCheckComponent } from './lifecycle/docheck/do-check/do-check.componen
 import { AllCallbacksComponent } from './lifecycle/all-callbacks/all-callbacks.component';
 import { NgBookIfDirective } from './advanced-templates/ng-book-if.directive';
 import { AppTesterComponent } from './advanced-templates/app-tester/app-tester.component';
+import { NgBookRepeatDirective } from './advanced-templates/ng-book-repeat.directive';
+import { DefaultCmpComponent } from './advanced-templates/change-detection/default-cmp/default-cmp.component';
+import { OnpushCmpComponent } from './advanced-templates/change-detection/onpush-cmp/onpush-cmp.component';
+import { ObservableCmpComponent } from './advanced-templates/change-detection/observable-cmp/observable-cmp.component';
+import { ObservableApp } from './advanced-templates/change-detection/observable-cmp/observable-app';
 
 @NgModule({
   declarations: [
@@ -49,7 +54,12 @@ import { AppTesterComponent } from './advanced-templates/app-tester/app-tester.c
     DoCheckComponent,
     AllCallbacksComponent,
     NgBookIfDirective,
-    AppTesterComponent
+    NgBookRepeatDirective,
+    AppTesterComponent,
+    DefaultCmpComponent,
+    OnpushCmpComponent,
+    ObservableCmpComponent,
+    ObservableApp
   ],
   imports: [
     BrowserModule,

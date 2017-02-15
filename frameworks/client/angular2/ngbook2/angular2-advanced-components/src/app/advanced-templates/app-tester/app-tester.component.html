@@ -1,3 +1,19 @@
 <h4>
   ngBookIf, ngBookFor directives
 </h4>
+
+<h5>Forms of original ngIf</h5>
+<div *ngIf="true">ngIf traditional</div>
+<div template="ngIf true">ngIf template intermediate</div>
+<template [ngIf]="true">
+  <div>ngIf full template</div>
+</template>
+
+<h5>ngBookIf</h5>
+<div *ngBookIf="true">Message is displayed</div>
+<template [ngBookIf]="true">
+  <div>ngBookIf with full template</div>
+</template>
+
+<h5>ngBookRepeat</h5>
+<div *ngBookRepeat="let p of people">A message from person {{p.name}} aged {{ p.age }}</div>
