@@ -54728,8 +54728,6 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      // console.log('act..', actual);
-	      // console.log('exp..', actual);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -54985,8 +54983,8 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      // console.log('act..', actual);
-	      // console.log('exp..', actual);
+	      console.log('act..', actual);
+	      console.log('exp..', expected);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -55111,7 +55109,33 @@
 
 	  describe('6.2 Joining parallel streams with combineLatest and forkJoin', function () {
 	    describe('6.2.2 Combining parallel streams', function () {
-	      it('should..', function () {});
+	      it('should use combineLatest wich emits every time event happened on all streams, even before any of them is finished', function () {
+	        var e1 = rxs.createHotObservable('-a-----b---c-|');
+	        var e2 = rxs.createHotObservable('---------e--f-|');
+	        var expected = '---------C-DE-|';
+	        var values = { C: ['b', 'e'], D: ['c', 'e'], E: ['c', 'f'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.combineLatest(e1, e2)).toBe(expected, values);
+	      });
+
+	      it('should compare to merge', function () {
+	        var e1 = rxs.createHotObservable('-a-----b---c-|');
+	        var e2 = rxs.createHotObservable('---------e--f-|');
+	        var expected = '-a-----b-e-cf-|';
+
+	        rxs.expectObservable(_rxjs2.default.Observable.merge(e1, e2)).toBe(expected);
+	      });
+	    });
+
+	    describe('6.2.3 More coordination with fork-join', function () {
+	      it('should emit when all streams are finished, and emit last values from each of them', function () {
+	        var e1 = rxs.createHotObservable('-c-|');
+	        var e2 = rxs.createHotObservable('(--f|)');
+	        var expected = '---(A|)';
+	        var values = { A: ['c', 'f'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.forkJoin(e1, e2)).toBe(expected, values);
+	      });
 	    });
 	  });
 	});

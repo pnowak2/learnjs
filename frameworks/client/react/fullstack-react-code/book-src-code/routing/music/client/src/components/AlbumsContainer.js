@@ -30,7 +30,7 @@ class AlbumsContainer extends Component {
   }
 
   getAlbums() {
-    client.setToken('D6W69PRgCoDKgHZGJmRUNA');
+    // client.setToken('D6W69PRgCoDKgHZGJmRUNA');
     client.getAlbums(ALBUM_IDS)
       .then((albums) => (
         this.setState({
@@ -52,17 +52,20 @@ class AlbumsContainer extends Component {
             className='ui six wide column'
             style={{ maxWidth: 250 }}
           >
-            <VerticalMenu albums={this.state.albums} />
+            <VerticalMenu 
+              albums={this.state.albums} 
+              albumsPathname={this.props.pathname} />
           </div>
           <div className='ui ten wide column'>
             <Match
-              pattern='/albums/:albumId'
+              pattern={`${this.props.pathname}/:albumId`}
               render={({ params }) => {
                 const album = this.state.albums.find(
                   (a) => a.id === params.albumId
                 ); return (
                   <Album
                     album={album}
+                    albumsPathname={this.props.pathname}
                   />);
               }} />
           </div>
