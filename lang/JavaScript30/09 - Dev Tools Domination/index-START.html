@@ -18,28 +18,42 @@
     }
 
     // Regular
+    console.log('hello');
 
     // Interpolated
+    console.log('Hello I am a %s', 'boo');
 
     // Styled
-
+    console.log('%cI am some great text', 'font-size: 50px;');
     // warning!
+    console.warn('oh no');
 
     // Error :|
+    console.error('damn it !');
 
     // Info
+    console.info('information');
 
     // Testing
+    console.assert(1 === 2, '1 is not 2');
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.dir(document.querySelector('p'));
+    console.dir(window);
 
     // Grouping together
+    dogs.forEach(dog => {
+    })
 
     // counting
 
     // timing
+    console.time('fetching');
+
+    console.timeEnd('fetching');
 
   </script>
 </body>

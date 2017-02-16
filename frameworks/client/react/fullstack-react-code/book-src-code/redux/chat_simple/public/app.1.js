@@ -41,39 +41,50 @@ function reducer(state, action) {
 const initialState = { messages: [] }
 const store = createStore(reducer, initialState);
 
-const listener = () => {
-  console.log('listener notified', store.getState());
-}
+const App = React.createClass({
+  componentDidMount: function () {
+    store.subscribe(() => this.forceUpdate());
+  },
 
-store.subscribe(listener);
+  render: function () {
+    const message = store.getState().messages;
 
-const addMessageAction1 = {
-  type: 'ADD_MESSAGE',
-  message: 'How does it look, Neil?'
-}
+    return (
+      <div className='ui segment'>
+        <MessageView messages={messages} />
+        <MessageInput />
+      </div>
+    );
+  }
+});
 
-store.dispatch(addMessageAction1);
-const stateV1 = store.getState();
+const MessageInput = React.createClass({
+  handleSubmit: function () {
+    store.dispatch({
+      type: 'ADD_MESSAGE',
+      message: this.refs.messageInput.value
+    });
+    this.refs.messageInput.value = '';
+  },
 
-const addMessageAction2 = {
-  type: 'ADD_MESSAGE',
-  message: 'Looking good.'
-}
+  render: function() {
+    return (
+      <div className='ui input'>
+        <input ref='messageInput' type='text' />
+        <button onClick={this.handleSubmit} className='ui primary button' type='submit'>
+          Submit
+        </button>
+      </div>
+    )
+  }
+});
 
-store.dispatch(addMessageAction2);
-const stateV2 = store.getState();
+const MessageView = React.createClass({
+  render: function() {
+    return (
+      <div></div>
+    );
+  }
+});
 
-console.log('state v1', stateV1);
-console.log('state v2', stateV2);
-
-const deleteMessageAction = {
-  type: 'DELETE_MESSAGE',
-  index: 1
-}
-
-store.dispatch(deleteMessageAction);
-
-const stateV3 = store.getState();
-
-console.log('state v3', stateV3);
-
+ReactDOM.render(<App />, document.querySelector('#content'));
