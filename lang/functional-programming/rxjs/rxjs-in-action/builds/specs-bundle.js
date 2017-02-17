@@ -55374,7 +55374,128 @@
 
 	  describe('7.4 The RxJS way of dealing with failure', function () {
 	    describe('7.4.1 Errors propagated downstream to observers', function () {
-	      it('should', function () {});
+	      it('should call error handler', function (done) {
+	        var computeHalf = function computeHalf(x) {
+	          return Math.floor(x / 2);
+	        };
+
+	        var i = 0;
+	        var expected = [1, 2];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).map(computeHalf).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('7.4.2 Catching and reacting to Errors', function () {
+	      it('should use catch() which prevents to go further and provides own last value to the stream', function (done) {
+	        var computeHalf = function computeHalf(x) {
+	          return Math.floor(x / 2);
+	        };
+
+	        var i = 0;
+	        var expected = [1, 2, 3];
+
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).catch(function (err) {
+	          return _rxjs2.default.Observable.of(6);
+	        }).map(computeHalf).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	          spy(val);
+	        }, function (error) {
+	          (0, _chai.expect)(spy.callCount).to.eql(0);
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.callCount).to.eql(3);
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('7.4.3 Retrying failed streams for a fixed number of times', function () {
+	      it('should receive in catch error but also source stream (to retry)', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 6];
+
+	        var spy = _sinon2.default.spy();
+	        var obs$ = _rxjs2.default.Observable.of(2, 4, 5, 8, 10);
+
+	        obs$.map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).catch(function (err, source) {
+	          // console.log(source);
+	          return _rxjs2.default.Observable.of(6);
+	        }).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	          spy(val);
+	        }, function (error) {
+	          (0, _chai.expect)(spy.callCount).to.eql(0);
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.callCount).to.eql(3);
+	          done();
+	        });
+	      });
+
+	      it('should use retry(n). tries first time and then repeats additional 3 times', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retry(3).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
+
+	      it('should use retry(n) with catch() to provide default fallback and complete the sequence', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4, 6];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retry(3).catch(function (err) {
+	          return _rxjs2.default.Observable.of(6);
+	        }).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          fail();
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
 	    });
 	  });
 	});
