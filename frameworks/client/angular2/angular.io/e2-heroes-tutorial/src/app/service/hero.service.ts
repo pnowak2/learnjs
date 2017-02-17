@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class HeroService {
   getHeroes(): Promise<Hero[]> {
     return new Promise(resolve => {
-      setTimeout(() => resolve(HEROES), 2000);
+      setTimeout(() => resolve(HEROES), 300);
     });
   }
 }
