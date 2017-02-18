@@ -55260,6 +55260,8 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      console.log(actual);
+	      console.log(expected);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -55495,6 +55497,66 @@
 	        }, function (complete) {
 	          done();
 	        });
+	      });
+	    });
+
+	    describe('7.4.4 Reacting to failed retries', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      xit('should use .retryWhen() which will retry stream if given $err argument emits a value', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4];
+
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retryWhen(function ($err) {
+	          return $err.delay(3000);
+	        }).catch(function () {
+	          return Observable.of(6);
+	        }).subscribe(function next(val) {
+	          spy(val);
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.calledOnce).to.be.true;
+	          done();
+	        });
+
+	        clock.tick(2500);
+	        clock.tick(600);
+	      });
+
+	      it('should use .zip()', function () {
+	        var e1 = rxs.createHotObservable('-a-b-c-|');
+	        var e2 = rxs.createHotObservable('--d-e-|');
+	        var expected = '--A-B-|';
+	        var values = { A: ['a', 'd'], B: ['b', 'e'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.zip(e1, e2)).toBe(expected, values);
+	      });
+
+	      it('should compare .zip() to .combineLatest()', function () {
+	        var e1 = rxs.createHotObservable('-a-b-c-|');
+	        var e2 = rxs.createHotObservable('--d-e-|');
+	        var expected = '--ABCD-|';
+	        var values = { A: ['a', 'd'], B: ['b', 'd'], C: ['b', 'e'], D: ['c', 'e'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.combineLatest(e1, e2)).toBe(expected, values);
 	      });
 	    });
 	  });

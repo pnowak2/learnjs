@@ -8,6 +8,8 @@ describe('7 Error Handling with RxJS', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
+      console.log(actual);
+      console.log(expected);
       expect(actual).to.deep.equal(expected);
     });
   });
@@ -233,6 +235,75 @@ describe('7 Error Handling with RxJS', () => {
           function (complete) {
             done();
           });
+      });
+    });
+
+    describe('7.4.4 Reacting to failed retries', () => {
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      xit('should use .retryWhen() which will retry stream if given $err argument emits a value', (done) => {
+        let i = 0;
+        let expected = [2, 4, 2, 4, 2, 4, 2, 4];
+
+        let spy = sinon.spy();
+
+        Rx.Observable.of(2, 4, 5, 8, 10)
+          .map(num => {
+            if (num % 2 !== 0) {
+              throw new Error(`Unexpected odd number: ${num}`);
+            }
+            return num;
+          })
+          .retryWhen($err => {
+            return $err.delay(3000);
+          })
+          .catch(() => Observable.of(6))
+          .subscribe(
+          function next(val) {
+            spy(val);
+            expect(expected[i++]).to.eql(val);
+          },
+          function (error) {
+            expect(error.message).to.eql('Unexpected odd number: 5')
+            done();
+          },
+          function (complete) {
+            expect(spy.calledOnce).to.be.true;
+            done();
+          });
+
+        clock.tick(2500);
+        clock.tick(600);
+      });
+
+      it('should use .zip()', () => {
+        var e1 = rxs.createHotObservable('-a-b-c-|');
+        var e2 = rxs.createHotObservable('--d-e-|');
+        var expected =                   '--A-B-|';
+        var values = { A: ['a', 'd'], B: ['b', 'e'] }
+
+        rxs.expectObservable(
+          Rx.Observable.zip(e1, e2)
+        ).toBe(expected, values);
+      });
+
+      it('should compare .zip() to .combineLatest()', () => {
+        var e1 = rxs.createHotObservable('-a-b-c-|');
+        var e2 = rxs.createHotObservable('--d-e-|');
+        var expected =                   '--ABCD-|';
+        var values = { A: ['a', 'd'], B: ['b', 'd'], C: ['b', 'e'], D: ['c', 'e'] }
+
+        rxs.expectObservable(
+          Rx.Observable.combineLatest(e1, e2)
+        ).toBe(expected, values);
       });
     });
   });
