@@ -50,7 +50,8 @@
 	__webpack_require__(867);
 	__webpack_require__(869);
 	__webpack_require__(871);
-	module.exports = __webpack_require__(877);
+	__webpack_require__(877);
+	module.exports = __webpack_require__(879);
 
 
 /***/ },
@@ -55558,6 +55559,70 @@
 
 	        rxs.expectObservable(_rxjs2.default.Observable.combineLatest(e1, e2)).toBe(expected, values);
 	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 879 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(880)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 880 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('8 Heating up observables', function () {
+	  var rxs = void 0;
+	  beforeEach(function () {
+	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      (0, _chai.expect)(actual).to.deep.equal(expected);
+	    });
+	  });
+
+	  afterEach(function () {
+	    rxs.flush();
+	  });
+
+	  describe('8.x', function () {
+	    describe('8.x.x', function () {
+	      it('should', function () {});
 	    });
 	  });
 	});
