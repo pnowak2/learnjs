@@ -49,7 +49,9 @@
 	__webpack_require__(865);
 	__webpack_require__(867);
 	__webpack_require__(869);
-	module.exports = __webpack_require__(871);
+	__webpack_require__(871);
+	__webpack_require__(877);
+	module.exports = __webpack_require__(879);
 
 
 /***/ },
@@ -54983,8 +54985,6 @@
 	  var rxs = void 0;
 	  beforeEach(function () {
 	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
-	      console.log('act..', actual);
-	      console.log('exp..', expected);
 	      (0, _chai.expect)(actual).to.deep.equal(expected);
 	    });
 	  });
@@ -55195,6 +55195,437 @@
 	var $export = __webpack_require__(22);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 	$export($export.S + $export.F * !__webpack_require__(32), 'Object', {defineProperty: __webpack_require__(28).f});
+
+/***/ },
+/* 877 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(878)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 878 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _possibleConstructorReturn2 = __webpack_require__(12);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(81);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _classCallCheck2 = __webpack_require__(11);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(873);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('7 Error Handling with RxJS', function () {
+	  var rxs = void 0;
+	  beforeEach(function () {
+	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      console.log(actual);
+	      console.log(expected);
+	      (0, _chai.expect)(actual).to.deep.equal(expected);
+	    });
+	  });
+
+	  afterEach(function () {
+	    rxs.flush();
+	  });
+
+	  var Try = function () {
+	    function Try(val) {
+	      (0, _classCallCheck3.default)(this, Try);
+
+	      this._val = val;
+	    }
+
+	    (0, _createClass3.default)(Try, [{
+	      key: 'map',
+	      value: function map(fn) {
+	        try {
+	          return Try.of(fn(this._val));
+	        } catch (e) {
+	          return Try.of(e);
+	        }
+	      }
+	    }], [{
+	      key: 'of',
+	      value: function of(val) {
+	        if (val === null || val.constructor === Error || val instanceof Error) {
+	          return new Failure(val);
+	        }
+
+	        return new Success(val);
+	      }
+	    }]);
+	    return Try;
+	  }();
+
+	  var Success = function (_Try) {
+	    (0, _inherits3.default)(Success, _Try);
+
+	    function Success() {
+	      (0, _classCallCheck3.default)(this, Success);
+	      return (0, _possibleConstructorReturn3.default)(this, (Success.__proto__ || Object.getPrototypeOf(Success)).apply(this, arguments));
+	    }
+
+	    (0, _createClass3.default)(Success, [{
+	      key: 'getOrElse',
+	      value: function getOrElse(anotherVal) {
+	        return this._val;
+	      }
+	    }, {
+	      key: 'getOrElseThrow',
+	      value: function getOrElseThrow(anotherVal) {
+	        return this._val;
+	      }
+	    }]);
+	    return Success;
+	  }(Try);
+
+	  var Failure = function (_Try2) {
+	    (0, _inherits3.default)(Failure, _Try2);
+
+	    function Failure() {
+	      (0, _classCallCheck3.default)(this, Failure);
+	      return (0, _possibleConstructorReturn3.default)(this, (Failure.__proto__ || Object.getPrototypeOf(Failure)).apply(this, arguments));
+	    }
+
+	    (0, _createClass3.default)(Failure, [{
+	      key: 'map',
+	      value: function map(fn) {
+	        return this;
+	      }
+	    }, {
+	      key: 'getOrElse',
+	      value: function getOrElse(anotherVal) {
+	        return anotherVal;
+	      }
+	    }, {
+	      key: 'getOrElseThrow',
+	      value: function getOrElseThrow(anotherVal) {
+	        if (this._val !== null) {
+	          throw this._val;
+	        };
+	      }
+	    }]);
+	    return Failure;
+	  }(Try);
+
+	  describe('7.3 Understanding the functional error-hanling approach', function () {
+	    describe('7.3.1 Try Monad', function () {
+	      it('should use Try in happy scenario', function () {
+	        var text = Try.of('hello');
+	        var result = text.map(function (v) {
+	          return v.toUpperCase();
+	        });
+
+	        (0, _chai.expect)(result.getOrElse('help !')).to.eql('HELLO');
+	      });
+
+	      it('should use Try in sad scenario', function () {
+	        var text = Try.of('hello');
+	        var result = text.map(function (v) {
+	          throw new Error('boom !');
+	        }).map(function (v) {
+	          return v.toUpperCase();
+	        });
+
+	        (0, _chai.expect)(result.getOrElse('help !')).to.eql('help !');
+	      });
+	    });
+	  });
+
+	  describe('7.4 The RxJS way of dealing with failure', function () {
+	    describe('7.4.1 Errors propagated downstream to observers', function () {
+	      it('should call error handler', function (done) {
+	        var computeHalf = function computeHalf(x) {
+	          return Math.floor(x / 2);
+	        };
+
+	        var i = 0;
+	        var expected = [1, 2];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).map(computeHalf).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('7.4.2 Catching and reacting to Errors', function () {
+	      it('should use catch() which prevents to go further and provides own last value to the stream', function (done) {
+	        var computeHalf = function computeHalf(x) {
+	          return Math.floor(x / 2);
+	        };
+
+	        var i = 0;
+	        var expected = [1, 2, 3];
+
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).catch(function (err) {
+	          return _rxjs2.default.Observable.of(6);
+	        }).map(computeHalf).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	          spy(val);
+	        }, function (error) {
+	          (0, _chai.expect)(spy.callCount).to.eql(0);
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.callCount).to.eql(3);
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('7.4.3 Retrying failed streams for a fixed number of times', function () {
+	      it('should receive in catch error but also source stream (to retry)', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 6];
+
+	        var spy = _sinon2.default.spy();
+	        var obs$ = _rxjs2.default.Observable.of(2, 4, 5, 8, 10);
+
+	        obs$.map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).catch(function (err, source) {
+	          // console.log(source);
+	          return _rxjs2.default.Observable.of(6);
+	        }).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	          spy(val);
+	        }, function (error) {
+	          (0, _chai.expect)(spy.callCount).to.eql(0);
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.callCount).to.eql(3);
+	          done();
+	        });
+	      });
+
+	      it('should use retry(n). tries first time and then repeats additional 3 times', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retry(3).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
+
+	      it('should use retry(n) with catch() to provide default fallback and complete the sequence', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4, 6];
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retry(3).catch(function (err) {
+	          return _rxjs2.default.Observable.of(6);
+	        }).subscribe(function next(val) {
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          fail();
+	          done();
+	        }, function (complete) {
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('7.4.4 Reacting to failed retries', function () {
+	      var clock = void 0;
+
+	      beforeEach(function () {
+	        clock = _sinon2.default.useFakeTimers();
+	      });
+
+	      afterEach(function () {
+	        clock.restore();
+	      });
+
+	      xit('should use .retryWhen() which will retry stream if given $err argument emits a value', function (done) {
+	        var i = 0;
+	        var expected = [2, 4, 2, 4, 2, 4, 2, 4];
+
+	        var spy = _sinon2.default.spy();
+
+	        _rxjs2.default.Observable.of(2, 4, 5, 8, 10).map(function (num) {
+	          if (num % 2 !== 0) {
+	            throw new Error('Unexpected odd number: ' + num);
+	          }
+	          return num;
+	        }).retryWhen(function ($err) {
+	          return $err.delay(3000);
+	        }).catch(function () {
+	          return Observable.of(6);
+	        }).subscribe(function next(val) {
+	          spy(val);
+	          (0, _chai.expect)(expected[i++]).to.eql(val);
+	        }, function (error) {
+	          (0, _chai.expect)(error.message).to.eql('Unexpected odd number: 5');
+	          done();
+	        }, function (complete) {
+	          (0, _chai.expect)(spy.calledOnce).to.be.true;
+	          done();
+	        });
+
+	        clock.tick(2500);
+	        clock.tick(600);
+	      });
+
+	      it('should use .zip()', function () {
+	        var e1 = rxs.createHotObservable('-a-b-c-|');
+	        var e2 = rxs.createHotObservable('--d-e-|');
+	        var expected = '--A-B-|';
+	        var values = { A: ['a', 'd'], B: ['b', 'e'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.zip(e1, e2)).toBe(expected, values);
+	      });
+
+	      it('should compare .zip() to .combineLatest()', function () {
+	        var e1 = rxs.createHotObservable('-a-b-c-|');
+	        var e2 = rxs.createHotObservable('--d-e-|');
+	        var expected = '--ABCD-|';
+	        var values = { A: ['a', 'd'], B: ['b', 'd'], C: ['b', 'e'], D: ['c', 'e'] };
+
+	        rxs.expectObservable(_rxjs2.default.Observable.combineLatest(e1, e2)).toBe(expected, values);
+	      });
+	    });
+	  });
+	});
+
+/***/ },
+/* 879 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(880)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 880 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('8 Heating up observables', function () {
+	  var rxs = void 0;
+	  beforeEach(function () {
+	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      (0, _chai.expect)(actual).to.deep.equal(expected);
+	    });
+	  });
+
+	  afterEach(function () {
+	    rxs.flush();
+	  });
+
+	  describe('8.x', function () {
+	    describe('8.x.x', function () {
+	      it('should', function () {});
+	    });
+	  });
+	});
 
 /***/ }
 /******/ ]);

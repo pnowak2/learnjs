@@ -8,8 +8,6 @@ describe('6 Coordinating business processes', () => {
   let rxs;
   beforeEach(() => {
     rxs = new Rx.TestScheduler(function (actual, expected) {
-      console.log('act..', actual);
-      console.log('exp..', expected);
       expect(actual).to.deep.equal(expected);
     });
   });
