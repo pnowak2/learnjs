@@ -13,4 +13,8 @@ export class PlayButtonComponent implements OnInit {
   ngOnInit() {
   }
 
+  play() {
+    this.playerService.do();
+  }
+
 }

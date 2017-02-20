@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class PlayerService {
+export class PlayerinternalService {
 
   constructor() { }
 
   do() {
-    console.log('player service');
+    console.log('player internal service');
   }
-
 }
