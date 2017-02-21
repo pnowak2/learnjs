@@ -1,0 +1,10 @@
+<h1>
+  {{title}}
+  {{myHero.name}}
+</h1>
+
+<ul>
+  <li *ngFor="let hero of heroes">({{ hero.id }}). {{ hero.name }}</li>
+</ul>
+
+<p *ngIf="heroes.length > 3">There are many heroes!</p>

@@ -1,0 +1,22 @@
+<h1>Click</h1>
+{{ title }}
+<button (click)="onClickMe()">Click</button>
+
+<h2>Key Up</h2>
+<input type="text" (keyup)="onKey($event)">
+{{ values }}
+
+<h2>Template reference Variable #box</h2>
+<input type="text" (keyup)="0" #box>
+{{ box.value }}
+
+<h2>Template reference Variable #box with event handler</h2>
+<input type="text" (keyup)="onKey2(box2.value)" #box2>
+{{ values2 }}
+
+<h2>Key enter event</h2>
+<input type="text" (keyup.enter)="onKeyEnter(box3.value)" (blur)="onKeyEnter(box3.value)" #box3>
+{{ values3 }}
+
+<h3>Heroes</h3>
+<app-heroes></app-heroes>
