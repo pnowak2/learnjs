@@ -46,6 +46,11 @@ function reducer(state, action) {
         ),
       ],
     };
+  } else if (action.type === 'OPEN_THREAD') {
+    return {
+      ...state,
+      activeThreadId: action.id
+    }
   } else {
     return state;
   }
@@ -88,6 +93,7 @@ const App = React.createClass({
       { // a "tab" object
         title: t.title,
         active: t.id === activeThreadId,
+        id: t.id
       }
     ));
 
@@ -101,9 +107,18 @@ const App = React.createClass({
 });
 
 const ThreadTabs = React.createClass({
+  handleClick: function(id) {
+    store.dispatch({
+      type: 'OPEN_THREAD',
+      id: id
+    });
+  },
+
   render: function () {
     const tabs = this.props.tabs.map((tab, index) => (
-      <div key={index} className={tab.active ? 'active item' : 'item'}>
+      <div key={index} 
+           className={tab.active ? 'active item' : 'item'}
+           onClick={() => this.handleClick(tab.id)}>
         {tab.title}
       </div>
     ));
@@ -158,7 +173,7 @@ const Thread = React.createClass({
       this.handleSubmit();
     }
   },
-  handleClick: function(threadId) {
+  handleClick: function (threadId) {
     store.dispatch({
       type: 'DELETE_MESSAGE',
       id: threadId,
