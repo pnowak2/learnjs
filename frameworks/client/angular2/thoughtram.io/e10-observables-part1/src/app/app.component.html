@@ -2,6 +2,6 @@
   <h2>Wikipedia Search</h2>
   <input type="text" [formControl]="term">
   <ul>
-    <li *ngFor="let item of items">{{item}}</li>
+    <li *ngFor="let item of items | async">{{item}}</li>
   </ul>
 </div>

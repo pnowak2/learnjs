@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { WikiService } from './services/wiki.service';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +12,13 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  term = new FormControl();
-  items: Array<string>;
+  term = new FormControl('go');
+  items: Observable<Array<string>>;
 
   constructor(private wikiService: WikiService) {
-    this.term.valueChanges
+    this.items = this.term.valueChanges
       .debounceTime(400)
-      .subscribe(term => {
-        this.wikiService.search(term)
-          .then(items => this.items = items);
-      })
-  }
-
-  search(term) {
-    this.wikiService.search(term)
-      .then(items => this.items = items);
+      .distinctUntilChanged()
+      .switchMap(term => this.wikiService.search(term));
   }
 }
