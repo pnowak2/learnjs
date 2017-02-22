@@ -7,6 +7,14 @@
 </head>
 <body>
 <script>
+  const pressed = [];
+  const secretCode = [65, 83, 68, 70];
+
+  window.addEventListener('keyup', (e) => {
+    pressed.push(e.which);
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length)
+    console.log(pressed);
+  })
 </script>
 </body>
 </html>
