@@ -1,0 +1,57 @@
+<h2>Interpolation</h2>
+<p>sum {{ 1 + 1 }}</p>
+
+<h2>Binding syntaxes</h2>
+<button bind-disabled="true">Submit</button>
+<button [disabled]="true">Submit</button>
+
+<h2>Binding targets</h2>
+<h3>Property</h3>
+<img [src]="imageUrl" style="width: 50px">
+
+<h3>Event</h3>
+<button (click)="onSave()">Save</button>
+
+<h3>Two-Way</h3>
+{{ title }}
+<input type="text" [(ngModel)]="title">
+
+<h3>Attribute</h3>
+<button [attr.aria-label]="ariaLabel">Help</button>
+
+<h3>class</h3>
+<div [class.special]="true">Special</div>
+
+<h3>ngClass</h3>
+<div [ngClass]="{ special: false }">Special</div>
+
+<h3>style</h3>
+<div [style.background-color]="'red'">Special</div>
+
+<h2>Property Binding Without brackets</h2>
+<button disabled="disabled">Special</button>
+
+<h2>Property Binding or Interpolation</h2>
+
+<img [src]="imageUrl" style="width: 50px">
+<img src="{{imageUrl}}" style="width: 50px">
+
+<p><span>"{{title}}" is the <i>interpolated</i> title.</span></p>
+<p>"<span [innerHTML]="title"></span>" is the <i>property bound</i> title.</p>
+
+<h3>Sanitazing Html</h3>
+<p><span>"{{evilTitle}}" is the <i>interpolated</i> evil title.</span></p>
+<p>"<span [innerHTML]="evilTitle"></span>" is the <i>property bound</i> evil title.</p>
+
+<h2>Class Binding</h2>
+<div class="bad" [class]="'ass'">Bounded Class</div>
+<div class="bad" [class.another]="true">Bounded Class</div>
+
+<h2>Style Binding</h2>
+<button [style.font-size.rem]="true ? 2 : .5" >Big</button>
+
+<h2>Event Binding</h2>
+<button (click)="onSave()">(click) save</button>
+<button on-click="onSave()">on-click Save</button>
+
+<h2>$event and event handling statements</h2>
