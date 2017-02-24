@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="assets/js/zone.min.js"></script>
+</head>
+
+<body>
+
+</body>
+
+<script>
+  function sleep(millis) {
+    var date = new Date();
+    var curDate = null;
+    do {
+      curDate = new Date();
+    }
+    while (curDate.getMilliseconds() - date.getMilliseconds() < millis);
+  }
+
+  let foo = () => { console.log('foo'); sleep(10) };
+  let bar = () => { console.log('bar'); sleep(20) };
+  let baz = () => { console.log('baz'); sleep(30) };
+
+  function main() {
+    setTimeout(function () {
+      foo();
+      bar();
+      baz();
+    }, 150);
+  }
+
+  var myZoneSpec = ((function () {
+    let time = 0;
+
+    return {
+      onInvoke: function (parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
+        delegate.apply(applyThis, applyArgs);
+      },
+      onIntercept: function (parentZoneDelegate, currentZone, targetZone, delegate, source) {
+        console.log('onIntercept');
+      }
+    }
+  })());
+
+  var zone = Zone.current;
+  var myZone = zone.fork(myZoneSpec);
+  myZone.run(main);
+
+</script>
+
+</html>
