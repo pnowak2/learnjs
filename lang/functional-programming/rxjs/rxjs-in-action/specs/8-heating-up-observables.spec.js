@@ -15,12 +15,4 @@ describe('8 Heating up observables', () => {
   afterEach(() => {
     rxs.flush();
   });
-
-  describe('8.x', () => {
-    describe('8.x.x', () => {
-      it('should', () => {
-        
-      });
-    });
-  });
 });

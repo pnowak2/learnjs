@@ -10,6 +10,7 @@ module.exports = {
     'mocha!./specs/6-coordinating business processes.spec.js',
     'mocha!./specs/7-error-handling-with-rxjs.spec.js',
     'mocha!./specs/8-heating-up-observables.spec.js',
+    'mocha!./specs/9-toward-testable-reactive-programs.spec.js'
   ],
   output: {
     path: 'builds',

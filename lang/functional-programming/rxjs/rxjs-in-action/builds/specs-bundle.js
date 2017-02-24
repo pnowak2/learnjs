@@ -51,7 +51,8 @@
 	__webpack_require__(869);
 	__webpack_require__(871);
 	__webpack_require__(877);
-	module.exports = __webpack_require__(879);
+	__webpack_require__(879);
+	module.exports = __webpack_require__(881);
 
 
 /***/ },
@@ -55619,10 +55620,126 @@
 	  afterEach(function () {
 	    rxs.flush();
 	  });
+	});
 
-	  describe('8.x', function () {
-	    describe('8.x.x', function () {
-	      it('should', function () {});
+/***/ },
+/* 881 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(882)
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ },
+/* 882 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(89);
+
+	var _rxjs = __webpack_require__(137);
+
+	var _rxjs2 = _interopRequireDefault(_rxjs);
+
+	var _ramda = __webpack_require__(479);
+
+	var _ramda2 = _interopRequireDefault(_ramda);
+
+	var _sinon = __webpack_require__(788);
+
+	var _sinon2 = _interopRequireDefault(_sinon);
+
+	var _events = __webpack_require__(129);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	describe('9 Toward testable, reactive programs', function () {
+	  var rxs = void 0;
+	  beforeEach(function () {
+	    rxs = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	      (0, _chai.expect)(actual).to.deep.equal(expected);
+	    });
+	  });
+
+	  afterEach(function () {
+	    rxs.flush();
+	  });
+
+	  describe('9.1 Testing is inherently built into functional programs', function () {
+	    describe('9.1.0 Testing first function', function () {
+	      var notEmpty = function notEmpty(input) {
+	        return !!input && input.trim().length > 0;
+	      };
+
+	      it('should validate that string is not empty', function () {
+	        (0, _chai.expect)(notEmpty(' ')).to.be.false;
+	      });
+
+	      it('should validate that null is not empty', function () {
+	        (0, _chai.expect)(notEmpty(null)).to.be.false;
+	      });
+
+	      it('should validate that undefined is not empty', function () {
+	        (0, _chai.expect)(notEmpty(undefined)).to.be.false;
+	      });
+	    });
+	  });
+
+	  describe('9.2 Testing asynchronous code and promises', function () {
+	    var ajax = function ajax(url, success, error) {
+	      setTimeout(function () {
+	        success('fake response');
+	      }, 20);
+	    };
+
+	    var ajaxPromise = function ajaxPromise(url) {
+	      return new Promise(function (resolve, reject) {
+	        ajax(url, function (response) {
+	          resolve(response);
+	        });
+	      });
+	    };
+
+	    describe('9.2.1 Testing AJAX Requests', function () {
+	      it('should use mochas async testing capabilities with done', function (done) {
+	        var success = function success(response) {
+	          (0, _chai.expect)(response).to.eql('fake response');
+	          done();
+	        };
+
+	        ajax('/myurl', success, null);
+	      });
+	    });
+
+	    describe('9.2.2 Working with promises', function () {
+	      it('should use mochas async testing capabilities for testing promises', function (done) {
+	        ajaxPromise('/mypromiseurl').then(function (response) {
+	          (0, _chai.expect)(response).to.eql('fake response');
+	          done();
+	        }).catch(function (error) {
+	          (0, _chai.expect)(error).to.eql('test');
+	        });
+	      });
+
+	      it('should use mochas async testing capabilities for testing promises', function () {
+	        return ajaxPromise('/mypromiseurl').then(function (response) {
+	          (0, _chai.expect)(response).to.eql('fake response');
+	        });
+	      });
 	    });
 	  });
 	});
