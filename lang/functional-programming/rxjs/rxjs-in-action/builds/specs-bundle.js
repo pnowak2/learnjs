@@ -55833,7 +55833,7 @@
 	  describe('9.4 Making streams testable. Separating Observer from Pipeline and from Subscription', function () {
 	    describe('Non testable, coupled version', function () {
 	      it('should have non testable version to consider and unlearn bad practices', function (done) {
-	        _rxjs2.default.Observable.interval(10) // Source coupled with pipeline
+	        _rxjs2.default.Observable.interval(10) // Producer coupled with pipeline
 	        .take(10).filter(function (num) {
 	          return num % 2 === 0;
 	        }) // business logic coupled with pipeline
@@ -55843,7 +55843,7 @@
 	        .reduce(function (total, delta) {
 	          return total + delta;
 	        }) // business logic coupled with pipeline
-	        .subscribe({ // Potentially consumer coupled with source and pipeline..
+	        .subscribe({ // Potentially Consumer coupled with source and pipeline..
 	          next: function next(total) {
 	            return (0, _chai.expect)(total).to.eql(120);
 	          },
@@ -55866,6 +55866,7 @@
 	        return a + b;
 	      };
 
+	      // Decoupled pipeline from producer and business logic
 	      var runInterval = function runInterval(source$) {
 	        return source$.take(10).filter(isEven).map(square).reduce(add);
 	      };
@@ -55889,7 +55890,7 @@
 	        });
 	      });
 
-	      describe('Testing the Pipeline', function () {
+	      describe('Testing just the Pipeline with arbitrary producer', function () {
 	        it('should square and add even numbers', function (done) {
 	          runInterval(_rxjs2.default.Observable.interval(10)).subscribe({
 	            next: function next(total) {

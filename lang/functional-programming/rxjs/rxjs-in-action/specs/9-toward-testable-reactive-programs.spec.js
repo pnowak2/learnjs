@@ -147,12 +147,12 @@ describe('9 Toward testable, reactive programs', () => {
   describe('9.4 Making streams testable. Separating Observer from Pipeline and from Subscription', () => {
     describe('Non testable, coupled version', () => {
       it('should have non testable version to consider and unlearn bad practices', (done) => {
-        Rx.Observable.interval(10) // Source coupled with pipeline
+        Rx.Observable.interval(10) // Producer coupled with pipeline
           .take(10)
           .filter(num => num % 2 === 0) // business logic coupled with pipeline
           .map(num => num * num) // business logic coupled with pipeline
           .reduce((total, delta) => total + delta) // business logic coupled with pipeline
-          .subscribe({ // Potentially consumer coupled with source and pipeline..
+          .subscribe({ // Potentially Consumer coupled with source and pipeline..
             next: total => expect(total).to.eql(120),
             err: err => assert.fail(err.message),
             complete: done
@@ -165,6 +165,7 @@ describe('9 Toward testable, reactive programs', () => {
       const square = num => num * num;
       const add = (a, b) => a + b;
 
+      // Decoupled pipeline from producer and business logic
       const runInterval = (source$) => source$
         .take(10)
         .filter(isEven)
@@ -190,7 +191,7 @@ describe('9 Toward testable, reactive programs', () => {
         });
       });
 
-      describe('Testing the Pipeline', () => {
+      describe('Testing just the Pipeline with arbitrary producer', () => {
         it('should square and add even numbers', (done) => {
           runInterval(Rx.Observable.interval(10))
             .subscribe({
