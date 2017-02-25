@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "node-sass --include-path scss scss/style.scss  css/style.css",
-    "watch-sass": "nodemon -e scss -x \"npm run sass\""
+    "sass": "node-sass --include-path node_modules/bourbon/app/assets/stylesheets scss/style.scss css/style.css",
+    "serve": "serve . -p 3002",
+    "watch": "nodemon -e scss -x \"npm run sass\""
   },
   "author": "",
   "license": "ISC",
