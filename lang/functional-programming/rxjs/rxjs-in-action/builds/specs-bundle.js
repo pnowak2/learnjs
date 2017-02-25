@@ -55833,6 +55833,8 @@
 	  describe('9.4 Making streams testable. Separating Observer from Pipeline and from Subscription', function () {
 	    describe('Non testable, coupled version', function () {
 	      it('should have non testable version to consider and unlearn bad practices', function (done) {
+
+	        // Stream making business logic, very coupled, non testable
 	        _rxjs2.default.Observable.interval(10) // Producer coupled with pipeline
 	        .take(10).filter(function (num) {
 	          return num % 2 === 0;
@@ -55856,6 +55858,7 @@
 	    });
 
 	    describe('Testable, decomposed version, split business logic from pipeline, decouple consumer and pipeline, wrap stream into function which can be called', function () {
+	      // Business logic decoupled, separated and testable
 	      var isEven = function isEven(num) {
 	        return num % 2 === 0;
 	      };
@@ -55871,6 +55874,7 @@
 	        return source$.take(10).filter(isEven).map(square).reduce(add);
 	      };
 
+	      // Testing everything separately in isolation
 	      describe('.isEven()', function () {
 	        it('should check if number is even', function () {
 	          (0, _chai.expect)(isEven(4)).to.be.true;
