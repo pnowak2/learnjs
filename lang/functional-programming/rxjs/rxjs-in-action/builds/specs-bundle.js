@@ -55647,6 +55647,10 @@
 
 	'use strict';
 
+	var _regenerator = __webpack_require__(134);
+
+	var _regenerator2 = _interopRequireDefault(_regenerator);
+
 	var _chai = __webpack_require__(89);
 
 	var _rxjs = __webpack_require__(137);
@@ -55679,6 +55683,23 @@
 	    rxs.flush();
 	  });
 
+	  var ajax = function ajax(url, success, error) {
+	    setTimeout(function () {
+	      success({
+	        url: url,
+	        data: 'fake response'
+	      });
+	    }, 20);
+	  };
+
+	  var ajaxPromise = function ajaxPromise(url) {
+	    return new Promise(function (resolve, reject) {
+	      ajax(url, function (response) {
+	        resolve(response);
+	      });
+	    });
+	  };
+
 	  describe('9.1 Testing is inherently built into functional programs', function () {
 	    describe('9.1.0 Testing first function', function () {
 	      var notEmpty = function notEmpty(input) {
@@ -55700,24 +55721,13 @@
 	  });
 
 	  describe('9.2 Testing asynchronous code and promises', function () {
-	    var ajax = function ajax(url, success, error) {
-	      setTimeout(function () {
-	        success('fake response');
-	      }, 20);
-	    };
-
-	    var ajaxPromise = function ajaxPromise(url) {
-	      return new Promise(function (resolve, reject) {
-	        ajax(url, function (response) {
-	          resolve(response);
-	        });
-	      });
-	    };
-
 	    describe('9.2.1 Testing AJAX Requests', function () {
 	      it('should use mochas async testing capabilities with done', function (done) {
 	        var success = function success(response) {
-	          (0, _chai.expect)(response).to.eql('fake response');
+	          (0, _chai.expect)(response).to.eql({
+	            url: '/myurl',
+	            data: 'fake response'
+	          });
 	          done();
 	        };
 
@@ -55728,7 +55738,10 @@
 	    describe('9.2.2 Working with promises', function () {
 	      it('should use mochas async testing capabilities for testing promises', function (done) {
 	        ajaxPromise('/mypromiseurl').then(function (response) {
-	          (0, _chai.expect)(response).to.eql('fake response');
+	          (0, _chai.expect)(response).to.eql({
+	            url: '/mypromiseurl',
+	            data: 'fake response'
+	          });
 	          done();
 	        }).catch(function (error) {
 	          (0, _chai.expect)(error).to.eql('test');
@@ -55737,7 +55750,156 @@
 
 	      it('should use mochas async testing capabilities for testing promises', function () {
 	        return ajaxPromise('/mypromiseurl').then(function (response) {
-	          (0, _chai.expect)(response).to.eql('fake response');
+	          (0, _chai.expect)(response).to.eql({
+	            url: '/mypromiseurl',
+	            data: 'fake response'
+	          });
+	        });
+	      });
+	    });
+	  });
+
+	  describe('9.3 Testing reactive stream', function () {
+	    var adder = function adder(a, b) {
+	      return a + b;
+	    };
+
+	    it('should reduce numbers in array', function () {
+	      _rxjs2.default.Observable.from([1, 2, 3, 4]).reduce(adder).subscribe(function (result) {
+	        (0, _chai.expect)(result).to.eql(10);
+	      });
+	    });
+
+	    it('should reduce numbers using generator', function () {
+	      var _marked = [numbers].map(_regenerator2.default.mark);
+
+	      function numbers() {
+	        var start;
+	        return _regenerator2.default.wrap(function numbers$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                start = 0;
+
+	              case 1:
+	                if (false) {
+	                  _context.next = 6;
+	                  break;
+	                }
+
+	                _context.next = 4;
+	                return start++;
+
+	              case 4:
+	                _context.next = 1;
+	                break;
+
+	              case 6:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _marked[0], this);
+	      }
+
+	      // let gen = numbers();
+	      // expect(gen.next().value).to.eql(0);
+	      // expect(gen.next().value).to.eql(1);
+
+	      _rxjs2.default.Observable.from(numbers).take(5).reduce(adder).subscribe(function (result) {
+	        (0, _chai.expect)(result).to.eql(10);
+	      });
+	    });
+
+	    it('should reduce numbers with delay', function (done) {
+	      _rxjs2.default.Observable.from([1, 2, 3, 4]).reduce(adder).delay(60).subscribe(function (result) {
+	        (0, _chai.expect)(result).to.eql(10);
+	      }, null, done);
+	    });
+
+	    it('should make ajax query, bad practice, should not recreate stream in tests..', function (done) {
+	      var searchTerm = 'reactive';
+	      var url = 'http://search.com/search/' + searchTerm;
+	      var testFn = function testFn(query) {
+	        return _rxjs2.default.Observable.fromPromise(ajaxPromise(query)).subscribe(function (response) {
+	          (0, _chai.expect)(response).to.have.property('url').and.eql('http://search.com/search/reactive');
+	        }, null, done);
+	      };
+
+	      testFn(url);
+	    });
+	  });
+
+	  describe('9.4 Making streams testable. Separating Observer from Pipeline and from Subscription', function () {
+	    describe('Non testable, coupled version', function () {
+	      it('should have non testable version to consider and unlearn bad practices', function (done) {
+	        _rxjs2.default.Observable.interval(10) // Source coupled with pipeline
+	        .take(10).filter(function (num) {
+	          return num % 2 === 0;
+	        }) // business logic coupled with pipeline
+	        .map(function (num) {
+	          return num * num;
+	        }) // business logic coupled with pipeline
+	        .reduce(function (total, delta) {
+	          return total + delta;
+	        }) // business logic coupled with pipeline
+	        .subscribe({ // Potentially consumer coupled with source and pipeline..
+	          next: function next(total) {
+	            return (0, _chai.expect)(total).to.eql(120);
+	          },
+	          err: function err(_err) {
+	            return assert.fail(_err.message);
+	          },
+	          complete: done
+	        });
+	      });
+	    });
+
+	    describe('Testable, decomposed version, split business logic from pipeline, decouple consumer and pipeline, wrap stream into function which can be called', function () {
+	      var isEven = function isEven(num) {
+	        return num % 2 === 0;
+	      };
+	      var square = function square(num) {
+	        return num * num;
+	      };
+	      var add = function add(a, b) {
+	        return a + b;
+	      };
+
+	      var runInterval = function runInterval(source$) {
+	        return source$.take(10).filter(isEven).map(square).reduce(add);
+	      };
+
+	      describe('.isEven()', function () {
+	        it('should check if number is even', function () {
+	          (0, _chai.expect)(isEven(4)).to.be.true;
+	          (0, _chai.expect)(isEven(1)).to.be.false;
+	        });
+	      });
+
+	      describe('.square()', function () {
+	        it('should check if number is squared', function () {
+	          (0, _chai.expect)(square(4)).to.eql(16);
+	        });
+	      });
+
+	      describe('.add()', function () {
+	        it('should check if given numbers are added', function () {
+	          (0, _chai.expect)(add(4, 8)).to.eql(12);
+	        });
+	      });
+
+	      describe('Testing the Pipeline', function () {
+	        it('should square and add even numbers', function (done) {
+	          runInterval(_rxjs2.default.Observable.interval(10)).subscribe({
+	            next: function next(total) {
+	              return (0, _chai.expect)(total).to.eql(120);
+	            },
+	            err: function err(_err2) {
+	              return assert.fail(_err2.message);
+	            },
+	            complete: done
+	          });
 	        });
 	      });
 	    });
