@@ -340,9 +340,27 @@ describe('9 Toward testable, reactive programs', () => {
     xdescribe('9.6.3 Refactoring our search stream for testability', () => {
       it('should separate source from pipeline and subscriber', () => {
 
+        // Before, all coupled as hell
+        const search$ = Rx.Observable.fromEvent(inputText, 'keyup')
+          .pluck('target', 'value')
+          .debounceTime(500)
+          .filter(notEmpty)
+          .do(term => console.log(`Searching with term ${term}`))
+          .map(query => URL + query)
+          .switchMap(query =>
+            Rx.Observable.fromPromise(ajax(query)).pluck('query',
+              'search').defaultIfEmpty([]))
+          .subscribe(arr => {
+            count.innerHTML = `${result.length} results`;
+            if (arr.length === 0) {
+              clearResults(results);
+            }
+            else {
+              appendResults(results, arr);
+            }
+          });
 
-
-        // Separated pipeline from the source only
+        // Separated pipeline from the source and nested observables 
         const search$ = (source$, fetchResult$, url = '', scheduler = null) =>
           source$
             .debounceTime(500, scheduler)
