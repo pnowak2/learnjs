@@ -173,7 +173,7 @@ describe('9 Toward testable, reactive programs', () => {
         .take(10)
         .filter(isEven)
         .map(square)
-        .reduce(add)
+        .reduce(add);
 
       // Testing everything separately in isolation
       describe('.isEven()', () => {
@@ -204,6 +204,151 @@ describe('9 Toward testable, reactive programs', () => {
               complete: done
             })
         });
+      });
+    });
+  });
+
+  describe('9.5 Scheduling values in rxjs', () => {
+    describe('Rx.Scheduler', () => {
+      xit('should schedule set of actions', () => {
+        let stored = [];
+        const store = state => stored.push(state);
+
+        let scheduler = Rx.Scheduler.queue;
+
+        scheduler.schedule(store(1));
+        scheduler.schedule(store(2));
+        scheduler.schedule(store(3));
+
+        expect(stored).to.deep.equal([1, 2, 3]);
+      });
+
+      it('should emit values synchronousely on default scheduler', () => {
+        let temp = [];
+
+        Rx.Observable.range(1, 5)
+          .do([].push.bind(temp))
+          .subscribe(value => {
+            expect(temp).to.have.length(value);
+            expect(temp).to.contain(value);
+          })
+      });
+
+      it('should emit values on an asynchronous scheduler', (done) => {
+        let temp = [];
+        Rx.Observable.range(1, 5, Rx.Scheduler.async)
+          .do([].push.bind(temp))
+          .subscribe(value => {
+            expect(temp).to.have.length(value);
+            expect(temp).to.contain(value);
+          }, done, done);
+      });
+    });
+  });
+
+  describe('9.6 Augmenting virtual reality', () => {
+    it('should create test scheduler', () => {
+      let scheduler = new Rx.TestScheduler();
+      let time = scheduler.createTime('-----|');
+      expect(time).to.equal(50);
+    });
+
+    describe('9.6.1 Playing with marbles', () => {
+      it('should parse a marble string into a series of notifications', () => {
+        let result = Rx.TestScheduler.parseMarbles(
+          '--a---b---|',
+          { a: 'A', b: 'B' }
+        );
+
+        expect(result).to.eql([
+          { frame: 20, notification: Rx.Notification.createNext('A') },
+          { frame: 60, notification: Rx.Notification.createNext('B') },
+          { frame: 100, notification: Rx.Notification.createComplete() }
+        ])
+      });
+
+      it('should write and pass marble test', () => {
+        let scheduler = new Rx.TestScheduler(function (actual, expected) {
+          expect(actual).to.deep.equal(expected);
+        });
+
+        let source = scheduler.createColdObservable(
+          '--1--2--3--4'
+        );
+
+        let expected = (
+          '--a--b--c--d'
+        );
+
+        let r = source.map(x => x * x);
+
+        scheduler.expectObservable(r).toBe(expected,
+          { a: 1, b: 4, c: 9, d: 16 }
+        );
+
+        scheduler.flush();
+      });
+
+      it('should test debounceTime with marble test', () => {
+        let scheduler = new Rx.TestScheduler(function (actual, expected) {
+          expect(actual).to.deep.equal(expected);
+        });
+
+        let source = scheduler.createHotObservable(
+          '-a--------b------c----|'
+        );
+
+        let expected = '------a--------b------(c|)';
+
+        let r = source.debounceTime(50, scheduler);
+        scheduler.expectObservable(r).toBe(expected);
+        scheduler.flush();
+      });
+    });
+
+    describe('9.6.2 Fake it til you make it', () => {
+      const isEven = num => num % 2 === 0;
+      const square = num => num * num;
+      const add = (a, b) => a + b;
+
+      // Decoupled pipeline from producer and business logic
+      const runInterval = (source$) => source$
+        .take(10)
+        .filter(isEven)
+        .map(square)
+        .reduce(add);
+
+      it('should square and add even numbers', () => {
+        let scheduler = new Rx.TestScheduler(function (actual, expected) {
+          expect(actual).to.deep.equal(expected);
+        });
+
+        let source = scheduler.createColdObservable(
+          '-1-2-3-4-5-6-7-8-9-|'
+        );
+
+        let expected = '-------------------(s-|)';
+
+        // because decoupled source from pipeline, now it pays off !
+        let r = runInterval(source);
+
+        scheduler.expectObservable(r).toBe(expected, { s: 120 });
+        scheduler.flush();
+      });
+    });
+
+    xdescribe('9.6.3 Refactoring our search stream for testability', () => {
+      it('should separate source from pipeline and subscriber', () => {
+
+
+
+        // Separated pipeline from the source only
+        const search$ = (source$, fetchResult$, url = '', scheduler = null) =>
+          source$
+            .debounceTime(500, scheduler)
+            .filter(notEmpty)
+            .do(term => console.log(`Searching with term ${term}`)).map(query => url + query)
+            .switchMap(fetchResult$)
       });
     });
   });

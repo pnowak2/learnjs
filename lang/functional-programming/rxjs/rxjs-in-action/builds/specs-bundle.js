@@ -55909,6 +55909,139 @@
 	      });
 	    });
 	  });
+
+	  describe('9.5 Scheduling values in rxjs', function () {
+	    describe('Rx.Scheduler', function () {
+	      xit('should schedule set of actions', function () {
+	        var stored = [];
+	        var store = function store(state) {
+	          return stored.push(state);
+	        };
+
+	        var scheduler = _rxjs2.default.Scheduler.queue;
+
+	        scheduler.schedule(store(1));
+	        scheduler.schedule(store(2));
+	        scheduler.schedule(store(3));
+
+	        (0, _chai.expect)(stored).to.deep.equal([1, 2, 3]);
+	      });
+
+	      it('should emit values synchronousely on default scheduler', function () {
+	        var temp = [];
+
+	        _rxjs2.default.Observable.range(1, 5).do([].push.bind(temp)).subscribe(function (value) {
+	          (0, _chai.expect)(temp).to.have.length(value);
+	          (0, _chai.expect)(temp).to.contain(value);
+	        });
+	      });
+
+	      it('should emit values on an asynchronous scheduler', function (done) {
+	        var temp = [];
+	        _rxjs2.default.Observable.range(1, 5, _rxjs2.default.Scheduler.async).do([].push.bind(temp)).subscribe(function (value) {
+	          (0, _chai.expect)(temp).to.have.length(value);
+	          (0, _chai.expect)(temp).to.contain(value);
+	        }, done, done);
+	      });
+	    });
+	  });
+
+	  describe('9.6 Augmenting virtual reality', function () {
+	    it('should create test scheduler', function () {
+	      var scheduler = new _rxjs2.default.TestScheduler();
+	      var time = scheduler.createTime('-----|');
+	      (0, _chai.expect)(time).to.equal(50);
+	    });
+
+	    describe('9.6.1 Playing with marbles', function () {
+	      it('should parse a marble string into a series of notifications', function () {
+	        var result = _rxjs2.default.TestScheduler.parseMarbles('--a---b---|', { a: 'A', b: 'B' });
+
+	        (0, _chai.expect)(result).to.eql([{ frame: 20, notification: _rxjs2.default.Notification.createNext('A') }, { frame: 60, notification: _rxjs2.default.Notification.createNext('B') }, { frame: 100, notification: _rxjs2.default.Notification.createComplete() }]);
+	      });
+
+	      it('should write and pass marble test', function () {
+	        var scheduler = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	          (0, _chai.expect)(actual).to.deep.equal(expected);
+	        });
+
+	        var source = scheduler.createColdObservable('--1--2--3--4');
+
+	        var expected = '--a--b--c--d';
+
+	        var r = source.map(function (x) {
+	          return x * x;
+	        });
+
+	        scheduler.expectObservable(r).toBe(expected, { a: 1, b: 4, c: 9, d: 16 });
+
+	        scheduler.flush();
+	      });
+
+	      it('should test debounceTime with marble test', function () {
+	        var scheduler = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	          (0, _chai.expect)(actual).to.deep.equal(expected);
+	        });
+
+	        var source = scheduler.createHotObservable('-a--------b------c----|');
+
+	        var expected = '------a--------b------(c|)';
+
+	        var r = source.debounceTime(50, scheduler);
+	        scheduler.expectObservable(r).toBe(expected);
+	        scheduler.flush();
+	      });
+	    });
+
+	    describe('9.6.2 Fake it til you make it', function () {
+	      var isEven = function isEven(num) {
+	        return num % 2 === 0;
+	      };
+	      var square = function square(num) {
+	        return num * num;
+	      };
+	      var add = function add(a, b) {
+	        return a + b;
+	      };
+
+	      // Decoupled pipeline from producer and business logic
+	      var runInterval = function runInterval(source$) {
+	        return source$.take(10).filter(isEven).map(square).reduce(add);
+	      };
+
+	      it('should square and add even numbers', function () {
+	        var scheduler = new _rxjs2.default.TestScheduler(function (actual, expected) {
+	          (0, _chai.expect)(actual).to.deep.equal(expected);
+	        });
+
+	        var source = scheduler.createColdObservable('-1-2-3-4-5-6-7-8-9-|');
+
+	        var expected = '-------------------(s-|)';
+
+	        // because decoupled source from pipeline, now it pays off !
+	        var r = runInterval(source);
+
+	        scheduler.expectObservable(r).toBe(expected, { s: 120 });
+	        scheduler.flush();
+	      });
+	    });
+
+	    xdescribe('9.6.3 Refactoring our search stream for testability', function () {
+	      it('should separate source from pipeline and subscriber', function () {
+
+	        // Separated pipeline from the source only
+	        var search$ = function search$(source$, fetchResult$) {
+	          var url = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+	          var scheduler = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	          return source$.debounceTime(500, scheduler).filter(notEmpty).do(function (term) {
+	            return console.log('Searching with term ' + term);
+	          }).map(function (query) {
+	            return url + query;
+	          }).switchMap(fetchResult$);
+	        };
+	      });
+	    });
+	  });
 	});
 
 /***/ }
