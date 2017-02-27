@@ -61,3 +61,67 @@ Patterns - reusable parts of our design
 Main Components 
 
 -------------------------------- */
+
+.dm-overlay {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	position: absolute;
+	background-color: black;
+	opacity: .65;
+}
+
+.dm-section {
+	padding: 2em;
+	text-align: center;
+	color: $color-1;
+
+	&--one {
+		color: $color-3;
+		background-color: $color-1;
+	}
+
+	&--two {
+		background-color: $color-2;
+	}
+
+	&--three {
+		background-color: $color-1;
+		color: $color-3;
+	}
+}
+
+main.slide-out {
+	transition: all .3s;
+	transform: translateX(-$member-bio-width)
+}
+
+.dm-team li {
+	@include MQ(M) {
+		@include column(.31);
+		margin-right: 3.5%;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	margin-right: 0;
+}
+
+.dm-member__details {
+	background-color: $color-1;
+	height: 80px;	
+}
+
+.dm-member-bio {
+	width: $member-bio-width;
+	background-color: red;
+	position: fixed;
+	top: 0;
+	right: 0;
+	transform: translateX($member-bio-width);
+	transition: all .3s;
+
+	&--visible {
+		transform: translateX(0);
+	}
+}
