@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { SubComponent } from './sub/sub.component';
 import { SizerComponent } from './sizer/sizer.component';
+import { InputoutputComponent } from './inputoutput/inputoutput.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SubComponent,
-    SizerComponent
+    SizerComponent,
+    InputoutputComponent
   ],
   imports: [
     BrowserModule,

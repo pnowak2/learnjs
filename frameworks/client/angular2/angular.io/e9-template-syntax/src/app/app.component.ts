@@ -25,6 +25,7 @@ export class AppComponent {
   }
   heroName = 'Vanilla';
   heroes = ['a', 'b', 'c'];
+  currentHero = 'WinterMan';
 
   onSave() {
     console.log('saved');
@@ -32,5 +33,13 @@ export class AppComponent {
 
   handleButtonClick(e: string) {
     console.log(e);
+  }
+
+  callPhone(phone: string) {
+    console.log('calling', phone);
+  }
+
+  makeOlder(age: number) {
+    console.log(age, age + 1);
   }
 }

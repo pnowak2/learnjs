@@ -101,3 +101,34 @@
 <div *ngFor="let hero of heroes; let i=index">{{ i + 1 }} {{ hero }}</div>
 
 <h3>*ngFor with trackBy</h3>
+<!--Angular can avoid this churn with trackBy. Add a method to the component that returns the value NgFor should track. In this DefaulteDefault Hero the hero's id.
+
+trackByHeroes(index: number, hero: Hero): number { return hero.id; }
+
+In the microsyntax expression, set trackBy to this method.
+
+<div *ngFor="let hero of heroes; trackBy: trackByHeroes">
+  ({{hero.id}}) {{hero.name}}
+</div>
+
+Here is an illustration of the trackBy effect. "Reset heroes" creates new heroes with the same hero.ids. "Change ids" creates new heroes with new hero.ids.-->
+
+<h3>NgSwitch</h3>
+
+<div [ngSwitch]="currentHero">
+  <div *ngSwitchCase="'WinterMan'">Winter</div>
+  <div *ngSwitchCase="'SunMan'">Sun</div>
+  <div *ngSwitchDefault>Default Hero</div>
+</div>
+
+<h2>Template reference variables (#var)</h2>
+
+<input #phone type="text" placeholder="phone number" />
+<button (click)="callPhone(phone.value)">Call</button>
+
+Alternatively with ref- prefix
+<input ref-phone2 type="text" placeholder="phone number" />
+<button (click)="callPhone(phone2.value)">Call</button>
+
+<h2>@Input and @Output</h2>
+<app-inputoutput [name]="assmal" [myAge]="5" (aliasedMakeOlder)="makeOlder($event)"></app-inputoutput>
