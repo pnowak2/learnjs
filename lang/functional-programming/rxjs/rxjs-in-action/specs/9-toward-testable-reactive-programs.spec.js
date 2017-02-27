@@ -340,7 +340,7 @@ describe('9 Toward testable, reactive programs', () => {
     xdescribe('9.6.3 Refactoring our search stream for testability', () => {
       it('should separate source from pipeline and subscriber', () => {
 
-        // Before, all coupled as hell
+        // Before, all coupled as hell.
         const search$ = Rx.Observable.fromEvent(inputText, 'keyup')
           .pluck('target', 'value')
           .debounceTime(500)
