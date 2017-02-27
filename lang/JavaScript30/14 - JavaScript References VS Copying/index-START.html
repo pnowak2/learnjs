@@ -14,6 +14,8 @@
 
     // and we want to make a copy of it.
 
+
+
     // You might think we can just do something like this:
 
     // however what happens when we update that array?
@@ -26,17 +28,37 @@
 
     // So, how do we fix this? We take a copy instead!
 
+    const team2 = players.slice(0);
+    team2[3] = 'Lux';
+
+    console.log(players, team2);
     // one day
 
     // or create a new array and concat the old one in
 
     // or use the new ES6 Spread
+    const team3 = [...players];
+    console.log(team3);
 
+    const team4 = Array.from(players);
+    team4[0] = 'boo';
+    console.log(team4, players)
     // now when we update it, the original one isn't changed
 
     // The same thing goes for objects, let's say we have a person object
 
     // with Objects
+
+    let person = {
+      name: 'piotr'
+    }
+
+    let another = Object.assign({}, person, { age: 37 });
+    let another2 = {...person}
+
+    another.name = 'andrew';
+
+    console.log(person, another2);
 
     // and think we make a copy:
 

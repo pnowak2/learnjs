@@ -51,7 +51,8 @@
 	__webpack_require__(869);
 	__webpack_require__(871);
 	__webpack_require__(877);
-	module.exports = __webpack_require__(879);
+	__webpack_require__(879);
+	module.exports = __webpack_require__(881);
 
 
 /***/ },
@@ -55619,13 +55620,26 @@
 	  afterEach(function () {
 	    rxs.flush();
 	  });
-
-	  describe('8.x', function () {
-	    describe('8.x.x', function () {
-	      it('should', function () {});
-	    });
-	  });
 	});
+
+/***/ },
+/* 881 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"!!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/node_modules/babel-loader/lib/index.js!/Users/pnowak/Documents/Workspace/js/learnjs/lang/functional-programming/rxjs/rxjs-in-action/specs/9-toward-testable-reactive-programs.spec.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	__webpack_require__(130);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
 
 /***/ }
 /******/ ]);
