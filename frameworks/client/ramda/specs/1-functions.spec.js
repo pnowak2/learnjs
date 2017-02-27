@@ -89,8 +89,56 @@ describe('Ramda', () => {
   });
 
   describe('.any() - Returns true if at least one of elements of the list match the predicate, false otherwise.', () => {
-    it('should ', () => {
+    it('should return true if at least one element from list satisfies the predicate', () => {
+      const anyOddNumber = R.any(val => val % 2 === 0);
+      const anyEvenNumber = R.any(val => val % 2 !== 0);
 
+      expect(anyOddNumber([1, 2, 5])).to.be.true;
+      expect(anyEvenNumber([2, 4, 6])).to.be.false;
+    });
+  });
+
+  describe('.anyPass() - Takes a list of predicates and returns a predicate that returns true for a given list of arguments if at least one of the provided predicates is satisfied by those arguments.', () => {
+    it('should check for more predicates where at least one is passing', () => {
+      const isSpade = (card) => R.contains('S');
+      const isHeart = (card) => R.contains('H');
+
+      const isRed = R.anyPass([isHeart, isSpade]);
+
+      expect(isRed('QS')).to.be.true;
+      expect(isRed('KH')).to.be.true;
+    });
+  });
+  
+  describe('.ap() - ap applies a list of functions to a list of values.', () => {
+    it('should apply list of functions to values and concatenate them sequentially in output array', () => {
+      const add5 = R.add(5);
+      const mul3 = R.multiply(3);
+
+      const result = R.ap([add5, mul3], [1, 2, 3]);
+      expect(result).to.eql([/* result of addition */ 6, 7, 8, /* result of multiplication */ 3, 6, 9]);
+
+      const greet = val => `hello ${val}`;
+      expect(R.ap([greet], ['piotr', 'andrzej'])).to.eql(['hello piotr', 'hello andrzej']);
+    });
+  });
+  
+  describe('.aperture() - Returns a new list, composed of n-tuples of consecutive elements If n is greater than the length of the list, an empty list is returned.', () => {
+    it('should group elements from list to groups of given size taking from consecutive elements', () => {
+      const list = [1, 2, 3, 4, 5];
+      const result = R.aperture(3, list);
+
+      expect(result).to.eql([[1, 2, 3], [2, 3, 4], [3, 4, 5]]);
+    });
+  });
+  
+  describe('.append() - Returns a new list containing the contents of the given list, followed by the given element.', () => {
+    it('should create new list (copy) with passed element at the end of the list', () => {
+      const list = ['a', 'b', 'c'];
+      const result = R.append('d', list);
+
+      expect(result).not.to.deep.equal(list);
+      expect(result).to.eql(['a', 'b', 'c', 'd']);
     });
   });
 });

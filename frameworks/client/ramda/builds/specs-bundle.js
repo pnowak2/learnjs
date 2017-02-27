@@ -463,7 +463,67 @@
 	  });
 
 	  describe('.any() - Returns true if at least one of elements of the list match the predicate, false otherwise.', function () {
-	    it('should ', function () {});
+	    it('should return true if at least one element from list satisfies the predicate', function () {
+	      var anyOddNumber = R.any(function (val) {
+	        return val % 2 === 0;
+	      });
+	      var anyEvenNumber = R.any(function (val) {
+	        return val % 2 !== 0;
+	      });
+
+	      (0, _chai.expect)(anyOddNumber([1, 2, 5])).to.be.true;
+	      (0, _chai.expect)(anyEvenNumber([2, 4, 6])).to.be.false;
+	    });
+	  });
+
+	  describe('.anyPass() - Takes a list of predicates and returns a predicate that returns true for a given list of arguments if at least one of the provided predicates is satisfied by those arguments.', function () {
+	    it('should check for more predicates where at least one is passing', function () {
+	      var isSpade = function isSpade(card) {
+	        return R.contains('S');
+	      };
+	      var isHeart = function isHeart(card) {
+	        return R.contains('H');
+	      };
+
+	      var isRed = R.anyPass([isHeart, isSpade]);
+
+	      (0, _chai.expect)(isRed('QS')).to.be.true;
+	      (0, _chai.expect)(isRed('KH')).to.be.true;
+	    });
+	  });
+
+	  describe('.ap() - ap applies a list of functions to a list of values.', function () {
+	    it('should apply list of functions to values and concatenate them sequentially in output array', function () {
+	      var add5 = R.add(5);
+	      var mul3 = R.multiply(3);
+
+	      var result = R.ap([add5, mul3], [1, 2, 3]);
+	      (0, _chai.expect)(result).to.eql([/* result of addition */6, 7, 8, /* result of multiplication */3, 6, 9]);
+
+	      var greet = function greet(val) {
+	        return 'hello ' + val;
+	      };
+	      (0, _chai.expect)(R.ap([greet], ['piotr', 'andrzej'])).to.eql(['hello piotr', 'hello andrzej']);
+	    });
+	  });
+
+	  describe('.aperture() - Returns a new list, composed of n-tuples of consecutive elements If n is greater than the length of the list, an empty list is returned.', function () {
+	    it('should group elements from list to groups of given size taking from consecutive elements', function () {
+	      var list = [1, 2, 3, 4, 5];
+	      var result = R.aperture(3, list);
+
+	      (0, _chai.expect)(result).to.eql([[1, 2, 3], [2, 3, 4], [3, 4, 5]]);
+	    });
+	  });
+
+	  describe('.append() - Returns a new list containing the contents of the given list, followed by the given element.', function () {
+	    it('should create new list (copy) with passed element at the end of the list', function () {
+	      var list = ['a', 'b', 'c'];
+	      var result = R.append('d', list);
+
+	      (0, _chai.expect)(result).not.to.deep.equal(list);
+	      (0, _chai.expect)(result).to.eql(['a', 'b', 'c', 'd']);
+	    });
 	  });
 	});
 
