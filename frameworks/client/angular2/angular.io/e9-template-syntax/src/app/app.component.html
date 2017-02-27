@@ -48,10 +48,56 @@
 <div class="bad" [class.another]="true">Bounded Class</div>
 
 <h2>Style Binding</h2>
-<button [style.font-size.rem]="true ? 2 : .5" >Big</button>
+<button [style.font-size.rem]="true ? 2 : .5">Big</button>
 
 <h2>Event Binding</h2>
 <button (click)="onSave()">(click) save</button>
 <button on-click="onSave()">on-click Save</button>
 
 <h2>$event and event handling statements</h2>
+
+<input type="text" value="{{myValue}}" (input)="myValue = $event.target.value"> {{ myValue }}
+
+<h2>Event Emitter</h2>
+<app-sub (buttonClicked)="handleButtonClick($event)"></app-sub>
+
+<h2>Two-way Binding - prop and propChange()</h2>
+<app-sizer [(size)]="fontSizePx"></app-sizer>
+<!--Analogous to below, syntactic sugar above-->
+<!--<my-sizer [size]="fontSizePx" (sizeChange)="fontSizePx=$event"></my-sizer>-->
+<div [style.font-size.px]="fontSizePx">Resizable Text</div>
+
+<h2>Built-in Directives</h2>
+
+<h3>NgClass</h3>
+<div [class.special]="true">Special class</div>
+<div [ngClass]="currentClasses">Special class</div>
+
+<h3>NgStyle</h3>
+<div [style.font-size]="isSpecial ? 'x-large' : 'smaller'">
+  This div is x-large.
+</div>
+<div [ngStyle]="currentStyles">
+  This div is initially italic, normal weight, and extra large (24px).
+</div>
+
+<h3>NgModel</h3>
+<input [(ngModel)]="heroName">
+
+<input
+  [ngModel]="heroName"
+  (ngModelChange)="heroName=$event">
+
+<h2>Structural Directives</h2>
+
+<h3>NgIf</h3>
+<input *ngIf="true" [(ngModel)]="heroName">
+<input *ngIf="false" [(ngModel)]="heroName">
+
+<h3>NgFor</h3>
+<div *ngFor="let hero of heroes">{{hero}}</div>
+
+<h3>NgFor with index</h3>
+<div *ngFor="let hero of heroes; let i=index">{{ i + 1 }} {{ hero }}</div>
+
+<h3>*ngFor with trackBy</h3>
