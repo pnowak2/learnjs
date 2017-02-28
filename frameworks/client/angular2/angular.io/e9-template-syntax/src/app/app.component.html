@@ -132,3 +132,17 @@ Alternatively with ref- prefix
 
 <h2>@Input and @Output</h2>
 <app-inputoutput [name]="assmal" [myAge]="5" (aliasedMakeOlder)="makeOlder($event)"></app-inputoutput>
+
+<h2>Template expression operators</h2>
+
+<h3>Pipe | operator</h3>
+<div>Title through uppercase pipe: {{ title | uppercase }}</div>
+
+<div>Can chain pipes: {{ title | uppercase | lowercase }}</div>
+
+<div>Can pass params to pipes: {{ birthDate | date:'longDate' }}</div>
+
+<div>json pipe: {{ this | json }}</div>
+
+<h2>Safe navigation operator - ?</h2>
+The current hero's name is {{ currentHero222?.name }}
