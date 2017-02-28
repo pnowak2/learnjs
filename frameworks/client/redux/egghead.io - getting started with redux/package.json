@@ -1,12 +1,14 @@
 {
-  "name": "redux",
+  "name": "getting-started-with-redux",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {},
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "redux": "^3.6.0"
+  },
   "devDependencies": {
     "babel-core": "^6.7.2",
     "babel-loader": "^6.2.4",
