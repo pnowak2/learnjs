@@ -1,0 +1,97 @@
+/* -------------------------------- 
+
+Primary style
+
+-------------------------------- */
+*, *::after, *::before {
+  box-sizing: border-box; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  font-size: 1.6rem;
+  font-family: sans-serif;
+  color: #333333;
+  background-color: #ffffff; }
+
+a {
+  color: #62c169;
+  text-decoration: none; }
+
+img, embed, object, video, svg {
+  max-width: 100%; }
+
+input, textarea {
+  font-family: inherit;
+  font-size: 1.6rem; }
+
+/* -------------------------------- 
+
+Patterns - reusable parts of our design
+
+-------------------------------- */
+.cd-container {
+  /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto; }
+  .cd-container::after {
+    clear: both;
+    content: "";
+    display: block; }
+
+/* -------------------------------- 
+
+Main Components 
+
+-------------------------------- */
+.dm-overlay {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: absolute;
+  background-color: black;
+  opacity: .65; }
+
+.dm-section {
+  padding: 2em;
+  text-align: center;
+  color: #333333; }
+  .dm-section--one {
+    color: #ffffff;
+    background-color: #333333; }
+  .dm-section--two {
+    background-color: #62c169; }
+  .dm-section--three {
+    background-color: #333333;
+    color: #ffffff; }
+
+main.slide-out {
+  transition: all .3s;
+  transform: translateX(-600px); }
+
+.dm-team li {
+  margin-right: 0; }
+  @media only screen and (min-width: 768px) {
+    .dm-team li {
+      width: 31%;
+      float: left;
+      margin-right: 3.5%; }
+      .dm-team li:last-child {
+        margin-right: 0; } }
+
+.dm-member__details {
+  background-color: #333333;
+  height: 80px; }
+
+.dm-member-bio {
+  width: 600px;
+  background-color: red;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(600px);
+  transition: all .3s; }
+  .dm-member-bio--visible {
+    transform: translateX(0); }

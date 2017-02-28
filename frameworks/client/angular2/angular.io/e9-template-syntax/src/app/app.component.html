@@ -48,10 +48,87 @@
 <div class="bad" [class.another]="true">Bounded Class</div>
 
 <h2>Style Binding</h2>
-<button [style.font-size.rem]="true ? 2 : .5" >Big</button>
+<button [style.font-size.rem]="true ? 2 : .5">Big</button>
 
 <h2>Event Binding</h2>
 <button (click)="onSave()">(click) save</button>
 <button on-click="onSave()">on-click Save</button>
 
 <h2>$event and event handling statements</h2>
+
+<input type="text" value="{{myValue}}" (input)="myValue = $event.target.value"> {{ myValue }}
+
+<h2>Event Emitter</h2>
+<app-sub (buttonClicked)="handleButtonClick($event)"></app-sub>
+
+<h2>Two-way Binding - prop and propChange()</h2>
+<app-sizer [(size)]="fontSizePx"></app-sizer>
+<!--Analogous to below, syntactic sugar above-->
+<!--<my-sizer [size]="fontSizePx" (sizeChange)="fontSizePx=$event"></my-sizer>-->
+<div [style.font-size.px]="fontSizePx">Resizable Text</div>
+
+<h2>Built-in Directives</h2>
+
+<h3>NgClass</h3>
+<div [class.special]="true">Special class</div>
+<div [ngClass]="currentClasses">Special class</div>
+
+<h3>NgStyle</h3>
+<div [style.font-size]="isSpecial ? 'x-large' : 'smaller'">
+  This div is x-large.
+</div>
+<div [ngStyle]="currentStyles">
+  This div is initially italic, normal weight, and extra large (24px).
+</div>
+
+<h3>NgModel</h3>
+<input [(ngModel)]="heroName">
+
+<input
+  [ngModel]="heroName"
+  (ngModelChange)="heroName=$event">
+
+<h2>Structural Directives</h2>
+
+<h3>NgIf</h3>
+<input *ngIf="true" [(ngModel)]="heroName">
+<input *ngIf="false" [(ngModel)]="heroName">
+
+<h3>NgFor</h3>
+<div *ngFor="let hero of heroes">{{hero}}</div>
+
+<h3>NgFor with index</h3>
+<div *ngFor="let hero of heroes; let i=index">{{ i + 1 }} {{ hero }}</div>
+
+<h3>*ngFor with trackBy</h3>
+<!--Angular can avoid this churn with trackBy. Add a method to the component that returns the value NgFor should track. In this DefaulteDefault Hero the hero's id.
+
+trackByHeroes(index: number, hero: Hero): number { return hero.id; }
+
+In the microsyntax expression, set trackBy to this method.
+
+<div *ngFor="let hero of heroes; trackBy: trackByHeroes">
+  ({{hero.id}}) {{hero.name}}
+</div>
+
+Here is an illustration of the trackBy effect. "Reset heroes" creates new heroes with the same hero.ids. "Change ids" creates new heroes with new hero.ids.-->
+
+<h3>NgSwitch</h3>
+
+<div [ngSwitch]="currentHero">
+  <div *ngSwitchCase="'WinterMan'">Winter</div>
+  <div *ngSwitchCase="'SunMan'">Sun</div>
+  <div *ngSwitchDefault>Default Hero</div>
+</div>
+
+<h2>Template reference variables (#var)</h2>
+
+<input #phone type="text" placeholder="phone number" />
+<button (click)="callPhone(phone.value)">Call</button>
+
+Alternatively with ref- prefix
+<input ref-phone2 type="text" placeholder="phone number" />
+<button (click)="callPhone(phone2.value)">Call</button>
+
+<h2>@Input and @Output</h2>
+<app-inputoutput [name]="assmal" [myAge]="5" (aliasedMakeOlder)="makeOlder($event)"></app-inputoutput>
