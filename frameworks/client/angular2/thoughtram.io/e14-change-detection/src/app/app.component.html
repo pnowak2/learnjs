@@ -1,0 +1,6 @@
+<h1>{{ firstName }} {{ lastName }}</h1>
+<button (click)="changeName()">Change name</button>
+
+<vcard-app></vcard-app>
+<cartbadge [addItemStream]="addItemStream"></cartbadge>
+<button (click)="emitStreamEvent()">Emit stream event</button>
