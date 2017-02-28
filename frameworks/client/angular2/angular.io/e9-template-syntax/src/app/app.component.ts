@@ -26,6 +26,7 @@ export class AppComponent {
   heroName = 'Vanilla';
   heroes = ['a', 'b', 'c'];
   currentHero = 'WinterMan';
+  birthDate = new Date(1980,4,28);
 
   onSave() {
     console.log('saved');
