@@ -192,7 +192,7 @@ describe('Ramda', () => {
     });
   });
 
-  
+
   describe('.assoc() - Makes a shallow clone of an object, setting or overriding the specified property with the given value. Note that this copies and flattens prototype properties onto the new object as well. All non-primitive properties are copied by reference.', () => {
     it('should make shallow clone - creates copy of the given object and overrides/creates given property to it', () => {
       const myObj = { a: 1, b: 2 };
@@ -208,6 +208,62 @@ describe('Ramda', () => {
       const result = R.assocPath(['c', 'd'], 12, myObj);
 
       expect(result).to.eql({ a: 1, b: 2, c: { d: 12 } });
+    });
+  });
+
+  describe('.binary() - Wraps a function of any arity (including nullary) in a function that accepts exactly 2 parameters. Any extraneous parameters will not be passed to the supplied function', () => {
+    it('should make function only two args compliant', () => {
+      const add = (a, b, c) => a + b + c;
+
+      expect(add('a', 'b', 'c')).to.eql('abc');
+
+      const add2 = R.binary(add);
+
+      expect(add2('a', 'b', 'c')).to.eql('abundefined');
+    });
+  });
+
+  describe('.bind() - Creates a function that is bound to a context. Note: R.bind does not provide the additional argument-binding capabilities of Function.prototype.bind.', () => {
+
+    it('should bind context to function', () => {
+      const ctx = { name: 'piotr' };
+      const fn = function () {
+        return this.name;
+      }
+
+      const boundFn = R.bind(fn, ctx);
+
+      expect(boundFn()).to.eql('piotr');
+    });
+
+  });
+
+  describe('.both() - A function which calls the two provided functions and returns the && of the results. It returns the result of the first function if it is false-y and the result of the second function otherwise. Note that this is short-circuited, meaning that the second function will not be invoked if the first returns a false-y value.', () => {
+    it('should provide function which combines two conditions', () => {
+      const isBiggerThan5 = n => n >= 5;
+      const isSmallerThan25 = n => n <= 25;
+
+      const isBetween5And25 = R.both(isBiggerThan5, isSmallerThan25);
+
+      expect(isBetween5And25(7)).to.be.true;
+      expect(isBetween5And25(26)).to.be.false;
+      expect(isBetween5And25(4)).to.be.false;
+    });
+  });
+
+  describe('.call() - Returns the result of calling its first argument with the remaining arguments.', () => {
+    it('should call function with passed args', () => {
+      const result = R.call(R.add, 1, 4);
+      expect(result).to.eql(5);
+    });
+  });
+
+  describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', () => {
+    it('should chain functions', () => {
+      var funify = n => [n + ' fun'];
+      const result = R.chain(funify, [1, 2, 3]);
+
+      expect(result).to.eql('');
     });
   });
 });

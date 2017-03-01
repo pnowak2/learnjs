@@ -586,6 +586,69 @@
 	      (0, _chai.expect)(result).to.eql({ a: 1, b: 2, c: { d: 12 } });
 	    });
 	  });
+
+	  describe('.binary() - Wraps a function of any arity (including nullary) in a function that accepts exactly 2 parameters. Any extraneous parameters will not be passed to the supplied function', function () {
+	    it('should make function only two args compliant', function () {
+	      var add = function add(a, b, c) {
+	        return a + b + c;
+	      };
+
+	      (0, _chai.expect)(add('a', 'b', 'c')).to.eql('abc');
+
+	      var add2 = R.binary(add);
+
+	      (0, _chai.expect)(add2('a', 'b', 'c')).to.eql('abundefined');
+	    });
+	  });
+
+	  describe('.bind() - Creates a function that is bound to a context. Note: R.bind does not provide the additional argument-binding capabilities of Function.prototype.bind.', function () {
+
+	    it('should bind context to function', function () {
+	      var ctx = { name: 'piotr' };
+	      var fn = function fn() {
+	        return this.name;
+	      };
+
+	      var boundFn = R.bind(fn, ctx);
+
+	      (0, _chai.expect)(boundFn()).to.eql('piotr');
+	    });
+	  });
+
+	  describe('.both() - A function which calls the two provided functions and returns the && of the results. It returns the result of the first function if it is false-y and the result of the second function otherwise. Note that this is short-circuited, meaning that the second function will not be invoked if the first returns a false-y value.', function () {
+	    it('should provide function which combines two conditions', function () {
+	      var isBiggerThan5 = function isBiggerThan5(n) {
+	        return n >= 5;
+	      };
+	      var isSmallerThan25 = function isSmallerThan25(n) {
+	        return n <= 25;
+	      };
+
+	      var isBetween5And25 = R.both(isBiggerThan5, isSmallerThan25);
+
+	      (0, _chai.expect)(isBetween5And25(7)).to.be.true;
+	      (0, _chai.expect)(isBetween5And25(26)).to.be.false;
+	      (0, _chai.expect)(isBetween5And25(4)).to.be.false;
+	    });
+	  });
+
+	  describe('.call() - Returns the result of calling its first argument with the remaining arguments.', function () {
+	    it('should call function with passed args', function () {
+	      var result = R.call(R.add, 1, 4);
+	      (0, _chai.expect)(result).to.eql(5);
+	    });
+	  });
+
+	  describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', function () {
+	    it('should chain functions', function () {
+	      var funify = function funify(n) {
+	        return [n + ' fun'];
+	      };
+	      var result = R.chain(funify, [1, 2, 3]);
+
+	      (0, _chai.expect)(result).to.eql('');
+	    });
+	  });
 	});
 
 /***/ },
