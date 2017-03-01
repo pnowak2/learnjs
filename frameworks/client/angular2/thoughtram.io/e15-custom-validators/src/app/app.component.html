@@ -1,0 +1,8 @@
+<h1>
+<div *ngIf="!form.valid"
+        class="ui error message">Form is invalid</div>
+
+  <form [formGroup]="form">
+    <input type="text" formControlName="name">
+  </form>
+</h1>
