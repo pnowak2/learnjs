@@ -109,7 +109,7 @@ describe('Ramda', () => {
       expect(isRed('KH')).to.be.true;
     });
   });
-  
+
   describe('.ap() - ap applies a list of functions to a list of values.', () => {
     it('should apply list of functions to values and concatenate them sequentially in output array', () => {
       const add5 = R.add(5);
@@ -122,7 +122,7 @@ describe('Ramda', () => {
       expect(R.ap([greet], ['piotr', 'andrzej'])).to.eql(['hello piotr', 'hello andrzej']);
     });
   });
-  
+
   describe('.aperture() - Returns a new list, composed of n-tuples of consecutive elements If n is greater than the length of the list, an empty list is returned.', () => {
     it('should group elements from list to groups of given size taking from consecutive elements', () => {
       const list = [1, 2, 3, 4, 5];
@@ -131,14 +131,139 @@ describe('Ramda', () => {
       expect(result).to.eql([[1, 2, 3], [2, 3, 4], [3, 4, 5]]);
     });
   });
-  
+
   describe('.append() - Returns a new list containing the contents of the given list, followed by the given element.', () => {
     it('should create new list (copy) with passed element at the end of the list', () => {
       const list = ['a', 'b', 'c'];
       const result = R.append('d', list);
 
-      expect(result).not.to.deep.equal(list);
+      expect(result).not.to.equal(list);
       expect(result).to.eql(['a', 'b', 'c', 'd']);
+    });
+  });
+
+  describe('.apply() - Applies function fn to the argument list args. This is useful for creating a fixed-arity function from a variadic function. fn should be a bound function if context is significant.', () => {
+    it('should apply function to set of args', () => {
+
+      const result = R.apply(Math.max, [1, 2]);
+      // same us imho..
+      const result2 = Math.max(...[1, 2, 3]);
+
+      expect(result).to.eql(2);
+      expect(result2).to.eql(3);
+    });
+  });
+
+  describe('.applySpec() - Given a spec object recursively mapping properties to functions, creates a function producing an object of the same structure, by mapping each property to the result of calling its associated function with the supplied arguments.', () => {
+    it('should make function which gets recipe how the end result structure should look like and later executes it. Watch for arity of subfunctions though..', () => {
+      const makeResult = R.applySpec({
+        sum: R.add,
+        nested: {
+          mul: R.multiply
+        }
+      });
+
+      expect(makeResult(2, 4)).to.eql({
+        sum: 6,
+        nested: {
+          mul: 8
+        }
+      });
+    });
+  });
+
+
+  describe('.ascend() - Makes an ascending comparator function out of a function that returns a value that can be compared with < and >.', () => {
+    it('should provide comparator function used as comparator for sorting', () => {
+      const people = [
+        { name: 'piotr', age: 37 },
+        { name: 'andrzej', age: 24 },
+        { name: 'hania', age: 17 },
+      ]
+      const byAge = R.ascend(obj => obj.age); // returns curried function with two params (a, b) to compare
+
+      const sorted = R.sort(byAge, people);
+
+      expect(sorted).to.eql([
+        { name: 'hania', age: 17 },
+        { name: 'andrzej', age: 24 },
+        { name: 'piotr', age: 37 },
+      ]);
+    });
+  });
+
+
+  describe('.assoc() - Makes a shallow clone of an object, setting or overriding the specified property with the given value. Note that this copies and flattens prototype properties onto the new object as well. All non-primitive properties are copied by reference.', () => {
+    it('should make shallow clone - creates copy of the given object and overrides/creates given property to it', () => {
+      const myObj = { a: 1, b: 2 };
+      const result = R.assoc('b', 5, myObj);
+
+      expect(result).to.eql({ a: 1, b: 5 });
+    });
+  });
+
+  describe('.assocPath() - Makes a shallow clone of an object, setting or overriding the nodes required to create the given path, and placing the specific value at the tail end of that path. Note that this copies and flattens prototype properties onto the new object as well. All non-primitive properties are copied by reference.', () => {
+    it('should make shallow clone - creates copy of the given event nested object and overrides/creates given property to it', () => {
+      const myObj = { a: 1, b: 2, c: { d: 8 } };
+      const result = R.assocPath(['c', 'd'], 12, myObj);
+
+      expect(result).to.eql({ a: 1, b: 2, c: { d: 12 } });
+    });
+  });
+
+  describe('.binary() - Wraps a function of any arity (including nullary) in a function that accepts exactly 2 parameters. Any extraneous parameters will not be passed to the supplied function', () => {
+    it('should make function only two args compliant', () => {
+      const add = (a, b, c) => a + b + c;
+
+      expect(add('a', 'b', 'c')).to.eql('abc');
+
+      const add2 = R.binary(add);
+
+      expect(add2('a', 'b', 'c')).to.eql('abundefined');
+    });
+  });
+
+  describe('.bind() - Creates a function that is bound to a context. Note: R.bind does not provide the additional argument-binding capabilities of Function.prototype.bind.', () => {
+
+    it('should bind context to function', () => {
+      const ctx = { name: 'piotr' };
+      const fn = function () {
+        return this.name;
+      }
+
+      const boundFn = R.bind(fn, ctx);
+
+      expect(boundFn()).to.eql('piotr');
+    });
+
+  });
+
+  describe('.both() - A function which calls the two provided functions and returns the && of the results. It returns the result of the first function if it is false-y and the result of the second function otherwise. Note that this is short-circuited, meaning that the second function will not be invoked if the first returns a false-y value.', () => {
+    it('should provide function which combines two conditions', () => {
+      const isBiggerThan5 = n => n >= 5;
+      const isSmallerThan25 = n => n <= 25;
+
+      const isBetween5And25 = R.both(isBiggerThan5, isSmallerThan25);
+
+      expect(isBetween5And25(7)).to.be.true;
+      expect(isBetween5And25(26)).to.be.false;
+      expect(isBetween5And25(4)).to.be.false;
+    });
+  });
+
+  describe('.call() - Returns the result of calling its first argument with the remaining arguments.', () => {
+    it('should call function with passed args', () => {
+      const result = R.call(R.add, 1, 4);
+      expect(result).to.eql(5);
+    });
+  });
+
+  describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', () => {
+    it('should chain functions', () => {
+      var funify = n => [n + ' fun'];
+      const result = R.chain(funify, [1, 2, 3]);
+
+      expect(result).to.eql('');
     });
   });
 });
