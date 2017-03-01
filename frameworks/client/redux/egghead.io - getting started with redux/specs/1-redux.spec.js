@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createStore } from 'redux';
-import { counter } from '../src/app-1';
+import { counter } from '../src/1-redux';
 
-describe('Redux', () => {
+describe('Redux Introduction', () => {
   let store;
 
   beforeEach(() => {
