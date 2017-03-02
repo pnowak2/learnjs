@@ -259,11 +259,100 @@ describe('Ramda', () => {
   });
 
   describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', () => {
-    it('should chain functions', () => {
-      var funify = n => [n + ' fun'];
+    it('should map over functions and concatenate resulting arrays', () => {
+      var funify = n => [n + ' fun', n + ' boom'];
       const result = R.chain(funify, [1, 2, 3]);
 
-      expect(result).to.eql('');
+      expect(result).to.eql(['1 fun', '1 boom', '2 fun', '2 boom', '3 fun', '3 boom']);
+    });
+  });
+
+  describe('.clamp() - Restricts a number to be within a range.', () => {
+    it('should restrict the number', () => {
+      expect(R.clamp(1, 20, 30)).to.eql(20);
+      expect(R.clamp(1, 20, 15)).to.eql(15);
+      expect(R.clamp(1, 20, -30)).to.eql(1);
+    });
+  });
+
+  describe('.clone() - Creates a deep copy of the value which may contain (nested) Arrays and Objects, Numbers, Strings, Booleans and Dates. Functions are assigned by reference rather than copied', () => {
+    it('should make deep clone copy', () => {
+      const objects = [[{}, {}], {}, {}, {}];
+      const cloned = R.clone(objects);
+
+      expect(objects).to.deep.equal(cloned);
+      expect(objects).not.to.equal(cloned);
+    });
+  });
+
+  describe('.comparator() - Makes a comparator function out of a function that reports whether the first element is less than the second.', () => {
+    it('should make sort function used in comparator call', () => {
+      const people = [
+        { name: 'piotr', age: 37 },
+        { name: 'andrzej', age: 24 },
+        { name: 'hania', age: 17 },
+      ]
+      const byAgeAsc = R.comparator((a, b) => a.age < b.age); // returns curried function with two params (a, b) to compare
+
+      const sorted = R.sort(byAgeAsc, people);
+
+      expect(sorted).to.eql([
+        { name: 'hania', age: 17 },
+        { name: 'andrzej', age: 24 },
+        { name: 'piotr', age: 37 },
+      ]);
+    });
+  });
+
+  describe('.complement() - Takes a function f and returns a function g such that if called with the same arguments when f returns a "truthy" value, g returns false and when f returns a "falsy" value g returns true.', () => {
+    it('should make function that negates predicate', () => {
+      const isNotNull = R.complement(val => val === null);
+      expect(isNotNull('a')).to.be.true;
+    });
+  });
+
+  describe('.compose() - Performs right-to-left function composition. The rightmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make right to left composition', () => {
+      const greeterFn = val => `Name is: ${val}`;
+      const greet = R.compose(greeterFn, R.toUpper)
+
+      expect(greet('piotr')).to.eql('Name is: PIOTR');
+    });
+  });
+
+  describe('.composeK() - Returns the right-to-left Kleisli composition of the provided functions, each of which must return a value of a type supported by chain.', () => {
+    it('should make right to left composition', () => {
+
+    });
+  });
+
+  describe('.composeP() - Performs right-to-left composition of one or more Promise-returning functions. The rightmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make right to left composition with promised', (done) => {
+      var db = {
+        users: {
+          JOE: {
+            name: 'Joe',
+            followers: ['STEVE', 'SUZY']
+          }
+        }
+      }
+
+      const getUser = userId => Promise.resolve(db.users[userId]);
+      const getFollowers = user => Promise.resolve(user.followers);
+
+      const followersForUser = R.composeP(getFollowers, getUser);
+
+      const result = followersForUser('JOE').then(followers => {
+        expect(followers).to.eql(['STEVE', 'SUZY']);
+        done();
+      })
+    });
+  });
+  
+  describe('.concat() - Returns the result of concatenating the given lists or strings.', () => {
+    it('should just concat..', () => {
+      expect(R.concat('abc', 'def')).to.eql('abcdef');
+      expect(R.concat([1, 2], [3, 4])).to.eql([1, 2, 3, 4]);
     });
   });
 });

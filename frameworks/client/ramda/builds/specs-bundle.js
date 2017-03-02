@@ -640,13 +640,102 @@
 	  });
 
 	  describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', function () {
-	    it('should chain functions', function () {
+	    it('should map over functions and concatenate resulting arrays', function () {
 	      var funify = function funify(n) {
-	        return [n + ' fun'];
+	        return [n + ' fun', n + ' boom'];
 	      };
 	      var result = R.chain(funify, [1, 2, 3]);
 
-	      (0, _chai.expect)(result).to.eql('');
+	      (0, _chai.expect)(result).to.eql(['1 fun', '1 boom', '2 fun', '2 boom', '3 fun', '3 boom']);
+	    });
+	  });
+
+	  describe('.clamp() - Restricts a number to be within a range.', function () {
+	    it('should restrict the number', function () {
+	      (0, _chai.expect)(R.clamp(1, 20, 30)).to.eql(20);
+	      (0, _chai.expect)(R.clamp(1, 20, 15)).to.eql(15);
+	      (0, _chai.expect)(R.clamp(1, 20, -30)).to.eql(1);
+	    });
+	  });
+
+	  describe('.clone() - Creates a deep copy of the value which may contain (nested) Arrays and Objects, Numbers, Strings, Booleans and Dates. Functions are assigned by reference rather than copied', function () {
+	    it('should make deep clone copy', function () {
+	      var objects = [[{}, {}], {}, {}, {}];
+	      var cloned = R.clone(objects);
+
+	      (0, _chai.expect)(objects).to.deep.equal(cloned);
+	      (0, _chai.expect)(objects).not.to.equal(cloned);
+	    });
+	  });
+
+	  describe('.comparator() - Makes a comparator function out of a function that reports whether the first element is less than the second.', function () {
+	    it('should make sort function used in comparator call', function () {
+	      var people = [{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }];
+	      var byAgeAsc = R.comparator(function (a, b) {
+	        return a.age < b.age;
+	      }); // returns curried function with two params (a, b) to compare
+
+	      var sorted = R.sort(byAgeAsc, people);
+
+	      (0, _chai.expect)(sorted).to.eql([{ name: 'hania', age: 17 }, { name: 'andrzej', age: 24 }, { name: 'piotr', age: 37 }]);
+	    });
+	  });
+
+	  describe('.complement() - Takes a function f and returns a function g such that if called with the same arguments when f returns a "truthy" value, g returns false and when f returns a "falsy" value g returns true.', function () {
+	    it('should make function that negates predicate', function () {
+	      var isNotNull = R.complement(function (val) {
+	        return val === null;
+	      });
+	      (0, _chai.expect)(isNotNull('a')).to.be.true;
+	    });
+	  });
+
+	  describe('.compose() - Performs right-to-left function composition. The rightmost function may have any arity; the remaining functions must be unary.', function () {
+	    it('should make right to left composition', function () {
+	      var greeterFn = function greeterFn(val) {
+	        return 'Name is: ' + val;
+	      };
+	      var greet = R.compose(greeterFn, R.toUpper);
+
+	      (0, _chai.expect)(greet('piotr')).to.eql('Name is: PIOTR');
+	    });
+	  });
+
+	  describe('.composeK() - Returns the right-to-left Kleisli composition of the provided functions, each of which must return a value of a type supported by chain.', function () {
+	    it('should make right to left composition', function () {});
+	  });
+
+	  describe('.composeP() - Performs right-to-left composition of one or more Promise-returning functions. The rightmost function may have any arity; the remaining functions must be unary.', function () {
+	    it('should make right to left composition with promised', function (done) {
+	      var db = {
+	        users: {
+	          JOE: {
+	            name: 'Joe',
+	            followers: ['STEVE', 'SUZY']
+	          }
+	        }
+	      };
+
+	      var getUser = function getUser(userId) {
+	        return Promise.resolve(db.users[userId]);
+	      };
+	      var getFollowers = function getFollowers(user) {
+	        return Promise.resolve(user.followers);
+	      };
+
+	      var followersForUser = R.composeP(getFollowers, getUser);
+
+	      var result = followersForUser('JOE').then(function (followers) {
+	        (0, _chai.expect)(followers).to.eql(['STEVE', 'SUZY']);
+	        done();
+	      });
+	    });
+	  });
+
+	  describe('.concat() - Returns the result of concatenating the given lists or strings.', function () {
+	    it('should just concat..', function () {
+	      (0, _chai.expect)(R.concat('abc', 'def')).to.eql('abcdef');
+	      (0, _chai.expect)(R.concat([1, 2], [3, 4])).to.eql([1, 2, 3, 4]);
 	    });
 	  });
 	});
