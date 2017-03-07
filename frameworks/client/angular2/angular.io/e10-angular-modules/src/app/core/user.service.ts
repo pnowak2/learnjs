@@ -5,7 +5,7 @@ let nextId = 1;
 export class UserServiceConfig {
   userName = 'Philip Marlowe';
 }
-
+ 
 @Injectable()
 export class UserService {
   id = nextId++;
