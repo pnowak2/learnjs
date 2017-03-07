@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CrisisRoutingModule } from './crisis-routing.module';
-import { CrisisComponent } from './crisis.component';
+import { CrisisListComponent } from './crisis-list.component';
+import { CrisisDetailComponent } from './crisis-detail.component';
+import { CrisisService } from './crisis.service';
 
 @NgModule({
   imports: [
@@ -12,9 +14,9 @@ import { CrisisComponent } from './crisis.component';
     CrisisRoutingModule
   ],
   declarations: [
-    CrisisComponent
+    CrisisListComponent,
+    CrisisDetailComponent
   ],
-  providers: [],
-  exports: [CrisisComponent]
+  providers: [CrisisService]
 })
-export class ContactModule { }
+export class CrisisModule { }
