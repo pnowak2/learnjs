@@ -10,15 +10,18 @@ import { UserService } from './user.service';
 
 import { ContactModule } from './contact/contact.module';
 
+import { AppRoutingModule }   from './app-routing.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     HighlightDirective,
-    TitleComponent,
+    TitleComponent
   ],
   imports: [
     BrowserModule,
-    ContactModule
+    ContactModule,
+    AppRoutingModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
