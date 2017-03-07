@@ -5,7 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HighlightDirective } from './highlight.directive';
-import { TitleComponent } from './title/title.component';
+import { TitleComponent } from './title.component';
+import { UserService } from './user.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { TitleComponent } from './title/title.component';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

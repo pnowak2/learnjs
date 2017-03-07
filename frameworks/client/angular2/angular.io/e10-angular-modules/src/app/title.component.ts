@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-title',
@@ -6,9 +7,11 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./title.component.css']
 })
 export class TitleComponent  {
-
-  constructor() { }
-
   @Input() subtitle = '';
   title = 'Angular Modules';
+  user = '';
+
+  constructor(userService: UserService) {
+    this.user = userService.userName;
+  }
 }
