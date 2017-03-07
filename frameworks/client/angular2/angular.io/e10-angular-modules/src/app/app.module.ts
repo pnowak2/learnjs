@@ -5,25 +5,23 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HighlightDirective } from './highlight.directive';
-import { TitleComponent } from './title.component';
-import { UserService } from './user.service';
 
 import { ContactModule } from './contact/contact.module';
 
 import { AppRoutingModule }   from './app-routing.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HighlightDirective,
-    TitleComponent
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
+    CoreModule,
     ContactModule,
     AppRoutingModule
   ],
-  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
