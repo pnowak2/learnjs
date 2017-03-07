@@ -4,9 +4,11 @@ import { CommonModule } from '@angular/common';
 import { TitleComponent } from './title.component';
 import { UserService } from './user.service';
 
+import { HighlightDirective } from './highlight.directive';
+
 @NgModule({
   imports: [CommonModule],
-  declarations: [TitleComponent],
+  declarations: [TitleComponent, HighlightDirective],
   exports: [TitleComponent],
   providers: [UserService]
 })

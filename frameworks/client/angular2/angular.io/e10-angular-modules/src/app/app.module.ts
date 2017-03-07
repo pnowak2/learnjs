@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { HighlightDirective } from './highlight.directive';
 
 import { ContactModule } from './contact/contact.module';
 
@@ -13,8 +12,7 @@ import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HighlightDirective
+    AppComponent
   ],
   imports: [
     BrowserModule,
