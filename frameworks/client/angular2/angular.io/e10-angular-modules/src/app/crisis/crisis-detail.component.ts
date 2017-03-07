@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 
 @Component({
-  selector: 'app-crisis',
+  selector: 'crisis-detail',
   templateUrl: './crisis-detail.component.html',
   styleUrls: ['./crisis-detail.component.css']
 })

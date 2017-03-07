@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Crisis, CrisisService } from './crisis.service';
 
 @Component({
-  selector: 'app-crisis',
+  selector: 'crisis-list',
   templateUrl: './crisis-list.component.html',
   styleUrls: ['./crisis-list.component.css']
 })
