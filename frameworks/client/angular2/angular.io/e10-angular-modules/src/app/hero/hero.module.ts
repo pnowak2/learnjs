@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HeroComponent } from './hero.component';
 import { HeroRoutingModule } from './hero-routing.module';
 
+import { HighlightDirective } from './highlight.directive';
+import { HeroService } from './hero.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -12,9 +15,10 @@ import { HeroRoutingModule } from './hero-routing.module';
     HeroRoutingModule
   ],
   declarations: [
-    HeroComponent
+    HeroComponent,
+    HighlightDirective
   ],
-  providers: [],
+  providers: [HeroService],
   exports: [HeroComponent]
 })
 export class HeroModule { }
