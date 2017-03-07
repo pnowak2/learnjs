@@ -1,21 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-title',
   templateUrl: './title.component.html',
   styleUrls: ['./title.component.css']
 })
-export class TitleComponent implements OnInit {
+export class TitleComponent  {
+
+  constructor() { }
+
   @Input() subtitle = '';
-  title = 'Assmalng';
-  user = '';
-
-  constructor(private userService: UserService) { 
-    this.user = userService.userName;
-  }
-
-  ngOnInit() {
-  }
-
+  title = 'Angular Modules';
 }
