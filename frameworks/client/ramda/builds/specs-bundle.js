@@ -852,6 +852,122 @@
 	      (0, _chai.expect)(greet5Yrs('piotr')).to.eql('hello piotr, you are 5');
 	    });
 	  });
+
+	  describe('.dec() - Decrements its argument.', function () {
+	    it('should decrement argument', function () {
+	      (0, _chai.expect)(R.dec(5)).to.eql(4);
+	    });
+	  });
+
+	  describe('.defaultTo() - Returns the second argument if it is not null, undefined or NaN otherwise the first argument is returned.', function () {
+	    it('should return default if falsy', function () {
+	      var defaultTo5 = R.defaultTo(5);
+
+	      (0, _chai.expect)(defaultTo5(null)).to.eql(5);
+	      (0, _chai.expect)(defaultTo5('hello')).to.eql('hello');
+	    });
+	  });
+
+	  describe('.descend() - Makes a descending comparator function out of a function that returns a value that can be compared with < and >.', function () {
+	    it('should provide comparator function used as comparator for sorting', function () {
+	      var people = [{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }];
+	      var byAge = R.descend(function (obj) {
+	        return obj.age;
+	      }); // returns curried function with two params (a, b) to compare
+
+	      var sorted = R.sort(byAge, people);
+
+	      (0, _chai.expect)(sorted).to.eql([{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }]);
+	    });
+	  });
+
+	  describe('.difference() - Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list. Objects and Arrays are compared are compared in terms of value equality, not reference equality.', function () {
+	    it('should find difference in lists', function () {
+	      var diff = R.difference([1, 2, 3], [2, 3, 4]);
+
+	      (0, _chai.expect)(diff).to.eql([1]);
+	    });
+	  });
+
+	  describe('.differenceWith() - Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', function () {
+	    it('should find difference in lists with predicate', function () {
+	      var diff = R.differenceWith(function (a, b) {
+	        return a.a === b.a;
+	      }, [{ a: 1 }], [{ a: 2 }]);
+
+	      (0, _chai.expect)(diff).to.eql([{ a: 1 }]);
+	    });
+	  });
+
+	  describe('.dissoc() - Returns a new object that does not contain a prop property.', function () {
+	    it('should make copy without given property', function () {
+	      var myObj = { a: 1, b: 2 };
+	      var result = R.dissoc('b', myObj);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1 });
+	    });
+	  });
+
+	  describe('.dissocPath() - Makes a shallow clone of an object, omitting the property at the given path. Note that this copies and flattens prototype properties onto the new object as well. All non-primitive properties are copied by reference.', function () {
+	    it('should make shallow clone - without given property given by path', function () {
+	      var myObj = { a: 1, b: 2, c: { d: 8 } };
+	      var result = R.dissocPath(['c', 'd'], myObj);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1, b: 2, c: {} });
+	    });
+	  });
+
+	  describe('.divide() - Divides two numbers. Equivalent to a / b.', function () {
+	    it('should divide two numbers', function () {
+	      (0, _chai.expect)(R.divide(71, 100)).to.eql(.71);
+
+	      var toHalf = R.divide(R.__, 2);
+
+	      (0, _chai.expect)(toHalf(10)).to.eql(5);
+	    });
+	  });
+
+	  describe('.drop() - Returns all but the first n elements of the given list, string, or transducer/transformer (or object with a drop method).', function () {
+	    it('should remove first n elements from list/string making copy', function () {
+	      (0, _chai.expect)(R.drop(2, ['foo', 'bar', 'baz'])).to.eql(['baz']);
+	      (0, _chai.expect)(R.drop(3, 'ramda')).to.eql('da');
+	    });
+	  });
+
+	  describe('.dropLast() - Returns a list containing all but the last n elements of the given list.', function () {
+	    it('should remove last n elements from list/string making copy', function () {
+	      (0, _chai.expect)(R.dropLast(2, ['foo', 'bar', 'baz'])).to.eql(['foo']);
+	      (0, _chai.expect)(R.dropLast(3, 'ramda')).to.eql('ra');
+	    });
+	  });
+
+	  describe('.dropLastWhile() - Returns a new list excluding all the tailing elements of a given list which satisfy the supplied predicate function. It passes each value from the right to the supplied predicate function, skipping elements until the predicate function returns a falsy value. The predicate function is applied to one argument: (value).', function () {
+	    it('should remove last n elements which pass predicate function starting from end (tail), then stops and returns result', function () {
+	      var lteThree = function lteThree(x) {
+	        return x <= 3;
+	      };
+	      var result = R.dropLastWhile(lteThree, [1, 2, 3, 4, 3, 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4]);
+	    });
+	  });
+
+	  describe('.dropRepeats() - Returns a new list without any consecutively repeating elements. R.equals is used to determine equality.', function () {
+	    it('should remove duplicates which are siblings in the list', function () {
+	      var result = R.dropRepeats([1, 2, 2, 4, 4, 4, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 4, 1]);
+	    });
+	  });
+
+	  describe('.dropRepeatsWith() - Returns a new list without any consecutively repeating elements. Equality is determined by applying the supplied predicate to each pair of consecutive elements. The first element in a series of equal elements will be preserved.', function () {
+	    it('should remove duplicates which are siblings in the list with predicate', function () {
+	      var l = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+	      var result = R.dropRepeatsWith(R.eqBy(Math.abs), l);
+
+	      (0, _chai.expect)(result).to.eql([1, 3, 4, -5, 3]);
+	    });
+	  });
 	});
 
 /***/ },
