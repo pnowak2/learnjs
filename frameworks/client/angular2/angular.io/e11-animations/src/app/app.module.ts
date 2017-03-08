@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HeroListBasicComponent } from './hero-list-basic/hero-list-basic.component';
+import { HeroListInlineComponent } from './hero-list-inline/hero-list-inline.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeroListBasicComponent
+    HeroListBasicComponent,
+    HeroListInlineComponent
   ],
   imports: [
     BrowserModule,

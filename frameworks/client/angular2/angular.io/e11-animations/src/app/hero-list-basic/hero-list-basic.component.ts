@@ -10,6 +10,12 @@ import {
 
 import { Heroes } from '../services/hero.service';
 
+/**
+ * Define two states, "inactive" and "active", and the end
+ * styles that apply whenever the element is in those states.
+ * Then define animations for transitioning between the states,
+ * one in each direction
+ */
 @Component({
   selector: 'hero-list-basic',
   templateUrl: './hero-list-basic.component.html',
