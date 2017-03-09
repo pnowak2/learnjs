@@ -4,6 +4,7 @@ import {
   trigger,
   state,
   style,
+  keyframes,
   transition,
   animate
 } from '@angular/core';
@@ -34,8 +35,11 @@ import { Heroes } from '../services/hero.service';
         animate('0.2s .5s ease-out', style({ transform: 'translateX(100%) scale(1)' }))
       ]),
       transition('void => active', [
-        style({ transform: 'translateX(0) scale(0)' }),
-        animate('0.2s ease-in')
+        animate(300, keyframes([
+          style({ opacity: 0, transform: 'translateX(-100%)', offset: 0 }),
+          style({ opacity: 1, transform: 'translateX(15px)', offset: 0.3 }),
+          style({ opacity: 1, transform: 'translateX(0)', offset: 1.0 })
+        ]))
       ]),
       transition('active => void', [
         animate('0.2s .3s ease-out', style({ transform: 'translateX(0) scale(0)' }))
@@ -45,4 +49,12 @@ import { Heroes } from '../services/hero.service';
 })
 export class HeroListVoidComponent {
   @Input() heroes: Heroes;
+
+  animationStarted(evt) {
+    console.log('started');
+  }
+
+  animationDone(evt) {
+    console.log('done');
+  }
 }
