@@ -28,17 +28,17 @@ import { Heroes } from '../services/hero.service';
       transition('active => inactive', animate('100ms ease-out')),
       transition('void => inactive', [
         style({ transform: 'translateX(-100%) scale(1)' }),
-        animate(100)
+        animate('0.2s ease-in')
       ]),
       transition('inactive => void', [
         animate(100, style({ transform: 'translateX(100%) scale(1)' }))
       ]),
       transition('void => active', [
         style({ transform: 'translateX(0) scale(0)' }),
-        animate(200)
+        animate('0.2s ease-in')
       ]),
       transition('active => void', [
-        animate(200, style({ transform: 'translateX(0) scale(0)' }))
+        animate('0.2s ease-out', style({ transform: 'translateX(0) scale(0)' }))
       ])
     ])
   ]
