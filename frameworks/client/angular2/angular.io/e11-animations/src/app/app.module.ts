@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HeroListBasicComponent } from './hero-list-basic/hero-list-basic.component';
 import { HeroListInlineComponent } from './hero-list-inline/hero-list-inline.component';
+import { HeroListWildcardComponent } from './hero-list-wildcard/hero-list-wildcard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroListBasicComponent,
-    HeroListInlineComponent
+    HeroListInlineComponent,
+    HeroListWildcardComponent,
   ],
   imports: [
     BrowserModule,
