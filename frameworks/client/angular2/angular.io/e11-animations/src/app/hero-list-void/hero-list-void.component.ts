@@ -31,14 +31,14 @@ import { Heroes } from '../services/hero.service';
         animate('0.2s ease-in')
       ]),
       transition('inactive => void', [
-        animate(100, style({ transform: 'translateX(100%) scale(1)' }))
+        animate('0.2s .5s ease-out', style({ transform: 'translateX(100%) scale(1)' }))
       ]),
       transition('void => active', [
         style({ transform: 'translateX(0) scale(0)' }),
         animate('0.2s ease-in')
       ]),
       transition('active => void', [
-        animate('0.2s ease-out', style({ transform: 'translateX(0) scale(0)' }))
+        animate('0.2s .3s ease-out', style({ transform: 'translateX(0) scale(0)' }))
       ])
     ])
   ]
