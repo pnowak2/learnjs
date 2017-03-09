@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HeroListBasicComponent } from './hero-list-basic/hero-list-basic.component';
 import { HeroListInlineComponent } from './hero-list-inline/hero-list-inline.component';
 import { HeroListWildcardComponent } from './hero-list-wildcard/hero-list-wildcard.component';
+import { HeroListVoidComponent } from './hero-list-void/hero-list-void.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { HeroListWildcardComponent } from './hero-list-wildcard/hero-list-wildca
     HeroListBasicComponent,
     HeroListInlineComponent,
     HeroListWildcardComponent,
+    HeroListVoidComponent
   ],
   imports: [
     BrowserModule,
