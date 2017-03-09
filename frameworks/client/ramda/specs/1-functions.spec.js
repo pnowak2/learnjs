@@ -576,4 +576,39 @@ describe('Ramda', () => {
       expect(result).to.eql([1, 3, 4, -5, 3])
     });
   });
+
+  describe('.dropWhile() - Returns a new list excluding the leading elements of a given list which satisfy the supplied predicate function.', () => {
+    it('should remove duplicates from beginning as long as predicate works', () => {
+      var lteTwo = x => x <= 2;
+      var result = R.dropWhile(lteTwo, [1, 2, 3, 4, 3, 2, 1]);
+
+      expect(result).to.eql([3, 4, 3, 2, 1]);
+    });
+  });
+
+  describe('.either() - A function wrapping calls to the two functions in an || operation, returning the result of the first function if it is truth-y and the result of the second function otherwise', () => {
+    it('should behave like || or', () => {
+      var gt10 = x => x > 10;
+      var even = x => x % 2 === 0;
+      var biggerThan10OrEven = R.either(gt10, even);
+
+      expect(biggerThan10OrEven(101)).to.be.true;
+      expect(biggerThan10OrEven(8)).to.be.true;
+      expect(biggerThan10OrEven(9)).to.be.false;
+    });
+  });
+
+  describe('.empty() - Returns the empty value of its arguments type.', () => {
+    it('should behave like || or', () => {
+      expect(R.empty([1, 2, 3])).to.eql([]);     //=> []
+      expect(R.empty('unicorns')).to.eql('');    //=> ''
+      expect(R.empty({ x: 1, y: 2 })).to.eql({});  //=> {}
+    });
+  });
+
+  describe('.eqBy() - Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.', () => {
+    it('should behave like || or', () => {
+      expect(R.eqBy(Math.abs, 5, -5)).to.eql(true);
+    });
+  });
 });

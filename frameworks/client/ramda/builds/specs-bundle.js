@@ -968,6 +968,47 @@
 	      (0, _chai.expect)(result).to.eql([1, 3, 4, -5, 3]);
 	    });
 	  });
+
+	  describe('.dropWhile() - Returns a new list excluding the leading elements of a given list which satisfy the supplied predicate function.', function () {
+	    it('should remove duplicates from beginning as long as predicate works', function () {
+	      var lteTwo = function lteTwo(x) {
+	        return x <= 2;
+	      };
+	      var result = R.dropWhile(lteTwo, [1, 2, 3, 4, 3, 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([3, 4, 3, 2, 1]);
+	    });
+	  });
+
+	  describe('.either() - A function wrapping calls to the two functions in an || operation, returning the result of the first function if it is truth-y and the result of the second function otherwise', function () {
+	    it('should behave like || or', function () {
+	      var gt10 = function gt10(x) {
+	        return x > 10;
+	      };
+	      var even = function even(x) {
+	        return x % 2 === 0;
+	      };
+	      var biggerThan10OrEven = R.either(gt10, even);
+
+	      (0, _chai.expect)(biggerThan10OrEven(101)).to.be.true;
+	      (0, _chai.expect)(biggerThan10OrEven(8)).to.be.true;
+	      (0, _chai.expect)(biggerThan10OrEven(9)).to.be.false;
+	    });
+	  });
+
+	  describe('.empty() - Returns the empty value of its arguments type.', function () {
+	    it('should behave like || or', function () {
+	      (0, _chai.expect)(R.empty([1, 2, 3])).to.eql([]); //=> []
+	      (0, _chai.expect)(R.empty('unicorns')).to.eql(''); //=> ''
+	      (0, _chai.expect)(R.empty({ x: 1, y: 2 })).to.eql({}); //=> {}
+	    });
+	  });
+
+	  describe('.eqBy() - Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.', function () {
+	    it('should behave like || or', function () {
+	      (0, _chai.expect)(R.eqBy(Math.abs, 5, -5)).to.eql(true);
+	    });
+	  });
 	});
 
 /***/ },
