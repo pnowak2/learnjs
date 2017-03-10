@@ -607,8 +607,101 @@ describe('Ramda', () => {
   });
 
   describe('.eqBy() - Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.', () => {
-    it('should behave like || or', () => {
+    it('should check equality with function given', () => {
       expect(R.eqBy(Math.abs, 5, -5)).to.eql(true);
+    });
+  });
+
+  describe('.eqProps() - Reports whether two objects have the same value, in R.equals terms, for the specified property. Useful as a curried predicate.', () => {
+    it('should check equality of given prop in two objects', () => {
+      var o1 = { a: 1, b: 2, c: 3, d: 4 };
+      var o2 = { a: 10, b: 20, c: 3, d: 40 };
+      expect(R.eqProps('a', o1, o2)).to.be.false;
+      expect(R.eqProps('c', o1, o2)).to.be.true;
+    });
+  });
+
+  describe('.equals() - Returns true if its arguments are equivalent, false otherwise. Handles cyclical data structures.', () => {
+    it('should check equality ', () => {
+      expect(R.equals(1, 1)).to.be.true;
+      expect(R.equals(1, '1')).to.be.false;
+      expect(R.equals({}, {})).to.be.true;
+    });
+  });
+
+  describe('.evolve() - Creates a new object by recursively evolving a shallow copy of object, according to the transformation functions. All non-primitive properties are copied by reference.', () => {
+    it('should check evolve', () => {
+      var tomato = { firstName: '  Tomato ', data: { elapsed: 100, remaining: 1400 }, id: 123 };
+      var transformations = {
+        firstName: R.trim,
+        lastName: R.trim, // Will not get invoked.
+        data: { elapsed: R.add(1), remaining: R.add(-1) }
+      };
+
+      var result = R.evolve(transformations, tomato);
+
+      expect(result).to.eql({
+        firstName: 'Tomato', data: { elapsed: 101, remaining: 1399 }, id: 123
+      });
+    });
+  });
+
+  describe('.F() - A function that always returns false. Any passed in parameters are ignored.', () => {
+    it('should return false', () => {
+      expect(R.F()).to.be.false;
+    });
+  });
+
+  describe('.filter() - Takes a predicate and a "filterable", and returns a new filterable of the same type containing the members of the given filterable which satisfy the given predicate.', () => {
+    it('should return filtered result', () => {
+      var isEven = n => n % 2 === 0;
+
+      expect(R.filter(isEven, [1, 2, 3, 4])).to.eql([2, 4]);
+      expect(R.filter(isEven, { a: 1, b: 2, c: 3, d: 4 })).to.eql({ b: 2, d: 4 });
+    });
+  });
+
+  describe('.find() - Returns the first element of the list which matches the predicate, or undefined if no element matches.', () => {
+    it('should return first result found', () => {
+      var xs = [{ a: 1 }, { a: 2 }, { a: 3 }];
+      var result = R.find(R.propEq('a', 2))(xs);
+
+      expect(result).to.eql({ a: 2 });
+    });
+  });
+
+  describe('.findIndex() - Returns the index of the first element of the list which matches the predicate, or -1 if no element matches.', () => {
+    it('should return index of the first result found', () => {
+      var xs = [{ a: 1 }, { a: 2 }, { a: 3 }];
+      var result = R.findIndex(R.propEq('a', 2))(xs);
+
+      expect(result).to.eql(1);
+    });
+  });
+
+  describe('.findLast() - Returns the last element of the list which matches the predicate, or undefined if no element matches.', () => {
+    it('should return last result found', () => {
+      var xs = [{ a: 1, b: 0 }, { a: 1, b: 1 }];
+      var result = R.findLast(R.propEq('a', 1))(xs);
+
+      expect(result).to.eql({ a: 1, b: 1 });
+    });
+  });
+
+  describe('.findLastIndex() - Returns the index of the last element of the list which matches the predicate, or -1 if no element matches.', () => {
+    it('should return index of the last result found', () => {
+      var xs = [{ a: 1, b: 0 }, { a: 1, b: 1 }];
+      var result = R.findLastIndex(R.propEq('a', 1))(xs);
+
+      expect(result).to.eql(1);
+    });
+  });
+
+  describe('.flatten() - Returns a new list by pulling every item out of it (and all its sub-arrays) and putting them in a new array, depth-first.', () => {
+    it('should flatten list', () => {
+      var result = R.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+
+      expect(result).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     });
   });
 });
