@@ -1104,6 +1104,148 @@
 	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 	    });
 	  });
+
+	  describe('.flip() - Returns a new function much like the supplied one, except that the first two arguments order is reversed.', function () {
+	    it('should flip two first args', function () {
+	      var mergeThree = function mergeThree(a, b, c) {
+	        return [].concat(a, b, c);
+	      };
+
+	      (0, _chai.expect)(mergeThree(1, 2, 3)).to.eql([1, 2, 3]);
+	      (0, _chai.expect)(R.flip(mergeThree)(1, 2, 3)).to.eql([2, 1, 3]);
+	    });
+	  });
+
+	  describe('.forEach() - Iterate over an input list, calling a provided function fn for each element in the list.', function () {
+	    it('should iterate over list', function () {
+	      var result = [];
+	      var process = function process(x) {
+	        return result.push('boo' + x);
+	      };
+	      R.forEach(process, [1, 2, 3]);
+
+	      (0, _chai.expect)(result).to.eql(['boo1', 'boo2', 'boo3']);
+	    });
+	  });
+
+	  describe('.forEachObjIndexed() - Iterate over an input object, calling a provided function fn for each key and value in the object.', function () {
+	    it('should iterate over object keys and values', function () {
+	      var result = [];
+	      var process = function process(val, key, obj) {
+	        return result.push('' + val + key);
+	      };
+	      R.forEachObjIndexed(process, { x: 1, y: 2 });
+
+	      (0, _chai.expect)(result).to.eql(['1x', '2y']);
+	    });
+	  });
+
+	  describe('.fromPairs() - Creates a new object from a list key-value pairs. If a key appears in multiple pairs, the rightmost pair is included in the object.', function () {
+	    it('should make object from array pairs', function () {
+	      var result = R.fromPairs([['a', 1], ['b', 2], ['c', 3]]);
+
+	      (0, _chai.expect)(result).to.eql({
+	        a: 1,
+	        b: 2,
+	        c: 3
+	      });
+	    });
+	  });
+
+	  describe('.groupBy() - Splits a list into sub-lists stored in an object, based on the result of calling a String-returning function on each element, and grouping the results according to values returned.', function () {
+	    it('should group by given criteria', function () {
+	      var byGrade = R.groupBy(function (student) {
+	        var score = student.score;
+	        return score < 65 ? 'F' : score < 70 ? 'D' : score < 80 ? 'C' : score < 90 ? 'B' : 'A';
+	      });
+
+	      var students = [{ name: 'Abby', score: 84 }, { name: 'Eddy', score: 58 }, { name: 'Jack', score: 99 }];
+
+	      (0, _chai.expect)(byGrade(students)).to.eql({
+	        'A': [{ name: 'Jack', score: 99 }],
+	        'B': [{ name: 'Abby', score: 84 }],
+	        'F': [{ name: 'Eddy', score: 58 }]
+	      });
+	    });
+	  });
+
+	  describe('.groupWith() - Takes a list and returns a list of lists where each sublists elements are all "equal" according to the provided equality function.', function () {
+	    it('should group according equality of elements in the list', function () {
+	      var isVowel = function isVowel(v) {
+	        return 'aeiouy'.indexOf(v) !== -1;
+	      };
+	      var result = R.groupWith(R.eqBy(isVowel), 'aestiou');
+
+	      (0, _chai.expect)(result).to.eql(['ae', 'st', 'iou']);
+	    });
+	  });
+
+	  describe('.gt() - Returns true if the first argument is greater than the second; false otherwise.', function () {
+	    it('should do gt', function () {
+	      (0, _chai.expect)(R.gt(2, 1)).to.be.true;
+	      (0, _chai.expect)(R.gt(2, 2)).to.be.false;
+	    });
+	  });
+
+	  describe('.gte() - Returns true if the first argument is greater than or equal the second; false otherwise.', function () {
+	    it('should do gt', function () {
+	      (0, _chai.expect)(R.gte(2, 2)).to.be.true;
+	    });
+	  });
+
+	  describe('.has() - Returns whether or not an object has an own property with the specified name.', function () {
+	    it('should check if object has own property with name', function () {
+	      var hasName = R.has('name');
+
+	      (0, _chai.expect)(hasName({ name: 'alice' })).to.be.true;
+	      (0, _chai.expect)(hasName({ name: 'bob' })).to.be.true;
+	      (0, _chai.expect)(hasName({})).to.be.false;
+	    });
+	  });
+
+	  describe('.hasIn() - Returns whether or not an object or its prototype chain has a property with the specified name.', function () {
+	    it('should check if object has or its prototype has prop', function () {
+	      function Rectangle(width, height) {
+	        this.width = width;
+	        this.height = height;
+	      }
+	      Rectangle.prototype.area = function () {
+	        return this.width * this.height;
+	      };
+
+	      var square = new Rectangle(2, 2);
+	      (0, _chai.expect)(R.hasIn('width', square)).to.be.true;
+	      (0, _chai.expect)(R.hasIn('area', square)).to.be.true;
+	    });
+	  });
+
+	  describe('.head() - Returns the first element of the given list or string. In some libraries this function is named first.', function () {
+	    it('should get first element', function () {
+	      (0, _chai.expect)(R.head(['fi', 'fo', 'fum'])).to.eql('fi');
+	    });
+	  });
+
+	  describe('.identical() - Returns true if its arguments are identical, false otherwise. Values are identical if they reference the same memory. NaN is identical to NaN; 0 and -0 are not identical.', function () {
+	    it('should check for elements to be identical', function () {
+	      (0, _chai.expect)(R.identical(1, 1)).to.be.true;
+	      (0, _chai.expect)(R.identical(1, '1')).to.be.false;
+	    });
+	  });
+
+	  describe('.identity() - A function that does nothing but return the parameter supplied to it. Good as a default or placeholder function.', function () {
+	    it('should return its argument', function () {
+	      (0, _chai.expect)(R.identity(1)).to.eql(1);
+	    });
+	  });
+
+	  describe('.ifElse() - Creates a function that will process either the onTrue or the onFalse function depending upon the result of the condition predicate.', function () {
+	    it('should replace if else statements', function () {
+	      var incCount = R.ifElse(R.has('count'), R.over(R.lensProp('count'), R.inc), R.assoc('count', 1));
+
+	      (0, _chai.expect)(incCount({})).to.eql({ count: 1 });
+	      (0, _chai.expect)(incCount({ count: 1 })).to.eql({ count: 2 });
+	    });
+	  });
 	});
 
 /***/ },
