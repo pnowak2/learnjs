@@ -1246,6 +1246,61 @@
 	      (0, _chai.expect)(incCount({ count: 1 })).to.eql({ count: 2 });
 	    });
 	  });
+
+	  describe('.inc() - Increments its argument.', function () {
+	    it('should increment its argument', function () {
+	      (0, _chai.expect)(R.inc(4)).to.eql(5);
+	    });
+	  });
+
+	  describe('.indexBy() - Given a function that generates a key, turns a list of objects into an object indexing the objects by the given key.', function () {
+	    it('should index elements to objects', function () {
+	      var list = [{ id: 'xyz', title: 'A' }, { id: 'abc', title: 'B' }];
+	      var result = R.indexBy(R.prop('id'), list);
+	      (0, _chai.expect)(result).to.eql({ abc: { id: 'abc', title: 'B' }, xyz: { id: 'xyz', title: 'A' } });
+	    });
+	  });
+
+	  describe('.indexOf() - Returns the position of the first occurrence of an item in an array, or -1 if the item is not included in the array.', function () {
+	    it('should return position of element in the list', function () {
+	      (0, _chai.expect)(R.indexOf(3, [1, 2, 3, 4])).to.eql(2);
+	    });
+	  });
+
+	  describe('.init() - Returns all but the last element of the given list or string.', function () {
+	    it('should return everything except last element', function () {
+	      (0, _chai.expect)(R.init([1, 2, 3])).to.eql([1, 2]);
+	    });
+	  });
+
+	  describe('.insert() - Inserts the supplied element into the list, at index index.', function () {
+	    it('should insert at given position', function () {
+	      (0, _chai.expect)(R.insert(2, 'x', [1, 2, 3, 4])).to.eql([1, 2, 'x', 3, 4]);
+	    });
+	  });
+
+	  describe('.insertAll() - Inserts the sub-list into the list, at index index.', function () {
+	    it('should insert at given position', function () {
+	      (0, _chai.expect)(R.insertAll(2, ['x', 'y', 'z'], [1, 2, 3, 4])).to.eql([1, 2, 'x', 'y', 'z', 3, 4]);
+	    });
+	  });
+
+	  describe('.intersection() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.', function () {
+	    it('should intersect lists', function () {
+	      (0, _chai.expect)(R.intersection([1, 2, 3, 4], [7, 6, 5, 4, 3])).to.eql([3, 4]);
+	    });
+	  });
+
+	  describe('.intersectionWith() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.', function () {
+	    it('should combine lists to a set', function () {
+	      var buffaloSpringfield = [{ id: 824, name: 'Richie Furay' }, { id: 956, name: 'Dewey Martin' }, { id: 313, name: 'Bruce Palmer' }, { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }];
+	      var csny = [{ id: 204, name: 'David Crosby' }, { id: 456, name: 'Stephen Stills' }, { id: 539, name: 'Graham Nash' }, { id: 177, name: 'Neil Young' }];
+
+	      var result = R.intersectionWith(R.eqBy(R.prop('id')), buffaloSpringfield, csny);
+
+	      (0, _chai.expect)(result).to.eql([{ id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }]);
+	    });
+	  });
 	});
 
 /***/ },
