@@ -1,5 +1,18 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALIDATORS, FormControl } from '@angular/forms';
+
+export function validateCounterRange(c: FormControl) {
+  let err = {
+    rangeError: {
+      given: c.value,
+      max: 10,
+      min: 0
+    }
+  };
+
+  return (c.value > 10 || c.value < 0) ? err : null;
+}
 
 @Component({
   selector: 'counter-input',
@@ -9,6 +22,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CounterInputComponent),
+      multi: true
+    },
+    { 
+      provide: NG_VALIDATORS,
+      useValue: validateCounterRange,
       multi: true
     }
   ]
@@ -35,10 +53,10 @@ export class CounterInputComponent implements ControlValueAccessor {
     this.counterValue--;
   }
 
-  propagateChange = (_: any) => {};
+  propagateChange = (_: any) => { };
 
   writeValue(value: any): void {
-    if(value !== undefined) {
+    if (value !== undefined) {
       this.counterValue = value;
     }
   }

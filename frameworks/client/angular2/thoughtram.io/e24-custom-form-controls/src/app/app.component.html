@@ -5,3 +5,12 @@
 </form>
 
 <pre>{{ form.value | json }}</pre>
+
+<hr/>
+
+<form [formGroup]="formReactive">
+  <counter-input formControlName="counter"></counter-input>
+</form>
+
+<p *ngIf="!form.valid">Counter is invalid!</p>
+<pre>{{ form.value | json }}</pre>
