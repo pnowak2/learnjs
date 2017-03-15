@@ -1291,7 +1291,7 @@
 	    });
 	  });
 
-	  describe('.intersectionWith() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.', function () {
+	  describe('.intersectionWith() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', function () {
 	    it('should combine lists to a set', function () {
 	      var buffaloSpringfield = [{ id: 824, name: 'Richie Furay' }, { id: 956, name: 'Dewey Martin' }, { id: 313, name: 'Bruce Palmer' }, { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }];
 	      var csny = [{ id: 204, name: 'David Crosby' }, { id: 456, name: 'Stephen Stills' }, { id: 539, name: 'Graham Nash' }, { id: 177, name: 'Neil Young' }];
@@ -1299,6 +1299,74 @@
 	      var result = R.intersectionWith(R.eqBy(R.prop('id')), buffaloSpringfield, csny);
 
 	      (0, _chai.expect)(result).to.eql([{ id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }]);
+	    });
+	  });
+
+	  describe('.intersperse() - Creates a new list with the separator interposed between elements.', function () {
+	    it('should put given element between items', function () {
+	      (0, _chai.expect)(R.intersperse('x', ['a', 'b', 'c'])).to.eql(['a', 'x', 'b', 'x', 'c']);
+	    });
+	  });
+
+	  describe('.into() - Transforms the items of the list with the transducer and appends the transformed items to the accumulator using an appropriate iterator function based on the accumulator type.', function () {
+	    it('should map items in array with transducer and put them to another array', function () {
+	      var numbers = [1, 2, 3, 4];
+	      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+
+	      var result = R.into([], transducer, numbers);
+
+	      (0, _chai.expect)(result).to.eql([2, 3]);
+	    });
+	  });
+
+	  describe('.invert() - Same as R.invertObj, however this accounts for objects with duplicate values by putting the values into an array.', function () {
+	    it('should invert keys with values grouping them', function () {
+	      var raceResultsByFirstName = {
+	        first: 'alice',
+	        second: 'jake',
+	        third: 'alice'
+	      };
+
+	      var result = R.invert(raceResultsByFirstName);
+
+	      (0, _chai.expect)(result).to.eql({
+	        alice: ['first', 'third'],
+	        jake: ['second']
+	      });
+	    });
+	  });
+
+	  describe('.invertObj() - Returns a new object with the keys of the given object as values, and the values of the given object, which are coerced to strings, as keys. Note that the last key found is preferred when handling the same value.', function () {
+	    it('should invert keys with values', function () {
+	      var raceResults = {
+	        first: 'alice',
+	        second: 'jake'
+	      };
+	      var result = R.invertObj(raceResults);
+
+	      (0, _chai.expect)(result).to.eql({ 'alice': 'first', 'jake': 'second' });
+	    });
+	  });
+
+	  describe('.invoker() - Turns a named method with a specified arity into a function that can be called directly supplied with arguments and a target object.', function () {
+	    it('should invoke function with arity', function () {
+	      var sliceFrom = R.invoker(1, 'slice');
+	      var result = sliceFrom(6, 'abcdefghijklm');
+
+	      (0, _chai.expect)(result).to.eql('ghijklm');
+	    });
+	  });
+
+	  describe('.is() - See if an object (val) is an instance of the supplied constructor. This function will check up the inheritance chain, if any.', function () {
+	    it('should check if object is of given type', function () {
+	      (0, _chai.expect)(R.is(String, 's')).to.be.true;
+	    });
+	  });
+
+	  describe('.isEmpty() - Returns true if the given value is its types empty value; false otherwise.', function () {
+	    it('should check emptyness', function () {
+	      (0, _chai.expect)(R.isEmpty('')).to.be.true;
+	      (0, _chai.expect)(R.isEmpty([])).to.be.true;
 	    });
 	  });
 	});
