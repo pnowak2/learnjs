@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { validateCounterRange } from './counter-input/counter-input.component';
+import { createCounterRangeValidator } from './counter-input/counter-input.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.formReactive = this.fb.group({
-      counter: [8, validateCounterRange]
+      counter: [8, createCounterRangeValidator(0, 10)]
     });
   }
 }

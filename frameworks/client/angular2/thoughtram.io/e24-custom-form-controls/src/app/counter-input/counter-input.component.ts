@@ -2,16 +2,18 @@ import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NG_VALIDATORS, FormControl } from '@angular/forms';
 
-export function validateCounterRange(c: FormControl) {
-  let err = {
-    rangeError: {
-      given: c.value,
-      max: 10,
-      min: 0
-    }
-  };
+export function createCounterRangeValidator(maxValue, minValue) {
+  return function validateCounterRange(c: FormControl) {
+    let err = {
+      rangeError: {
+        given: c.value,
+        max: maxValue,
+        min: minValue
+      }
+    };
 
-  return (c.value > 10 || c.value < 0) ? err : null;
+    return (c.value > +maxValue || c.value < +minValue) ? err: null;
+  }
 }
 
 @Component({
@@ -26,7 +28,7 @@ export function validateCounterRange(c: FormControl) {
     },
     { 
       provide: NG_VALIDATORS,
-      useValue: validateCounterRange,
+      useValue: CounterInputComponent,
       multi: true
     }
   ]
@@ -36,6 +38,14 @@ export class CounterInputComponent implements ControlValueAccessor {
   @Input()
   _counterValue = 0; // notice the '_'
 
+  @Input()
+  counterRangeMax;
+
+  @Input()
+  counterRangeMin;
+
+  validateFn:Function;
+
   get counterValue() {
     return this._counterValue;
   }
@@ -43,6 +53,16 @@ export class CounterInputComponent implements ControlValueAccessor {
   set counterValue(val) {
     this._counterValue = val;
     this.propagateChange(this._counterValue);
+  }
+
+  ngOnChanges(changes) {
+    if (changes.counterRangeMin || changes.counterRangeMax) {
+      this.validateFn = createCounterRangeValidator(this.counterRangeMax, this.counterRangeMin);
+    }
+  }
+
+  validate(c: FormControl) {
+    return this.validateFn(c);
   }
 
   increment() {

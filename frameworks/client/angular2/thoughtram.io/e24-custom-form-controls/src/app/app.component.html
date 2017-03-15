@@ -3,14 +3,15 @@
 <form #form="ngForm">
   <counter-input name="counter" [(ngModel)]="outerCounterValue"></counter-input>
 </form>
-
+<pre>{{ form.value | json }}</pre>
+<p *ngIf="!form.valid">Counter is invalid!</p>
 <pre>{{ form.value | json }}</pre>
 
 <hr/>
 
 <form [formGroup]="formReactive">
-  <counter-input formControlName="counter"></counter-input>
+  <counter-input formControlName="counter" counterRangeMax="15" counterRangeMin="0"></counter-input>
 </form>
 
-<p *ngIf="!form.valid">Counter is invalid!</p>
+<p *ngIf="!formReactive.valid">Counter is invalid!</p>
 <pre>{{ form.value | json }}</pre>
