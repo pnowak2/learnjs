@@ -10,6 +10,7 @@ import { validateEmail } from './validators/email-validator';
 export class AppComponent {
   title = 'app works!';
   form: FormGroup;
+  form2: FormGroup;
 
   constructor(private fb: FormBuilder) {
 
@@ -18,9 +19,14 @@ export class AppComponent {
   ngOnInit() {
     this.form = this.fb.group({
       name: ['', Validators.required],
+      email: ['test@mail.com', [Validators.required, validateEmail]],
       street: ['', Validators.minLength(3)],
       city: ['', Validators.maxLength(10)],
       zip: ['', Validators.pattern('[A-Za-z]{5}')]
+    });
+
+    this.form2 = this.fb.group({
+      email2: ['test@mail.com', [Validators.required, validateEmail]]
     });
   }
 }
