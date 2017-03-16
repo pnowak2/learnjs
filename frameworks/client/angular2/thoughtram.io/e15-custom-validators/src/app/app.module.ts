@@ -4,10 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { EmailValidatorDirective } from './directives/email-validator.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EmailValidatorDirective
   ],
   imports: [
     BrowserModule,
@@ -15,7 +17,7 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [{ provide: 'emailBlackList', useValue: 'test@test.com' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
