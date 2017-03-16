@@ -13,7 +13,7 @@
 <h1>
   <div *ngIf="!form2.valid" class="ui error message">Form is invalid</div>
 
-  <form novalidate [formGroup]="form2">
-    <input type="text" formControlName="email2">
+  <form novalidate #form2="ngForm">
+    <input type="text" name="email" ngModel validateEmail>
   </form>
 </h1>

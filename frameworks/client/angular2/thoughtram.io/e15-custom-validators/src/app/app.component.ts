@@ -8,9 +8,8 @@ import { validateEmail } from './validators/email-validator';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  email2 = 'app works!';
   form: FormGroup;
-  form2: FormGroup;
 
   constructor(private fb: FormBuilder) {
 
@@ -23,10 +22,6 @@ export class AppComponent {
       street: ['', Validators.minLength(3)],
       city: ['', Validators.maxLength(10)],
       zip: ['', Validators.pattern('[A-Za-z]{5}')]
-    });
-
-    this.form2 = this.fb.group({
-      email2: ['test@mail.com', [Validators.required, validateEmail]]
     });
   }
 }
