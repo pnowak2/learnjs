@@ -12,8 +12,15 @@ export class AppComponent {
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.form = fb.group({
-      'name': ['', Validators.compose([Validators.required, validateEmail])]
+
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      street: ['', Validators.minLength(3)],
+      city: ['', Validators.maxLength(10)],
+      zip: ['', Validators.pattern('[A-Za-z]{5}')]
     });
   }
 }

@@ -1,8 +1,10 @@
 <h1>
-<div *ngIf="!form.valid"
-        class="ui error message">Form is invalid</div>
+  <div *ngIf="!form.valid" class="ui error message">Form is invalid</div>
 
-  <form [formGroup]="form">
-    <input type="text" formControlName="name">
+  <form novalidate [formGroup]="form">
+    <input type="text" formControlName="name" ngModel required>
+    <input type="text" formControlName="street" ngModel minlength="3">
+    <input type="text" formControlName="city" ngModel maxlength="10">
+    <input type="text" formControlName="zip" ngModel pattern="[A-Za-z]{5}">
   </form>
 </h1>
