@@ -13,7 +13,7 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = fb.group({
-      'name': ['', Validators.required, validateEmail]
+      'name': ['', Validators.compose([Validators.required, validateEmail])]
     });
   }
 }
