@@ -983,4 +983,30 @@ describe('Ramda', () => {
       expect(R.isEmpty([])).to.be.true;
     });
   });
+
+  describe('.isNil() - Checks if the input value is null or undefined.', () => {
+    it('should check null or undefined', () => {
+      expect(R.isNil(undefined)).to.be.true;
+      expect(R.isNil(null)).to.be.true;
+      expect(R.isNil(0)).to.be.false;
+    });
+  });
+
+  describe('.join() - Returns a string made by inserting the separator between each element and concatenating all the elements into a single string.', () => {
+    it('should join with specified separator', () => {
+      expect(R.join('|', [1, 2, 3])).to.eql('1|2|3');
+    });
+  });
+
+  describe('.juxt() - juxt applies a list of functions to a list of values.', () => {
+    it('should apply array of functions to array of args, returning also array with same size', () => {
+      expect(R.juxt([Math.min, Math.max])(3, 4, 9, -3)).to.eql([-3, 9]);
+    });
+  });
+
+  describe('.keys() - Returns a list containing the names of all the enumerable own properties of the supplied object.', () => {
+    it('should return list of keys of the object', () => {
+      expect(R.keys({a: 1, b: 2, c: 3})).to.eql(['a', 'b', 'c']);
+    });
+  });
 });
