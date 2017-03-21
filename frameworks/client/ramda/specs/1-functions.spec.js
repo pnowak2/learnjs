@@ -1006,7 +1006,70 @@ describe('Ramda', () => {
 
   describe('.keys() - Returns a list containing the names of all the enumerable own properties of the supplied object.', () => {
     it('should return list of keys of the object', () => {
-      expect(R.keys({a: 1, b: 2, c: 3})).to.eql(['a', 'b', 'c']);
+      expect(R.keys({ a: 1, b: 2, c: 3 })).to.eql(['a', 'b', 'c']);
+    });
+  });
+
+  describe('.keysIn() - Returns a list containing the names of all the properties of the supplied object, including prototype properties.', () => {
+    it('should return list of keys including prototype chain', () => {
+      var F = function () { this.x = 'X'; };
+      F.prototype.y = 'Y';
+      var f = new F();
+
+      expect(R.keysIn(f)).to.eql(['x', 'y']);
+    });
+  });
+
+  describe('.last() - Returns the last element of the given list or string.', () => {
+    it('should return last element', () => {
+      expect(R.last(['fi', 'fo', 'fum'])).to.eql('fum');
+    });
+  });
+
+  describe('.lastIndexOf() - Returns the position of the last occurrence of an item in an array, or -1 if the item is not included in the array.', () => {
+    it('should return position of last found element', () => {
+      expect(R.lastIndexOf(3, [-1, 3, 3, 0, 1, 2, 3, 4])).to.eql(6);
+    });
+  });
+
+  describe('.length() - Returns the number of elements in the array by returning list.length.', () => {
+    it('should return list length', () => {
+      expect(R.length([1, 2, 3])).to.eql(3);
+    });
+  });
+
+  describe('.lens() - Returns a lens for the given getter and setter functions. The getter "gets" the value of the focus; the setter "sets" the value of the focus. The setter should not mutate the data structure.', () => {
+    it('should return lens by providing getter and setter. Moves focus to property of the object with immutable fashion..', () => {
+      var xLens = R.lens(R.prop('x'), R.assoc('x'));
+
+      expect(R.view(xLens, { x: 1, y: 2 })).to.eql(1);
+    });
+  });
+
+  describe('.lensIndex() - Returns a lens whose focus is the specified index.', () => {
+    it('should return lens at given index. no need to provide getter and setter like in .lens() version.', () => {
+      var headLens = R.lensIndex(0);
+      var atZero = R.view(headLens, ['a', 'b', 'c']);
+
+      expect(atZero).to.eql('a');
+
+      var setAtZero = R.set(headLens, 'x', ['a', 'b', 'c']);
+
+      expect(setAtZero).to.eql(['x', 'b', 'c']);
+
+      var setUppCase = R.over(headLens, R.toUpper, ['a', 'b', 'c']);
+
+      expect(setUppCase).to.eql(['A', 'b', 'c']);
+    });
+  });
+
+  describe('.lensPath() - Returns a lens whose focus is the specified path.', () => {
+    it('should return lens which is focused on the path given.', () => {
+      var xHeadYLens = R.lensPath(['x', 0, 'y']);
+
+      var result = R.view(xHeadYLens, { x: [{ y: 2, z: 3 }, { y: 4, z: 5 }] });
+
+      expect(result).to.eql(2);
     });
   });
 });
