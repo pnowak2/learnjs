@@ -9,6 +9,8 @@ export class ContactResolve implements Resolve<any> {
   constructor(private contactsService: ContactsService) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.contactsService.getContact(route.params['id']);
+    const id = route.params['id'];
+
+    return this.contactsService.getContact(id);
   }
 }
