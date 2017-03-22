@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as Rx from 'rxjs';
 
-let contacts = [
+export interface Contact {
+  id: number;
+  name: string;
+  twitter: string;
+}
+
+let contacts: Array<Contact> = [
   { id: 1, name: 'Pascal Precht', twitter: '@PascalPrecht' },
   { id: 2, name: 'Christoph Burgdorf', twitter: '@cburgdorf' },
   { id: 3, name: 'Thomas Burleson', twitter: '@thomasburleson' },
@@ -12,13 +18,13 @@ let contacts = [
 @Injectable()
 export class ContactsService {
 
-  getContacts() {
+  getContacts(): Observable<Array<Contact>> {
     return Observable.create(observer => {
       observer.next(contacts);
     })
   }
 
-  getContact(id): Observable<any> {
+  getContact(id): Observable<Contact> {
     return Observable.create(observer => {
       setTimeout(() => {
         observer.next(contacts.find((contact) => contact.id == id))
