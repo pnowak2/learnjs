@@ -11,10 +11,10 @@ export class ContactsDetailComponent implements OnInit {
 
   contact: any;
 
-  constructor(
-    private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.contact = this.activatedRoute.snapshot.data['contact'];
+    console.log('cinit');
   }
 }
