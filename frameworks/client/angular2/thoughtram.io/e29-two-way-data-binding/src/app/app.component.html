@@ -1,0 +1,18 @@
+<input type="text" [(ngModel)]="username">
+username is {{ username }}
+
+<hr/>
+
+<input type="text" [value]="username" (input)="username = $event.target.value">
+username is {{ username }}
+
+<hr/>
+
+<input type="text" [ngModel]="username" (ngModelChange)="username = $event">
+username is {{ username }}
+
+<hr/>
+
+<app-customcounter [(counter)]="cnt"></app-customcounter>
+
+Count is: {{ cnt }}
