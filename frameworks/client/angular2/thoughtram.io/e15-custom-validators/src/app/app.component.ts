@@ -8,12 +8,20 @@ import { validateEmail } from './validators/email-validator';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  email2 = 'app works!';
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.form = fb.group({
-      'name': ['', Validators.required, validateEmail]
+
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      email: ['test@mail.com', [Validators.required, validateEmail]],
+      street: ['', Validators.minLength(3)],
+      city: ['', Validators.maxLength(10)],
+      zip: ['', Validators.pattern('[A-Za-z]{5}')]
     });
   }
 }

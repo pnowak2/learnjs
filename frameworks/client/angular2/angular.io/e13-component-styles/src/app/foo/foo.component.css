@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  border: 5px solid red;
+}
+
+:host(.active) {
+  outline: 3px solid green;
+}
+
+:host-context(.compact) * {
+  font-size: 10px;
+}

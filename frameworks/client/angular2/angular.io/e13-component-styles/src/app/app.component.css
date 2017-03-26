@@ -1,0 +1,8 @@
+:host /deep/ p {
+  color: red;
+}
+
+/* Same as */
+:host >>> p {
+  color: red;
+}

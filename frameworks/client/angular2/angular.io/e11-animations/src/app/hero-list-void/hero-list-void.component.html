@@ -1,0 +1,9 @@
+<ul>
+  <li *ngFor="let hero of heroes"
+      (@heroState.start)="animationStarted($event)"
+      (@heroState.done)="animationDone($event)"
+      [@heroState]="hero.state"
+      (click)="hero.toggleState()">
+    {{hero.name}}
+  </li>
+</ul>

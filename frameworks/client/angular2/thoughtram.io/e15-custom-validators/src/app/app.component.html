@@ -1,8 +1,20 @@
 <h1>
-<div *ngIf="!form.valid"
-        class="ui error message">Form is invalid</div>
-
-  <form [formGroup]="form">
-    <input type="text" formControlName="name">
-  </form>
+  <div *ngIf="!form.valid" class="ui error message">Form is invalid</div>
 </h1>
+
+  <form novalidate [formGroup]="form">
+    <input type="text" formControlName="name" required>
+    <input type="text" formControlName="email">
+    <input type="text" formControlName="street" minlength="3">
+    <input type="text" formControlName="city" maxlength="10">
+    <input type="text" formControlName="zip" pattern="[A-Za-z]{5}">
+  </form>
+
+
+<h1>Directive Validator</h1>
+  
+  <form novalidate #form2="ngForm">
+    <input type="text" name="email" ngModel validateEmail>
+  </form>
+
+  <div *ngIf="!form2.valid" class="ui error message">Form is invalid</div>

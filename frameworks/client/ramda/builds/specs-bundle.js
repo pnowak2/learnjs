@@ -640,13 +640,824 @@
 	  });
 
 	  describe('.chain() - maps a function over a list and concatenates the results. chain is also known as flatMap in some libraries.', function () {
-	    it('should chain functions', function () {
+	    it('should map over functions and concatenate resulting arrays', function () {
 	      var funify = function funify(n) {
-	        return [n + ' fun'];
+	        return [n + ' fun', n + ' boom'];
 	      };
 	      var result = R.chain(funify, [1, 2, 3]);
 
-	      (0, _chai.expect)(result).to.eql('');
+	      (0, _chai.expect)(result).to.eql(['1 fun', '1 boom', '2 fun', '2 boom', '3 fun', '3 boom']);
+	    });
+	  });
+
+	  describe('.clamp() - Restricts a number to be within a range.', function () {
+	    it('should restrict the number', function () {
+	      (0, _chai.expect)(R.clamp(1, 20, 30)).to.eql(20);
+	      (0, _chai.expect)(R.clamp(1, 20, 15)).to.eql(15);
+	      (0, _chai.expect)(R.clamp(1, 20, -30)).to.eql(1);
+	    });
+	  });
+
+	  describe('.clone() - Creates a deep copy of the value which may contain (nested) Arrays and Objects, Numbers, Strings, Booleans and Dates. Functions are assigned by reference rather than copied', function () {
+	    it('should make deep clone copy', function () {
+	      var objects = [[{}, {}], {}, {}, {}];
+	      var cloned = R.clone(objects);
+
+	      (0, _chai.expect)(objects).to.deep.equal(cloned);
+	      (0, _chai.expect)(objects).not.to.equal(cloned);
+	    });
+	  });
+
+	  describe('.comparator() - Makes a comparator function out of a function that reports whether the first element is less than the second.', function () {
+	    it('should make sort function used in comparator call', function () {
+	      var people = [{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }];
+	      var byAgeAsc = R.comparator(function (a, b) {
+	        return a.age < b.age;
+	      }); // returns curried function with two params (a, b) to compare
+
+	      var sorted = R.sort(byAgeAsc, people);
+
+	      (0, _chai.expect)(sorted).to.eql([{ name: 'hania', age: 17 }, { name: 'andrzej', age: 24 }, { name: 'piotr', age: 37 }]);
+	    });
+	  });
+
+	  describe('.complement() - Takes a function f and returns a function g such that if called with the same arguments when f returns a "truthy" value, g returns false and when f returns a "falsy" value g returns true.', function () {
+	    it('should make function that negates predicate', function () {
+	      var isNotNull = R.complement(function (val) {
+	        return val === null;
+	      });
+	      (0, _chai.expect)(isNotNull('a')).to.be.true;
+	    });
+	  });
+
+	  describe('.compose() - Performs right-to-left function composition. The rightmost function may have any arity; the remaining functions must be unary.', function () {
+	    it('should make right to left composition', function () {
+	      var greeterFn = function greeterFn(val) {
+	        return 'Name is: ' + val;
+	      };
+	      var greet = R.compose(greeterFn, R.toUpper);
+
+	      (0, _chai.expect)(greet('piotr')).to.eql('Name is: PIOTR');
+	    });
+	  });
+
+	  describe('.composeK() - Returns the right-to-left Kleisli composition of the provided functions, each of which must return a value of a type supported by chain.', function () {
+	    it('should make right to left composition', function () {});
+	  });
+
+	  describe('.composeP() - Performs right-to-left composition of one or more Promise-returning functions. The rightmost function may have any arity; the remaining functions must be unary.', function () {
+	    it('should make right to left composition with promised', function (done) {
+	      var db = {
+	        users: {
+	          JOE: {
+	            name: 'Joe',
+	            followers: ['STEVE', 'SUZY']
+	          }
+	        }
+	      };
+
+	      var getUser = function getUser(userId) {
+	        return Promise.resolve(db.users[userId]);
+	      };
+	      var getFollowers = function getFollowers(user) {
+	        return Promise.resolve(user.followers);
+	      };
+
+	      var followersForUser = R.composeP(getFollowers, getUser);
+
+	      var result = followersForUser('JOE').then(function (followers) {
+	        (0, _chai.expect)(followers).to.eql(['STEVE', 'SUZY']);
+	        done();
+	      });
+	    });
+	  });
+
+	  describe('.concat() - Returns the result of concatenating the given lists or strings.', function () {
+	    it('should just concat..', function () {
+	      (0, _chai.expect)(R.concat('abc', 'def')).to.eql('abcdef');
+	      (0, _chai.expect)(R.concat([1, 2], [3, 4])).to.eql([1, 2, 3, 4]);
+	    });
+	  });
+
+	  describe('.cond() - Returns a function, fn, which encapsulates if/else, if/else, ... logic. R.cond takes a list of [predicate, transformer] pairs', function () {
+	    it('should do conditional logic', function () {
+	      var fn = R.cond([[function (val) {
+	        return val > 0;
+	      }, function () {
+	        return 'above';
+	      }], [function (val) {
+	        return val < 0;
+	      }, function () {
+	        return 'below';
+	      }], [function (val) {
+	        return val === 0;
+	      }, function () {
+	        return 'zero';
+	      }]]);
+
+	      (0, _chai.expect)(fn(5)).to.eql('above');
+	      (0, _chai.expect)(fn(-5)).to.eql('below');
+	      (0, _chai.expect)(fn(0)).to.eql('zero');
+	    });
+	  });
+
+	  describe('.construct() - Wraps a constructor function inside a curried function that can be called with the same arguments and returns the same type.', function () {
+	    it('should make currying constructor function possible', function () {
+	      function Animal(name, age) {
+	        this.name = name;
+	        this.age = age;
+	      };
+
+	      var AnimalConstructor = R.construct(Animal);
+	      var Goat = AnimalConstructor('Goat');
+	      var matolek = new Goat(5);
+
+	      (0, _chai.expect)(matolek.name).to.eql('Goat');
+	      (0, _chai.expect)(matolek.age).to.eql(5);
+	    });
+	  });
+
+	  describe('.constructN() - Wraps a constructor function inside a curried function that can be called with the same arguments and returns the same type. The arity of the function returned is specified to allow using variadic constructor functions.', function () {
+	    it('should make currying constructor function possible', function () {
+	      function Salad() {
+	        this.ingredients = arguments;
+	      };
+	      Salad.prototype.recipe = function () {
+	        var _this = this;
+
+	        var instructions = R.map(function (ingredient) {
+	          return 'Add a whollop of ' + ingredient, _this.ingredients;
+	        });
+	        return R.join('\n', instructions);
+	      };
+
+	      var ThreeLayerSalad = R.constructN(3, Salad);
+
+	      var salad = ThreeLayerSalad('Mayonnaise')('Potato Chips')('Ketchup');
+
+	      //  console.log(salad.recipe());
+	      // Add a whollop of Mayonnaise
+	      // Add a whollop of Potato Chips
+	      // Add a whollop of Potato Ketchup
+	    });
+	  });
+
+	  describe('.contains() - Returns true if the specified value is equal, in R.equals terms, to at least one element of the given list; false otherwise', function () {
+	    it('should check for presence of the value', function () {
+	      (0, _chai.expect)(R.contains(3, [1, 2, 3])).to.eql(true);
+	      (0, _chai.expect)(R.contains('hello', 'hello world')).to.eql(true);
+	    });
+	  });
+
+	  describe('.converge() - Accepts a converging function and a list of branching functions and returns a new function. When invoked, this new function is applied to some arguments, each branching function is applied to those same arguments. The results of each branching function are passed as arguments to the converging function to produce the return value.', function () {
+	    it('should call branching functions on same arguments and at the end results of branching functions are used as param on converging function (first param)', function () {
+	      var avg = R.converge(R.divide, [R.sum, R.length]);
+
+	      (0, _chai.expect)(avg([1, 2, 3, 4])).to.eql(2.5);
+	    });
+	  });
+
+	  describe('.countBy() - Counts the elements of a list according to how many match each value of a key generated by the supplied function. Returns an object mapping the keys produced by fn to the number of occurrences in the list. Note that all keys are coerced to strings because of how JavaScript objects work.', function () {
+	    it('should count elements passing test and return object with passed results', function () {
+	      var lessThan10 = R.countBy(function (val) {
+	        return val < 10;
+	      });
+
+	      (0, _chai.expect)(lessThan10([1, 3, 11, 22])).to.eql({
+	        'true': 2,
+	        'false': 2
+	      });
+	    });
+	  });
+
+	  describe('.curry() - Returns a curried equivalent of the provided function. The curried function has two unusual capabilities. First, its arguments neednt be provided one at a time', function () {
+	    it('should curry the function..', function () {
+	      var addFourNumbers = function addFourNumbers(a, b, c, d) {
+	        return a + b + c + d;
+	      };
+	      var curriedAddFourNumbers = R.curry(addFourNumbers);
+	      var f = curriedAddFourNumbers(1, 2);
+	      var g = f(3);
+
+	      (0, _chai.expect)(g(4)).to.eql(10);
+	    });
+
+	    it('should curry with placeholder', function () {
+	      var greet = function greet(name, age) {
+	        return 'hello ' + name + ', you are ' + age;
+	      };
+	      var curriedGreet = R.curry(greet);
+	      var greet5Yrs = curriedGreet(R.__, 5);
+
+	      (0, _chai.expect)(greet5Yrs('piotr')).to.eql('hello piotr, you are 5');
+	    });
+	  });
+
+	  describe('.dec() - Decrements its argument.', function () {
+	    it('should decrement argument', function () {
+	      (0, _chai.expect)(R.dec(5)).to.eql(4);
+	    });
+	  });
+
+	  describe('.defaultTo() - Returns the second argument if it is not null, undefined or NaN otherwise the first argument is returned.', function () {
+	    it('should return default if falsy', function () {
+	      var defaultTo5 = R.defaultTo(5);
+
+	      (0, _chai.expect)(defaultTo5(null)).to.eql(5);
+	      (0, _chai.expect)(defaultTo5('hello')).to.eql('hello');
+	    });
+	  });
+
+	  describe('.descend() - Makes a descending comparator function out of a function that returns a value that can be compared with < and >.', function () {
+	    it('should provide comparator function used as comparator for sorting', function () {
+	      var people = [{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }];
+	      var byAge = R.descend(function (obj) {
+	        return obj.age;
+	      }); // returns curried function with two params (a, b) to compare
+
+	      var sorted = R.sort(byAge, people);
+
+	      (0, _chai.expect)(sorted).to.eql([{ name: 'piotr', age: 37 }, { name: 'andrzej', age: 24 }, { name: 'hania', age: 17 }]);
+	    });
+	  });
+
+	  describe('.difference() - Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list. Objects and Arrays are compared are compared in terms of value equality, not reference equality.', function () {
+	    it('should find difference in lists', function () {
+	      var diff = R.difference([1, 2, 3], [2, 3, 4]);
+
+	      (0, _chai.expect)(diff).to.eql([1]);
+	    });
+	  });
+
+	  describe('.differenceWith() - Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', function () {
+	    it('should find difference in lists with predicate', function () {
+	      var diff = R.differenceWith(function (a, b) {
+	        return a.a === b.a;
+	      }, [{ a: 1 }], [{ a: 2 }]);
+
+	      (0, _chai.expect)(diff).to.eql([{ a: 1 }]);
+	    });
+	  });
+
+	  describe('.dissoc() - Returns a new object that does not contain a prop property.', function () {
+	    it('should make copy without given property', function () {
+	      var myObj = { a: 1, b: 2 };
+	      var result = R.dissoc('b', myObj);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1 });
+	    });
+	  });
+
+	  describe('.dissocPath() - Makes a shallow clone of an object, omitting the property at the given path. Note that this copies and flattens prototype properties onto the new object as well. All non-primitive properties are copied by reference.', function () {
+	    it('should make shallow clone - without given property given by path', function () {
+	      var myObj = { a: 1, b: 2, c: { d: 8 } };
+	      var result = R.dissocPath(['c', 'd'], myObj);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1, b: 2, c: {} });
+	    });
+	  });
+
+	  describe('.divide() - Divides two numbers. Equivalent to a / b.', function () {
+	    it('should divide two numbers', function () {
+	      (0, _chai.expect)(R.divide(71, 100)).to.eql(.71);
+
+	      var toHalf = R.divide(R.__, 2);
+
+	      (0, _chai.expect)(toHalf(10)).to.eql(5);
+	    });
+	  });
+
+	  describe('.drop() - Returns all but the first n elements of the given list, string, or transducer/transformer (or object with a drop method).', function () {
+	    it('should remove first n elements from list/string making copy', function () {
+	      (0, _chai.expect)(R.drop(2, ['foo', 'bar', 'baz'])).to.eql(['baz']);
+	      (0, _chai.expect)(R.drop(3, 'ramda')).to.eql('da');
+	    });
+	  });
+
+	  describe('.dropLast() - Returns a list containing all but the last n elements of the given list.', function () {
+	    it('should remove last n elements from list/string making copy', function () {
+	      (0, _chai.expect)(R.dropLast(2, ['foo', 'bar', 'baz'])).to.eql(['foo']);
+	      (0, _chai.expect)(R.dropLast(3, 'ramda')).to.eql('ra');
+	    });
+	  });
+
+	  describe('.dropLastWhile() - Returns a new list excluding all the tailing elements of a given list which satisfy the supplied predicate function. It passes each value from the right to the supplied predicate function, skipping elements until the predicate function returns a falsy value. The predicate function is applied to one argument: (value).', function () {
+	    it('should remove last n elements which pass predicate function starting from end (tail), then stops and returns result', function () {
+	      var lteThree = function lteThree(x) {
+	        return x <= 3;
+	      };
+	      var result = R.dropLastWhile(lteThree, [1, 2, 3, 4, 3, 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4]);
+	    });
+	  });
+
+	  describe('.dropRepeats() - Returns a new list without any consecutively repeating elements. R.equals is used to determine equality.', function () {
+	    it('should remove duplicates which are siblings in the list', function () {
+	      var result = R.dropRepeats([1, 2, 2, 4, 4, 4, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 4, 1]);
+	    });
+	  });
+
+	  describe('.dropRepeatsWith() - Returns a new list without any consecutively repeating elements. Equality is determined by applying the supplied predicate to each pair of consecutive elements. The first element in a series of equal elements will be preserved.', function () {
+	    it('should remove duplicates which are siblings in the list with predicate', function () {
+	      var l = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+	      var result = R.dropRepeatsWith(R.eqBy(Math.abs), l);
+
+	      (0, _chai.expect)(result).to.eql([1, 3, 4, -5, 3]);
+	    });
+	  });
+
+	  describe('.dropWhile() - Returns a new list excluding the leading elements of a given list which satisfy the supplied predicate function.', function () {
+	    it('should remove duplicates from beginning as long as predicate works', function () {
+	      var lteTwo = function lteTwo(x) {
+	        return x <= 2;
+	      };
+	      var result = R.dropWhile(lteTwo, [1, 2, 3, 4, 3, 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([3, 4, 3, 2, 1]);
+	    });
+	  });
+
+	  describe('.either() - A function wrapping calls to the two functions in an || operation, returning the result of the first function if it is truth-y and the result of the second function otherwise', function () {
+	    it('should behave like || or', function () {
+	      var gt10 = function gt10(x) {
+	        return x > 10;
+	      };
+	      var even = function even(x) {
+	        return x % 2 === 0;
+	      };
+	      var biggerThan10OrEven = R.either(gt10, even);
+
+	      (0, _chai.expect)(biggerThan10OrEven(101)).to.be.true;
+	      (0, _chai.expect)(biggerThan10OrEven(8)).to.be.true;
+	      (0, _chai.expect)(biggerThan10OrEven(9)).to.be.false;
+	    });
+	  });
+
+	  describe('.empty() - Returns the empty value of its arguments type.', function () {
+	    it('should behave like || or', function () {
+	      (0, _chai.expect)(R.empty([1, 2, 3])).to.eql([]); //=> []
+	      (0, _chai.expect)(R.empty('unicorns')).to.eql(''); //=> ''
+	      (0, _chai.expect)(R.empty({ x: 1, y: 2 })).to.eql({}); //=> {}
+	    });
+	  });
+
+	  describe('.eqBy() - Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.', function () {
+	    it('should check equality with function given', function () {
+	      (0, _chai.expect)(R.eqBy(Math.abs, 5, -5)).to.eql(true);
+	    });
+	  });
+
+	  describe('.eqProps() - Reports whether two objects have the same value, in R.equals terms, for the specified property. Useful as a curried predicate.', function () {
+	    it('should check equality of given prop in two objects', function () {
+	      var o1 = { a: 1, b: 2, c: 3, d: 4 };
+	      var o2 = { a: 10, b: 20, c: 3, d: 40 };
+	      (0, _chai.expect)(R.eqProps('a', o1, o2)).to.be.false;
+	      (0, _chai.expect)(R.eqProps('c', o1, o2)).to.be.true;
+	    });
+	  });
+
+	  describe('.equals() - Returns true if its arguments are equivalent, false otherwise. Handles cyclical data structures.', function () {
+	    it('should check equality ', function () {
+	      (0, _chai.expect)(R.equals(1, 1)).to.be.true;
+	      (0, _chai.expect)(R.equals(1, '1')).to.be.false;
+	      (0, _chai.expect)(R.equals({}, {})).to.be.true;
+	    });
+	  });
+
+	  describe('.evolve() - Creates a new object by recursively evolving a shallow copy of object, according to the transformation functions. All non-primitive properties are copied by reference.', function () {
+	    it('should check evolve', function () {
+	      var tomato = { firstName: '  Tomato ', data: { elapsed: 100, remaining: 1400 }, id: 123 };
+	      var transformations = {
+	        firstName: R.trim,
+	        lastName: R.trim, // Will not get invoked.
+	        data: { elapsed: R.add(1), remaining: R.add(-1) }
+	      };
+
+	      var result = R.evolve(transformations, tomato);
+
+	      (0, _chai.expect)(result).to.eql({
+	        firstName: 'Tomato', data: { elapsed: 101, remaining: 1399 }, id: 123
+	      });
+	    });
+	  });
+
+	  describe('.F() - A function that always returns false. Any passed in parameters are ignored.', function () {
+	    it('should return false', function () {
+	      (0, _chai.expect)(R.F()).to.be.false;
+	    });
+	  });
+
+	  describe('.filter() - Takes a predicate and a "filterable", and returns a new filterable of the same type containing the members of the given filterable which satisfy the given predicate.', function () {
+	    it('should return filtered result', function () {
+	      var isEven = function isEven(n) {
+	        return n % 2 === 0;
+	      };
+
+	      (0, _chai.expect)(R.filter(isEven, [1, 2, 3, 4])).to.eql([2, 4]);
+	      (0, _chai.expect)(R.filter(isEven, { a: 1, b: 2, c: 3, d: 4 })).to.eql({ b: 2, d: 4 });
+	    });
+	  });
+
+	  describe('.find() - Returns the first element of the list which matches the predicate, or undefined if no element matches.', function () {
+	    it('should return first result found', function () {
+	      var xs = [{ a: 1 }, { a: 2 }, { a: 3 }];
+	      var result = R.find(R.propEq('a', 2))(xs);
+
+	      (0, _chai.expect)(result).to.eql({ a: 2 });
+	    });
+	  });
+
+	  describe('.findIndex() - Returns the index of the first element of the list which matches the predicate, or -1 if no element matches.', function () {
+	    it('should return index of the first result found', function () {
+	      var xs = [{ a: 1 }, { a: 2 }, { a: 3 }];
+	      var result = R.findIndex(R.propEq('a', 2))(xs);
+
+	      (0, _chai.expect)(result).to.eql(1);
+	    });
+	  });
+
+	  describe('.findLast() - Returns the last element of the list which matches the predicate, or undefined if no element matches.', function () {
+	    it('should return last result found', function () {
+	      var xs = [{ a: 1, b: 0 }, { a: 1, b: 1 }];
+	      var result = R.findLast(R.propEq('a', 1))(xs);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1, b: 1 });
+	    });
+	  });
+
+	  describe('.findLastIndex() - Returns the index of the last element of the list which matches the predicate, or -1 if no element matches.', function () {
+	    it('should return index of the last result found', function () {
+	      var xs = [{ a: 1, b: 0 }, { a: 1, b: 1 }];
+	      var result = R.findLastIndex(R.propEq('a', 1))(xs);
+
+	      (0, _chai.expect)(result).to.eql(1);
+	    });
+	  });
+
+	  describe('.flatten() - Returns a new list by pulling every item out of it (and all its sub-arrays) and putting them in a new array, depth-first.', function () {
+	    it('should flatten list', function () {
+	      var result = R.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+	    });
+	  });
+
+	  describe('.flip() - Returns a new function much like the supplied one, except that the first two arguments order is reversed.', function () {
+	    it('should flip two first args', function () {
+	      var mergeThree = function mergeThree(a, b, c) {
+	        return [].concat(a, b, c);
+	      };
+
+	      (0, _chai.expect)(mergeThree(1, 2, 3)).to.eql([1, 2, 3]);
+	      (0, _chai.expect)(R.flip(mergeThree)(1, 2, 3)).to.eql([2, 1, 3]);
+	    });
+	  });
+
+	  describe('.forEach() - Iterate over an input list, calling a provided function fn for each element in the list.', function () {
+	    it('should iterate over list', function () {
+	      var result = [];
+	      var process = function process(x) {
+	        return result.push('boo' + x);
+	      };
+	      R.forEach(process, [1, 2, 3]);
+
+	      (0, _chai.expect)(result).to.eql(['boo1', 'boo2', 'boo3']);
+	    });
+	  });
+
+	  describe('.forEachObjIndexed() - Iterate over an input object, calling a provided function fn for each key and value in the object.', function () {
+	    it('should iterate over object keys and values', function () {
+	      var result = [];
+	      var process = function process(val, key, obj) {
+	        return result.push('' + val + key);
+	      };
+	      R.forEachObjIndexed(process, { x: 1, y: 2 });
+
+	      (0, _chai.expect)(result).to.eql(['1x', '2y']);
+	    });
+	  });
+
+	  describe('.fromPairs() - Creates a new object from a list key-value pairs. If a key appears in multiple pairs, the rightmost pair is included in the object.', function () {
+	    it('should make object from array pairs', function () {
+	      var result = R.fromPairs([['a', 1], ['b', 2], ['c', 3]]);
+
+	      (0, _chai.expect)(result).to.eql({
+	        a: 1,
+	        b: 2,
+	        c: 3
+	      });
+	    });
+	  });
+
+	  describe('.groupBy() - Splits a list into sub-lists stored in an object, based on the result of calling a String-returning function on each element, and grouping the results according to values returned.', function () {
+	    it('should group by given criteria', function () {
+	      var byGrade = R.groupBy(function (student) {
+	        var score = student.score;
+	        return score < 65 ? 'F' : score < 70 ? 'D' : score < 80 ? 'C' : score < 90 ? 'B' : 'A';
+	      });
+
+	      var students = [{ name: 'Abby', score: 84 }, { name: 'Eddy', score: 58 }, { name: 'Jack', score: 99 }];
+
+	      (0, _chai.expect)(byGrade(students)).to.eql({
+	        'A': [{ name: 'Jack', score: 99 }],
+	        'B': [{ name: 'Abby', score: 84 }],
+	        'F': [{ name: 'Eddy', score: 58 }]
+	      });
+	    });
+	  });
+
+	  describe('.groupWith() - Takes a list and returns a list of lists where each sublists elements are all "equal" according to the provided equality function.', function () {
+	    it('should group according equality of elements in the list', function () {
+	      var isVowel = function isVowel(v) {
+	        return 'aeiouy'.indexOf(v) !== -1;
+	      };
+	      var result = R.groupWith(R.eqBy(isVowel), 'aestiou');
+
+	      (0, _chai.expect)(result).to.eql(['ae', 'st', 'iou']);
+	    });
+	  });
+
+	  describe('.gt() - Returns true if the first argument is greater than the second; false otherwise.', function () {
+	    it('should do gt', function () {
+	      (0, _chai.expect)(R.gt(2, 1)).to.be.true;
+	      (0, _chai.expect)(R.gt(2, 2)).to.be.false;
+	    });
+	  });
+
+	  describe('.gte() - Returns true if the first argument is greater than or equal the second; false otherwise.', function () {
+	    it('should do gt', function () {
+	      (0, _chai.expect)(R.gte(2, 2)).to.be.true;
+	    });
+	  });
+
+	  describe('.has() - Returns whether or not an object has an own property with the specified name.', function () {
+	    it('should check if object has own property with name', function () {
+	      var hasName = R.has('name');
+
+	      (0, _chai.expect)(hasName({ name: 'alice' })).to.be.true;
+	      (0, _chai.expect)(hasName({ name: 'bob' })).to.be.true;
+	      (0, _chai.expect)(hasName({})).to.be.false;
+	    });
+	  });
+
+	  describe('.hasIn() - Returns whether or not an object or its prototype chain has a property with the specified name.', function () {
+	    it('should check if object has or its prototype has prop', function () {
+	      function Rectangle(width, height) {
+	        this.width = width;
+	        this.height = height;
+	      }
+	      Rectangle.prototype.area = function () {
+	        return this.width * this.height;
+	      };
+
+	      var square = new Rectangle(2, 2);
+	      (0, _chai.expect)(R.hasIn('width', square)).to.be.true;
+	      (0, _chai.expect)(R.hasIn('area', square)).to.be.true;
+	    });
+	  });
+
+	  describe('.head() - Returns the first element of the given list or string. In some libraries this function is named first.', function () {
+	    it('should get first element', function () {
+	      (0, _chai.expect)(R.head(['fi', 'fo', 'fum'])).to.eql('fi');
+	    });
+	  });
+
+	  describe('.identical() - Returns true if its arguments are identical, false otherwise. Values are identical if they reference the same memory. NaN is identical to NaN; 0 and -0 are not identical.', function () {
+	    it('should check for elements to be identical', function () {
+	      (0, _chai.expect)(R.identical(1, 1)).to.be.true;
+	      (0, _chai.expect)(R.identical(1, '1')).to.be.false;
+	    });
+	  });
+
+	  describe('.identity() - A function that does nothing but return the parameter supplied to it. Good as a default or placeholder function.', function () {
+	    it('should return its argument', function () {
+	      (0, _chai.expect)(R.identity(1)).to.eql(1);
+	    });
+	  });
+
+	  describe('.ifElse() - Creates a function that will process either the onTrue or the onFalse function depending upon the result of the condition predicate.', function () {
+	    it('should replace if else statements', function () {
+	      var incCount = R.ifElse(R.has('count'), R.over(R.lensProp('count'), R.inc), R.assoc('count', 1));
+
+	      (0, _chai.expect)(incCount({})).to.eql({ count: 1 });
+	      (0, _chai.expect)(incCount({ count: 1 })).to.eql({ count: 2 });
+	    });
+	  });
+
+	  describe('.inc() - Increments its argument.', function () {
+	    it('should increment its argument', function () {
+	      (0, _chai.expect)(R.inc(4)).to.eql(5);
+	    });
+	  });
+
+	  describe('.indexBy() - Given a function that generates a key, turns a list of objects into an object indexing the objects by the given key.', function () {
+	    it('should index elements to objects', function () {
+	      var list = [{ id: 'xyz', title: 'A' }, { id: 'abc', title: 'B' }];
+	      var result = R.indexBy(R.prop('id'), list);
+	      (0, _chai.expect)(result).to.eql({ abc: { id: 'abc', title: 'B' }, xyz: { id: 'xyz', title: 'A' } });
+	    });
+	  });
+
+	  describe('.indexOf() - Returns the position of the first occurrence of an item in an array, or -1 if the item is not included in the array.', function () {
+	    it('should return position of element in the list', function () {
+	      (0, _chai.expect)(R.indexOf(3, [1, 2, 3, 4])).to.eql(2);
+	    });
+	  });
+
+	  describe('.init() - Returns all but the last element of the given list or string.', function () {
+	    it('should return everything except last element', function () {
+	      (0, _chai.expect)(R.init([1, 2, 3])).to.eql([1, 2]);
+	    });
+	  });
+
+	  describe('.insert() - Inserts the supplied element into the list, at index index.', function () {
+	    it('should insert at given position', function () {
+	      (0, _chai.expect)(R.insert(2, 'x', [1, 2, 3, 4])).to.eql([1, 2, 'x', 3, 4]);
+	    });
+	  });
+
+	  describe('.insertAll() - Inserts the sub-list into the list, at index index.', function () {
+	    it('should insert at given position', function () {
+	      (0, _chai.expect)(R.insertAll(2, ['x', 'y', 'z'], [1, 2, 3, 4])).to.eql([1, 2, 'x', 'y', 'z', 3, 4]);
+	    });
+	  });
+
+	  describe('.intersection() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.', function () {
+	    it('should intersect lists', function () {
+	      (0, _chai.expect)(R.intersection([1, 2, 3, 4], [7, 6, 5, 4, 3])).to.eql([3, 4]);
+	    });
+	  });
+
+	  describe('.intersectionWith() - Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', function () {
+	    it('should combine lists to a set', function () {
+	      var buffaloSpringfield = [{ id: 824, name: 'Richie Furay' }, { id: 956, name: 'Dewey Martin' }, { id: 313, name: 'Bruce Palmer' }, { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }];
+	      var csny = [{ id: 204, name: 'David Crosby' }, { id: 456, name: 'Stephen Stills' }, { id: 539, name: 'Graham Nash' }, { id: 177, name: 'Neil Young' }];
+
+	      var result = R.intersectionWith(R.eqBy(R.prop('id')), buffaloSpringfield, csny);
+
+	      (0, _chai.expect)(result).to.eql([{ id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' }]);
+	    });
+	  });
+
+	  describe('.intersperse() - Creates a new list with the separator interposed between elements.', function () {
+	    it('should put given element between items', function () {
+	      (0, _chai.expect)(R.intersperse('x', ['a', 'b', 'c'])).to.eql(['a', 'x', 'b', 'x', 'c']);
+	    });
+	  });
+
+	  describe('.into() - Transforms the items of the list with the transducer and appends the transformed items to the accumulator using an appropriate iterator function based on the accumulator type.', function () {
+	    it('should map items in array with transducer and put them to another array', function () {
+	      var numbers = [1, 2, 3, 4];
+	      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+
+	      var result = R.into([], transducer, numbers);
+
+	      (0, _chai.expect)(result).to.eql([2, 3]);
+	    });
+	  });
+
+	  describe('.invert() - Same as R.invertObj, however this accounts for objects with duplicate values by putting the values into an array.', function () {
+	    it('should invert keys with values grouping them', function () {
+	      var raceResultsByFirstName = {
+	        first: 'alice',
+	        second: 'jake',
+	        third: 'alice'
+	      };
+
+	      var result = R.invert(raceResultsByFirstName);
+
+	      (0, _chai.expect)(result).to.eql({
+	        alice: ['first', 'third'],
+	        jake: ['second']
+	      });
+	    });
+	  });
+
+	  describe('.invertObj() - Returns a new object with the keys of the given object as values, and the values of the given object, which are coerced to strings, as keys. Note that the last key found is preferred when handling the same value.', function () {
+	    it('should invert keys with values', function () {
+	      var raceResults = {
+	        first: 'alice',
+	        second: 'jake'
+	      };
+	      var result = R.invertObj(raceResults);
+
+	      (0, _chai.expect)(result).to.eql({ 'alice': 'first', 'jake': 'second' });
+	    });
+	  });
+
+	  describe('.invoker() - Turns a named method with a specified arity into a function that can be called directly supplied with arguments and a target object.', function () {
+	    it('should invoke function with arity', function () {
+	      var sliceFrom = R.invoker(1, 'slice');
+	      var result = sliceFrom(6, 'abcdefghijklm');
+
+	      (0, _chai.expect)(result).to.eql('ghijklm');
+	    });
+	  });
+
+	  describe('.is() - See if an object (val) is an instance of the supplied constructor. This function will check up the inheritance chain, if any.', function () {
+	    it('should check if object is of given type', function () {
+	      (0, _chai.expect)(R.is(String, 's')).to.be.true;
+	    });
+	  });
+
+	  describe('.isEmpty() - Returns true if the given value is its types empty value; false otherwise.', function () {
+	    it('should check emptyness', function () {
+	      (0, _chai.expect)(R.isEmpty('')).to.be.true;
+	      (0, _chai.expect)(R.isEmpty([])).to.be.true;
+	    });
+	  });
+
+	  describe('.isNil() - Checks if the input value is null or undefined.', function () {
+	    it('should check null or undefined', function () {
+	      (0, _chai.expect)(R.isNil(undefined)).to.be.true;
+	      (0, _chai.expect)(R.isNil(null)).to.be.true;
+	      (0, _chai.expect)(R.isNil(0)).to.be.false;
+	    });
+	  });
+
+	  describe('.join() - Returns a string made by inserting the separator between each element and concatenating all the elements into a single string.', function () {
+	    it('should join with specified separator', function () {
+	      (0, _chai.expect)(R.join('|', [1, 2, 3])).to.eql('1|2|3');
+	    });
+	  });
+
+	  describe('.juxt() - juxt applies a list of functions to a list of values.', function () {
+	    it('should apply array of functions to array of args, returning also array with same size', function () {
+	      (0, _chai.expect)(R.juxt([Math.min, Math.max])(3, 4, 9, -3)).to.eql([-3, 9]);
+	    });
+	  });
+
+	  describe('.keys() - Returns a list containing the names of all the enumerable own properties of the supplied object.', function () {
+	    it('should return list of keys of the object', function () {
+	      (0, _chai.expect)(R.keys({ a: 1, b: 2, c: 3 })).to.eql(['a', 'b', 'c']);
+	    });
+	  });
+
+	  describe('.keysIn() - Returns a list containing the names of all the properties of the supplied object, including prototype properties.', function () {
+	    it('should return list of keys including prototype chain', function () {
+	      var F = function F() {
+	        this.x = 'X';
+	      };
+	      F.prototype.y = 'Y';
+	      var f = new F();
+
+	      (0, _chai.expect)(R.keysIn(f)).to.eql(['x', 'y']);
+	    });
+	  });
+
+	  describe('.last() - Returns the last element of the given list or string.', function () {
+	    it('should return last element', function () {
+	      (0, _chai.expect)(R.last(['fi', 'fo', 'fum'])).to.eql('fum');
+	    });
+	  });
+
+	  describe('.lastIndexOf() - Returns the position of the last occurrence of an item in an array, or -1 if the item is not included in the array.', function () {
+	    it('should return position of last found element', function () {
+	      (0, _chai.expect)(R.lastIndexOf(3, [-1, 3, 3, 0, 1, 2, 3, 4])).to.eql(6);
+	    });
+	  });
+
+	  describe('.length() - Returns the number of elements in the array by returning list.length.', function () {
+	    it('should return list length', function () {
+	      (0, _chai.expect)(R.length([1, 2, 3])).to.eql(3);
+	    });
+	  });
+
+	  describe('.lens() - Returns a lens for the given getter and setter functions. The getter "gets" the value of the focus; the setter "sets" the value of the focus. The setter should not mutate the data structure.', function () {
+	    it('should return lens by providing getter and setter. Moves focus to property of the object with immutable fashion..', function () {
+	      var xLens = R.lens(R.prop('x'), R.assoc('x'));
+
+	      (0, _chai.expect)(R.view(xLens, { x: 1, y: 2 })).to.eql(1);
+	    });
+	  });
+
+	  describe('.lensIndex() - Returns a lens whose focus is the specified index.', function () {
+	    it('should return lens at given index. no need to provide getter and setter like in .lens() version.', function () {
+	      var headLens = R.lensIndex(0);
+	      var atZero = R.view(headLens, ['a', 'b', 'c']);
+
+	      (0, _chai.expect)(atZero).to.eql('a');
+
+	      var setAtZero = R.set(headLens, 'x', ['a', 'b', 'c']);
+
+	      (0, _chai.expect)(setAtZero).to.eql(['x', 'b', 'c']);
+
+	      var setUppCase = R.over(headLens, R.toUpper, ['a', 'b', 'c']);
+
+	      (0, _chai.expect)(setUppCase).to.eql(['A', 'b', 'c']);
+	    });
+	  });
+
+	  describe('.lensPath() - Returns a lens whose focus is the specified path.', function () {
+	    it('should return lens which is focused on the path given.', function () {
+	      var xHeadYLens = R.lensPath(['x', 0, 'y']);
+
+	      var result = R.view(xHeadYLens, { x: [{ y: 2, z: 3 }, { y: 4, z: 5 }] });
+
+	      (0, _chai.expect)(result).to.eql(2);
 	    });
 	  });
 	});
