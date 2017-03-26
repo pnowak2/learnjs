@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Sort Without Articles</title>
 </head>
+
 <body>
 
   <style>
@@ -16,6 +18,7 @@
       min-height: 100vh;
     }
 
+
     #bands {
       list-style: inside square;
       font-size: 20px;
@@ -25,28 +28,54 @@
       padding: 0;
       box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.05);
     }
+
     #bands li {
       border-bottom: 1px solid #efefef;
       padding: 20px;
     }
+
     #bands li:last-child {
       border-bottom: 0;
     }
 
-    a {
+
+     {
       color: #ffc600;
       text-decoration: none;
     }
-
   </style>
 
   <ul id="bands"></ul>
 
-<script>
-const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  <script>
+    const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+    const words = ['The', 'A'];
+    const bandsEl = document.querySelector('#bands');
+    const replace = bandname => {
+      return bandname.replace(/^(a |the |an)/i, '').trim();
+    }
 
-</script>
+    const results = bands
+      .sort((a, b) => {
+        let altA = replace(a);
+        let altB = replace(b);
+        return altA > altB ? 1 : -1;
+      })
+      .map(val => {
+        return `
+          <li>
+            ${val}
+          </li>
+        `;
+      })
+      .join('');
+
+      bandsEl.innerHTML = results;
+      console.log(results);
+
+  </script>
 
 </body>
+
 </html>

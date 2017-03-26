@@ -1,0 +1,19 @@
+{
+  "name": "e1-back-to-top",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass --include-path node_modules/bourbon/app/assets/stylesheets scss/style.scss css/style.css",
+    "serve": "serve . -p 3002",
+    "watch": "nodemon -e scss -x \"npm run sass\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bourbon": "^4.3.3",
+    "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0"
+  }
+}
