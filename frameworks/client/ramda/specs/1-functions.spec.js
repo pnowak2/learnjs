@@ -1072,4 +1072,69 @@ describe('Ramda', () => {
       expect(result).to.eql(2);
     });
   });
+
+  describe('.lensProp() - Returns a lens whose focus is the specified property.', () => {
+    it('should return property pointed by lens', () => {
+      var xLens = R.lensProp('x');
+
+      var result = R.view(xLens, { x: 1, y: 2 });
+
+      expect(result).to.eql(1);
+    });
+  });
+
+  describe('.lift() - Lifts a function of arity > 1 so that it may "map over" a list, Function or other object that satisfies the FantasyLand Apply spec.', () => {
+    it('should ?', () => {
+      var madd3 = R.lift((a, b, c) => a + b + c);
+
+      var result = madd3([1, 2, 3], [1, 2, 3], [1]);
+
+      expect(result).to.eql([3, 4, 5, 4, 5, 6, 5, 6, 7]);
+    });
+  });
+
+  describe('.liftN() - Lifts a function to be the specified arity, so that it may "map over" that many lists, Functions or other objects that satisfy the FantasyLand Apply spec.', () => {
+    it('should ?', () => {
+      var madd3 = R.liftN(3, (...args) => R.sum(args));
+      var result = madd3([1, 2, 3], [1, 2, 3], [1]);
+
+      expect(result).to.eql([3, 4, 5, 4, 5, 6, 5, 6, 7]);
+    });
+  });
+
+  describe('.lt() - Returns true if the first argument is less than the second; false otherwise.', () => {
+    it('should return true of first arg less than second', () => {
+      expect(R.lt(1, 1)).to.be.false;
+      expect(R.lt(1, 2)).to.be.true;
+    });
+  });
+
+  describe('.lte() - Returns true if the first argument is less than or equal the second; false otherwise.', () => {
+    it('should return true of first arg less than or equal second', () => {
+      expect(R.lte(1, 1)).to.be.true;
+      expect(R.lte(1, 2)).to.be.true;
+      expect(R.lte(2, 1)).to.be.false;
+    });
+  });
+
+  describe('.map() - Takes a function and a functor, applies the function to each of the functors values, and returns a functor of the same shape.', () => {
+    it('should work like normal map does', () => {
+      var double = x => x * 2;
+
+      var result = R.map(double, [1, 2, 3]);
+
+      expect(result).to.eql([2, 4, 6]);
+    });
+  });
+
+  describe('.mapAccum() - The mapAccum function behaves like a combination of map and reduce; it applies a function to each element of a list, passing an accumulating parameter from left to right, and returning a final value of this accumulator together with the new list.', () => {
+    it('should ?', () => {
+      var digits = ['1', '2', '3', '4'];
+      var appender = (a, b) => [a + b, a + b];
+
+      var result = R.mapAccum(appender, 0, digits);
+
+      expect(result).to.eql(['01234', ['01', '012', '0123', '01234']]);
+    });
+  });
 });
