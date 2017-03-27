@@ -5,8 +5,6 @@
   font-size: 100px;
   text-align: center;
   text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
-  padding: 10px;
-  flex: 1;
 }
 
 .box1 { background: #1abc9c; }
@@ -22,6 +20,8 @@
 
 .container {
   display: flex;
-  border: 10px solid goldenrod;
+  border: 10px solid mistyrose;
+  align-items: center;
   height: 100vh;
+  align-content: space-between;
 }
