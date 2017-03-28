@@ -1537,6 +1537,187 @@
 	      (0, _chai.expect)(result).to.eql(['01234', ['01', '012', '0123', '01234']]);
 	    });
 	  });
+
+	  describe('.mapAccumRight() - The mapAccumRight function behaves like a combination of map and reduce; it applies a function to each element of a list, passing an accumulating parameter from right to left, and returning a final value of this accumulator together with the new list.', function () {
+	    it('should ?', function () {
+	      var digits = ['1', '2', '3', '4'];
+	      var append = function append(a, b) {
+	        return [a + b, a + b];
+	      };
+
+	      var result = R.mapAccumRight(append, 5, digits);
+
+	      (0, _chai.expect)(result).to.eql([['12345', '2345', '345', '45'], '12345']);
+	    });
+	  });
+
+	  describe('.mapObjIndexed() - An Object-specific version of map. The function is applied to three arguments: (value, key, obj). If only the value is significant, use map instead.', function () {
+	    it('should work as map but for objects', function () {
+	      var values = { x: 1, y: 2, z: 3 };
+	      var prependKeyAndDouble = function prependKeyAndDouble(num, key, obj) {
+	        return key + num * 2;
+	      };
+
+	      var result = R.mapObjIndexed(prependKeyAndDouble, values);
+
+	      (0, _chai.expect)(result).to.eql({ x: 'x2', y: 'y4', z: 'z6' });
+	    });
+	  });
+
+	  describe('.match() - Tests a regular expression against a String. Note that this function will return an empty array when there are no matches.', function () {
+	    it('should test against string, returning null for non matches', function () {
+	      var result = R.match(/([a-z]a)/g, 'bananas');
+	      (0, _chai.expect)(result).to.eql(['ba', 'na', 'na']);
+	    });
+	  });
+
+	  describe('.mathMod() - mathMod behaves like the modulo operator should mathematically, unlike the % operator (and by extension, R.modulo).', function () {
+	    it('should do modulo math operator, requires integer arguments', function () {
+	      var clock = R.mathMod(R.__, 12);
+
+	      (0, _chai.expect)(clock(15)).to.eql(3);
+	      (0, _chai.expect)(clock(24)).to.eql(0);
+	    });
+	  });
+
+	  describe('.max() - Returns the larger of its two arguments.', function () {
+	    it('should give bigger argument', function () {
+	      (0, _chai.expect)(R.max(5, 12)).to.eql(12);
+	    });
+	  });
+
+	  describe('.maxBy() - Takes a function and two values, and returns whichever value produces the larger result when passed to the provided function.', function () {
+	    it('should give bigger argument using provided function', function () {
+	      var square = function square(n) {
+	        return n * n;
+	      };
+
+	      var result = R.maxBy(square, -3, 2); //=> -3
+
+	      (0, _chai.expect)(result).to.eql(-3);
+	    });
+	  });
+
+	  describe('.mean() - Returns the mean of the given list of numbers.', function () {
+	    it('should calculate mean', function () {
+	      (0, _chai.expect)(R.mean([1, 2, 3])).to.eql(2);
+	    });
+	  });
+
+	  describe('.median() - Returns the median of the given list of numbers.', function () {
+	    it('should calculate median', function () {
+	      (0, _chai.expect)(R.median([2, 9, 7])).to.eql(7);
+	    });
+	  });
+
+	  describe('.memoize() - Creates a new function that, when invoked, caches the result of calling fn for a given argument set and returns the result. Subsequent calls to the memoized fn with the same argument set will not result in an additional call to fn; instead, the cached result for that set of arguments will be returned.', function () {
+	    it('should cache results for given arguments', function () {
+	      var count = 0;
+
+	      var factorial = R.memoize(function (n) {
+	        count += 1;
+	        return R.product(R.range(1, n + 1));
+	      });
+
+	      factorial(5); //=> 120
+	      factorial(5); //=> 120
+	      factorial(5); //=> 120
+
+	      (0, _chai.expect)(count).to.eql(1);
+	    });
+	  });
+
+	  describe('.merge() - Create a new object with the own properties of the first object merged with the own properties of the second object. If a key exists in both objects, the value from the second object will be used.', function () {
+	    it('should just merge objects', function () {
+	      var result = R.merge({ 'name': 'fred', 'age': 10 }, { 'age': 40 });
+	      (0, _chai.expect)(result).to.eql({ 'name': 'fred', 'age': 40 });
+	    });
+	  });
+
+	  describe('.mergeAll() - Merges a list of objects together into one object.', function () {
+	    it('should just merge list of objects', function () {
+	      var result = R.mergeAll([{ foo: 1 }, { bar: 2 }, { baz: 3 }]);
+	      (0, _chai.expect)(result).to.eql({ foo: 1, bar: 2, baz: 3 });
+	    });
+	  });
+
+	  describe('.mergeWith() - Creates a new object with the own properties of the two provided objects. If a key exists in both objects, the provided function is applied to the values associated with the key in each object, with the result being used as the value associated with the key in the returned object. The key will be excluded from the returned object if the resulting value is undefined.', function () {
+	    it('should merge objects, making decision if key exists in both objects', function () {
+	      var result = R.mergeWith(R.concat, { a: true, values: [10, 20] }, { b: true, values: [15, 35] });
+
+	      (0, _chai.expect)(result).to.eql({ a: true, b: true, values: [10, 20, 15, 35] });
+	    });
+	  });
+
+	  describe('.mergeWithKey() - Creates a new object with the own properties of the two provided objects. If a key exists in both objects, the provided function is applied to the key and the values associated with the key in each object, with the result being used as the value associated with the key in the returned object. The key will be excluded from the returned object if the resulting value is undefined.', function () {
+	    it('should ?', function () {
+	      var concatValues = function concatValues(k, l, r) {
+	        return k == 'values' ? R.concat(l, r) : r;
+	      };
+	      var result = R.mergeWithKey(concatValues, { a: true, thing: 'foo', values: [10, 20] }, { b: true, thing: 'bar', values: [15, 35] });
+
+	      (0, _chai.expect)(result).to.eql({ a: true, b: true, thing: 'bar', values: [10, 20, 15, 35] });
+	    });
+	  });
+
+	  describe('.min() - Returns the smaller of its two arguments.', function () {
+	    it('should return smaller value', function () {
+	      (0, _chai.expect)(R.min(789, 123)).to.eql(123);
+	    });
+	  });
+
+	  describe('.minBy() - Takes a function and two values, and returns whichever value produces the smaller result when passed to the provided function.', function () {
+	    it('should return smaller value by given function', function () {
+	      var square = function square(n) {
+	        return n * n;
+	      };
+	      var result = R.minBy(square, -3, 2);
+
+	      (0, _chai.expect)(result).to.eql(2);
+	    });
+	  });
+
+	  describe('.modulo() - Divides the first parameter by the second and returns the remainder. Note that this function preserves the JavaScript-style behavior for modulo. For mathematical modulo see mathMod.', function () {
+	    it('should return reminder', function () {
+	      (0, _chai.expect)(R.modulo(17, 3)).to.eql(2);
+	    });
+	  });
+
+	  describe('.multiply() - Multiplies two numbers. Equivalent to a * b but curried.', function () {
+	    it('should multiply values', function () {
+	      (0, _chai.expect)(R.multiply(3, 4)).to.eql(12);
+	    });
+	  });
+
+	  describe('.nAry() - Wraps a function of any arity (including nullary) in a function that accepts exactly n parameters. Any extraneous parameters will not be passed to the supplied function.', function () {
+	    it('should make function n-ary, ingoring rest of params', function () {
+	      var takesTwoArgs = function takesTwoArgs(a, b) {
+	        return [a, b];
+	      };
+
+	      (0, _chai.expect)(takesTwoArgs.length).to.eql(2);
+
+	      var takesOneArg = R.nAry(1, takesTwoArgs);
+
+	      (0, _chai.expect)(takesOneArg.length).to.eql(1);
+	    });
+	  });
+
+	  describe('.negate() - Negates its argument.', function () {
+	    it('should negate argument', function () {
+	      (0, _chai.expect)(R.negate(4)).to.eql(-4);
+	    });
+	  });
+
+	  describe('.none() - Returns true if no elements of the list match the predicate, false otherwise.', function () {
+	    it('should negate argument', function () {
+	      var isEven = function isEven(n) {
+	        return n % 2 === 0;
+	      };
+
+	      (0, _chai.expect)(R.none(isEven, [1, 3, 5, 7, 9, 11])).to.be.true; //=> true
+	    });
+	  });
 	});
 
 /***/ },
