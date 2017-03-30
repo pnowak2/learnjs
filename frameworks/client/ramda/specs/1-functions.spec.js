@@ -1434,11 +1434,102 @@ describe('Ramda', () => {
     });
   });
 
-  describe('.pathOr() - If the given, non-null object has a value at the given path, returns the value at that path. Otherwise returns the provided default value', () => {
-    it('should retrieve value by path with no NPEs :) and give default if path returns nothing', () => {
-      var result = R.pathOr('def', ['a', 'c'], { a: { b: 2 } });
+  describe('.pathSatisfies() - Returns true if the specified object property at given path satisfies the given predicate; false otherwise.', () => {
+    it('should return boolean telling if given path satisfied predicate provided', () => {
+      var result = R.pathSatisfies(y => y > 0, ['x', 'y'], { x: { y: 2 } });
 
-      expect(result).to.eql('def');
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('.pick() - Returns a partial copy of an object containing only the keys specified. If the key does not exist, the property is ignored.', () => {
+    it('should return copied object with given keys only', () => {
+      var result = R.pick(['a', 'd'], { a: 1, b: 2, c: 3, d: 4 });
+
+      expect(result).to.eql({ a: 1, d: 4 });
+    });
+  });
+
+  describe('.pickAll() - Similar to pick except that this one includes a key: undefined pair for properties that dont exist.', () => {
+    it('should return copied object with given keys only giving undefined for keys not existing', () => {
+      var result = R.pickAll(['a', 'e', 'f'], { a: 1, b: 2, c: 3, d: 4 });
+
+      expect(result).to.eql({ a: 1, e: undefined, f: undefined });
+    });
+  });
+
+  describe('.pickBy() - Returns a partial copy of an object containing only the keys that satisfy the supplied predicate.', () => {
+    it('should return copied object with given keys satisfying predicate', () => {
+      var isUpperCase = (val, key) => key.toUpperCase() === key;
+      var result = R.pickBy(isUpperCase, { a: 1, b: 2, A: 3, B: 4 });
+
+      expect(result).to.eql({ A: 3, B: 4 });
+    });
+  });
+
+  describe('.pipe() - Performs left-to-right function composition. The leftmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make left to right coposition', () => {
+      var f = R.pipe(Math.pow, R.negate, R.inc);
+
+      expect(f(4, 2)).to.eql(-15);
+    });
+  });
+
+  describe('.pipeK() - Returns the left-to-right Kleisli composition of the provided functions, each of which must return a value of a type supported by chain.', () => {
+    it('should ?', () => {
+
+    });
+  });
+
+  describe('.pipeP() - Performs left-to-right composition of one or more Promise-returning functions. The leftmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make pipe with promises', () => {
+      var promiseA = Promise.resolve(5);
+      var promiseB = Promise.resolve(6);
+
+      const loadUser = userId => Promise.resolve('user:' + userId);
+      const loadAssets = assetId => Promise.resolve('assets:' + assetId);
+
+      var piped = R.pipeP(loadUser, loadAssets);
+
+      return piped('5')
+        .then(val => {
+          expect(val).to.eql('assets:user:5')
+        });
+    });
+  });
+
+  describe('.pluck() - Returns a new list by plucking the same named property off all objects in the list supplied.', () => {
+    it('should retrieve array of pointed props', () => {
+      var result = R.pluck('a')([{ a: 1 }, { a: 2 }]);
+
+      expect(result).to.eql([1, 2]);
+    });
+  });
+
+  describe('.prepend() - Returns a new list with the given element at the front, followed by the contents of the list.', () => {
+    it('should return list prepended with values.', () => {
+      var result = R.prepend('fee', ['fi', 'fo', 'fum']);
+
+      expect(result).to.eql(['fee', 'fi', 'fo', 'fum']);
+    });
+  });
+
+  describe('.product() - Multiplies together all the elements of a list.', () => {
+    it('should make multiplication', () => {
+      var result = R.product([2, 4, 6]);
+
+      expect(result).to.eql(48);
+    });
+  });
+
+  describe('.project() - Reasonable analog to SQL select statement.', () => {
+    it('should select given proprs from array of objects containing those props', () => {
+      var abby = { name: 'Abby', age: 7, hair: 'blond', grade: 2 };
+      var fred = { name: 'Fred', age: 12, hair: 'brown', grade: 7 };
+      var kids = [abby, fred];
+      var result = R.project(['name', 'grade'], kids);
+
+      expect(result).to.eql([{name: 'Abby', grade: 2}, {name: 'Fred', grade: 7}]);
     });
   });
 });
