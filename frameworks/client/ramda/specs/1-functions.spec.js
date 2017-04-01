@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import * as R from 'ramda';
+import sinon from 'sinon';
 
 describe('Ramda', () => {
   describe('.__ - A special placeholder value used to specify "gaps" within curried functions, allowing partial application of any combination of arguments, regardless of their positions.', () => {
@@ -1305,7 +1306,230 @@ describe('Ramda', () => {
     it('should negate argument', () => {
       var isEven = n => n % 2 === 0;
 
-      expect(R.none(isEven, [1, 3, 5, 7, 9, 11])).to.be.true; //=> true
+      expect(R.none(isEven, [1, 3, 5, 7, 9, 11])).to.be.true;
+    });
+  });
+
+  describe('.not() -  function that returns the ! of its argument. It will return true when passed false-y value, and false when passed a truth-y one.', () => {
+    it('should ! argument', () => {
+      var isEven = n => n % 2 === 0;
+
+      expect(R.not(true)).to.be.false;
+    });
+  });
+
+  describe('.nth() - Returns the nth element of the given list or string. If n is negative the element at index length + n is returned.', () => {
+    it('should get nth arg of the list', () => {
+      expect(R.nth(2, [1, 2, 3, 4])).to.be.eql(3);
+    });
+  });
+
+  describe('.nthArg() - Returns a function which returns its nth argument.', () => {
+    it('should get function which returns nth argument', () => {
+      const fnWith2Arg = R.nthArg(2);
+      expect(fnWith2Arg(1, 2, 3)).to.be.eql(3);
+    });
+  });
+
+  describe('.objOf() - Creates an object containing a single key:value pair.', () => {
+    it('should create key/value pair', () => {
+      const result = R.objOf('key', 'value');
+      expect(result).to.eql({ key: 'value' });
+    });
+  });
+
+  describe('.of() - Returns a singleton array containing the value provided.', () => {
+    it('should return array with value provided - singleton', () => {
+      const result = R.of(5);
+      expect(result).to.eql([5]);
+    });
+  });
+
+  describe('.omit() - Returns a partial copy of an object omitting the keys specified.', () => {
+    it('should return copy of object ommiting key specified', () => {
+      const result = R.omit(['a'], { a: 1, b: 2, c: 3 });
+      expect(result).to.eql({ b: 2, c: 3 });
+    });
+  });
+
+  describe('.once() - Accepts a function fn and returns a function that guards invocation of fn such that fn can only ever be called once, no matter how many times the returned function is invoked. The first value calculated is returned in subsequent invocations.', () => {
+    it('should make function callable only once', () => {
+      const spy = sinon.spy();
+      var addOneOnce = R.once(spy);
+
+      addOneOnce(5);
+      addOneOnce(5);
+      addOneOnce(5);
+
+      expect(spy.callCount).to.eql(1);
+    });
+  });
+
+  describe('.or() - Returns true if one or both of its arguments are true. Returns false if both arguments are false.', () => {
+    it('should get true if whether one of args is true', () => {
+      expect(R.or(true, false)).to.be.true;
+    });
+  });
+
+  describe('.over() - Returns the result of "setting" the portion of the given data structure focused by the given lens to the result of applying the given function to the focused value.', () => {
+    it('should make operation over lensed element', () => {
+      var headLens = R.lensIndex(0);
+
+      var result = R.over(headLens, R.toUpper, ['foo', 'bar', 'baz']);
+
+      expect(result).to.eql(['FOO', 'bar', 'baz']);
+    });
+  });
+
+  describe('.pair() - Takes two arguments, fst and snd, and returns [fst, snd].', () => {
+    it('should return array of provided args', () => {
+      expect(R.pair(true, false)).to.eql([true, false]);
+    });
+  });
+
+  describe('.partial() - Takes a function f and a list of arguments, and returns a function g. When applied, g returns the result of applying f to the arguments provided initially followed by the arguments provided to g.', () => {
+    it('should make partial apply and return a function which now requires less arguments to call', () => {
+      var multiply2 = (a, b) => a * b;
+      var double = R.partial(multiply2, [2]);
+      var result = double(2);
+
+      expect(result).to.eql(4);
+    });
+  });
+
+  describe('.partialRight() - Takes a function f and a list of arguments, and returns a function g. When applied, g returns the result of applying f to the arguments provided to g followed by the arguments provided initially.', () => {
+    it('should make right partial apply and return a function which now requires less arguments to call', () => {
+      var greet = (salutation, title, firstName, lastName) =>
+        salutation + ', ' + title + ' ' + firstName + ' ' + lastName + '!';
+
+      var greetMsJaneJones = R.partialRight(greet, ['Ms.', 'Jane', 'Jones']);
+
+      var result = greetMsJaneJones('Hello');
+
+      expect(result).to.eql('Hello, Ms. Jane Jones!');
+    });
+  });
+
+  describe('.partition() - Takes a predicate and a list or other "filterable" object and returns the pair of filterable objects of the same type of elements which do and do not satisfy, the predicate, respectively.', () => {
+    it('should make segragation to elements which satisfy predicate and those which dont', () => {
+      var result = R.partition(R.contains('s'), ['sss', 'ttt', 'foo', 'bars']);
+      expect(result).to.eql([['sss', 'bars'], ['ttt', 'foo']]);
+    });
+  });
+
+  describe('.path() - Retrieve the value at a given path.', () => {
+    it('should retrieve value by path with no NPEs :)', () => {
+      var result = R.path(['a', 'b'], { a: { b: 2 } });
+
+      expect(result).to.eql(2);
+    });
+  });
+
+  describe('.pathEq() - Determines whether a nested path on an object has a specific value, in R.equals terms. Most likely used to filter a list.', () => {
+    it('should check for element exists with given value', () => {
+      var user1 = { address: { zipCode: 90210 } };
+      var result = R.pathEq(['address', 'zipCode'], 90210, user1);
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('.pathSatisfies() - Returns true if the specified object property at given path satisfies the given predicate; false otherwise.', () => {
+    it('should return boolean telling if given path satisfied predicate provided', () => {
+      var result = R.pathSatisfies(y => y > 0, ['x', 'y'], { x: { y: 2 } });
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('.pick() - Returns a partial copy of an object containing only the keys specified. If the key does not exist, the property is ignored.', () => {
+    it('should return copied object with given keys only', () => {
+      var result = R.pick(['a', 'd'], { a: 1, b: 2, c: 3, d: 4 });
+
+      expect(result).to.eql({ a: 1, d: 4 });
+    });
+  });
+
+  describe('.pickAll() - Similar to pick except that this one includes a key: undefined pair for properties that dont exist.', () => {
+    it('should return copied object with given keys only giving undefined for keys not existing', () => {
+      var result = R.pickAll(['a', 'e', 'f'], { a: 1, b: 2, c: 3, d: 4 });
+
+      expect(result).to.eql({ a: 1, e: undefined, f: undefined });
+    });
+  });
+
+  describe('.pickBy() - Returns a partial copy of an object containing only the keys that satisfy the supplied predicate.', () => {
+    it('should return copied object with given keys satisfying predicate', () => {
+      var isUpperCase = (val, key) => key.toUpperCase() === key;
+      var result = R.pickBy(isUpperCase, { a: 1, b: 2, A: 3, B: 4 });
+
+      expect(result).to.eql({ A: 3, B: 4 });
+    });
+  });
+
+  describe('.pipe() - Performs left-to-right function composition. The leftmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make left to right coposition', () => {
+      var f = R.pipe(Math.pow, R.negate, R.inc);
+
+      expect(f(4, 2)).to.eql(-15);
+    });
+  });
+
+  describe('.pipeK() - Returns the left-to-right Kleisli composition of the provided functions, each of which must return a value of a type supported by chain.', () => {
+    it('should ?', () => {
+
+    });
+  });
+
+  describe('.pipeP() - Performs left-to-right composition of one or more Promise-returning functions. The leftmost function may have any arity; the remaining functions must be unary.', () => {
+    it('should make pipe with promises', () => {
+      var promiseA = Promise.resolve(5);
+      var promiseB = Promise.resolve(6);
+
+      const loadUser = userId => Promise.resolve('user:' + userId);
+      const loadAssets = assetId => Promise.resolve('assets:' + assetId);
+
+      var piped = R.pipeP(loadUser, loadAssets);
+
+      return piped('5')
+        .then(val => {
+          expect(val).to.eql('assets:user:5')
+        });
+    });
+  });
+
+  describe('.pluck() - Returns a new list by plucking the same named property off all objects in the list supplied.', () => {
+    it('should retrieve array of pointed props', () => {
+      var result = R.pluck('a')([{ a: 1 }, { a: 2 }]);
+
+      expect(result).to.eql([1, 2]);
+    });
+  });
+
+  describe('.prepend() - Returns a new list with the given element at the front, followed by the contents of the list.', () => {
+    it('should return list prepended with values.', () => {
+      var result = R.prepend('fee', ['fi', 'fo', 'fum']);
+
+      expect(result).to.eql(['fee', 'fi', 'fo', 'fum']);
+    });
+  });
+
+  describe('.product() - Multiplies together all the elements of a list.', () => {
+    it('should make multiplication', () => {
+      var result = R.product([2, 4, 6]);
+
+      expect(result).to.eql(48);
+    });
+  });
+
+  describe('.project() - Reasonable analog to SQL select statement.', () => {
+    it('should select given proprs from array of objects containing those props', () => {
+      var abby = { name: 'Abby', age: 7, hair: 'blond', grade: 2 };
+      var fred = { name: 'Fred', age: 12, hair: 'brown', grade: 7 };
+      var kids = [abby, fred];
+      var result = R.project(['name', 'grade'], kids);
+
+      expect(result).to.eql([{name: 'Abby', grade: 2}, {name: 'Fred', grade: 7}]);
     });
   });
 });
