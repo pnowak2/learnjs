@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 325.47 297">
+  <g id="vue-logo">
+    <polygon id="vue-triangle-green" points="162.74 0 0 297 325.47 297 162.74 0" fill="#41b883"/>
+    <polygon id="vue-triangle-blue" points="162.74 100.98 55.33 297 270.14 297 162.74 100.98" fill="#35495e"/>
+    <polygon id="vue-triangle-white" points="162.74 204.87 112.26 297 213.22 297 162.74 204.87" fill="#fff"/>
+  </g>
+</svg>
