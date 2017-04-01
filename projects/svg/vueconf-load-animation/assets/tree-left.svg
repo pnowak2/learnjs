@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 260.03">
+<svg class="tree-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 260.03">
   <g id="tree-left">
     <line id="tree-left-bottom" x1="62.5" y1="260.03" x2="62.5" y2="84.03" fill="none" stroke="#35495e" stroke-miterlimit="10" stroke-width="15"/>
     <circle id="tree-left-circle-bottom" cx="63" cy="104.03" r="63" fill="#41b883"/>

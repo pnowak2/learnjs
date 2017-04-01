@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.82 93.34">
+<svg class="bush" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.82 93.34">
   <g id="bush">
     <circle id="bush-circle-left" cx="46.67" cy="46.67" r="46.67" fill="#41b883"/>
     <circle id="bush-circle-right" cx="100.67" cy="63.18" r="30.15" fill="#41b883"/>
