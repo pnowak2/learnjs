@@ -20,7 +20,7 @@
         </g>
       </svg>
 
-      <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 97.07 97.07">
+      <svg v-if="showSun" v-bind:class="sunClass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 97.07 97.07">
         <g id="sun">
           <circle id="sun-circle-green" cx="48.54" cy="48.54" r="48.54" fill="#41b883"/>
           <circle id="sun-circle-white" cx="48.54" cy="48.54" r="29.01" fill="#fff"/>
@@ -29,23 +29,23 @@
 
       <svg class="bush" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.82 93.34">
         <g id="bush">
-          <circle id="bush-circle-left" cx="46.67" cy="46.67" r="46.67" fill="#41b883"/>
-          <circle id="bush-circle-right" cx="100.67" cy="63.18" r="30.15" fill="#41b883"/>
+          <circle v-if="showBushCircleLeft" v-bind:class="bushCircleLeftClass" id="bush-circle-left" cx="46.67" cy="46.67" r="46.67" fill="#41b883"/>
+          <circle v-if="showBushCircleRight" v-bind:class="bushCircleRightClass" id="bush-circle-right" cx="100.67" cy="63.18" r="30.15" fill="#41b883"/>
         </g>
       </svg>
 
       <svg class="tree-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 260.03">
         <g id="tree-left">
-          <line id="tree-left-bottom" x1="62.5" y1="260.03" x2="62.5" y2="84.03" fill="none" stroke="#35495e" stroke-miterlimit="10" stroke-width="15"/>
-          <circle id="tree-left-circle-bottom" cx="63" cy="104.03" r="63" fill="#41b883"/>
-          <circle id="tree-left-circle-top" cx="64" cy="41.03" r="41.03" fill="#41b883"/>
+          <line v-if="showTreeLeftBase" v-bind:class="treeLeftBaseClass" id="tree-left-bottom" x1="62.5" y1="260.03" x2="62.5" y2="84.03" fill="none" stroke="#35495e" stroke-miterlimit="10" stroke-width="15"/>
+          <circle v-if="showTreeLeftCircleBottom" v-bind:class="treeLeftCircleBottomClass" id="tree-left-circle-bottom" cx="63" cy="104.03" r="63" fill="#41b883"/>
+          <circle v-if="showTreeLeftCircleTop" v-bind:class="treeLeftCircleTopClass" id="tree-left-circle-top" cx="64" cy="41.03" r="41.03" fill="#41b883"/>
         </g>
       </svg>
 
       <svg class="tree-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183.42 296.42">
         <g id="tree-right">
-          <line id="tree-right-bottom" x1="91.21" y1="296.42" x2="91.21" y2="120.42" fill="none" stroke="#35495e" stroke-miterlimit="10" stroke-width="15"/>
-          <circle id="tree-right-circle" cx="91.71" cy="91.71" r="91.71" fill="#41b883"/>
+          <line id="tree-right-bottom" v-if="showTreeRightBase" v-bind:class="treeRightBaseClass" x1="91.21" y1="296.42" x2="91.21" y2="120.42" fill="none" stroke="#35495e" stroke-miterlimit="10" stroke-width="15"/>
+          <circle id="tree-right-circle" v-if="showTreeRightCircle" v-bind:class="treeRightCircleClass" cx="91.71" cy="91.71" r="91.71" fill="#41b883"/>
         </g>
       </svg>
 
@@ -54,6 +54,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>
