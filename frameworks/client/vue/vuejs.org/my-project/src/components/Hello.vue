@@ -17,6 +17,8 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+    <h3>Other</h3>
+    <li><a href="#other">Other</a></li>
   </div>
 </template>
 
