@@ -18,7 +18,7 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
     <h3>Other</h3>
-    <li><a href="#other">Other</a></li>
+    <li><router-link to="other">Other</router-link></li>
   </div>
 </template>
 

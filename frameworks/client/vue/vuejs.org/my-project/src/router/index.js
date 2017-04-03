@@ -17,5 +17,6 @@ export default new Router({
       name: 'Other',
       component: Other
     }
-  ]
+  ],
+  mode: 'history'
 })
