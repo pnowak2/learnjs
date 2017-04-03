@@ -1,0 +1,115 @@
+.box {
+  position: relative;
+  background: white;
+  height: 400px;
+  width: 600px;
+  margin: auto;
+  display: block;
+  border: solid 2px #41B883;
+  margin-top: 8%;
+}
+
+.vueconf-logo {
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  top: 25%;
+  left: 25%;
+  animation: slideInBounce 1s 1,
+             flip 0.5s 1s 1;
+}
+
+.sun {
+  position: absolute;
+  height: 20%;
+  width: 30%;
+  right: 20%;
+  top: 10%;
+}
+
+.bush {
+  position: absolute;
+  height: 20%;
+  width: 15%;
+  right: 15%;
+  bottom: 23%;
+}
+
+.tree-left {
+  position: absolute;
+  height: 25%;
+  width: 20%;
+  left: 5%;
+  bottom: 25%;
+}
+
+.tree-right {
+  position: absolute;
+  height: 30%;
+  width: 35%;
+  left: 9%;
+  bottom: 25%;
+}
+
+.growActive {
+  animation: grow 0.5s 1;
+}
+
+.growShrinkActive{
+  animation: growShrink 0.5s 1;
+}
+
+@keyframes slideInBounce {
+  0% {
+    transform: rotate(-180deg);
+    top: -100%;
+  }
+
+  70% {
+    transform: rotate(-180deg);
+    top: 33%;
+  }
+
+  100% {
+    transform: rotate(-180deg);
+    top: 25%;
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotate(-180deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes growShrink {
+  0% {
+    transform-origin: center;
+    transform: scale(0);
+  }
+
+  50% {
+    transform-origin: center;
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform-origin: center;
+    transform: scale(1);
+  }
+
+}
