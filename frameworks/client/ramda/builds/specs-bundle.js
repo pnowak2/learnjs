@@ -1957,6 +1957,176 @@
 	      (0, _chai.expect)(result).to.eql([{ name: 'Abby', grade: 2 }, { name: 'Fred', grade: 7 }]);
 	    });
 	  });
+
+	  describe('.prop() - Returns a function that when supplied an object returns the indicated property of that object, if it exists.', function () {
+	    it('should get prop of object', function () {
+	      var result = R.prop('x', { x: 100 });
+
+	      (0, _chai.expect)(result).to.eql(100);
+	    });
+	  });
+
+	  describe('.propEq() - Returns true if the specified object property is equal, in R.equals terms, to the given value; false otherwise.', function () {
+	    it('should return true if prop equals to given param', function () {
+	      var abby = { name: 'Abby', age: 7, hair: 'blond' };
+	      var fred = { name: 'Fred', age: 12, hair: 'brown' };
+	      var rusty = { name: 'Rusty', age: 10, hair: 'brown' };
+	      var alois = { name: 'Alois', age: 15, disposition: 'surly' };
+	      var kids = [abby, fred, rusty, alois];
+
+	      var hasBrownHair = R.propEq('hair', 'brown');
+
+	      var result = R.filter(hasBrownHair, kids);
+
+	      (0, _chai.expect)(result).to.eql([fred, rusty]);
+	    });
+	  });
+
+	  describe('.propIs() - Returns true if the specified object property is of the given type; false otherwise.', function () {
+	    it('should return true if prop is of given type', function () {
+	      var result = R.propIs(Number, 'x', { x: 100 });
+
+	      (0, _chai.expect)(result).to.be.true;
+	    });
+	  });
+
+	  describe('.propOr() - If the given, non-null object has an own property with the specified name, returns the value of that property. Otherwise returns the provided default value.', function () {
+	    it('should return prop given by name or default', function () {
+	      var alice = {
+	        name: 'ALICE',
+	        age: 101
+	      };
+	      var favorite = R.prop('favoriteLibrary');
+	      var favoriteWithDefault = R.propOr('Ramda', 'favoriteLibrary');
+
+	      var resultProp = favorite(alice);
+	      var resultPropOr = favoriteWithDefault(alice);
+
+	      (0, _chai.expect)(resultProp).to.be.undefined;
+	      (0, _chai.expect)(resultPropOr).to.eql('Ramda');
+	    });
+	  });
+
+	  describe('.props() - Acts as multiple prop: array of keys in, array of values out. Preserves order.', function () {
+	    it('should return array of values pointed by names', function () {
+	      var result1 = R.props(['x', 'y'], { x: 1, y: 2 }); //=> [1, 2]
+	      var result2 = R.props(['c', 'a', 'b'], { b: 2, a: 1 }); //=> [undefined, 1, 2]
+
+
+	      (0, _chai.expect)(result1).to.eql([1, 2]);
+	      (0, _chai.expect)(result2).to.eql([undefined, 1, 2]);
+	    });
+	  });
+
+	  describe('.propSatisfies() - Returns true if the specified object property satisfies the given predicate; false otherwise.', function () {
+	    it('should return true if prop satisfies given predicate', function () {
+	      var result = R.propSatisfies(function (x) {
+	        return x > 0;
+	      }, 'x', { x: 1, y: 2 });
+	      (0, _chai.expect)(result).to.be.true;
+	    });
+	  });
+
+	  describe('.range() - Returns a list of numbers from from (inclusive) to to (exclusive).', function () {
+	    it('should return array of numbers', function () {
+	      var result = R.range(1, 5);
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4]);
+	    });
+	  });
+
+	  describe('.reduce() - Returns a single item by iterating through the list, successively calling the iterator function and passing it an accumulator value and the current value from the array, and then passing the result to the next call.', function () {
+	    it('should act as reduce well known from js core and more..', function () {
+	      var result = R.reduce(R.subtract, 0, [1, 2, 3, 4]); // ((((0 - 1) - 2) - 3) - 4) = -10
+	      (0, _chai.expect)(result).to.eql(-10);
+	    });
+	  });
+
+	  describe('.reduceBy() - Groups the elements of the list according to the result of calling the String-returning function keyFn on each element and reduces the elements of each group to a single value via the reducer function valueFn.', function () {
+	    it('should ?', function () {
+	      var reduceToNamesBy = R.reduceBy(function (acc, student) {
+	        return acc.concat(student.name);
+	      }, []);
+	      var namesByGrade = reduceToNamesBy(function (student) {
+	        var score = student.score;
+	        return score < 65 ? 'F' : score < 70 ? 'D' : score < 80 ? 'C' : score < 90 ? 'B' : 'A';
+	      });
+	      var students = [{ name: 'Lucy', score: 92 }, { name: 'Drew', score: 85 },
+	      // ...
+	      { name: 'Bart', score: 62 }];
+	      namesByGrade(students);
+	    });
+	  });
+
+	  describe('.reduced() - Returns a value wrapped to indicate that it is the final value of the reduce and transduce functions. The returned value should be considered a black box: the internal structure is not guaranteed to be stable.', function () {
+	    it('should ?', function () {
+	      var result = R.reduce(R.pipe(R.add, R.when(R.gte(R.__, 10), R.reduced)), 0, [1, 2, 3, 4, 5]);
+	    });
+	  });
+
+	  describe('.reduceRight() - Returns a single item by iterating through the list, successively calling the iterator function and passing it an accumulator value and the current value from the array, and then passing the result to the next call.', function () {
+	    it('should act as reduce well known from js core but from right to left', function () {
+	      var result = R.reduceRight(R.subtract, 0, [1, 2, 3, 4]); // => (1 - (2 - (3 - (4 - 0)))) = -2
+	      (0, _chai.expect)(result).to.eql(-2);
+	    });
+	  });
+
+	  describe('.reduceWhile() - Like reduce, reduceWhile returns a single item by iterating through the list, successively calling the iterator function. reduceWhile also takes a predicate that is evaluated before each step. If the predicate returns false, it "short-circuits" the iteration and returns the current value of the accumulator.', function () {
+	    it('should ', function () {
+	      var isOdd = function isOdd(acc, x) {
+	        return x % 2 === 1;
+	      };
+	      var xs = [1, 3, 5, 60, 777, 800];
+	      var result = R.reduceWhile(isOdd, R.add, 0, xs);
+
+	      (0, _chai.expect)(result).to.eql(9);
+	    });
+	  });
+
+	  describe('.reject() - The complement of filter.', function () {
+	    it('should reject by predicate', function () {
+	      var isOdd = function isOdd(n) {
+	        return n % 2 === 1;
+	      };
+
+	      var result = R.reject(isOdd, [1, 2, 3, 4]);
+
+	      (0, _chai.expect)(result).to.eql([2, 4]);
+	    });
+	  });
+
+	  describe('.remove() - Removes the sub-list of list starting at index start and containing count elements. Note that this is not destructive: it returns a copy of the list with the changes. No lists have been harmed in the application of this function.', function () {
+	    it('should remove items from array', function () {
+	      var result = R.remove(2, 3, [1, 2, 3, 4, 5, 6, 7, 8]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 6, 7, 8]);
+	    });
+	  });
+
+	  describe('.repeat() - Returns a fixed list of size n containing a specified identical value.', function () {
+	    it('should generate identical values n times', function () {
+	      var result = R.repeat('hi', 5);
+
+	      (0, _chai.expect)(result).to.eql(['hi', 'hi', 'hi', 'hi', 'hi']);
+	    });
+	  });
+
+	  describe('.replace() - Replace a substring or regex match in a string with a replacement.', function () {
+	    it('should generate identical values n times', function () {
+	      var result = R.replace(/foo/g, 'bar', 'foo foo foo');
+
+	      (0, _chai.expect)(result).to.eql('bar bar bar');
+	    });
+	  });
+
+	  describe('.reverse() - Returns a new list or string with the elements or characters in reverse order.', function () {
+	    it('should generate identical values n times', function () {
+	      var result1 = R.reverse([1, 2, 3]);
+	      var result2 = R.reverse('abc');
+
+	      (0, _chai.expect)(result1).to.eql([3, 2, 1]);
+	      (0, _chai.expect)(result2).to.eql('cba');
+	    });
+	  });
 	});
 
 /***/ },
