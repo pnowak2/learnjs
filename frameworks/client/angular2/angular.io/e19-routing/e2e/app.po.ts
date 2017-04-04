@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class E19RoutingAndNavigationPage {
+export class E19RoutingPage {
   navigateTo() {
     return browser.get('/');
   }
