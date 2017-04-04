@@ -1671,9 +1671,9 @@ describe('Ramda', () => {
 
   describe('.remove() - Removes the sub-list of list starting at index start and containing count elements. Note that this is not destructive: it returns a copy of the list with the changes. No lists have been harmed in the application of this function.', () => {
     it('should remove items from array', () => {
-      var result = R.remove(2, 3, [1,2,3,4,5,6,7,8]);
+      var result = R.remove(2, 3, [1, 2, 3, 4, 5, 6, 7, 8]);
 
-      expect(result).to.eql([1,2,6,7,8]);
+      expect(result).to.eql([1, 2, 6, 7, 8]);
     });
   });
 
@@ -1700,6 +1700,157 @@ describe('Ramda', () => {
 
       expect(result1).to.eql([3, 2, 1]);
       expect(result2).to.eql('cba');
+    });
+  });
+
+  describe('.scan() - Scan is similar to reduce, but returns a list of successively reduced values from the left.', () => {
+    it('should reduce with emitting values in the meantime', () => {
+      var numbers = [1, 2, 3, 4];
+      var factorials = R.scan(R.multiply, 1, numbers);
+
+      expect(factorials).to.eql([1, 1, 2, 6, 24]);
+    });
+  });
+
+  describe('.sequence() - Transforms a Traversable of Applicative into an Applicative of Traversable. Dispatches to the sequence method of the second argument, if present.', () => {
+    it('should ?', () => {
+
+    });
+  });
+
+  describe('.set() - Returns the result of "setting" the portion of the given data structure focused by the given lens to the given value.', () => {
+    it('should set lensed prop to given value returning copied new object', () => {
+      var xLens = R.lensProp('x');
+      var result = R.set(xLens, 4, { x: 1, y: 2 });
+
+      expect(result).to.eql({ x: 4, y: 2 });
+    });
+  });
+
+  describe('.slice() - Returns the elements of the given list or string (or object with a slice method) from fromIndex (inclusive) to toIndex (exclusive).', () => {
+    it('should return part of the array', () => {
+      var result = R.slice(1, 3, ['a', 'b', 'c', 'd']);
+
+      expect(result).to.eql(['b', 'c']);
+    });
+  });
+
+  describe('.sort() - Returns a copy of the list, sorted according to the comparator function, which should accept two values at a time and return a negative number if the first value is smaller, a positive number if its larger, and zero if they are equal. Please note that this is a copy of the list. It does not modify the original.', () => {
+    it('should return copy of the list sorted with comparator function', () => {
+      var diff = function (a, b) { return a - b; };
+      var result = R.sort(diff, [4, 2, 7, 5]);
+
+      expect(result).to.eql([2, 4, 5, 7]);
+    });
+  });
+
+  describe('.sortBy() - Sorts the list according to the supplied function.', () => {
+    it('should return copy of the list sorted with provided function', () => {
+      var sortByFirstItem = R.sortBy(R.prop(0));
+      var pairs = [[-1, 1], [-2, 2], [-3, 3]];
+      var res = sortByFirstItem(pairs);
+      expect(res).to.eql([[-3, 3], [-2, 2], [-1, 1]]);
+
+      var alice = {
+        name: 'ALICE',
+        age: 101
+      };
+      var bob = {
+        name: 'Bob',
+        age: -10
+      };
+      var clara = {
+        name: 'clara',
+        age: 314.159
+      };
+      var people = [clara, bob, alice];
+      var sortByNameCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop('name')));
+      var res2 = sortByNameCaseInsensitive(people);
+
+      expect(res2).to.eql([alice, bob, clara]);
+    });
+  });
+
+  describe('.sortWith() - Sorts a list according to a list of comparators.', () => {
+    it('should return copy of the list sorted with list of comparator functions', () => {
+      var alice = {
+        name: 'alice',
+        age: 40
+      };
+      var bob = {
+        name: 'bob',
+        age: 30
+      };
+      var clara = {
+        name: 'clara',
+        age: 40
+      };
+
+      var people = [clara, bob, alice];
+      var ageNameSort = R.sortWith([
+        R.descend(R.prop('age')),
+        R.ascend(R.prop('name'))
+      ]);
+
+      var result = ageNameSort(people);
+
+      expect(result).to.eql([alice, clara, bob]);
+    });
+  });
+
+  describe('.split() - Splits a string into an array of strings based on the given separator.', () => {
+    it('should split array to strings', () => {
+      var result = R.split('.', 'a.b.c.xyz.d')
+
+      expect(result).to.eql(['a', 'b', 'c', 'xyz', 'd']);
+    });
+  });
+
+  describe('.splitAt() - Splits a given list or string at a given index.', () => {
+    it('should split array to strings at a given index', () => {
+      var result = R.splitAt(5, 'hello world');
+
+      expect(result).to.eql(['hello', ' world']);
+    });
+  });
+
+  describe('.splitEvery() - Splits a collection into slices of the specified length.', () => {
+    it('should split collection to slices with given size', () => {
+      var result = R.splitEvery(3, [1, 2, 3, 4, 5, 6, 7]);
+
+      expect(result).to.eql([[1, 2, 3], [4, 5, 6], [7]]);
+    });
+  });
+
+  describe('.splitWhen() - Takes a list and a predicate and returns a pair of lists with the following properties.', () => {
+    it('should split collection based on predicate result', () => {
+      var result = R.splitWhen(R.equals(2), [1, 2, 3, 1, 2, 3]);
+
+      expect(result).to.eql([[1], [2, 3, 1, 2, 3]]);
+    });
+  });
+
+  describe('.substract() - Subtracts its second argument from its first argument.', () => {
+    it('should just substract', () => {
+      var result = R.subtract(10, 8);
+
+      expect(result).to.eql(2);
+    });
+  });
+
+  describe('.sum() - Adds together all the elements of a list.', () => {
+    it('should just sum', () => {
+      var result = R.sum([2,4,6,8,100,1]);
+
+      expect(result).to.eql(121);
+    });
+  });
+
+  describe('.symmetricDifference() - Finds the set (i.e. no duplicates) of all elements contained in the first or second list, but not both.', () => {
+    it('should find symmetric difference', () => {
+      var result = R.symmetricDifference([1,2,3,4], [7,6,5,4,3]);
+
+      expect(result).to.eql([1,2,7,6,5]);
     });
   });
 });
