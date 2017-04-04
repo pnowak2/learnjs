@@ -1,15 +1,25 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { HeroService, Hero } from './hero.service';
 
 @Component({
-  selector: 'app-heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
+  heroes: Promise<Hero[]>;
 
-  constructor() { }
+  constructor(
+    private service: HeroService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.heroes = this.service.getHeroes();
+  }
+
+  onSelect(hero: Hero) {
+    this.router.navigate(['/hero', hero.id]);
   }
 
 }
