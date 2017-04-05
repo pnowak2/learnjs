@@ -4,11 +4,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'heroes',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: 'heroes',
+    pathMatch: 'full'
+  },
   {
     path: '**',
     component: PageNotFoundComponent

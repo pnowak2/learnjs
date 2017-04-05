@@ -52,5 +52,3 @@ export class HeroDetailComponent implements OnInit {
     this.router.navigate(['/heroes', { id: heroId, foo: 'foo' }]);
   }
 }
-
-// next: Route Parameters: Required or optional?

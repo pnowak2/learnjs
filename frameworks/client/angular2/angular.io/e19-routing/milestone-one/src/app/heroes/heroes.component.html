@@ -1,6 +1,8 @@
 <h2>HEROES</h2>
 <ul class="items">
-  <li *ngFor="let hero of heroes | async" (click)="onSelect(hero)">
+  <li *ngFor="let hero of heroes | async" 
+      (click)="onSelect(hero)"
+      [class.selected]="isSelected(hero)">
     <span class="badge">{{ hero.id }}</span> {{ hero.name }}
   </li>
 </ul>
