@@ -1840,7 +1840,7 @@ describe('Ramda', () => {
 
   describe('.sum() - Adds together all the elements of a list.', () => {
     it('should just sum', () => {
-      var result = R.sum([2,4,6,8,100,1]);
+      var result = R.sum([2, 4, 6, 8, 100, 1]);
 
       expect(result).to.eql(121);
     });
@@ -1848,9 +1848,150 @@ describe('Ramda', () => {
 
   describe('.symmetricDifference() - Finds the set (i.e. no duplicates) of all elements contained in the first or second list, but not both.', () => {
     it('should find symmetric difference', () => {
-      var result = R.symmetricDifference([1,2,3,4], [7,6,5,4,3]);
+      var result = R.symmetricDifference([1, 2, 3, 4], [7, 6, 5, 4, 3]);
 
-      expect(result).to.eql([1,2,7,6,5]);
+      expect(result).to.eql([1, 2, 7, 6, 5]);
+    });
+  });
+
+  describe('.T() - A function that always returns true. Any passed in parameters are ignored.', () => {
+    it('should return true', () => {
+      expect(R.T()).to.be.true;
+    });
+  });
+
+  describe('.tail() - Returns all but the first element of the given list or string (or object with a tail method).', () => {
+    it('should return tail', () => {
+      const result = R.tail([1, 2, 3]);
+      expect(result).to.eql([2, 3]);
+    });
+  });
+
+  describe('.take() - Returns the first n elements of the given list, string, or transducer/transformer (or object with a take method).', () => {
+    it('should return n elements from list/string/etc', () => {
+      const result1 = R.take(2, ['foo', 'bar', 'baz']);
+      const result2 = R.take(3, 'hello');
+
+      expect(result1).to.eql(['foo', 'bar']);
+      expect(result2).to.eql('hel');
+    });
+  });
+
+  describe('.takeLast() - Returns a new list containing the last n elements of the given list. If n > list.length, returns a list of list.length elements.', () => {
+    it('should return n last elements from list/string/etc', () => {
+      const result1 = R.takeLast(2, ['foo', 'bar', 'baz']);
+      const result2 = R.takeLast(3, 'hello');
+
+      expect(result1).to.eql(['bar', 'baz']);
+      expect(result2).to.eql('llo');
+    });
+  });
+
+  describe('.takeLastWhile() - Returns a new list containing the last n elements of a given list, passing each value to the supplied predicate function, and terminating when the predicate function returns false. Excludes the element that caused the predicate function to fail. The predicate function is passed one argument: (value).', () => {
+    it('should return n last elements if predicate allows', () => {
+      var isNotOne = x => x !== 1;
+      const result = R.takeLastWhile(isNotOne, [1, 2, 3, 4]);
+
+      expect(result).to.eql([2, 3, 4]);
+    });
+  });
+
+  describe('.takeWhile() - Returns a new list containing the first n elements of a given list, passing each value to the supplied predicate function, and terminating when the predicate function returns false. Excludes the element that caused the predicate function to fail. The predicate function is passed one argument: (value).', () => {
+    it('should return list with copy of elements until predicate returns false', () => {
+      var isNotFour = x => x !== 4;
+      const result = R.takeWhile(isNotFour, [1, 2, 3, 4, 3, 2, 1]);
+
+      expect(result).to.eql([1, 2, 3]);
+    });
+  });
+
+  describe('.tap() - Runs the given function with the supplied object, then returns the object.', () => {
+    it('should call function providing the param, then return the object', () => {
+
+      const spy = sinon.spy();
+      const result = R.tap(spy, 100);
+
+      expect(spy.callCount).to.eql(1);
+      expect(spy.calledWith(100)).to.be.true;
+      expect(result).to.eql(100);
+    });
+  });
+
+  describe('.test() - Determines whether a given string matches a given regular expression.', () => {
+    it('should return true if matches regex', () => {
+      const result = R.test(/^x/, 'xyz');
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('.times() - Calls an input function n times, returning an array containing the results of those function calls. fn is passed one argument: The current value of n, which begins at 0 and is gradually incremented to n - 1.', () => {
+    it('should return array with results', () => {
+      const result = R.times(R.identity, 5);
+
+      expect(result).to.eql([0, 1, 2, 3, 4]);
+    });
+  });
+
+  describe('.toLower() - The lower case version of a string.', () => {
+    it('should make lower case', () => {
+      const result = R.toLower('XYZ');
+
+      expect(result).to.eql('xyz');
+    });
+  });
+
+  describe('.toPairs() - Converts an object into an array of key, value arrays. Only the objects own properties are used. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', () => {
+    it('should make pairs from keys and values', () => {
+      const result = R.toPairs({ a: 1, b: 2, c: 3 })
+
+      expect(result).to.eql([['a', 1], ['b', 2], ['c', 3]]);
+    });
+  });
+
+  describe('.toPairsIn() - Converts an object into an array of key, value arrays. The objects own properties and prototype properties are used. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', () => {
+    it('should make pairs from keys and values including prototype chain', () => {
+      var F = function () { this.x = 'X'; };
+      F.prototype.y = 'Y';
+      var f = new F();
+      const result = R.toPairsIn(f);
+
+      expect(result).to.eql([['x', 'X'], ['y', 'Y']]);
+    });
+  });
+
+  describe('.toString() - Returns the string representation of the given value. evaling the output should result in a value equivalent to the input value.', () => {
+    it('should make pairs from keys and values', () => {
+      const result = R.toString([1, 2, 3]);
+
+      expect(result).to.eql('[1, 2, 3]');
+    });
+  });
+
+  describe('.toUpper() - The upper case version of a string.', () => {
+    it('should make upper case', () => {
+      const result = R.toUpper('xyz');
+
+      expect(result).to.eql('XYZ');
+    });
+  });
+
+  describe('.transduce() - Initializes a transducer using supplied iterator function. Returns a single item by iterating through the list, successively calling the transformed iterator function and passing it an accumulator value and the current value from the array, and then passing the result to the next call.', () => {
+    it('should ?', () => {
+      var numbers = [1, 2, 3, 4];
+      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+
+      const result = R.transduce(transducer, R.flip(R.append), [], numbers);
+
+      expect(result).to.eql([2, 3]);
+    });
+  });
+
+  describe('.transpose() - Transposes the rows and columns of a 2D list. When passed a list of n lists of length x, returns a list of x lists of length n.', () => {
+    it('should ?', () => {
+      const result = R.transpose([[1, 'a'], [2, 'b'], [3, 'c']])
+
+      expect(result).to.eql([[1, 2, 3], ['a', 'b', 'c']]);
     });
   });
 });
