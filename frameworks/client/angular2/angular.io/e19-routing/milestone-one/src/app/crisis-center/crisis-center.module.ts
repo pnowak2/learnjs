@@ -5,6 +5,9 @@ import { NgModule } from '@angular/core';
 import { CrisisCenterComponent } from './crisis-center.component';
 import { CrisisCenterHomeComponent } from './crisis-center-home.component';
 import { CrisisDetailComponent } from './crisis-detail.component';
+import { CrisisListComponent } from './crisis-list.component';
+
+import { CrisisService } from './crisis.service';
 
 import { CrisisCenterRoutingModule } from './crisis-center-routing.module';
 
@@ -17,9 +20,10 @@ import { CrisisCenterRoutingModule } from './crisis-center-routing.module';
   declarations: [
     CrisisCenterComponent,
     CrisisCenterHomeComponent,
-    CrisisDetailComponent
+    CrisisDetailComponent,
+    CrisisListComponent
   ],
-  providers: []
+  providers: [ CrisisService ]
 })
 export class CrisisCenterModule {
 

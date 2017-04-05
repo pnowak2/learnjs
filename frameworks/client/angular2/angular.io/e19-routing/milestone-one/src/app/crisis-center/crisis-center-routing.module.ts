@@ -1,3 +1,4 @@
+import { CrisisListComponent } from './crisis-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -12,11 +13,17 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: CrisisCenterHomeComponent
-      },
-      {
-        path: ':id',
-        component: CrisisDetailComponent
+        component: CrisisListComponent,
+        children: [
+          {
+            path: ':id',
+            component: CrisisDetailComponent
+          },
+          {
+            path: '',
+            component: CrisisCenterHomeComponent
+          }
+        ]
       }
     ]
   }
