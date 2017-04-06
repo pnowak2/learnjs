@@ -1,3 +1,4 @@
+import { CrisisDetailResolver } from './crisis-detail-resolver.service';
 import { CrisisListComponent } from './crisis-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -17,7 +18,10 @@ const routes: Routes = [
         children: [
           {
             path: ':id',
-            component: CrisisDetailComponent
+            component: CrisisDetailComponent,
+            resolve: {
+              crisis: CrisisDetailResolver
+            }
           },
           {
             path: '',
@@ -35,7 +39,8 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: [CrisisDetailResolver]
 })
 export class CrisisCenterRoutingModule {
 
