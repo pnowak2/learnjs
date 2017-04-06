@@ -1994,4 +1994,65 @@ describe('Ramda', () => {
       expect(result).to.eql([[1, 2, 3], ['a', 'b', 'c']]);
     });
   });
+
+  describe('.traverse() - Maps an Applicative-returning function over a Traversable, then uses sequence to transform the resulting Traversable of Applicative into an Applicative of Traversable.', () => {
+    it('should ?', () => {
+      // Returns `Nothing` if the given divisor is `0`
+      // safeDiv = n => d => d === 0 ? Nothing() : Just(n / d)
+
+      // R.traverse(Maybe.of, safeDiv(10), [2, 4, 5]); //=> Just([5, 2.5, 2])
+      // R.traverse(Maybe.of, safeDiv(10), [2, 0, 5]); //=> Nothing
+    });
+  });
+
+  describe('.trim() - Removes (strips) whitespace from both ends of the string.', () => {
+    it('should trim string', () => {
+      const result = R.trim('   xyz  ');
+      expect(result).to.eql('xyz');
+    });
+  });
+
+  describe('.tryCatch() - takes two functions, a tryer and a catcher. The returned function evaluates the tryer; if it does not throw, it simply returns the result. If the tryer does throw, the returned function evaluates the catcher function and returns its result. Note that for effective composition with this function, both the tryer and catcher functions must return the same type of results.', () => {
+    it('should return value from that function which does not throw an error', () => {
+      const result1 = R.tryCatch(R.prop('x'), R.F)({ x: true })
+      expect(result1).to.be.true;
+
+      const result2 = R.tryCatch(R.prop('x'), R.F)(null)
+      expect(result2).to.be.false;
+    });
+  });
+
+  describe('.type() - Gives a single-word string description of the (native) type of a value, returning such answers as Object, Number, Array, or Null. Does not attempt to distinguish user Object types any further, reporting them all as Object.', () => {
+    it('should return type of argument as string name', () => {
+      const t1 = R.type({});
+      const t2 = R.type(1);
+      const t3 = R.type(false);
+
+      expect(t1).to.eql('Object');
+      expect(t2).to.eql('Number');
+      expect(t3).to.eql('Boolean');
+    });
+  });
+
+  describe('.unapply() -  R.unapply derives a variadic function from a function which takes an array. R.unapply is the inverse of R.apply.', () => {
+    it('should work as inverse of apply', () => {
+      const result = R.unapply(JSON.stringify)(1, 2, 3);
+      expect(result).to.eql('[1,2,3]');
+    });
+  });
+
+  describe('.unary() -  Wraps a function of any arity (including nullary) in a function that accepts exactly 1 parameter. Any extraneous parameters will not be passed to the supplied function.', () => {
+    it('should work as inverse of apply', () => {
+      var takesTwoArgs = function (a, b) {
+        return [a, b];
+      };
+      expect(takesTwoArgs.length).to.eql(2);
+      expect(takesTwoArgs(1, 2)).to.eql([1, 2]);
+
+      var takesOneArg = R.unary(takesTwoArgs);
+      expect(takesOneArg.length).to.eql(1);
+      // Only 1 argument is passed to the wrapped function
+      takesOneArg(1, 2); //=> [1, undefined]
+    });
+  });
 });
