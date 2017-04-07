@@ -2483,6 +2483,238 @@
 	      takesOneArg(1, 2); //=> [1, undefined]
 	    });
 	  });
+
+	  describe('.uncurryN() -  Returns a function of arity n from a (manually) curried function.', function () {
+	    it('should uncurry to n levels making n levels arity function', function () {
+	      var addFour = function addFour(a) {
+	        return function (b) {
+	          return function (c) {
+	            return function (d) {
+	              return a + b + c + d;
+	            };
+	          };
+	        };
+	      };
+
+	      var uncurriedAddFour = R.uncurryN(4, addFour);
+	      var result = uncurriedAddFour(1, 2, 3, 4);
+	      (0, _chai.expect)(result).to.eql(10);
+	    });
+	  });
+
+	  describe('.unfold() - Builds a list from a seed value. Accepts an iterator function, which returns either false to stop iteration or an array of length 2 containing the value to add to the resulting list and the seed to be used in the next call to the iterator function.', function () {
+	    it('should expand given value with formula provided as fn function', function () {
+	      var f = function f(n) {
+	        return n > 50 ? false : [-n, n + 10];
+	      };
+	      var result = R.unfold(f, 10);
+
+	      (0, _chai.expect)(result).to.eql([-10, -20, -30, -40, -50]);
+	    });
+	  });
+
+	  describe('.union() - Combines two lists into a set (i.e. no duplicates) composed of the elements of each list.', function () {
+	    it('should unify lists into one, with no duplicates', function () {
+	      var result = R.union([1, 2, 3], [2, 3, 4]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4]);
+	    });
+	  });
+
+	  describe('.unionWith() - Combines two lists into a set (i.e. no duplicates) composed of the elements of each list. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', function () {
+	    it('should unify lists into one, with no duplicates, duplication is determined by predicate provided', function () {
+	      var l1 = [{ a: 1 }, { a: 2 }];
+	      var l2 = [{ a: 1 }, { a: 4 }];
+	      var result = R.unionWith(R.eqBy(R.prop('a')), l1, l2);
+
+	      (0, _chai.expect)(result).to.eql([{ a: 1 }, { a: 2 }, { a: 4 }]);
+	    });
+	  });
+
+	  describe('.uniq() - Returns a new list containing only one copy of each element in the original list. R.equals is used to determine equality.', function () {
+	    it('should return new list with unique items', function () {
+	      var result = R.uniq([1, 1, 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2]);
+	    });
+	  });
+
+	  describe('.uniqWith() - Returns a new list containing only one copy of each element in the original list, based upon the value returned by applying the supplied predicate to two list elements. Prefers the first item if two items compare equal based on the predicate.', function () {
+	    it('should return new list with unique items based on predicate', function () {
+	      var strEq = R.eqBy(String);
+	      var result = R.uniqWith(strEq)([1, '1', 2, 1]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2]);
+	    });
+	  });
+
+	  describe('.unless() - Tests the final argument by passing it to the given predicate function. If the predicate is not satisfied, the function will return the result of calling the whenFalseFn function with the same argument. If the predicate is satisfied, the argument is returned as is.', function () {
+	    it('should return value according to condition', function () {
+	      var coerceArray = R.unless(R.isArrayLike, R.of);
+	      var r1 = coerceArray([1, 2, 3]); //=> [1, 2, 3]
+	      var r2 = coerceArray(1);
+
+	      (0, _chai.expect)(r1).to.eql([1, 2, 3]);
+	      (0, _chai.expect)(r2).to.eql([1]);
+	    });
+	  });
+
+	  describe('.unnest() - Shorthand for R.chain(R.identity), which removes one level of nesting from any Chain.', function () {
+	    it('should unnest chain', function () {
+	      var result = R.unnest([[1, 2], [3, 4], [5, 6]]);
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3, 4, 5, 6]);
+	    });
+	  });
+
+	  describe('.until() - Takes a predicate, a transformation function, and an initial value, and returns a value of the same type as the initial value. It does so by applying the transformation until the predicate is satisfied, at which point it returns the satisfactory value.', function () {
+	    it('should call transformation as long as predicate is satisfied and returns final value', function () {
+	      var result = R.until(R.gt(R.__, 100), R.multiply(2))(1);
+
+	      (0, _chai.expect)(result).to.eql(128);
+	    });
+	  });
+
+	  describe('.update() - Returns a new copy of the array with the element at the provided index replaced with the given value.', function () {
+	    it('should replace given element at position with new value', function () {
+	      var result = R.update(1, 11, [0, 1, 2]);
+
+	      (0, _chai.expect)(result).to.eql([0, 11, 2]);
+	    });
+	  });
+
+	  describe('.useWith() - Accepts a function fn and a list of transformer functions and returns a new curried function. When the new function is invoked, it calls the function fn with parameters consisting of the result of calling each supplied handler on successive arguments to the new function.', function () {
+	    it('should ?', function () {
+	      R.useWith(Math.pow, [R.identity, R.identity])(3, 4); //=> 81
+	      R.useWith(Math.pow, [R.identity, R.identity])(3)(4); //=> 81
+	      R.useWith(Math.pow, [R.dec, R.inc])(3, 4); //=> 32
+	      R.useWith(Math.pow, [R.dec, R.inc])(3)(4); //=> 32
+	    });
+	  });
+
+	  describe('.values() - Returns a list of all the enumerable own properties of the supplied object. Note that the order of the output array is not guaranteed across different JS platforms.', function () {
+	    it('should return values from enumarable', function () {
+	      var result = R.values({ a: 1, b: 2, c: 3 });
+
+	      (0, _chai.expect)(result).to.eql([1, 2, 3]);
+	    });
+	  });
+
+	  describe('.valuesIn() - Returns a list of all the properties, including prototype properties, of the supplied object. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', function () {
+	    it('should return values from enumarable including prototype chain', function () {
+	      var F = function F() {
+	        this.x = 'X';
+	      };
+	      F.prototype.y = 'Y';
+	      var f = new F();
+	      var result = R.valuesIn(f);
+
+	      (0, _chai.expect)(result).to.eql(['X', 'Y']);
+	    });
+	  });
+
+	  describe('.view() - Returns a "view" of the given data structure, determined by the given lens. The lens focus determines which portion of the data structure is visible.', function () {
+	    it('should return view of pointed data structure', function () {
+	      var xLens = R.lensProp('z');
+	      var result = R.view(xLens, { x: 1, y: 2, z: { a: '1', b: 2 } });
+
+	      (0, _chai.expect)(result).to.eql({ a: '1', b: 2 });
+	    });
+	  });
+
+	  describe('.when() - Tests the final argument by passing it to the given predicate function. If the predicate is satisfied, the function will return the result of calling the whenTrueFn function with the same argument. If the predicate is not satisfied, the argument is returned as is.', function () {
+	    it('should call operation on data when predicate is satisfied, else just returning original value', function () {
+	      var truncate = R.when(R.propSatisfies(R.gt(R.__, 10), 'length'), R.pipe(R.take(10), R.append('…'), R.join('')));
+
+	      var result = truncate('12345');
+	      (0, _chai.expect)(result).to.eql('12345');
+
+	      var result2 = truncate('0123456789ABC');
+	      (0, _chai.expect)(result2).to.eql('0123456789…');
+	    });
+	  });
+
+	  describe('.where() - Takes a spec object and a test object; returns true if the test satisfies the spec. Each of the specs own properties must be a predicate function. Each predicate is applied to the value of the corresponding property of the test object. where returns true if all the predicates return true, false otherwise.', function () {
+	    it('should return true if object looks like spec says', function () {
+	      var pred = R.where({
+	        a: R.equals('foo'),
+	        b: R.complement(R.equals('bar')),
+	        x: R.gt(R.__, 10),
+	        y: R.lt(R.__, 20)
+	      });
+
+	      var r1 = pred({ a: 'foo', b: 'xxx', x: 11, y: 19 });
+	      var r2 = pred({ a: 'xxx', b: 'xxx', x: 11, y: 19 });
+
+	      (0, _chai.expect)(r1).to.be.true;
+	      (0, _chai.expect)(r2).to.be.false;
+	    });
+	  });
+
+	  describe('.whereEq() - Takes a spec object and a test object; returns true if the test satisfies the spec, false otherwise. An object satisfies the spec if, for each of the specs own properties, accessing that property of the object gives the same value (in R.equals terms) as accessing that property of the spec.', function () {
+	    it('should return true if object matches the spec', function () {
+	      var pred = R.whereEq({ a: 1, b: 2 });
+
+	      var r1 = pred({ a: 1 });
+	      var r2 = pred({ a: 1, b: 2 });
+	      var r3 = pred({ a: 1, b: 2, c: 3 });
+
+	      (0, _chai.expect)(r1).to.be.false;
+	      (0, _chai.expect)(r2).to.be.true;
+	      (0, _chai.expect)(r3).to.be.true;
+	    });
+	  });
+
+	  describe('.without() - Returns a new list without values in the first argument. R.equals is used to determine equality.', function () {
+	    it('should return copy of list without args passed', function () {
+	      var result = R.without([1, 2], [1, 2, 1, 3, 4]);
+
+	      (0, _chai.expect)(result).to.eql([3, 4]);
+	    });
+	  });
+
+	  describe('.without() - Returns a new list without values in the first argument. R.equals is used to determine equality.', function () {
+	    it('should return copy of list without args passed', function () {
+	      var result = R.without([1, 2], [1, 2, 1, 3, 4]);
+
+	      (0, _chai.expect)(result).to.eql([3, 4]);
+	    });
+	  });
+
+	  describe('.xprod() - Creates a new list out of the two supplied by creating each possible pair from the lists.', function () {
+	    it('should return prod with all combinations possible', function () {
+	      var result = R.xprod([1, 2], ['a', 'b']);
+
+	      (0, _chai.expect)(result).to.eql([[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]);
+	    });
+	  });
+
+	  describe('.zip() - Creates a new list out of the two supplied by pairing up equally-positioned items from both lists. The returned list is truncated to the length of the shorter of the two input lists. Note: zip is equivalent to zipWith(function(a, b) { return [a, b] }).', function () {
+	    it('should zip items', function () {
+	      var result = R.zip([1, 2, 3], ['a', 'b', 'c']);
+
+	      (0, _chai.expect)(result).to.eql([[1, 'a'], [2, 'b'], [3, 'c']]);
+	    });
+	  });
+
+	  describe('.zipObj() - Creates a new object out of a list of keys and a list of values. Key/value pairing is truncated to the length of the shorter of the two lists. Note: zipObj is equivalent to pipe(zipWith(pair), fromPairs).', function () {
+	    it('should zip to object', function () {
+	      var result = R.zipObj(['a', 'b', 'c'], [1, 2, 3]);
+
+	      (0, _chai.expect)(result).to.eql({ a: 1, b: 2, c: 3 });
+	    });
+	  });
+
+	  describe('.zipWith() - Creates a new list out of the two supplied by applying the function to each equally-positioned pair in the lists. The returned list is truncated to the length of the shorter of the two input lists.', function () {
+	    it('should zip with function which decides how to combine two items from arrays.', function () {
+	      var f = function f(x, y) {
+	        return x + y;
+	      };
+	      var result = R.zipWith(f, [1, 2, 3], ['a', 'b', 'c']);
+
+	      (0, _chai.expect)(result).to.eql(['1a', '2b', '3c']);
+	    });
+	  });
 	});
 
 /***/ },
