@@ -1,0 +1,28 @@
+{
+  "name": "movie-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.0",
+    "npm-run-all": "^4.0.2",
+    "postcss": "^6.0.1",
+    "postcss-cli": "^4.0.0",
+    "postcss-import": "^10.0.0",
+    "precss": "^1.4.0",
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "npm-run-all --parallel start:*",
+    "build": "npm run-all build:*",
+    "start:react": "react-scripts start",
+    "start:styles": "npm run build:styles -- --watch",
+    "build:styles": "./node_modules/.bin/postcss -c postcss/config.js src/styles/index.css -o src/index.css",
+    "build:react": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
