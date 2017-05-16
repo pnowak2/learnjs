@@ -1,0 +1,10 @@
+<div *ngIf="hero">{{ hero.name }}</div>
+
+<ul>
+  <li *ngFor="let hero of heroes">{{ hero.name }}</li>
+</ul>
+
+<div [ngSwitch]="hero?.emotion">
+  <div *ngSwitchCase="'happy'">happy {{ hero.name }}</div>
+  <div *ngSwitchDefault>normal {{ hero.name }}</div>
+</div>
