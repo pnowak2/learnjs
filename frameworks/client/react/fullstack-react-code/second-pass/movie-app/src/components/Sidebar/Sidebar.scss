@@ -1,0 +1,14 @@
+.sidebar {
+  background: $lighter;
+  background: linear-gradient(to bottom, $lighter, $darker);
+  padding: 25px;
+  color: $white;
+
+  .heading {
+    font-size: 1.2em;
+  }
+
+  @media (min-width: $large-screen) {
+    margin-right: 15px;
+  }
+}

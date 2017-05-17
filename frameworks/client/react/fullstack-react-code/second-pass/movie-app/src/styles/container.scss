@@ -1,0 +1,40 @@
+@import "./variables.scss";
+
+.container {
+  padding: 0;
+  flex: 1;
+
+  .content {
+    overflow-x: hidden;
+    width: auto;
+  }
+}
+
+@media (min-width: $large-screen) {
+  .container {
+    display: flex;
+    overflow: hidden;
+
+    > * {
+      flex: 0 0 auto;
+      overflow: auto;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: $sidebar-width;
+
+      section {
+        h3 {
+          font-size: 0.9em;
+        }
+      }
+    }
+
+    .content {
+      flex: 1;
+    }
+  }
+}

@@ -1,5 +1,6 @@
-body {
-  font-family: sans-serif;
-}
+@import "normalize.css";
+@import "./variables.scss";
+@import "./body.scss";
+@import "./container.scss";
 
-/* 16:18*/
+@import "../components/Sidebar/Sidebar.scss";
