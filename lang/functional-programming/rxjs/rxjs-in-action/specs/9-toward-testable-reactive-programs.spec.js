@@ -361,12 +361,12 @@ describe('9 Toward testable, reactive programs', () => {
           });
 
         // Separated pipeline from the source and nested observables 
-        const search$ = (source$, fetchResult$, url = '', scheduler = null) =>
-          source$
-            .debounceTime(500, scheduler)
-            .filter(notEmpty)
-            .do(term => console.log(`Searching with term ${term}`)).map(query => url + query)
-            .switchMap(fetchResult$)
+        // const search$ = (source$, fetchResult$, url = '', scheduler = null) =>
+        //   source$
+        //     .debounceTime(500, scheduler)
+        //     .filter(notEmpty)
+        //     .do(term => console.log(`Searching with term ${term}`)).map(query => url + query)
+        //     .switchMap(fetchResult$)
       });
     });
   });
