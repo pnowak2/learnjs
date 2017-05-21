@@ -1,0 +1,6 @@
+@import "normalize.css";
+@import "./variables.scss";
+@import "./body.scss";
+@import "./container.scss";
+
+@import "../components/Sidebar/Sidebar.scss";

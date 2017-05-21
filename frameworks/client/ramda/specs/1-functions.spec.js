@@ -1840,7 +1840,7 @@ describe('Ramda', () => {
 
   describe('.sum() - Adds together all the elements of a list.', () => {
     it('should just sum', () => {
-      var result = R.sum([2,4,6,8,100,1]);
+      var result = R.sum([2, 4, 6, 8, 100, 1]);
 
       expect(result).to.eql(121);
     });
@@ -1848,9 +1848,434 @@ describe('Ramda', () => {
 
   describe('.symmetricDifference() - Finds the set (i.e. no duplicates) of all elements contained in the first or second list, but not both.', () => {
     it('should find symmetric difference', () => {
-      var result = R.symmetricDifference([1,2,3,4], [7,6,5,4,3]);
+      var result = R.symmetricDifference([1, 2, 3, 4], [7, 6, 5, 4, 3]);
 
-      expect(result).to.eql([1,2,7,6,5]);
+      expect(result).to.eql([1, 2, 7, 6, 5]);
+    });
+  });
+
+  describe('.T() - A function that always returns true. Any passed in parameters are ignored.', () => {
+    it('should return true', () => {
+      expect(R.T()).to.be.true;
+    });
+  });
+
+  describe('.tail() - Returns all but the first element of the given list or string (or object with a tail method).', () => {
+    it('should return tail', () => {
+      const result = R.tail([1, 2, 3]);
+      expect(result).to.eql([2, 3]);
+    });
+  });
+
+  describe('.take() - Returns the first n elements of the given list, string, or transducer/transformer (or object with a take method).', () => {
+    it('should return n elements from list/string/etc', () => {
+      const result1 = R.take(2, ['foo', 'bar', 'baz']);
+      const result2 = R.take(3, 'hello');
+
+      expect(result1).to.eql(['foo', 'bar']);
+      expect(result2).to.eql('hel');
+    });
+  });
+
+  describe('.takeLast() - Returns a new list containing the last n elements of the given list. If n > list.length, returns a list of list.length elements.', () => {
+    it('should return n last elements from list/string/etc', () => {
+      const result1 = R.takeLast(2, ['foo', 'bar', 'baz']);
+      const result2 = R.takeLast(3, 'hello');
+
+      expect(result1).to.eql(['bar', 'baz']);
+      expect(result2).to.eql('llo');
+    });
+  });
+
+  describe('.takeLastWhile() - Returns a new list containing the last n elements of a given list, passing each value to the supplied predicate function, and terminating when the predicate function returns false. Excludes the element that caused the predicate function to fail. The predicate function is passed one argument: (value).', () => {
+    it('should return n last elements if predicate allows', () => {
+      var isNotOne = x => x !== 1;
+      const result = R.takeLastWhile(isNotOne, [1, 2, 3, 4]);
+
+      expect(result).to.eql([2, 3, 4]);
+    });
+  });
+
+  describe('.takeWhile() - Returns a new list containing the first n elements of a given list, passing each value to the supplied predicate function, and terminating when the predicate function returns false. Excludes the element that caused the predicate function to fail. The predicate function is passed one argument: (value).', () => {
+    it('should return list with copy of elements until predicate returns false', () => {
+      var isNotFour = x => x !== 4;
+      const result = R.takeWhile(isNotFour, [1, 2, 3, 4, 3, 2, 1]);
+
+      expect(result).to.eql([1, 2, 3]);
+    });
+  });
+
+  describe('.tap() - Runs the given function with the supplied object, then returns the object.', () => {
+    it('should call function providing the param, then return the object', () => {
+
+      const spy = sinon.spy();
+      const result = R.tap(spy, 100);
+
+      expect(spy.callCount).to.eql(1);
+      expect(spy.calledWith(100)).to.be.true;
+      expect(result).to.eql(100);
+    });
+  });
+
+  describe('.test() - Determines whether a given string matches a given regular expression.', () => {
+    it('should return true if matches regex', () => {
+      const result = R.test(/^x/, 'xyz');
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('.times() - Calls an input function n times, returning an array containing the results of those function calls. fn is passed one argument: The current value of n, which begins at 0 and is gradually incremented to n - 1.', () => {
+    it('should return array with results', () => {
+      const result = R.times(R.identity, 5);
+
+      expect(result).to.eql([0, 1, 2, 3, 4]);
+    });
+  });
+
+  describe('.toLower() - The lower case version of a string.', () => {
+    it('should make lower case', () => {
+      const result = R.toLower('XYZ');
+
+      expect(result).to.eql('xyz');
+    });
+  });
+
+  describe('.toPairs() - Converts an object into an array of key, value arrays. Only the objects own properties are used. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', () => {
+    it('should make pairs from keys and values', () => {
+      const result = R.toPairs({ a: 1, b: 2, c: 3 })
+
+      expect(result).to.eql([['a', 1], ['b', 2], ['c', 3]]);
+    });
+  });
+
+  describe('.toPairsIn() - Converts an object into an array of key, value arrays. The objects own properties and prototype properties are used. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', () => {
+    it('should make pairs from keys and values including prototype chain', () => {
+      var F = function () { this.x = 'X'; };
+      F.prototype.y = 'Y';
+      var f = new F();
+      const result = R.toPairsIn(f);
+
+      expect(result).to.eql([['x', 'X'], ['y', 'Y']]);
+    });
+  });
+
+  describe('.toString() - Returns the string representation of the given value. evaling the output should result in a value equivalent to the input value.', () => {
+    it('should make pairs from keys and values', () => {
+      const result = R.toString([1, 2, 3]);
+
+      expect(result).to.eql('[1, 2, 3]');
+    });
+  });
+
+  describe('.toUpper() - The upper case version of a string.', () => {
+    it('should make upper case', () => {
+      const result = R.toUpper('xyz');
+
+      expect(result).to.eql('XYZ');
+    });
+  });
+
+  describe('.transduce() - Initializes a transducer using supplied iterator function. Returns a single item by iterating through the list, successively calling the transformed iterator function and passing it an accumulator value and the current value from the array, and then passing the result to the next call.', () => {
+    it('should ?', () => {
+      var numbers = [1, 2, 3, 4];
+      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+
+      const result = R.transduce(transducer, R.flip(R.append), [], numbers);
+
+      expect(result).to.eql([2, 3]);
+    });
+  });
+
+  describe('.transpose() - Transposes the rows and columns of a 2D list. When passed a list of n lists of length x, returns a list of x lists of length n.', () => {
+    it('should ?', () => {
+      const result = R.transpose([[1, 'a'], [2, 'b'], [3, 'c']])
+
+      expect(result).to.eql([[1, 2, 3], ['a', 'b', 'c']]);
+    });
+  });
+
+  describe('.traverse() - Maps an Applicative-returning function over a Traversable, then uses sequence to transform the resulting Traversable of Applicative into an Applicative of Traversable.', () => {
+    it('should ?', () => {
+      // Returns `Nothing` if the given divisor is `0`
+      // safeDiv = n => d => d === 0 ? Nothing() : Just(n / d)
+
+      // R.traverse(Maybe.of, safeDiv(10), [2, 4, 5]); //=> Just([5, 2.5, 2])
+      // R.traverse(Maybe.of, safeDiv(10), [2, 0, 5]); //=> Nothing
+    });
+  });
+
+  describe('.trim() - Removes (strips) whitespace from both ends of the string.', () => {
+    it('should trim string', () => {
+      const result = R.trim('   xyz  ');
+      expect(result).to.eql('xyz');
+    });
+  });
+
+  describe('.tryCatch() - takes two functions, a tryer and a catcher. The returned function evaluates the tryer; if it does not throw, it simply returns the result. If the tryer does throw, the returned function evaluates the catcher function and returns its result. Note that for effective composition with this function, both the tryer and catcher functions must return the same type of results.', () => {
+    it('should return value from that function which does not throw an error', () => {
+      const result1 = R.tryCatch(R.prop('x'), R.F)({ x: true })
+      expect(result1).to.be.true;
+
+      const result2 = R.tryCatch(R.prop('x'), R.F)(null)
+      expect(result2).to.be.false;
+    });
+  });
+
+  describe('.type() - Gives a single-word string description of the (native) type of a value, returning such answers as Object, Number, Array, or Null. Does not attempt to distinguish user Object types any further, reporting them all as Object.', () => {
+    it('should return type of argument as string name', () => {
+      const t1 = R.type({});
+      const t2 = R.type(1);
+      const t3 = R.type(false);
+
+      expect(t1).to.eql('Object');
+      expect(t2).to.eql('Number');
+      expect(t3).to.eql('Boolean');
+    });
+  });
+
+  describe('.unapply() -  R.unapply derives a variadic function from a function which takes an array. R.unapply is the inverse of R.apply.', () => {
+    it('should work as inverse of apply', () => {
+      const result = R.unapply(JSON.stringify)(1, 2, 3);
+      expect(result).to.eql('[1,2,3]');
+    });
+  });
+
+  describe('.unary() -  Wraps a function of any arity (including nullary) in a function that accepts exactly 1 parameter. Any extraneous parameters will not be passed to the supplied function.', () => {
+    it('should work as inverse of apply', () => {
+      var takesTwoArgs = function (a, b) {
+        return [a, b];
+      };
+      expect(takesTwoArgs.length).to.eql(2);
+      expect(takesTwoArgs(1, 2)).to.eql([1, 2]);
+
+      var takesOneArg = R.unary(takesTwoArgs);
+      expect(takesOneArg.length).to.eql(1);
+      // Only 1 argument is passed to the wrapped function
+      takesOneArg(1, 2); //=> [1, undefined]
+    });
+  });
+
+  describe('.uncurryN() -  Returns a function of arity n from a (manually) curried function.', () => {
+    it('should uncurry to n levels making n levels arity function', () => {
+      var addFour = a => b => c => d => a + b + c + d;
+
+      var uncurriedAddFour = R.uncurryN(4, addFour);
+      var result = uncurriedAddFour(1, 2, 3, 4);
+      expect(result).to.eql(10);
+    });
+  });
+
+  describe('.unfold() - Builds a list from a seed value. Accepts an iterator function, which returns either false to stop iteration or an array of length 2 containing the value to add to the resulting list and the seed to be used in the next call to the iterator function.', () => {
+    it('should expand given value with formula provided as fn function', () => {
+      var f = n => n > 50 ? false : [-n, n + 10];
+      var result = R.unfold(f, 10);
+
+      expect(result).to.eql([-10, -20, -30, -40, -50]);
+    });
+  });
+
+  describe('.union() - Combines two lists into a set (i.e. no duplicates) composed of the elements of each list.', () => {
+    it('should unify lists into one, with no duplicates', () => {
+      var result = R.union([1, 2, 3], [2, 3, 4]);
+
+      expect(result).to.eql([1, 2, 3, 4]);
+    });
+  });
+
+  describe('.unionWith() - Combines two lists into a set (i.e. no duplicates) composed of the elements of each list. Duplication is determined according to the value returned by applying the supplied predicate to two list elements.', () => {
+    it('should unify lists into one, with no duplicates, duplication is determined by predicate provided', () => {
+      var l1 = [{ a: 1 }, { a: 2 }];
+      var l2 = [{ a: 1 }, { a: 4 }];
+      var result = R.unionWith(R.eqBy(R.prop('a')), l1, l2);
+
+      expect(result).to.eql([{ a: 1 }, { a: 2 }, { a: 4 }]);
+    });
+  });
+
+  describe('.uniq() - Returns a new list containing only one copy of each element in the original list. R.equals is used to determine equality.', () => {
+    it('should return new list with unique items', () => {
+      var result = R.uniq([1, 1, 2, 1])
+
+      expect(result).to.eql([1, 2]);
+    });
+  });
+
+  describe('.uniqWith() - Returns a new list containing only one copy of each element in the original list, based upon the value returned by applying the supplied predicate to two list elements. Prefers the first item if two items compare equal based on the predicate.', () => {
+    it('should return new list with unique items based on predicate', () => {
+      var strEq = R.eqBy(String);
+      var result = R.uniqWith(strEq)([1, '1', 2, 1]);
+
+      expect(result).to.eql([1, 2]);
+    });
+  });
+
+  describe('.unless() - Tests the final argument by passing it to the given predicate function. If the predicate is not satisfied, the function will return the result of calling the whenFalseFn function with the same argument. If the predicate is satisfied, the argument is returned as is.', () => {
+    it('should return value according to condition', () => {
+      var coerceArray = R.unless(R.isArrayLike, R.of)
+      var r1 = coerceArray([1, 2, 3]); //=> [1, 2, 3]
+      var r2 = coerceArray(1);
+
+      expect(r1).to.eql([1, 2, 3]);
+      expect(r2).to.eql([1]);
+    });
+  });
+
+  describe('.unnest() - Shorthand for R.chain(R.identity), which removes one level of nesting from any Chain.', () => {
+    it('should unnest chain', () => {
+      var result = R.unnest([[1, 2], [3, 4], [5, 6]]);
+
+      expect(result).to.eql([1, 2, 3, 4, 5, 6]);
+    });
+  });
+
+  describe('.until() - Takes a predicate, a transformation function, and an initial value, and returns a value of the same type as the initial value. It does so by applying the transformation until the predicate is satisfied, at which point it returns the satisfactory value.', () => {
+    it('should call transformation as long as predicate is satisfied and returns final value', () => {
+      var result = R.until(R.gt(R.__, 100), R.multiply(2))(1);
+
+      expect(result).to.eql(128);
+    });
+  });
+
+  describe('.update() - Returns a new copy of the array with the element at the provided index replaced with the given value.', () => {
+    it('should replace given element at position with new value', () => {
+      var result = R.update(1, 11, [0, 1, 2]);
+
+      expect(result).to.eql([0, 11, 2]);
+    });
+  });
+
+  describe('.useWith() - Accepts a function fn and a list of transformer functions and returns a new curried function. When the new function is invoked, it calls the function fn with parameters consisting of the result of calling each supplied handler on successive arguments to the new function.', () => {
+    it('should ?', () => {
+      R.useWith(Math.pow, [R.identity, R.identity])(3, 4); //=> 81
+      R.useWith(Math.pow, [R.identity, R.identity])(3)(4); //=> 81
+      R.useWith(Math.pow, [R.dec, R.inc])(3, 4); //=> 32
+      R.useWith(Math.pow, [R.dec, R.inc])(3)(4); //=> 32
+    });
+  });
+
+  describe('.values() - Returns a list of all the enumerable own properties of the supplied object. Note that the order of the output array is not guaranteed across different JS platforms.', () => {
+    it('should return values from enumarable', () => {
+      var result = R.values({ a: 1, b: 2, c: 3 });
+
+      expect(result).to.eql([1, 2, 3]);
+    });
+  });
+
+  describe('.valuesIn() - Returns a list of all the properties, including prototype properties, of the supplied object. Note that the order of the output array is not guaranteed to be consistent across different JS platforms.', () => {
+    it('should return values from enumarable including prototype chain', () => {
+      var F = function () { this.x = 'X'; };
+      F.prototype.y = 'Y';
+      var f = new F();
+      var result = R.valuesIn(f);
+
+      expect(result).to.eql(['X', 'Y']);
+    });
+  });
+
+  describe('.view() - Returns a "view" of the given data structure, determined by the given lens. The lens focus determines which portion of the data structure is visible.', () => {
+    it('should return view of pointed data structure', () => {
+      var xLens = R.lensProp('z');
+      var result = R.view(xLens, { x: 1, y: 2, z: { a: '1', b: 2 } });
+
+      expect(result).to.eql({ a: '1', b: 2 });
+    });
+  });
+
+  describe('.when() - Tests the final argument by passing it to the given predicate function. If the predicate is satisfied, the function will return the result of calling the whenTrueFn function with the same argument. If the predicate is not satisfied, the argument is returned as is.', () => {
+    it('should call operation on data when predicate is satisfied, else just returning original value', () => {
+      var truncate = R.when(
+        R.propSatisfies(R.gt(R.__, 10), 'length'),
+        R.pipe(R.take(10), R.append('…'), R.join(''))
+      );
+
+      var result = truncate('12345');
+      expect(result).to.eql('12345');
+
+      var result2 = truncate('0123456789ABC');
+      expect(result2).to.eql('0123456789…');
+    });
+  });
+
+  describe('.where() - Takes a spec object and a test object; returns true if the test satisfies the spec. Each of the specs own properties must be a predicate function. Each predicate is applied to the value of the corresponding property of the test object. where returns true if all the predicates return true, false otherwise.', () => {
+    it('should return true if object looks like spec says', () => {
+      var pred = R.where({
+        a: R.equals('foo'),
+        b: R.complement(R.equals('bar')),
+        x: R.gt(R.__, 10),
+        y: R.lt(R.__, 20)
+      });
+
+      var r1 = pred({ a: 'foo', b: 'xxx', x: 11, y: 19 });
+      var r2 = pred({ a: 'xxx', b: 'xxx', x: 11, y: 19 });
+
+      expect(r1).to.be.true;
+      expect(r2).to.be.false;
+    });
+  });
+
+  describe('.whereEq() - Takes a spec object and a test object; returns true if the test satisfies the spec, false otherwise. An object satisfies the spec if, for each of the specs own properties, accessing that property of the object gives the same value (in R.equals terms) as accessing that property of the spec.', () => {
+    it('should return true if object matches the spec', () => {
+      var pred = R.whereEq({ a: 1, b: 2 });
+
+      var r1 = pred({ a: 1 });
+      var r2 = pred({ a: 1, b: 2 });
+      var r3 = pred({ a: 1, b: 2, c: 3 });
+
+      expect(r1).to.be.false;
+      expect(r2).to.be.true;
+      expect(r3).to.be.true;
+    });
+  });
+
+  describe('.without() - Returns a new list without values in the first argument. R.equals is used to determine equality.', () => {
+    it('should return copy of list without args passed', () => {
+      var result = R.without([1, 2], [1, 2, 1, 3, 4]);
+
+      expect(result).to.eql([3, 4]);
+    });
+  });
+
+  describe('.without() - Returns a new list without values in the first argument. R.equals is used to determine equality.', () => {
+    it('should return copy of list without args passed', () => {
+      var result = R.without([1, 2], [1, 2, 1, 3, 4]);
+
+      expect(result).to.eql([3, 4]);
+    });
+  });
+
+  describe('.xprod() - Creates a new list out of the two supplied by creating each possible pair from the lists.', () => {
+    it('should return prod with all combinations possible', () => {
+      var result = R.xprod([1, 2], ['a', 'b']);
+
+      expect(result).to.eql([[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]);
+    });
+  });
+
+  describe('.zip() - Creates a new list out of the two supplied by pairing up equally-positioned items from both lists. The returned list is truncated to the length of the shorter of the two input lists. Note: zip is equivalent to zipWith(function(a, b) { return [a, b] }).', () => {
+    it('should zip items', () => {
+      var result = R.zip([1, 2, 3], ['a', 'b', 'c']);
+
+      expect(result).to.eql([[1, 'a'], [2, 'b'], [3, 'c']]);
+    });
+  });
+
+  describe('.zipObj() - Creates a new object out of a list of keys and a list of values. Key/value pairing is truncated to the length of the shorter of the two lists. Note: zipObj is equivalent to pipe(zipWith(pair), fromPairs).', () => {
+    it('should zip to object', () => {
+      var result = R.zipObj(['a', 'b', 'c'], [1, 2, 3]);
+
+      expect(result).to.eql({ a: 1, b: 2, c: 3 });
+    });
+  });
+
+  describe('.zipWith() - Creates a new list out of the two supplied by applying the function to each equally-positioned pair in the lists. The returned list is truncated to the length of the shorter of the two input lists.', () => {
+    it('should zip with function which decides how to combine two items from arrays.', () => {
+      var f = (x, y) => {
+        return x + y;
+      };
+      var result = R.zipWith(f, [1, 2, 3], ['a', 'b', 'c']);
+
+      expect(result).to.eql(['1a', '2b', '3c']);
     });
   });
 });
