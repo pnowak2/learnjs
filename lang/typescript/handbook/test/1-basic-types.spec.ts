@@ -2,135 +2,143 @@ import { expect } from 'chai';
 
 describe('Basic Types', () => {
   describe('Boolean', () => {
-    it('should declare with proper type', () => {
+    it('should declare it', () => {
       let isDone: boolean = false;
 
-      expect(isDone).to.eql(false);
+      expect(isDone).to.be.false;
     });
   });
 
   describe('Number', () => {
-    it('should declare with proper type', () => {
+    it('should declare it', () => {
       let decimal: number = 6;
-      let hex: number = 0x6;
-      let binary: number = 0b1;
-      let octal: number = 0o12;
+      let hex: number = 0xf00d;
+      let binary: number = 0b101;
+      let octal: number = 0o6;
 
       expect(decimal).to.eql(6);
-      expect(hex).to.eql(0x6);
-      expect(binary).to.eql(0b1);
-      expect(octal).to.eql(0o12);
+      expect(hex).to.eql(0xf00d);
+      expect(binary).to.eql(0b101);
+      expect(octal).to.eql(0o6);
     });
   });
 
   describe('String', () => {
-    it('should declare with proper type', () => {
-      let name: string = 'piotr';
-      let middle: string = `andrzej`;
-      let last: string = "nowak";
-      let full: string = `${name} ${middle} ${last}`;
+    it('should declare it', () => {
+      let color: string = 'test';
 
-      expect(name).to.eql('piotr');
-      expect(middle).to.eql('andrzej');
-      expect(last).to.eql('nowak');
-      expect(full).to.eql('piotr andrzej nowak');
+      expect(color).to.eql('test');
+    });
+
+    it('should use template string', () => {
+      let name: string = 'Piotr';
+      let greeting: string = `Hello, my name is ${name}`;
+
+      expect(greeting).to.eql('Hello, my name is Piotr');
     });
   });
 
   describe('Array', () => {
-    it('should declare with proper type', () => {
-      let list: number[] = [1, 2, 3];
+    it('should declare it', () => {
+      let list: [string] = ['hello', 'world'];
+      let list2: Array<string> = ['hello', 'world'];
 
-      expect(list).to.eql([1, 2, 3]);
-    });
-
-    it('should declare with proper type and generics', () => {
-      let list: Array<number> = [1, 2, 3];
-
-      expect(list).to.eql([1, 2, 3]);
+      expect(list).to.eql(['hello', 'world']);
+      expect(list2).to.eql(['hello', 'world']);
     });
   });
 
-  describe('Tupple', () => {
-    it('should declare with proper type (array with fixed number of elements with known type)', () => {
-      let x: [string, number] = ['foo', 24];
+  describe('Tuple', () => {
+    it('should declare it', () => {
+      let tuple: [string, number] = ['test', 5];
+      // tuple = [5, 'test']; // ILLEGAR, ERROR
 
-      expect(x).to.eql(['foo', 24]);
-
-      expect(x[0]).to.eql('foo');
-      expect(x[2]).to.eql(undefined);
+      expect(tuple).to.eql(['test', 5]);
     });
-  });
+    
+    it('should access tuple elements', () => {
+      let tuple: [string, number] = ['test', 5];
 
+      expect(tuple[0]).to.eql('test');
+      expect(tuple[1]).to.eql(5);
+    });     
+  });
+  
   describe('Enum', () => {
-    it('should declare enum type', () => {
-      enum Color { Red = 1, Green, Blue };
+    it('should declare it', () => {
+      enum Color { Red = 2, Blue, Green };
 
-      let c = Color.Blue;
+      let c:Color = Color.Green;
 
-      expect(c).to.eql(Color.Blue);
-      expect(c).to.eql(3);
+      expect(c).to.eql(Color.Green);
     });
   });
 
   describe('Any', () => {
-    it('should use if type is not known in advance', () => {
-      let notSure: any = 22;
-      notSure = 'changing to string';
+    it('should declare it', () => {
+      let notSure: any = 4;
+      notSure = 'maybe string then';
       notSure = false;
 
       expect(notSure).to.eql(false);
     });
+    
+    it('should allow call any method on it', () => {
+      let notSure: any = 'test';
 
-    it('should use to declare arrays of mixed types', () => {
-      let list: any[] = [1, 'a', Object];
+      notSure.toUpperCase();
+      // notSure.doesNotExist(); // possible, but here does not exist, will throw error
+    });
+    
+    it('should be handy for array of different types', () => {
+      let list: any[] = [1, true, 'false'];
 
-      expect(list[2]).to.eql(Object);
+      expect(list).to.eql([1, true, 'false']);
     });
   });
 
   describe('Void', () => {
-    it('should use as opposite of any (nothing)', () => {
-      function fn(): void { };
-      expect(fn()).to.eql(undefined);
-    });
+    it('should declare it', () => {
+      let c:void = undefined;
+      let f = () => void {}
 
-    it('should assign only undefined or null to void type', () => {
-      let unusable: void = undefined;
-      let useless: void = null;
-
-      expect(unusable).to.be.undefined;
-      expect(useless).to.be.null;
+      expect(c).to.eql(void 0);
     });
   });
 
-  describe('Null and undefined', () => {
-    it('should use Null', () => {
-      let u: undefined = undefined;
-      let n: null = null;
+  describe('Null and Undefined', () => {
+    it('should declare it', () => {
+      let u:undefined = undefined;
+      let n:null = null;
 
-      expect(u).to.be.undefined;
-      expect(n).to.be.null; 
+      expect(u).to.eql(void 0);
+      expect(n).to.eql(null);
     });
   });
 
   describe('Never', () => {
-    function fn() : never {
-      throw new Error();
-    }
+    it('should declare it', () => {
+      function error(message: string): never {
+        throw new Error(); // without throwing will cause compilation error
+      }
+
+      function infinite(): never {
+        while(true) {
+          // or should be infinite, cannot ever return
+        }
+      }
+    });
   });
 
-  describe('Type Assertions', () => {
-    it('should use like casting types with angle brackets', () => {
-      let something: any = "test";
+  describe('Type assertions', () => {
+    it('should declare it', () => {
+      let notSure: any = 'test';
 
-      expect((<string>something).length).to.eql(4);
-    });
+      let isaString = notSure as string;
+      let isaString2 = <string>notSure;
 
-    it('should use like casting types with "as" keyword', () => {
-      let something: any = "test";
-
-      expect((something as string).length).to.eql(4);
+      expect(isaString).to.eql('test');
+      expect(isaString2).to.eql('test');
     });
   });
 });
