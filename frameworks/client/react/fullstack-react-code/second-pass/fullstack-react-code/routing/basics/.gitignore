@@ -15,3 +15,5 @@ build
 npm-debug.log
 
 tests_output/*
+
+node_modules
