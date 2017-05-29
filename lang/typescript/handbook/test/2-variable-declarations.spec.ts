@@ -237,6 +237,55 @@ describe('Variable Declarations', () => {
   });
 
   describe('Function declarations', () => {
+    it('should define complex type as argument of function', () => {
+      type C = { a: string, b?: number }
+
+      function f({ a, b }: C): string {
+        return a + b;
+      }
+
+      expect(f({
+        a: 'hello',
+        b: 5
+      })).to.eql('hello5');
+    });
+
+    it('should define complex type with default values', () => {
+      function f({ a: string, b: number }: { a: 'test', b: 2 }): void {
+
+      }
+
+    });
+  });
+  
+  describe('Spread', () => {
+    it('should allow to spread an array into another array', () => {
+      let first = [1, 2];
+      let second = [3, 4];
+
+      let third = [0, ...first, ...second];
+
+      expect(third).to.eql([0, 1, 2, 3, 4]);
+    });
+
     
+    it('should spread objects', () => {
+      let person = {
+        name: 'peter',
+        age: 37
+      };
+
+      let allData = {
+        ...person,
+        id: 5,
+        age: 38
+      };
+
+      expect(allData).to.eql({
+        name: 'peter',
+        age: 38,
+        id: 5
+      })
+    });
   });
 });
