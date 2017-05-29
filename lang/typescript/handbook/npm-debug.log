@@ -1,0 +1,36 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'test' ]
+2 info using npm@3.10.8
+3 info using node@v6.9.1
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle typescript-handbook@1.0.0~pretest: typescript-handbook@1.0.0
+6 silly lifecycle typescript-handbook@1.0.0~pretest: no script for pretest, continuing
+7 info lifecycle typescript-handbook@1.0.0~test: typescript-handbook@1.0.0
+8 verbose lifecycle typescript-handbook@1.0.0~test: unsafe-perm in lifecycle true
+9 verbose lifecycle typescript-handbook@1.0.0~test: PATH: C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\nowapio\AppData\Local\Local Documents - no backup\Workspace\js\learnjs\lang\typescript\handbook\node_modules\.bin;C:\PGM\oracle\product\11.2.0\client_x86\bin;C:\Program Files (x86)\Cuminas\Document Express DjVu Plug-in\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\idmu\common;C:\Program Files (x86)\Common Files\PowerSoft Shared;C:\Program Files (x86)\Microsoft Application Virtualization Client;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\TortoiseSVN\bin;C:\Program Files\SlikSvn\bin;C:\Program Files (x86)\Java\jre7\bin;;C:\Users\nowapio\AppData\Local\npm;C:\Program Files\apache-maven-3.0.4\bin;C:\Program Files\Java\jdk1.7.0_80\bin;C:\Program Files (x86)\Microsoft VS Code\bin
+10 verbose lifecycle typescript-handbook@1.0.0~test: CWD: C:\Users\nowapio\AppData\Local\Local Documents - no backup\Workspace\js\learnjs\lang\typescript\handbook
+11 silly lifecycle typescript-handbook@1.0.0~test: Args: [ '/d /s /c', 'karma start' ]
+12 verbose stack Error: kill ENOSYS
+12 verbose stack     at exports._errnoException (util.js:1026:11)
+12 verbose stack     at process.kill (internal/process.js:172:13)
+12 verbose stack     at process.listener (C:\Program Files\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+12 verbose stack     at emitNone (events.js:91:20)
+12 verbose stack     at process.emit (events.js:185:7)
+12 verbose stack     at processEmit (C:\Program Files\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at processEmit (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at Signal.wrap.onsignal (internal/process.js:199:44)
+13 verbose cwd C:\Users\nowapio\AppData\Local\Local Documents - no backup\Workspace\js\learnjs\lang\typescript\handbook
+14 error Windows_NT 6.1.7601
+15 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "test"
+16 error node v6.9.1
+17 error npm  v3.10.8
+18 error code ENOSYS
+19 error errno ENOSYS
+20 error syscall kill
+21 error kill ENOSYS
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]
