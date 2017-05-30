@@ -113,7 +113,6 @@ describe('Interfaces', () => {
       let mySquare = createSquare({ colour: "red", width: 100 } as SquareConfig); // possible, with casting
     });
 
-
     it('should declare interface so it can accept any property of "any" type in the object', () => {
       interface SquareConfig {
         color?: string;
@@ -220,8 +219,44 @@ describe('Interfaces', () => {
       const a: ClockInterface = createClock(AnalogClock, 11, 55);
     });
   });
-  
+
   describe('Extending Interfaces', () => {
-    
+    it('should make extension possible', () => {
+      interface Shape {
+        color: string;
+      }
+
+      interface Square extends Shape {
+        sideLength: number;
+      }
+
+      let square: Square = {
+        color: 'red',
+        sideLength: 5
+      }
+    });
+  });
+
+  describe('Hybrid Types', () => {
+    it('should describe function and object', () => {
+      interface Counter {
+        (start: number): string;
+        interval: number;
+        reset(): void;
+      }
+
+      function getCounter(): Counter {
+        let counter = <Counter>function (start: number) { };
+        counter.interval = 123;
+        counter.reset = function () { };
+
+        return counter;
+      }
+
+      let c = getCounter();
+      c(10);
+      c.reset();
+      c.interval = 2;
+    });
   });
 });
