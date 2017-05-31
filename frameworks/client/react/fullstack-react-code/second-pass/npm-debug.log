@@ -1,7 +1,6 @@
 0 info it worked if it ends with ok
 1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   'run',
 1 verbose cli   'start' ]
 2 info using npm@3.10.8
 3 info using node@v6.9.1
@@ -9,7 +8,7 @@
 4 verbose stack     at Error (native)
 5 verbose cwd C:\Users\nowapio\AppData\Local\Local Documents - no backup\Workspace\js\learnjs\frameworks\client\react\fullstack-react-code\second-pass
 6 error Windows_NT 6.1.7601
-7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "start"
+7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"
 8 error node v6.9.1
 9 error npm  v3.10.8
 10 error path C:\Users\nowapio\AppData\Local\Local Documents - no backup\Workspace\js\learnjs\frameworks\client\react\fullstack-react-code\second-pass\package.json

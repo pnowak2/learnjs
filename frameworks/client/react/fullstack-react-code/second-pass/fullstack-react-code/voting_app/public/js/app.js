@@ -90,5 +90,3 @@ class ProductsList extends React.Component {
 }
 
 ReactDOM.render(<ProductsList />, document.querySelector('#content'));
-
-// Making Product data-driven

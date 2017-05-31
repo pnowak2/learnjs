@@ -167,6 +167,7 @@ describe('Classes', () => {
       let o4 = new Octopus4('octo');
       o.name;
 
+      o.name;
       // o.name = ''; // illegal, readonly
       o2.name = 'test';
       // o3.name; // illegal, protected
