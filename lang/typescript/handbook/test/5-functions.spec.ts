@@ -124,11 +124,26 @@ describe('Functions', () => {
     });
 
 
-    it('make this unusable', () => {
+    it('make this object unusable', () => {
       function fn(this: void) {
         // this.whatever; // this is void, cannot use it without compilation problems.
       }
     });
 
+  });
+  
+  describe('Overloads', () => {
+    it('should pick correct function', () => {
+      // list of overloads
+      function fn(name: string): string;
+      function fn(age: number): number;
+
+      function fn(x): any {
+        return x;
+      }
+
+      expect(fn(5)).to.eql(5);
+      expect(fn('test')).to.eql('test');
+    });
   });
 });

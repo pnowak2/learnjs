@@ -137,6 +137,13 @@ describe('Classes', () => {
 
 
     it('should use parameter properties pattern to initialize ', () => {
+      class OctopusNoProperty {
+        constructor(name: string) {
+          // this.name = name; // won't work, no property created
+        }
+      }
+
+
       class Octopus {
         constructor(readonly name: string) {
           this.name = name;
