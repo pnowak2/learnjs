@@ -11,7 +11,7 @@ describe('Type Inference', () => {
   });
 
   describe('Best Common Type', () => {
-    it('should behave...', () => {
+    it('should choose automatically best type', () => {
       let x/*: Array<number>*/ = [0, 1, null];
     });
 
