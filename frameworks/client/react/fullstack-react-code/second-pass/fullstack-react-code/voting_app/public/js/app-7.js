@@ -19,8 +19,7 @@ class ProductList extends React.Component {
   render() {
     const products = this.state.products.sort((a, b) => (
       b.votes - a.votes
-    ));
-    const productComponents = products.map((product) => (
+    )).map((product) => (
       <Product
         key={'product-' + product.id}
         id={product.id}
@@ -35,7 +34,7 @@ class ProductList extends React.Component {
     ));
     return (
       <div className='ui unstackable items'>
-        {productComponents}
+        {products}
       </div>
     );
   }
