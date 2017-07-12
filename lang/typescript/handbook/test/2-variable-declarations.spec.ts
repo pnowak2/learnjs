@@ -182,6 +182,7 @@ describe('Variable Declarations', () => {
       let [, second, ...rest] = [1, 2, 3, 4, 5];
 
       expect(second).to.eql(2);
+      expect(rest).to.eql([3, 4, 5]);
     });
 
     it('should destructure object', () => {
@@ -254,7 +255,6 @@ describe('Variable Declarations', () => {
       function f({ a: string, b: number }: { a: 'test', b: 2 }): void {
 
       }
-
     });
   });
   

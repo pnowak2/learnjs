@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 describe('Interfaces', () => {
   describe('First interface', () => {
-    it('should define simple contract', () => {
+    it('should define simple contract (like interface but without interface keyword, inline interface)', () => {
       function printLabel(labelledObj: { label: string }) {
         return labelledObj.label;
       }
@@ -82,7 +82,7 @@ describe('Interfaces', () => {
       arr[0] = 5;
       arr.push(6);
       // roArr[0] = 5; // illegal, readonly array there
-      // roArr.push(7) // push() does not exist here in interface of readonly array
+      // roArr.push(6) // push() does not exist here in interface of readonly array
     });
   });
 

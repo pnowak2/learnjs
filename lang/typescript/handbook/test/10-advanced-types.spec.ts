@@ -57,7 +57,9 @@ describe('Advanced Types', () => {
       }
 
       function getSmallPet(): Fish | Bird {
-        return null;
+        return <Bird>{
+          layEggs: () => { }
+        };
       }
 
       let pet = getSmallPet();
@@ -68,7 +70,6 @@ describe('Advanced Types', () => {
 
 
   describe('Type Guards', () => {
-
     it('should declare user defined type guard', () => {
       interface Bird {
         fly();
@@ -85,11 +86,13 @@ describe('Advanced Types', () => {
       }
 
       function getSmallPet(): Fish | Bird {
-        return null;
+        return <Bird>{
+          fly: () => { }
+        };
       }
 
       let pet = getSmallPet();
-      
+
       if (isFish(pet)) { // only possible because of above :pet is Fish
         pet.swim();
       }
@@ -98,6 +101,130 @@ describe('Advanced Types', () => {
       }
     });
 
+    it('should use typeof guard', () => {
+      function isNumber(x: any) {
+        return typeof (x) === 'number';
+      }
+
+      expect(isNumber(5)).to.be.true;
+      expect(isNumber('5')).to.be.false;
+    });
+
+
+    it('should use instanceof type guard', () => {
+      class Person {
+        name: string;
+      }
+
+      class Office {
+        address: string;
+      }
+
+      const isPerson = (type: any) => {
+        return type instanceof Person;
+      }
+
+      const isOffice = (type: any) => {
+        return type instanceof Office;
+      }
+
+      expect(isPerson(new Person())).to.be.true;
+      expect(isOffice(new Person())).to.be.false;
+    });
   });
 
+  describe('Nullable types', () => {
+    it('should be aware of null in declaration', () => {
+      function f(sn: string | null): string {
+        return sn || "default";
+      }
+    });
+  });
+
+  describe('Type aliases', () => {
+    it('should declare simple type alias', () => {
+      type Name = string;
+
+      const n: Name = 'Piotr';
+
+      expect(n).to.eql('Piotr');
+    });
+
+    it('should declare more advanced example to simplify long declarations', () => {
+      type Name = string;
+      type NameResolver = () => string;
+      type NameOrResolver = Name | NameResolver;
+
+      function getName(n: NameOrResolver): Name {
+        if (typeof n === "string") {
+          return n;
+        }
+        else {
+          return n();
+        }
+      }
+
+      expect(getName('piotr')).to.eql('piotr');
+      expect(getName(() => 'nowak')).to.eql('nowak');
+    });
+  });
+
+  it('should declare generic type aliases', () => {
+    type Tree<T> = {
+      root: T,
+      child?: Tree<T>
+    }
+
+    let birch: Tree<string> = {
+      root: 'oak'
+    }
+
+    birch.root;
+    // birch.child.child.root; // this is working properly and intellisense gives good hints.
+  });
+
+  describe('String Literal Types', () => {
+    type Easing = "ease-in" | "ease-out" | "ease-in-out";
+
+    const ease = (easing: Easing) => {
+
+    }
+
+    ease('ease-in');
+    // ease('garbage'); // won't compile, not on the list of allowed string literals
+  });
+
+  describe('Discriminated Unions', () => {
+    it('should avoid casting using discrimination mechanism', () => {
+      interface Square {
+        kind: "square";
+        size: number;
+      }
+      interface Rectangle {
+        kind: "rectangle";
+        width: number;
+        height: number;
+      }
+      interface Circle {
+        kind: "circle";
+        radius: number;
+      }
+
+      type Shape = Square | Rectangle | Circle; // discriminated union
+
+      function area(s: Shape) {
+        switch (s.kind) {
+          case "square": return s.size * s.size;
+          case "rectangle": return s.height * s.width;
+          case "circle": return Math.PI * s.radius ** 2;
+        }
+      }
+    });
+  });
+  
+  describe('Polymorphic this types', () => {
+    it('should behave...', () => {
+      
+    });
+  });
 });

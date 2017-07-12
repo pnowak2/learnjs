@@ -73,7 +73,7 @@ describe('Classes', () => {
       animal.name;
     });
 
-    it('should have private', () => {
+    it('should have private field', () => {
       class Animal {
         private name: string;
         constructor(name: string) { this.name = name; };
