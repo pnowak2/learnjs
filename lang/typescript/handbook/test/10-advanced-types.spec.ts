@@ -221,10 +221,75 @@ describe('Advanced Types', () => {
       }
     });
   });
-  
+
   describe('Polymorphic this types', () => {
+    it('should make use of this in inherited classes', () => {
+      class BasicCalculator {
+        public constructor(protected value: number = 0) { }
+
+        public currentValue(): number {
+          return this.value;
+        }
+
+        public add(operand: number): this {
+          this.value += operand;
+          return this;
+        }
+
+        public multiply(operand: number): this {
+          this.value *= operand;
+          return this;
+        }
+      }
+
+      class ScientificCalculator extends BasicCalculator {
+        public constructor(value = 0) {
+          super(value);
+        }
+
+        public sin() {
+          this.value = Math.sin(this.value);
+          return this;
+        }
+      }
+
+
+      let v = new BasicCalculator(2)
+        .multiply(5)
+        .add(1)
+        .currentValue();
+
+      let v2 = new ScientificCalculator(2)
+        .multiply(5)
+        .sin()
+        .add(1)
+        .currentValue();
+
+
+      expect(v).to.eql(11);
+      expect(v2).to.be.closeTo(0.45, 0.01);
+    });
+  });
+
+  describe('Index Types', () => {
     it('should behave...', () => {
-      
+      function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+        return names.map(n => o[n]);
+      }
+
+      interface Person {
+        name: string;
+        age: number;
+      }
+
+      let person: Person = {
+        name: 'Jarid',
+        age: 35
+      };
+
+      let strings: string[] = pluck(person, ['name']);
+
+      expect(strings).to.eql(['Jarid']);
     });
   });
 });
