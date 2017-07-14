@@ -1,0 +1,17 @@
+<div id="elem">
+  <div id="elem-content">Element</div>
+</div>
+
+<script>
+  console.log(elem); // DOM-element with id="elem"
+  console.log(window.elem); // accessing global variable like this also works
+
+  // for elem-content things are a bit more complex
+  // that has a dash inside, so it can't be a variable name
+  console.log(window['elem-content']); // ...but accessible using square brackets [...]
+
+  let elem2 = document.getElementById('elem');
+
+  elem.style.background = 'red';
+
+</script>

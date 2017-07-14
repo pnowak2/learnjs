@@ -1,0 +1,29 @@
+<body id="test" something="non-standard">
+  <div id="elem" about="Elephant"></div>
+
+  <script>
+    // elem.hasAttribute(name) – checks for existence.
+    // elem.getAttribute(name) – gets the value.
+    // elem.setAttribute(name, value) – sets the value.
+    // elem.removeAttribute(name) – removes the attribute.
+
+    console.log(document.body.id); // test
+    // non-standard attribute does not yield a property
+    console.log(document.body.something); // undefined
+
+
+    console.log(document.body.getAttribute('something')); // non-standard
+
+
+
+    console.log(elem.getAttribute('About')); // (1) 'Elephant', reading
+
+    elem.setAttribute('Test', 123); // (2), writing
+
+    console.log(elem.outerHTML); // (3), see it's there
+
+    for (let attr of elem.attributes) { // (4) list all
+      console.log(attr.name + " = " + attr.value);
+    }
+  </script>
+</body>
