@@ -1,0 +1,34 @@
+<style>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    overflow-y: scroll;
+  }
+</style>
+
+<body>
+  <br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a
+  <button id="scrollBtn">Show scroll state</button>
+  <br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a
+  <script>
+    // Regular elements have their current scroll state in elem.scrollLeft/scrollTop.
+    // What’s with the page? Most browsers provide documentElement.scrollLeft/Top for the document scroll, but Chrome/Safari/Opera have bugs (like 157855, 106133) and we should use document.body instead of document.documentElement there.
+    // Luckily, we don’t have to remember these peculiarities at all, because of the special properties window.pageXOffset/pageYOffset:
+
+    console.log('Current scroll from the top: ' + window.pageYOffset);
+    console.log('Current scroll from the left: ' + window.pageXOffset);
+    console.log('window.scrollY: ' + window.scrollY);
+    console.log('window.scrollX: ' + window.scrollX);
+
+    scrollBtn.addEventListener('click', (evt) => {
+      console.log('Current scroll from the top: ' + window.pageYOffset);
+      console.log('Current scroll from the left: ' + window.pageXOffset);
+      console.log('window.scrollY: ' + window.scrollY);
+      console.log('window.scrollX: ' + window.scrollX);
+    });
+  </script>
+</body>

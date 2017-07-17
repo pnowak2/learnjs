@@ -1,0 +1,28 @@
+<style>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    overflow-y: scroll;
+  }
+</style>
+
+<body>
+  <br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a<br/>a
+  <script>
+    // Theoretically, as the root document element is documentElement.clientWidth/Height, and it encloses all the content, we could measure its full size as documentElement.scrollWidth/scrollHeight.
+    // These properties work well for regular elements. But for the whole page these properties do not work as intended. In Chrome/Safari/Opera if there’s no scroll, then documentElement.scrollHeight may be even less than documentElement.clientHeight! For regular elements that’s a nonsense.
+    // To have a reliable full window size, we should take the maximum of these properties:
+
+    let scrollHeight = Math.max(
+      document.body.scrollHeight, document.documentElement.scrollHeight,
+      document.body.offsetHeight, document.documentElement.offsetHeight,
+      document.body.clientHeight, document.documentElement.clientHeight
+    );
+
+    console.log('Reliable full document height, with scrolled out part: ' + scrollHeight);
+  </script>
+</body>
