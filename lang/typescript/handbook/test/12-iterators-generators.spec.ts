@@ -12,7 +12,6 @@ describe('Iterators and Generators', () => {
       expect(result).to.eql('1stringfalse');
     });
 
-
     it('should show difference between for..in and for..of', () => {
       let list = [4, 5, 6];
 
