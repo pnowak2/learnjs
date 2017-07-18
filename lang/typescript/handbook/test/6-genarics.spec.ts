@@ -85,7 +85,7 @@ describe('Generics', () => {
   });
 
   describe('Generic Constraints', () => {
-    it('should behave...', () => {
+    it('should be inherited from Lengthwise', () => {
       interface Lengthwise {
         length: number;
       }
