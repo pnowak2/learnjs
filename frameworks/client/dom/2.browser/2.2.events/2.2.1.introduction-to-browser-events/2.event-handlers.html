@@ -1,0 +1,35 @@
+<h3>HTML-attribute</h3>
+<input value="Click me" onclick="alert('Click!')" type="button">
+
+<h3>DOM property</h3>
+<input id="elem" type="button" value="Click me">
+<script>
+  elem.onclick = function () {
+    alert('Thank you');
+  };
+  // To remove a handler – assign elem.onclick = null.
+
+</script>
+
+<h3>Handling this - its the element itself passed to this</h3>
+<button onclick="alert(this.innerHTML)">Click me</button>
+
+<h3>addEventListener</h3>
+<input id="addEvtEl" value="Click me" type="button">
+<script>
+  addEvtEl.addEventListener('click', () => alert('hello world'));
+  // element.addEventListener(event, handler[, phase]);
+  // event
+  //   Event name, e.g. "click".
+
+  // handler
+  //   The handler function.
+
+  // phase
+  //   An optional argument, the “phase” for the handler to work. To be covered later. Usually we don’t use it.
+
+  // To remove the handler, use removeEventListener:
+
+  // // exactly the same arguments as addEventListener
+  // element.removeEventListener(event, handler[, phase]);
+</script>
