@@ -27,6 +27,7 @@
     "webpack": "^1.12.12"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.69",
     "jquery": "^2.2.0"
   }
 }
