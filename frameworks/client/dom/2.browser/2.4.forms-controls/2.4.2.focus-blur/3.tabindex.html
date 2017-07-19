@@ -1,0 +1,24 @@
+The purpose of this attribute is to specify the order number of the element when Tab is used to switch between them. That
+is: if we have two elements, the first has tabindex="1", and the second has tabindex="2", then pressing Tab while in the
+first element – moves us to the second one. There are two special values: tabindex="0" makes the element the last one. tabindex="-1"
+means that Tab should ignore that element.
+
+<br> Click the first item and press Tab. Keep track of the order. Please note that many subsequent Tabs can move the focus
+out of the iframe with the example.
+<ul>
+  <li tabindex="1">One</li>
+  <li tabindex="0">Zero</li>
+  <!-- last one -->
+  <li tabindex="2">Two</li>
+  <li tabindex="-1">Minus one</li>
+</ul>
+
+<style>
+  li {
+    cursor: pointer;
+  }
+  
+  :focus {
+    outline: 1px dashed green;
+  }
+</style>

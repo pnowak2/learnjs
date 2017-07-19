@@ -1,0 +1,8 @@
+<input type="text" id="input">
+<script>
+  input.oncut = input.oncopy = input.onpaste = function (event) {
+    alert(event.type + ' - ' + event.clipboardData.getData('text/plain'));
+    return false;
+  };
+
+</script>

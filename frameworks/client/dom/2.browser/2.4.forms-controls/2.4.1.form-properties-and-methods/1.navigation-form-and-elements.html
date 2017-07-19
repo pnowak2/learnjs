@@ -1,0 +1,15 @@
+<form name="my">
+  <input name="one" value="value input 1">
+  <input name="two" value="value input 2">
+</form>
+
+<script>
+  // get the form
+  let form = document.forms.my; // <form name="my"> element
+
+  // get the element
+  let elem = form.elements.one; // <input name="one"> element
+
+  console.log(elem.value); // 1
+
+</script>

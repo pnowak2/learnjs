@@ -1,0 +1,19 @@
+<button id="color">Click me</button>
+
+<style>
+  #color {
+    transition-property: background-color;
+    transition-duration: 3s;
+  }
+</style>
+
+<script>
+  color.onclick = function () {
+    this.style.backgroundColor = 'red';
+  };
+
+  color.addEventListener('transitionend', (evt) => {
+    console.log('transition ended', evt);
+  });
+
+</script>

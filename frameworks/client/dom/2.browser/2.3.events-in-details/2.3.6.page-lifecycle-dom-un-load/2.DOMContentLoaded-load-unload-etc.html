@@ -1,0 +1,39 @@
+<script>
+  function ready() {
+    console.log('DOM is ready');
+
+    // image is not yet loaded (unless was cached), so the size is 0x0
+    console.log(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
+
+    console.log('document.readyState', document.readyState);
+  }
+
+  function loaded() {
+    console.log('DOM is loaded');
+
+    // image is not yet loaded (unless was cached), so the size is 0x0
+    console.log(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
+    console.log('document.readyState', document.readyState);
+  }
+
+  document.addEventListener("DOMContentLoaded", ready);
+
+  window.onload = loaded;
+
+  window.onbeforeunload = function () {
+    return "There are unsaved changes. Leave now?";
+  };
+
+  if (document.readyState == 'loading') {
+    document.addEventListener('DOMContentLoaded', (evt) => {
+      console.log('now dom content is loaded')
+    });
+  } else {
+    console.log('dom content is not loaded yet');
+  }
+
+  console.log('document.readyState', document.readyState);
+
+</script>
+
+<img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0">
