@@ -1,0 +1,19 @@
+For our own, custom events like "hello" we should use new CustomEvent. Technically CustomEvent is the same as Event, with
+one exception. In the second argument (object) we can add an additional property detail for any custom information that we
+want to pass with the event.
+
+<h1 id="elem">Hello for John!</h1>
+
+<script>
+  // additional details come with the event to the handler
+  elem.addEventListener("hello", function (event) {
+    alert(event.detail.name);
+  });
+
+  const evt = new CustomEvent("hello", {
+    detail: { name: "John" }
+  });
+
+  elem.dispatchEvent(evt);
+
+</script>
