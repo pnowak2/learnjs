@@ -6,7 +6,7 @@ https://www.w3schools.com/jsref/default.asp
 JAVASCRIPT.INFO
 http://javascript.info/size-and-scroll#geometry
 
-todo
+https://stackoverflow.com/questions/21064101/understanding-offsetwidth-clientwidth-scrollwidth-and-height-respectively
 
 /// element
 
