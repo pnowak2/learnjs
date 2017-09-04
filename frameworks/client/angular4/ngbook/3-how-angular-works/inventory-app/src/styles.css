@@ -1,49 +1,65 @@
 @import './app/vendor/semantic.min.css';
+/* You can add global styles to this file, and also import other style files */
 
 .ui.menu .item img.logo {
     margin-right: 1.5em;
 }
 
-form.ui.segment.form {
-  background-color: #F1F9FF;
-  margin-top: 2em;
-}
-
-form.form:after {
-  content: '';
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.votes {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #E6E6E6;
-  padding: 1em 0;
+.ui.items>.item {
+  border: 1px solid rgba(255, 255, 255, 0.0);
   border-radius: 5px;
 }
 
-.ui.grid.posts {
-  margin-top: 2em;
+.ui.items>.item.selected {
+  border: 1px solid rgba(163, 51, 200, 0.41);
+  border-radius: 5px;
 }
 
-.meta {
-  color: #9A9A9A
+.ui.items>.item>.content>.header {
+    padding-top: 1em;
 }
 
-.ui.grid>.row>.column.votes {
-  display: flex;
+.products-list {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
 
-ul.ui.list li:before {
-  content: '';
+.product-row {
+  border-bottom: 1px solid black;
 }
 
-.voters {
-  clear: both;
-  width: 100%;
+.product-image {
+  float: left;
+}
+
+.product-info {
+  padding: 30px;
+  float: left;
+}
+
+.price-display {
+  padding: 30px;
+  float: right;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  padding: 20px;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+cf {
+    *zoom: 1;
 }
 
