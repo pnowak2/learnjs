@@ -2,7 +2,8 @@ var path = require('path');
 
 module.exports = {
   entry: [
-    'mocha!./specs/1-thinking-reactively.spec.js'
+    'mocha!./specs/1-thinking-reactively.spec.js',
+    'mocha!./specs/2-reacting-with-rxjs.spec.js'
   ],
   output: {
     path: 'builds',
