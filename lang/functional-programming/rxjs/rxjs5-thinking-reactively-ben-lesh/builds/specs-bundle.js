@@ -363,16 +363,18 @@
 	describe('1 Thinking Reactively', function () {
 	  it('should define my operator', function () {
 	    var finish = _observable.Observable
-	    // .fromArray([5, 6])
-	    .fromEvent(window, 'click').count().map(function (val) {
-	      return val * val + '!';
-	    }).map(function (val) {
-	      return val + '!';
-	    }).flatMap(function (val) {
-	      return _observable.Observable.fromArray([val, 2, 3, 4, 5]);
+	    // .fromArray([1, 2, 2, 3, 4, 5])
+	    .fromEvent(window, 'click').count()
+	    // .map(val => val * val + '!')
+	    // .map(val => val + '!')
+	    .flatMap(function (val) {
+	      return _observable.Observable.ajax('https://api.github.com/users/pnowak2', 'orgs');
 	    })
 	    // .take(3)
-	    .subscribe({
+	    // .buffer(2)
+	    .map(function (data) {
+	      return data.login;
+	    }).distinct().subscribe({
 	      next: function next(val) {
 	        console.log(val);
 	      },
@@ -8996,14 +8998,38 @@
 	      });
 	    }
 	  }, {
+	    key: "distinct",
+	    value: function distinct() {
+	      var _this4 = this;
+
+	      return new Observable(function (observer) {
+	        var last = void 0;
+
+	        return _this4.subscribe({
+	          next: function next(val) {
+	            if (last !== val) {
+	              observer.next(val);
+	            }
+	            last = val;
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
 	    key: "take",
 	    value: function take(n) {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var i = 0;
 
 	      return new Observable(function (observer) {
-	        return _this4.subscribe({
+	        return _this5.subscribe({
 	          next: function next(val) {
 	            if (i <= n - 1) {
 	              observer.next(val);
@@ -9058,6 +9084,20 @@
 	      return new Observable(function (observer) {
 	        el.addEventListener(eventName, function () {
 	          observer.next(el);
+	        });
+	      });
+	    }
+	  }, {
+	    key: "ajax",
+	    value: function ajax(url, params) {
+	      return new Observable(function (observer) {
+	        fetch(url).then(function (resp) {
+	          return resp.json();
+	        }).then(function (data) {
+	          observer.next(data);
+	          observer.complete();
+	        }).catch(function (err) {
+	          observer.error(err);
 	        });
 	      });
 	    }

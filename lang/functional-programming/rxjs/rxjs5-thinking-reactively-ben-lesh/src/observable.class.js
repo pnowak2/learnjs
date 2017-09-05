@@ -48,6 +48,24 @@ export class Observable {
     })
   }
 
+  distinct() {
+
+    return new Observable((observer) => {
+      let last;
+
+      return this.subscribe({
+        next(val) {
+          if (last !== val) {
+            observer.next(val);
+          }
+          last = val;
+        },
+        error(err) { observer.error(err) },
+        complete() { observer.complete() }
+      })
+    })
+  }
+
   take(n) {
     let i = 0;
 
@@ -100,5 +118,21 @@ export class Observable {
         observer.next(el);
       });
     });
+  }
+
+  static ajax(url, params) {
+    return new Observable((observer) => {
+      fetch(url)
+        .then((resp) => {
+          return resp.json()
+        })
+        .then(function (data) {
+          observer.next(data);
+          observer.complete();
+        })
+        .catch(function (err) {
+          observer.error(err);
+        });
+    })
   }
 }
