@@ -1,31 +1,19 @@
 import { expect } from 'chai';
-import { myObservable } from '../src/my.observable';
-import { mapOperator } from '../src/map.operator';
+import { Observable } from '../src/observable.class';
 
 describe('1 Thinking Reactively', () => {
-
-  xit('should define my simple observable', () => {
-
-    const teardown = myObservable({
-      next(val) { console.log(val); },
-      complete() { console.log('completed'); },
-      error(err) { console.error(err) }
-    });
-
-    setTimeout(function () {
-      teardown();
-    }, 1000);
-  });
-
   it('should define my operator', () => {
-    const source = mapOperator(myObservable, (val) => val * val);
-
-    const teardown = source({
-      next(val) { console.log(val); },
-      complete() { console.log('completed'); },
-      error(err) { console.error(err) }
-    });
-
-    setTimeout(teardown, 1000);
+    const finish = Observable
+      // .fromArray([5, 6])
+      .fromEvent(window, 'click')
+      .count()
+      .map(val => val * val + '!')
+      .map(val => val + '!')
+      .flatMap(val => Observable.fromArray([val, 2, 3, 4, 5]))
+      // .take(3)
+      .subscribe({
+        next(val) { console.log(val) },
+        complete() { console.log('completed') }
+      });
   });
 });
