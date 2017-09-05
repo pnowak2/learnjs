@@ -1,0 +1,22 @@
+{
+  "node": true,
+	"esversion": 6,
+  "indent": 2,
+  "sub": true,
+  "expr": true,
+  "undef": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "latedef": true,
+  "nocomma": true,
+  "notypeof": true,
+  "undef": true,
+  "strict": "implied",
+  "mocha": true,
+  "chai": true,
+  "devel": true,
+  "predef": [
+    "React"
+  ]
+}
