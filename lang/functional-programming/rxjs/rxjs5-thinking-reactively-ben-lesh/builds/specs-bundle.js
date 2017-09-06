@@ -54,7 +54,7 @@
 	__webpack_require__(2);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(53);
+	__webpack_require__(72);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -358,23 +358,30 @@
 
 	var _chai = __webpack_require__(11);
 
-	var _observable = __webpack_require__(55);
+	var _observable = __webpack_require__(51);
 
 	describe('1 Thinking Reactively', function () {
 	  it('should define my operator', function () {
-	    var finish = _observable.Observable
+
+	    var down$ = _observable.Observable.fromEvent(window, 'mousedown');
+	    var move$ = _observable.Observable.fromEvent(window, 'mousemove');
+	    var up$ = _observable.Observable.fromEvent(window, 'mouseup');
+
+	    var finish = down$.flatMap(function (val) {
+	      return move$.takeUntil(up$);
+	    })
 	    // .fromArray([1, 2, 2, 3, 4, 5])
-	    .fromEvent(window, 'click').count()
+	    // .fromEvent(window, 'click')
+	    // .takeUntil(Observable.fromEvent(window, 'keydown'))
+	    // .count()
 	    // .map(val => val * val + '!')
 	    // .map(val => val + '!')
-	    .flatMap(function (val) {
-	      return _observable.Observable.ajax('https://api.github.com/users/pnowak2', 'orgs');
-	    })
+	    // .flatMap(val => Observable.ajax('https://api.github.com/users/pnowak2', 'orgs'))
 	    // .take(3)
 	    // .buffer(2)
-	    .map(function (data) {
-	      return data.login;
-	    }).distinct().subscribe({
+	    // .map(data => data.login)
+	    // .distinct()
+	    .count().subscribe({
 	      next: function next(val) {
 	        console.log(val);
 	      },
@@ -8692,9 +8699,574 @@
 
 
 /***/ }),
-/* 51 */,
-/* 52 */,
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Observable = undefined;
+
+	var _classCallCheck2 = __webpack_require__(52);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(53);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Observable = exports.Observable = function () {
+	  function Observable(observable) {
+	    (0, _classCallCheck3.default)(this, Observable);
+
+	    this.observable = observable;
+	  }
+
+	  (0, _createClass3.default)(Observable, [{
+	    key: "subscribe",
+	    value: function subscribe(observer) {
+	      return this.observable(observer);
+	    }
+	  }, {
+	    key: "map",
+	    value: function map(mapFn) {
+	      var _this = this;
+
+	      return new Observable(function (observer) {
+	        return _this.subscribe({
+	          next: function next(val) {
+	            observer.next(mapFn(val));
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: "flatMap",
+	    value: function flatMap(mapFn) {
+	      var _this2 = this;
+
+	      return new Observable(function (observer) {
+	        return _this2.subscribe({
+	          next: function next(val) {
+	            var obs = mapFn(val);
+	            obs.subscribe({
+	              next: function next(v) {
+	                observer.next(v);
+	              },
+	              complete: function complete() {
+	                observer.complete();
+	              }
+	            });
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: "takeUntil",
+	    value: function takeUntil(o$) {
+	      var _this3 = this;
+
+	      var shouldStop = false;
+
+	      return new Observable(function (observer) {
+	        o$.subscribe({
+	          next: function next() {
+	            shouldStop = true;
+	          },
+	          complete: function complete() {
+	            shoultStop = true;
+	          }
+	        });
+
+	        return _this3.subscribe({
+	          next: function next(v) {
+	            if (!shouldStop) {
+	              observer.next(v);
+	            } else {
+	              observer.complete();
+	            }
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: "count",
+	    value: function count() {
+	      var _this4 = this;
+
+	      return new Observable(function (observer) {
+	        var i = 0;
+	        return _this4.subscribe({
+	          next: function next(val) {
+	            i = i + 1;
+	            observer.next(i);
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: "distinct",
+	    value: function distinct() {
+	      var _this5 = this;
+
+	      return new Observable(function (observer) {
+	        var last = void 0;
+
+	        return _this5.subscribe({
+	          next: function next(val) {
+	            if (last !== val) {
+	              observer.next(val);
+	            }
+	            last = val;
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }, {
+	    key: "take",
+	    value: function take(n) {
+	      var _this6 = this;
+
+	      var i = 0;
+
+	      return new Observable(function (observer) {
+	        return _this6.subscribe({
+	          next: function next(val) {
+	            if (i <= n - 1) {
+	              observer.next(val);
+	              i = i + 1;
+	            } else {
+	              observer.complete();
+	            }
+	          },
+	          error: function error(err) {
+	            observer.error(err);
+	          },
+	          complete: function complete() {
+	            observer.complete();
+	          }
+	        });
+	      });
+	    }
+	  }], [{
+	    key: "interval",
+	    value: function interval(time) {
+	      return new Observable(function (observer) {
+	        var i = 1;
+	        var id = setInterval(function () {
+	          observer.next(i++);
+
+	          if (i === 10) {
+	            observer.complete();
+	          }
+	        }, 50);
+
+	        return function () {
+	          return clearInterval(id);
+	        };
+	      });
+	    }
+	  }, {
+	    key: "fromArray",
+	    value: function fromArray(arr) {
+	      return new Observable(function (observer) {
+	        arr.forEach(function (item) {
+	          observer.next(item);
+	        });
+
+	        observer.complete();
+
+	        return function () {};
+	      });
+	    }
+	  }, {
+	    key: "fromEvent",
+	    value: function fromEvent(el, eventName) {
+	      return new Observable(function (observer) {
+	        el.addEventListener(eventName, function () {
+	          observer.next(el);
+	        });
+	      });
+	    }
+	  }, {
+	    key: "ajax",
+	    value: function ajax(url, params) {
+	      return new Observable(function (observer) {
+	        fetch(url).then(function (resp) {
+	          return resp.json();
+	        }).then(function (data) {
+	          observer.next(data);
+	          observer.complete();
+	        }).catch(function (err) {
+	          observer.error(err);
+	        });
+	      });
+	    }
+	  }]);
+	  return Observable;
+	}();
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+
+/***/ }),
 /* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(54);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(55), __esModule: true };
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(56);
+	var $Object = __webpack_require__(59).Object;
+	module.exports = function defineProperty(it, key, desc) {
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(57);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(67), 'Object', { defineProperty: __webpack_require__(63).f });
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(58);
+	var core = __webpack_require__(59);
+	var ctx = __webpack_require__(60);
+	var hide = __webpack_require__(62);
+	var PROTOTYPE = 'prototype';
+
+	var $export = function (type, name, source) {
+	  var IS_FORCED = type & $export.F;
+	  var IS_GLOBAL = type & $export.G;
+	  var IS_STATIC = type & $export.S;
+	  var IS_PROTO = type & $export.P;
+	  var IS_BIND = type & $export.B;
+	  var IS_WRAP = type & $export.W;
+	  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+	  var expProto = exports[PROTOTYPE];
+	  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
+	  var key, own, out;
+	  if (IS_GLOBAL) source = name;
+	  for (key in source) {
+	    // contains in native
+	    own = !IS_FORCED && target && target[key] !== undefined;
+	    if (own && key in exports) continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function (C) {
+	      var F = function (a, b, c) {
+	        if (this instanceof C) {
+	          switch (arguments.length) {
+	            case 0: return new C();
+	            case 1: return new C(a);
+	            case 2: return new C(a, b);
+	          } return new C(a, b, c);
+	        } return C.apply(this, arguments);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+	    if (IS_PROTO) {
+	      (exports.virtual || (exports.virtual = {}))[key] = out;
+	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+	      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+	    }
+	  }
+	};
+	// type bitmap
+	$export.F = 1;   // forced
+	$export.G = 2;   // global
+	$export.S = 4;   // static
+	$export.P = 8;   // proto
+	$export.B = 16;  // bind
+	$export.W = 32;  // wrap
+	$export.U = 64;  // safe
+	$export.R = 128; // real proto method for `library`
+	module.exports = $export;
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self
+	  // eslint-disable-next-line no-new-func
+	  : Function('return this')();
+	if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+	var core = module.exports = { version: '2.5.1' };
+	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(61);
+	module.exports = function (fn, that, length) {
+	  aFunction(fn);
+	  if (that === undefined) return fn;
+	  switch (length) {
+	    case 1: return function (a) {
+	      return fn.call(that, a);
+	    };
+	    case 2: return function (a, b) {
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function (a, b, c) {
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function (/* ...args */) {
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports) {
+
+	module.exports = function (it) {
+	  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var dP = __webpack_require__(63);
+	var createDesc = __webpack_require__(71);
+	module.exports = __webpack_require__(67) ? function (object, key, value) {
+	  return dP.f(object, key, createDesc(1, value));
+	} : function (object, key, value) {
+	  object[key] = value;
+	  return object;
+	};
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(64);
+	var IE8_DOM_DEFINE = __webpack_require__(66);
+	var toPrimitive = __webpack_require__(70);
+	var dP = Object.defineProperty;
+
+	exports.f = __webpack_require__(67) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+	  anObject(O);
+	  P = toPrimitive(P, true);
+	  anObject(Attributes);
+	  if (IE8_DOM_DEFINE) try {
+	    return dP(O, P, Attributes);
+	  } catch (e) { /* empty */ }
+	  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+	  if ('value' in Attributes) O[P] = Attributes.value;
+	  return O;
+	};
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(65);
+	module.exports = function (it) {
+	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+	module.exports = function (it) {
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = !__webpack_require__(67) && !__webpack_require__(68)(function () {
+	  return Object.defineProperty(__webpack_require__(69)('div'), 'a', { get: function () { return 7; } }).a != 7;
+	});
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(68)(function () {
+	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+	});
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+	module.exports = function (exec) {
+	  try {
+	    return !!exec();
+	  } catch (e) {
+	    return true;
+	  }
+	};
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(65);
+	var document = __webpack_require__(58).document;
+	// typeof document.createElement is 'object' in old IE
+	var is = isObject(document) && isObject(document.createElement);
+	module.exports = function (it) {
+	  return is ? document.createElement(it) : {};
+	};
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 7.1.1 ToPrimitive(input [, PreferredType])
+	var isObject = __webpack_require__(65);
+	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+	// and the second argument - flag - preferred type is a string
+	module.exports = function (it, S) {
+	  if (!isObject(it)) return it;
+	  var fn, val;
+	  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+	  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+	  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+	  throw TypeError("Can't convert object to primitive value");
+	};
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports) {
+
+	module.exports = function (bitmap, value) {
+	  return {
+	    enumerable: !(bitmap & 1),
+	    configurable: !(bitmap & 2),
+	    writable: !(bitmap & 4),
+	    value: value
+	  };
+	};
+
+
+/***/ }),
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
@@ -8705,10 +9277,10 @@
 			mocha.run();
 	});
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(73)))
 
 /***/ }),
-/* 54 */
+/* 73 */
 /***/ (function(module, exports) {
 
 	// shim for using process in browser
@@ -8895,542 +9467,6 @@
 	    throw new Error('process.chdir is not supported');
 	};
 	process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Observable = undefined;
-
-	var _classCallCheck2 = __webpack_require__(56);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _createClass2 = __webpack_require__(57);
-
-	var _createClass3 = _interopRequireDefault(_createClass2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Observable = exports.Observable = function () {
-	  function Observable(observable) {
-	    (0, _classCallCheck3.default)(this, Observable);
-
-	    this.observable = observable;
-	  }
-
-	  (0, _createClass3.default)(Observable, [{
-	    key: "subscribe",
-	    value: function subscribe(observer) {
-	      return this.observable(observer);
-	    }
-	  }, {
-	    key: "map",
-	    value: function map(mapFn) {
-	      var _this = this;
-
-	      return new Observable(function (observer) {
-	        return _this.subscribe({
-	          next: function next(val) {
-	            observer.next(mapFn(val));
-	          },
-	          error: function error(err) {
-	            observer.error(err);
-	          },
-	          complete: function complete() {
-	            observer.complete();
-	          }
-	        });
-	      });
-	    }
-	  }, {
-	    key: "flatMap",
-	    value: function flatMap(mapFn) {
-	      var _this2 = this;
-
-	      return new Observable(function (observer) {
-	        return _this2.subscribe({
-	          next: function next(val) {
-	            var obs = mapFn(val);
-	            obs.subscribe({
-	              next: function next(v) {
-	                observer.next(v);
-	              },
-	              complete: function complete() {
-	                observer.complete();
-	              }
-	            });
-	          },
-	          error: function error(err) {
-	            observer.error(err);
-	          },
-	          complete: function complete() {
-	            observer.complete();
-	          }
-	        });
-	      });
-	    }
-	  }, {
-	    key: "count",
-	    value: function count() {
-	      var _this3 = this;
-
-	      return new Observable(function (observer) {
-	        var i = 0;
-	        return _this3.subscribe({
-	          next: function next(val) {
-	            i = i + 1;
-	            observer.next(i);
-	          },
-	          error: function error(err) {
-	            observer.error(err);
-	          },
-	          complete: function complete() {
-	            observer.complete();
-	          }
-	        });
-	      });
-	    }
-	  }, {
-	    key: "distinct",
-	    value: function distinct() {
-	      var _this4 = this;
-
-	      return new Observable(function (observer) {
-	        var last = void 0;
-
-	        return _this4.subscribe({
-	          next: function next(val) {
-	            if (last !== val) {
-	              observer.next(val);
-	            }
-	            last = val;
-	          },
-	          error: function error(err) {
-	            observer.error(err);
-	          },
-	          complete: function complete() {
-	            observer.complete();
-	          }
-	        });
-	      });
-	    }
-	  }, {
-	    key: "take",
-	    value: function take(n) {
-	      var _this5 = this;
-
-	      var i = 0;
-
-	      return new Observable(function (observer) {
-	        return _this5.subscribe({
-	          next: function next(val) {
-	            if (i <= n - 1) {
-	              observer.next(val);
-	              i = i + 1;
-	            } else {
-	              observer.complete();
-	            }
-	          },
-	          error: function error(err) {
-	            observer.error(err);
-	          },
-	          complete: function complete() {
-	            observer.complete();
-	          }
-	        });
-	      });
-	    }
-	  }], [{
-	    key: "interval",
-	    value: function interval(time) {
-	      return new Observable(function (observer) {
-	        var i = 1;
-	        var id = setInterval(function () {
-	          observer.next(i++);
-
-	          if (i === 10) {
-	            observer.complete();
-	          }
-	        }, 50);
-
-	        return function () {
-	          return clearInterval(id);
-	        };
-	      });
-	    }
-	  }, {
-	    key: "fromArray",
-	    value: function fromArray(arr) {
-	      return new Observable(function (observer) {
-	        arr.forEach(function (item) {
-	          observer.next(item);
-	        });
-
-	        observer.complete();
-
-	        return function () {};
-	      });
-	    }
-	  }, {
-	    key: "fromEvent",
-	    value: function fromEvent(el, eventName) {
-	      return new Observable(function (observer) {
-	        el.addEventListener(eventName, function () {
-	          observer.next(el);
-	        });
-	      });
-	    }
-	  }, {
-	    key: "ajax",
-	    value: function ajax(url, params) {
-	      return new Observable(function (observer) {
-	        fetch(url).then(function (resp) {
-	          return resp.json();
-	        }).then(function (data) {
-	          observer.next(data);
-	          observer.complete();
-	        }).catch(function (err) {
-	          observer.error(err);
-	        });
-	      });
-	    }
-	  }]);
-	  return Observable;
-	}();
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	exports.default = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _defineProperty = __webpack_require__(58);
-
-	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-	    }
-	  }
-
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	}();
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(59), __esModule: true };
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(60);
-	var $Object = __webpack_require__(63).Object;
-	module.exports = function defineProperty(it, key, desc) {
-	  return $Object.defineProperty(it, key, desc);
-	};
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var $export = __webpack_require__(61);
-	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(71), 'Object', { defineProperty: __webpack_require__(67).f });
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(62);
-	var core = __webpack_require__(63);
-	var ctx = __webpack_require__(64);
-	var hide = __webpack_require__(66);
-	var PROTOTYPE = 'prototype';
-
-	var $export = function (type, name, source) {
-	  var IS_FORCED = type & $export.F;
-	  var IS_GLOBAL = type & $export.G;
-	  var IS_STATIC = type & $export.S;
-	  var IS_PROTO = type & $export.P;
-	  var IS_BIND = type & $export.B;
-	  var IS_WRAP = type & $export.W;
-	  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-	  var expProto = exports[PROTOTYPE];
-	  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-	  var key, own, out;
-	  if (IS_GLOBAL) source = name;
-	  for (key in source) {
-	    // contains in native
-	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && key in exports) continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-	    // bind timers to global for call from export context
-	    : IS_BIND && own ? ctx(out, global)
-	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function (C) {
-	      var F = function (a, b, c) {
-	        if (this instanceof C) {
-	          switch (arguments.length) {
-	            case 0: return new C();
-	            case 1: return new C(a);
-	            case 2: return new C(a, b);
-	          } return new C(a, b, c);
-	        } return C.apply(this, arguments);
-	      };
-	      F[PROTOTYPE] = C[PROTOTYPE];
-	      return F;
-	    // make static versions for prototype methods
-	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if (IS_PROTO) {
-	      (exports.virtual || (exports.virtual = {}))[key] = out;
-	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-	    }
-	  }
-	};
-	// type bitmap
-	$export.F = 1;   // forced
-	$export.G = 2;   // global
-	$export.S = 4;   // static
-	$export.P = 8;   // proto
-	$export.B = 16;  // bind
-	$export.W = 32;  // wrap
-	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library`
-	module.exports = $export;
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self
-	  // eslint-disable-next-line no-new-func
-	  : Function('return this')();
-	if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports) {
-
-	var core = module.exports = { version: '2.5.1' };
-	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(65);
-	module.exports = function (fn, that, length) {
-	  aFunction(fn);
-	  if (that === undefined) return fn;
-	  switch (length) {
-	    case 1: return function (a) {
-	      return fn.call(that, a);
-	    };
-	    case 2: return function (a, b) {
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function (a, b, c) {
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function (/* ...args */) {
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-	module.exports = function (it) {
-	  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var dP = __webpack_require__(67);
-	var createDesc = __webpack_require__(75);
-	module.exports = __webpack_require__(71) ? function (object, key, value) {
-	  return dP.f(object, key, createDesc(1, value));
-	} : function (object, key, value) {
-	  object[key] = value;
-	  return object;
-	};
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var anObject = __webpack_require__(68);
-	var IE8_DOM_DEFINE = __webpack_require__(70);
-	var toPrimitive = __webpack_require__(74);
-	var dP = Object.defineProperty;
-
-	exports.f = __webpack_require__(71) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-	  anObject(O);
-	  P = toPrimitive(P, true);
-	  anObject(Attributes);
-	  if (IE8_DOM_DEFINE) try {
-	    return dP(O, P, Attributes);
-	  } catch (e) { /* empty */ }
-	  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-	  if ('value' in Attributes) O[P] = Attributes.value;
-	  return O;
-	};
-
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(69);
-	module.exports = function (it) {
-	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports) {
-
-	module.exports = function (it) {
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(71) && !__webpack_require__(72)(function () {
-	  return Object.defineProperty(__webpack_require__(73)('div'), 'a', { get: function () { return 7; } }).a != 7;
-	});
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(72)(function () {
-	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-	});
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports) {
-
-	module.exports = function (exec) {
-	  try {
-	    return !!exec();
-	  } catch (e) {
-	    return true;
-	  }
-	};
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(69);
-	var document = __webpack_require__(62).document;
-	// typeof document.createElement is 'object' in old IE
-	var is = isObject(document) && isObject(document.createElement);
-	module.exports = function (it) {
-	  return is ? document.createElement(it) : {};
-	};
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(69);
-	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-	// and the second argument - flag - preferred type is a string
-	module.exports = function (it, S) {
-	  if (!isObject(it)) return it;
-	  var fn, val;
-	  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-	  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-	  throw TypeError("Can't convert object to primitive value");
-	};
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports) {
-
-	module.exports = function (bitmap, value) {
-	  return {
-	    enumerable: !(bitmap & 1),
-	    configurable: !(bitmap & 2),
-	    writable: !(bitmap & 4),
-	    value: value
-	  };
-	};
 
 
 /***/ })

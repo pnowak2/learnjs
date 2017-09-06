@@ -34,6 +34,28 @@ export class Observable {
     })
   }
 
+  takeUntil(o$) {
+    let shouldStop = false;
+
+    return new Observable((observer) => {
+      o$.subscribe({
+        next() { shouldStop = true },
+        complete() { shoultStop = true }
+      });
+
+      return this.subscribe({
+        next(v) { 
+          if(!shouldStop) {
+            observer.next(v) 
+          } else {
+            observer.complete();
+          }
+        },
+        complete() { observer.complete() }
+      })
+    })
+  }
+
   count() {
     return new Observable((observer) => {
       let i = 0;
