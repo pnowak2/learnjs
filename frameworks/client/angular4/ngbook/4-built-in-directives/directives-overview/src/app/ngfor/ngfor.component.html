@@ -1,0 +1,11 @@
+<h1>NgFor</h1>
+
+<h3>Simple iteration</h3>
+<ul>
+  <li *ngFor="let item of cities">{{ item.country }} - {{ item.city }}</li>
+</ul>
+
+<h3>Simple iteration with index</h3>
+<ul>
+  <li *ngFor="let item of cities; let num = index">{{ num + 1 }}. {{ item.country }} - {{ item.city }}</li>
+</ul>

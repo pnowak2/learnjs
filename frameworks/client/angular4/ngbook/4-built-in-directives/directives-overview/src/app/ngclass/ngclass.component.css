@@ -1,0 +1,12 @@
+.bordered {
+  border: 1px dashed red;
+  background-color: blue;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.rounded {
+  border-radius: 50%;
+}

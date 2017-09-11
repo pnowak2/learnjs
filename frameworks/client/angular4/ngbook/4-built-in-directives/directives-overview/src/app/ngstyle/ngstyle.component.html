@@ -1,0 +1,13 @@
+<h1>NgStyle</h1>
+
+<div [style.background-color]="'yellow'">
+  This should be on yellow background
+</div>
+
+<div [ngStyle]="{ 'background-color': 'red', 'color': 'white' }">
+  This should be white on red background
+</div>
+
+<div [style.font-size.rem]="2">
+  Using syntax for units style.font-size.px, etc.
+</div>

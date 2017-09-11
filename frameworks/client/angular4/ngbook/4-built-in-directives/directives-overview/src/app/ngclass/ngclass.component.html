@@ -1,0 +1,28 @@
+<h1>NgClass</h1>
+
+<h3>Assigning class with boolean trigger #1</h3>
+<div [ngClass]="{ bordered: true }">
+  Im bordered
+</div>
+<div [ngClass]="{ bordered: false }">
+  Im not bordered
+</div>
+
+<h3>Assigning class with boolean trigger #2</h3>
+<div [class.bordered] = "true">
+  Im bordered
+</div>
+<div [class.bordered] = "false">
+  Im not bordered
+</div>
+
+<h3>Dynamic ngClass with object in ts file</h3>
+<div [ngClass]="classesObj">
+  Toggle border on me
+</div>
+<button (click)="onToggle($event)">Toggle</button>
+
+<h3>Assign class list to apply</h3>
+<div [ngClass]="['bordered', 'yellow', 'rounded']">
+  Yellow and rounded
+</div>
