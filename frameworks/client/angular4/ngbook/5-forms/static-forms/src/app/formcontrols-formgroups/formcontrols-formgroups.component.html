@@ -1,0 +1,14 @@
+<h1>FormControl, FormGroup</h1>
+
+<label for="name">
+  <input #input type="text" name="name" [formControl]="nameControl">
+  valid: {{ nameControl.valid }}
+  dirty: {{ nameControl.dirty }}
+  errors: {{ nameControl.errors }}
+</label>
+
+<fieldset [formGroup]="formGroup">
+  <legend>Group</legend>
+  <input type="text" name="name" [formControl]="nameControl">
+    valid: {{ formGroup.valid }}
+</fieldset>

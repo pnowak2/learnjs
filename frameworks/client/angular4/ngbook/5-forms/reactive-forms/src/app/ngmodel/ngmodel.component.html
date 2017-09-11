@@ -1,0 +1,13 @@
+<h1>NgModel example</h1>
+
+
+<form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)">
+<p>proposal is: {{ productName }}</p>
+<label for="skuInput">SKU</label>
+<input type="text"
+       id="productNameInput"
+       placeholder="Product Name"
+       [formControl]="myForm.controls['productName']"
+       [(ngModel)]="productName">
+  <button type="submit">Submit</button>
+</form>

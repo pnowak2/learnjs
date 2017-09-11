@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-formcontrols-formgroups',
@@ -7,12 +7,14 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./formcontrols-formgroups.component.css']
 })
 export class FormcontrolsFormgroupsComponent implements OnInit {
-  name: FormControl;
-  isValid = false;
+  formGroup: FormGroup;
+  nameControl: FormControl;
 
   constructor() {
-    this.name = new FormControl('Hello');
-    this.isValid = this.name.valid;
+    this.nameControl = new FormControl('', [Validators.required]);
+    this.formGroup = new FormGroup({
+      name: this.nameControl
+    });
   }
 
   ngOnInit() {

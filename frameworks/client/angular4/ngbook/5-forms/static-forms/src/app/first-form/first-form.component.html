@@ -1,0 +1,15 @@
+<h1>First Form</h1>
+
+<h2>Demo Form: Sku</h2>
+
+<form #f="ngForm"
+      (ngSubmit)="onSubmit(f.value)">
+
+<label for="skuInput">SKU</label>
+<input type="text"
+       id="skuInput"
+       placeholder="SKU"
+       name="sku"
+       ngModel>
+  <button type="submit">Submit</button>
+</form>
