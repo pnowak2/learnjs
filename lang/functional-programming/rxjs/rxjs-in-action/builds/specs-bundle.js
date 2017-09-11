@@ -22969,6 +22969,14 @@
 
 	'use strict';
 
+	var _classCallCheck2 = __webpack_require__(11);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(208);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
 	var _chai = __webpack_require__(88);
 
 	var _sinon = __webpack_require__(128);
@@ -22979,17 +22987,138 @@
 
 	var _events2 = _interopRequireDefault(_events);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	describe('2 Reacting with RxJs', function () {
-	  describe('2.1 ..', function () {
-	    describe('2.1.1 ...', function () {
-	      it('should ...', function (done) {});
+	  describe('2.1 FP as pillar of Reactive Programming', function () {
+	    describe('2.1.1 Functional Programming', function () {
+	      it('should use high order functions to work with arrays', function () {
+	        var isEven = function isEven(n) {
+	          return n % 2 === 0;
+	        };
+	        var square = function square(n) {
+	          return n * n;
+	        };
+	        var add = function add(a, b) {
+	          return a + b;
+	        };
+
+	        var arr = [1, 2, 3, 4, 5];
+
+	        var result = arr.filter(isEven).map(square).reduce(add);
+
+	        (0, _chai.expect)(result).to.eql(20);
+	      });
+
+	      it('should build simple Stream', function () {
+	        var Stream = function () {
+	          function Stream(fn) {
+	            (0, _classCallCheck3.default)(this, Stream);
+
+	            this.subscribe = fn;
+	          }
+
+	          (0, _createClass3.default)(Stream, [{
+	            key: 'map',
+	            value: function map(mapfn) {
+	              var _this = this;
+
+	              return new Stream(function (observer) {
+	                return _this.subscribe({
+	                  next: function next(item) {
+	                    observer.next(mapfn(item));
+	                  }
+	                });
+	              });
+	            }
+	          }], [{
+	            key: 'fromArray',
+	            value: function fromArray(arr) {
+	              return new Stream(function (observer) {
+	                arr.forEach(function (item) {
+	                  observer.next(item);
+	                });
+	              });
+	            }
+	          }]);
+	          return Stream;
+	        }();
+
+	        var result = '';
+
+	        Stream.fromArray([1, 2, 3]).map(function (val) {
+	          return val * val;
+	        }).subscribe({
+	          next: function next(item) {
+	            result += '' + item;
+	          }
+	        });
+
+	        (0, _chai.expect)(result).to.eql('149');
+	      });
 	    });
 	  });
 	});
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(209);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(210), __esModule: true };
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(211);
+	var $Object = __webpack_require__(24).Object;
+	module.exports = function defineProperty(it, key, desc) {
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(22);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(32), 'Object', { defineProperty: __webpack_require__(28).f });
+
 
 /***/ })
 /******/ ]);
