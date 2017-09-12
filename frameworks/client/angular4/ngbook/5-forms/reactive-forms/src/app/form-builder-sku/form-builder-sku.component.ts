@@ -18,7 +18,8 @@ export class FormBuilderSkuComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.myFormGroup = fb.group({
-      sku: ['123456', Validators.compose([Validators.required, skuValidator])]
+      sku: ['123456', Validators.compose([Validators.required, skuValidator])],
+      name: ['My name', Validators.required]
     });
 
     this.sku = this.myFormGroup.controls['sku'];

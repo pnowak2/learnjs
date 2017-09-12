@@ -6,16 +6,18 @@
 
 <form [formGroup]="myFormGroup" (ngSubmit)="onSubmit(myFormGroup.value)">
 
-<label for="skuInput">SKU</label>
-<input type="text"
-       id="skuInput"
-       placeholder="SKU"
-       name="sku"
-       [class.error]="!sku.valid && sku.dirty"
-       [formControl]="sku">
-       <p *ngIf="!sku.valid">This field is invalid</p>
-       <p *ngIf="sku.hasError('required')">This field is required</p>
-       <p *ngIf="sku.hasError('required', 'sku')">This targeted field is required</p>
-       <p *ngIf="sku.hasError('invalidSku')">SKU is not in proper format</p>
+  <label for="skuInput">SKU</label>
+  <input type="text"
+        id="skuInput"
+        placeholder="SKU"
+        name="sku"
+        [class.error]="!sku.valid && sku.dirty"
+        [formControl]="sku">
+        <p *ngIf="!sku.valid">This field is invalid</p>
+        <p *ngIf="sku.hasError('required')">This field is required</p>
+        <p *ngIf="sku.hasError('required', 'sku')">This targeted field is required</p>
+        <p *ngIf="sku.hasError('invalidSku')">SKU is not in proper format</p>
+        <br/>
+  <input type="text" formControlName="name">
   <button type="submit">Submit</button>
 </form>
