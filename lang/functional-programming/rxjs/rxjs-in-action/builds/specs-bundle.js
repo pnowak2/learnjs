@@ -45,7 +45,8 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(206);
+	__webpack_require__(206);
+	module.exports = __webpack_require__(564);
 
 
 /***/ }),
@@ -43928,6 +43929,247 @@
 	}(AsyncScheduler_1.AsyncScheduler));
 	exports.AnimationFrameScheduler = AnimationFrameScheduler;
 	//# sourceMappingURL=AnimationFrameScheduler.js.map
+
+/***/ }),
+/* 564 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(565)
+	__webpack_require__(205);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 565 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(88);
+
+	var _sinon = __webpack_require__(128);
+
+	var sinon = _interopRequireWildcard(_sinon);
+
+	var _events = __webpack_require__(204);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	var _rxjs = __webpack_require__(216);
+
+	var Rx = _interopRequireWildcard(_rxjs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	describe('3 Core Operators', function () {
+	  describe('3.1 Evaluating and Cancelling Streams', function () {
+	    describe('3.1.3 Disposing of subscriptions: explicit cancellation', function () {
+	      it('should manually unsubscribe from event', function () {
+	        var mouseClicks = Rx.Observable.fromEvent(document, 'mouseup');
+	        var subscription = mouseClicks.subscribe(function () {});
+
+	        subscription.unsubscribe();
+	      });
+	    });
+	  });
+
+	  describe('3.2 Popular RxJS Observable Operators', function () {
+	    describe('3.2.1 Introducing the Core Operators', function () {
+	      describe('map', function () {
+	        it('should map consecutive values from stream', function (done) {
+	          var spy = sinon.spy();
+
+	          var addSixPercent = function addSixPercent(x) {
+	            return x = x + x * 0.06;
+	          };
+	          Rx.Observable.of(10, 20, 30).map(addSixPercent).subscribe(spy, null, function () {
+	            (0, _chai.expect)(spy.callCount).to.eql(3);
+	            (0, _chai.expect)(spy.calledWith(10.6)).to.be.true;
+	            (0, _chai.expect)(spy.calledWith(21.2)).to.be.true;
+	            (0, _chai.expect)(spy.calledWith(31.8)).to.be.true;
+
+	            done();
+	          });
+	        });
+
+	        it('should count words', function (done) {
+	          Rx.Observable.from(['The quick brown fox', 'jumps over the lazy dog']).map(function (str) {
+	            return str.split(' ');
+	          }).do(console.log).subscribe(function (val) {}, null, done);
+	        });
+	      });
+
+	      describe('.filter()', function () {
+	        it('should filter only numerical codes', function () {
+	          Rx.Observable.fromEvent(document, 'keyup').pluck('keyCode').filter(function (code) {
+	            return code >= 48 && code <= 57;
+	          }).do(console.log).subscribe();
+	        });
+	      });
+
+	      describe('.reduce()', function () {
+	        it('should reduce to single value', function (done) {
+	          var add = function add(a, b) {
+	            return a + b;
+	          };
+
+	          Rx.Observable.from([{
+	            name: 'piotr',
+	            rate: 850
+	          }, {
+	            name: 'ben',
+	            rate: 465
+	          }]).pluck('rate').reduce(add, 0).subscribe(function (val) {
+	            (0, _chai.expect)(val).to.eql(1315);
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.scan()', function () {
+	        it('should scan to single value with intermediary results', function (done) {
+	          var spy = sinon.spy();
+	          var add = function add(a, b) {
+	            return a + b;
+	          };
+
+	          Rx.Observable.from([{
+	            name: 'piotr',
+	            rate: 850
+	          }, {
+	            name: 'ben',
+	            rate: 465
+	          }]).pluck('rate').scan(add, 0).subscribe(spy, null, function () {
+	            (0, _chai.expect)(spy.calledTwice).to.be.true;
+	            (0, _chai.expect)(spy.calledWith(850)).to.be.true;
+	            (0, _chai.expect)(spy.calledWith(1315)).to.be.true;
+
+	            done();
+	          });
+	        });
+	      });
+	    });
+	  });
+
+	  describe('3.3 Sequencing Operator Pipelines with Aggregates', function () {
+	    describe('3.3.1 Self-Contained Pipelines and Referential Transparency', function () {
+	      it('should build own operator', function (done) {
+	        function exclude(predicate) {
+	          var _this = this;
+
+	          return Rx.Observable.create(function (subscriber) {
+	            var source = _this;
+	            return source.subscribe(function (value) {
+	              try {
+	                if (!predicate(value)) {
+	                  subscriber.next(value);
+	                }
+	              } catch (err) {
+	                subscriber.error(err);
+	              }
+	            }, function (err) {
+	              return subscriber.error(err);
+	            }, function () {
+	              return subscriber.complete();
+	            });
+	          });
+	        }
+
+	        Rx.Observable.prototype.exclude = exclude;
+
+	        var spy = sinon.spy();
+
+	        Rx.Observable.of(10, 20, 30).exclude(function (val) {
+	          return val < 30;
+	        }).subscribe(spy, null, function () {
+	          (0, _chai.expect)(spy.callCount).to.eql(1);
+	          (0, _chai.expect)(spy.calledWith(30)).to.be.true;
+
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('3.3.2 Performance Advantages of Sequencing with RxJS', function () {
+	      describe('.take()', function () {
+	        it('should process only n number of items', function (done) {
+	          var result = '';
+
+	          var stream$ = Rx.Observable.from([1, 2, 3, 4, 5]).take(2).subscribe(function (val) {
+	            result += val;
+	          }, null, function () {
+	            (0, _chai.expect)(result).to.eql('12');
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.first()', function () {
+	        it('should process only first item', function (done) {
+	          var result = '';
+
+	          var stream$ = Rx.Observable.from([1, 2, 3, 4, 5]).first().subscribe(function (val) {
+	            result += val;
+	          }, null, function () {
+	            (0, _chai.expect)(result).to.eql('1');
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.last()', function () {
+	        it('should process only last item', function (done) {
+	          var result = '';
+
+	          var stream$ = Rx.Observable.from([1, 2, 3, 4, 5]).last().subscribe(function (val) {
+	            result += val;
+	          }, null, function () {
+	            (0, _chai.expect)(result).to.eql('5');
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.min()', function () {
+	        it('should process only smallest item', function (done) {
+	          var result = '';
+
+	          var stream$ = Rx.Observable.from([1, 2, 3, 4, 5]).min().subscribe(function (val) {
+	            result += val;
+	          }, null, function () {
+	            (0, _chai.expect)(result).to.eql('1');
+	            done();
+	          });
+	        });
+	      });
+
+	      describe('.max()', function () {
+	        it('should process only biggest item', function (done) {
+	          var result = '';
+
+	          var stream$ = Rx.Observable.from([1, 2, 3, 4, 5]).max().subscribe(function (val) {
+	            result += val;
+	          }, null, function () {
+	            (0, _chai.expect)(result).to.eql('5');
+	            done();
+	          });
+	        });
+	      });
+	    });
+	  });
+	});
 
 /***/ })
 /******/ ]);
