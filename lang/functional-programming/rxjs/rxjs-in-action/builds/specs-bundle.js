@@ -22969,7 +22969,7 @@
 
 	'use strict';
 
-	var _defineProperty2 = __webpack_require__(215);
+	var _defineProperty2 = __webpack_require__(208);
 
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
@@ -22981,7 +22981,7 @@
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-	var _createClass2 = __webpack_require__(208);
+	var _createClass2 = __webpack_require__(215);
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -23314,6 +23314,156 @@
 	          (0, _chai.expect)(val).to.eql(42);
 	        }, null, done);
 	      });
+
+	      it('should use Multi Value, Synchronous', function (done) {
+	        var result = '';
+
+	        var stream = Rx.Observable.from([1, 2, 3]);
+	        stream.subscribe(function (val) {
+	          result += val;
+	        }, null, function () {
+	          (0, _chai.expect)(result).to.eql('123');
+	          done();
+	        });
+	      });
+
+	      it('should use Single Value, Asynchronous', function (done) {
+	        var ajaxPromise = fetch('http://jsonplaceholder.typicode.com/posts/');
+
+	        var fortyTwo = new Promise(function (resolve, reject) {
+	          setTimeout(function () {
+	            resolve(42);
+	          }, 40);
+	        });
+
+	        var promised$ = Rx.Observable.fromPromise(fortyTwo).map(function (val) {
+	          return val + 1;
+	        });
+
+	        promised$.subscribe(function (val) {
+	          (0, _chai.expect)(val).to.eql(43);
+	          done();
+	        });
+	      });
+
+	      it('should use Multi Value, Asynchronous', function () {
+	        var click$ = Rx.Observable.fromEvent(document, 'click').map(function (event) {
+	          return event.target.textContent;
+	        }).subscribe(function (val) {
+	          console.log(val);
+	        });
+	      });
+	    });
+	  });
+
+	  describe('2.4 Consuming data with observers', function () {
+
+	    describe('2.4.1 The Observer API', function () {
+	      it('should review observer structure', function () {
+	        var observer = {
+	          next: function next() {},
+	          error: function error() {},
+	          complete: function complete() {}
+	        };
+	      });
+	    });
+
+	    describe('2.4.2 Creating Bar Observables', function () {
+	      it('should create manually just for learning process', function () {
+	        var observable = function observable(events) {
+	          var INTERVAL = 1 * 10;
+	          var schedulerId = void 0;
+
+	          return {
+	            subscribe: function subscribe(observer) {
+	              schedulerId = setInterval(function () {
+	                if (events.length === 0) {
+	                  observer.complete();
+	                  clearInterval(schedulerId);
+	                  schedulerId = undefined;
+	                } else {
+	                  observer.next(events.shift());
+	                }
+	              }, INTERVAL);
+	              return {
+	                unsubscribe: function unsubscribe() {
+	                  if (schedulerId) {
+	                    clearInterval(schedulerId);
+	                  }
+	                }
+	              };
+	            }
+	          };
+	        };
+
+	        var subscription = observable([1, 2, 3]).subscribe({
+	          next: function next(val) {
+	            console.log('manual observer:' + val);
+	          },
+	          complete: function complete() {
+	            console.log('completed');
+	          }
+	        });
+
+	        // subscription.unsubscribe();
+	      });
+
+	      it('should use Rx.Observer.create() to make own observables', function (done) {
+	        var source$ = Rx.Observable.create(function (observer) {
+	          observer.next('4');
+	          observer.next('5');
+	          observer.next('6');
+	          observer.complete();
+	        });
+
+	        var result = '';
+
+	        source$.subscribe(function (val) {
+	          result += val;
+	        }, null, function () {
+	          (0, _chai.expect)(result).to.eql('456');
+	          done();
+	        });
+	      });
+	    });
+
+	    describe('2.4.3 Observable modules', function () {
+	      it('should create simple percentage counter', function () {
+	        var progressBar$ = Rx.Observable.create(function (observer) {
+	          var OFFSET = 5;
+	          var SPEED = 5;
+	          var i = 1;
+
+	          var progress = function progress() {
+	            if (i > 100) {
+	              observer.complete();
+	            } else {
+	              observer.next(i);
+	              i = i + 1;
+	              setTimeout(progress, SPEED);
+	            }
+	          };
+
+	          setTimeout(progress, OFFSET);
+	        });
+
+	        progressBar$.subscribe(function (progress) {
+	          console.log(progress);
+	        });
+	      });
+
+	      it('should handle also errors', function (done) {
+	        var computeFutureValue = new Promise(function (resolve, reject) {
+	          setTimeout(function () {
+	            reject(new Error('boo!'));
+	          }, 0);
+	        });
+
+	        Rx.Observable.fromPromise(computeFutureValue).subscribe(function (val) {}, function (err) {
+	          (0, _chai.expect)(err.message).to.eql('boo!');
+	          done();
+	        }, function () {});
+	      });
 	    });
 	  });
 	});
@@ -23332,23 +23482,20 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-	    }
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
 	  }
 
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	}();
+	  return obj;
+	};
 
 /***/ }),
 /* 209 */
@@ -24167,20 +24314,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = function (obj, key, value) {
-	  if (key in obj) {
-	    (0, _defineProperty2.default)(obj, key, {
-	      value: value,
-	      enumerable: true,
-	      configurable: true,
-	      writable: true
-	    });
-	  } else {
-	    obj[key] = value;
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
 	  }
 
-	  return obj;
-	};
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
 
 /***/ }),
 /* 216 */

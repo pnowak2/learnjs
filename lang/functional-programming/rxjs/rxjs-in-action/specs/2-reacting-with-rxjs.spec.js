@@ -139,6 +139,161 @@ describe('2 Reacting with RxJs', () => {
           expect(val).to.eql(42);
         }, null, done)
       });
+
+      it('should use Multi Value, Synchronous', (done) => {
+        let result = '';
+
+        const stream = Rx.Observable.from([1, 2, 3]);
+        stream.subscribe(val => {
+          result += val;
+        }, null, () => {
+          expect(result).to.eql('123');
+          done();
+        })
+      });
+
+      it('should use Single Value, Asynchronous', (done) => {
+        const ajaxPromise = fetch('http://jsonplaceholder.typicode.com/posts/');
+
+        const fortyTwo = new Promise((resolve, reject) => {
+          setTimeout(function () {
+            resolve(42);
+          }, 40);
+        });
+
+        const promised$ = Rx.Observable
+          .fromPromise(fortyTwo)
+          .map(val => val + 1);
+
+        promised$.subscribe(val => {
+          expect(val).to.eql(43);
+          done();
+        });
+      });
+
+      it('should use Multi Value, Asynchronous', () => {
+        const click$ = Rx.Observable
+          .fromEvent(document, 'click')
+          .map(event => event.target.textContent)
+          .subscribe(val => {
+            console.log(val);
+          })
+      });
+    });
+  });
+
+  describe('2.4 Consuming data with observers', () => {
+
+    describe('2.4.1 The Observer API', () => {
+      it('should review observer structure', () => {
+        const observer = {
+          next() { },
+          error() { },
+          complete() { }
+        }
+      });
+    });
+
+    describe('2.4.2 Creating Bar Observables', () => {
+      it('should create manually just for learning process', () => {
+        const observable = events => {
+          const INTERVAL = 1 * 10;
+          let schedulerId;
+
+          return {
+            subscribe: observer => {
+              schedulerId = setInterval(() => {
+                if (events.length === 0) {
+                  observer.complete();
+                  clearInterval(schedulerId);
+                  schedulerId = undefined;
+                }
+                else {
+                  observer.next(events.shift());
+                }
+              }, INTERVAL);
+              return {
+                unsubscribe: () => {
+                  if (schedulerId) {
+                    clearInterval(schedulerId);
+                  }
+                }
+              };
+            }
+          }
+        };
+
+        const subscription = observable([1, 2, 3]).subscribe({
+          next(val) { console.log('manual observer:' + val) },
+          complete() { console.log('completed') }
+        });
+
+        // subscription.unsubscribe();
+      });
+
+      it('should use Rx.Observer.create() to make own observables', (done) => {
+        const source$ = Rx.Observable.create(observer => {
+          observer.next('4');
+          observer.next('5');
+          observer.next('6');
+          observer.complete();
+        });
+
+        let result = '';
+
+        source$.subscribe(val => {
+          result += val;
+        }, null, () => {
+          expect(result).to.eql('456');
+          done();
+        });
+      });
+    });
+
+    describe('2.4.3 Observable modules', () => {
+      it('should create simple percentage counter', () => {
+        const progressBar$ = Rx.Observable.create(observer => {
+          const OFFSET = 5;
+          const SPEED = 5;
+          let i = 1;
+
+          const progress = () => {
+            if (i > 100) {
+              observer.complete();
+            } else {
+              observer.next(i);
+              i = i + 1;
+              setTimeout(progress, SPEED);
+            }
+          }
+
+          setTimeout(progress, OFFSET);
+        });
+
+        progressBar$.subscribe(progress => {
+          console.log(progress);
+        })
+      });
+
+      it('should handle also errors', (done) => {
+        const computeFutureValue = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error('boo!'));
+          }, 0);
+        });
+
+        Rx.Observable.fromPromise(computeFutureValue)
+          .subscribe(
+          val => {
+          },
+          err => {
+            expect(err.message).to.eql('boo!');
+            done();
+          },
+          () => {
+          });
+      });
+
     });
   });
 });
