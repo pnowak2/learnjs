@@ -1,0 +1,4 @@
+@mixin dm-column($percentage, $float-direction:left) {
+  width: 100% * $percentage;
+  float: $float-direction;
+}
