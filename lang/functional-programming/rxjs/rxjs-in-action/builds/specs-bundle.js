@@ -46,7 +46,8 @@
 
 	__webpack_require__(1);
 	__webpack_require__(206);
-	module.exports = __webpack_require__(564);
+	__webpack_require__(564);
+	module.exports = __webpack_require__(566);
 
 
 /***/ }),
@@ -44170,6 +44171,181 @@
 	    });
 	  });
 	});
+
+/***/ }),
+/* 566 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(567)
+	__webpack_require__(205);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 567 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(88);
+
+	var _sinon = __webpack_require__(128);
+
+	var sinon = _interopRequireWildcard(_sinon);
+
+	var _events = __webpack_require__(204);
+
+	var _events2 = _interopRequireDefault(_events);
+
+	var _rxjs = __webpack_require__(216);
+
+	var Rx = _interopRequireWildcard(_rxjs);
+
+	var _money = __webpack_require__(568);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	describe('4 Its Time to Use RxJS', function () {
+	  describe('4.2 Understanding Asynchronous Timing With JavaScript', function () {
+	    describe('4.2.3 The JavaScript timing interfaces ', function () {
+	      it('should use .setTimeout() ', function (done) {
+	        setTimeout(done, 50);
+	      });
+
+	      it('should wrap setTimeout with Observable', function (done) {
+	        var unsub = sinon.spy();
+
+	        var source$ = Rx.Observable.create(function (observer) {
+	          var id = setTimeout(function () {
+	            observer.next(1);
+	            observer.complete();
+	          }, 50);
+
+	          return function () {
+	            unsub();clearTimeout(id);
+	          };
+	        });
+
+	        var cb = sinon.spy();
+	        var subscription = source$.subscribe(cb, null, function () {
+	          (0, _chai.expect)(cb.calledOnce).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(1)).to.be.true;
+
+	          subscription.unsubscribe();
+
+	          (0, _chai.expect)(unsub.calledOnce).to.be.true;
+	          done();
+	        });
+	      });
+
+	      it('should use Observable.timer() to achieve same effect as above', function (done) {
+	        var cb = sinon.spy();
+	        var subscription = Rx.Observable.timer(50).subscribe(cb, null, function () {
+	          (0, _chai.expect)(cb.calledOnce).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(0)).to.eql(true);
+
+	          subscription.unsubscribe();
+	          done();
+	        });
+	      });
+
+	      it('should wrap setInterval with Observable', function (done) {
+	        var unsub = sinon.spy();
+
+	        var source$ = Rx.Observable.create(function (observer) {
+	          var i = 0;
+	          var id = setInterval(function () {
+	            observer.next(++i);
+	          }, 5);
+
+	          return function () {
+	            unsub();clearInterval(id);
+	          };
+	        });
+
+	        var cb = sinon.spy();
+	        var subscription = source$.take(3).subscribe(cb, null, function () {
+	          (0, _chai.expect)(cb.calledThrice).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(1)).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(2)).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(3)).to.be.true;
+
+	          subscription.unsubscribe();
+
+	          (0, _chai.expect)(unsub.calledOnce).to.be.true;
+	          done();
+	        });
+	      });
+
+	      it('should use Observable.interval() to achieve same effect as above', function (done) {
+	        var cb = sinon.spy();
+	        var subscription = Rx.Observable.interval(5).take(3).subscribe(cb, null, function () {
+	          (0, _chai.expect)(cb.calledThrice).to.be.true;
+	          (0, _chai.expect)(cb.calledWith(0)).to.eql(true);
+	          (0, _chai.expect)(cb.calledWith(1)).to.eql(true);
+	          (0, _chai.expect)(cb.calledWith(2)).to.eql(true);
+
+	          subscription.unsubscribe();
+
+	          done();
+	        });
+	      });
+	    });
+	  });
+
+	  describe('4.3 Back to the Future with RxJS', function () {
+	    it('should build simple currency generator', function () {
+	      var source$ = Rx.Observable.interval(20).delay(50).timeInterval().do(function (int) {
+	        return console.log('time interval: ' + int.interval);
+	      }).skip(1).map(function () {
+	        return (0, _money.Money)('PLN', Math.random() * 100);
+	      }).take(5);
+
+	      source$.subscribe(function (money) {
+	        console.log(money.toString());
+	      });
+	    });
+
+	    describe('4.3.1', function () {
+	      it('should behave...', function () {});
+	    });
+	  });
+	});
+
+/***/ }),
+/* 568 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var Money = exports.Money = function Money(_currency, _value) {
+	  return {
+	    currency: function currency() {
+	      return _currency;
+	    },
+	    value: function value() {
+	      return _value;
+	    },
+	    toString: function toString() {
+	      return _value + " " + _currency;
+	    }
+	  };
+	};
 
 /***/ })
 /******/ ]);
