@@ -1,0 +1,9 @@
+<h1>Youtube search</h1>
+<p *ngIf="loading"></p>
+
+<app-youtube-search-box
+  (loading) = "$event"
+  (results) = "updateResults($event)">
+</app-youtube-search-box>
+<app-youtube-search-result *ngFor="let result of results">
+</app-youtube-search-result>

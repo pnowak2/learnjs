@@ -1,0 +1,5 @@
+<h1>Request Options</h1>
+
+<button (click)="onMakeRequestClick($event)">Make Request with options</button>
+<div *ngIf="loading">Loading..</div>
+<pre>{{ data | json }}</pre>

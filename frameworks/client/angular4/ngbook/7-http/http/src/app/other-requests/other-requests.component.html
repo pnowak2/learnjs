@@ -1,0 +1,6 @@
+<h1>Other Http Requests</h1>
+
+<button (click)="onMakePostRequestClick($event)">Make Post</button>
+<button (click)="onMakeDeleteRequestClick($event)">Make Delete</button>
+<div *ngIf="loading">Loading..</div>
+<pre>{{ data | json }}</pre>

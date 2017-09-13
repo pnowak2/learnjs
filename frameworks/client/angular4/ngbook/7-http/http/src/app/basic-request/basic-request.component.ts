@@ -28,6 +28,5 @@ export class BasicRequestComponent implements OnInit {
         this.data = res.json();
         this.loading = false;
       });
-
   }
 }
