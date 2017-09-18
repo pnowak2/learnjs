@@ -44318,10 +44318,50 @@
 	      });
 	    });
 
-	    describe('4.3.1', function () {
-	      it('should behave...', function () {});
+	    describe('4.3.1 Propagation', function () {
+	      it('should spit all array values at once', function () {
+	        var source$ = Rx.Observable.of([1, 2, 3, 4, 5]);
+
+	        source$.subscribe(function (val) {
+	          (0, _chai.expect)(val).to.eql([1, 2, 3, 4, 5]);
+	        });
+	      });
+
+	      it('should check what happens with delay then (all will be delivered at once after delay, because theyre buffered', function () {
+	        var source$ = Rx.Observable.from([1, 2, 3, 4, 5]).delay(1500);
+
+	        source$.subscribe(function (val) {
+	          console.log(val);
+	        });
+	      });
+	    });
+
+	    describe('4.3.2 Sequential Time', function () {
+	      it('should spit all at once after 6 seconds', function () {
+	        Rx.Observable.from([1, 2]).delay(2000).concat(Rx.Observable.from([3, 4])).delay(2000).concat(Rx.Observable.from([5, 6])).delay(2000).subscribe(console.log);
+	      });
 	    });
 	  });
+
+	  describe('4.4 Handling User Input', function () {
+	    describe('4.4.1 Debouncing', function () {
+	      it('should call handler only after certain time passed since last event', function () {
+	        Rx.Observable.fromEvent(document, 'click').debounceTime(1000).subscribe(function (e) {
+	          console.log('Clicked at: ' + e.clientY);
+	        });
+	      });
+	    });
+
+	    describe('4.4.1 Throttling', function () {
+	      it('should call handler at most once every period (one second here), ignoring all events which are inside time window. This is just limit number of request being made for server i.e.', function () {
+	        Rx.Observable.fromEvent(document, 'click').throttleTime(1000).subscribe(function (e) {
+	          console.log('Clicked at: ' + e.clientY);
+	        });
+	      });
+	    });
+	  });
+
+	  describe('4.5 Buffering in RxJS', function () {});
 	});
 
 /***/ }),
