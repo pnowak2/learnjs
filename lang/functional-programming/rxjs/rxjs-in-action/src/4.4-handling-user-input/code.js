@@ -19,7 +19,7 @@ const throttled$ = Rx.Observable
   .throttleTime(1000)
   .pluck('target', 'value')
   .filter(notEmpty)
-  .map(input => input.trim())
+  .map(input => input.trim());
 
 throttled$.subscribe(val => {
   console.log(`Sending request with ${val}`);
