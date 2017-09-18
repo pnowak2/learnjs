@@ -1,0 +1,22 @@
+<p *ngIf="auth.getUser()">
+  Logged in as <strong>{{ auth.getUser() }}</strong>
+  <a href (click)="logout()">
+    Logout
+  </a>
+</p>
+
+<div *ngIf="message">
+  {{ message }}
+</div>
+
+<form *ngIf="!auth.getUser()">
+  <p>
+    user: <input type="text" name="username" #username>
+  </p>
+  <p>
+    password: <input type="text" name="password" #password>
+  </p>
+  <a href (click)="login(username.value, password.value)">
+    Submit
+  </a>
+</form>

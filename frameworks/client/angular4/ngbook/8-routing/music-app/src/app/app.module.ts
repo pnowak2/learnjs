@@ -33,7 +33,7 @@ const routes: Routes = [
   providers: [
     SpotifyService,
     { provide: 'API_KEY', useValue: 'test' },
-    { provide: 'API_URL', useValue: 'https://api.spotify.com/v1/search' },
+    { provide: 'API_URL', useValue: 'https://api.spotify.com/v1/' },
     { provide: APP_BASE_HREF, useValue: '/' }
   ],
   bootstrap: [AppComponent]

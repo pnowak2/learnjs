@@ -1,0 +1,13 @@
+<p>
+  Products dashboard
+</p>
+
+<a [routerLink]="['./main']">Main</a>
+<a [routerLink]="['./more-info']">More Info</a>
+
+<div>
+  Enter id: <input #id type="text" size="6">
+  <button (click)="goToProduct(id.value)">Go</button>
+</div>
+
+<router-outlet></router-outlet>
