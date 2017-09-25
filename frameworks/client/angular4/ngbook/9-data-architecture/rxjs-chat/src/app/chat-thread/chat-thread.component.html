@@ -1,0 +1,4 @@
+<img src="{{ thread.avatarSrc }}" alt="Avatar Image">
+{{ thread.name }} <span *ngIf="selected">&bull;</span>
+<small>{{ thread.lastMessage.text }}</small>
+<a (click)="onClicked($event)">Select</a>

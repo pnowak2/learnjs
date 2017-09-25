@@ -1,3 +1,5 @@
-<p>
-  chat-threads works!
-</p>
+<app-chat-thread
+  *ngFor="let thread of thread | async"
+  [thread]="thread">
+
+</app-chat-thread>
