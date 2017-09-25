@@ -44361,7 +44361,29 @@
 	    });
 	  });
 
-	  describe('4.5 Buffering in RxJS', function () {});
+	  describe('4.5 Buffering in RxJS', function () {
+	    describe('Buffer', function () {
+	      it('should buffer until buffer observable emits a value', function (done) {
+	        var src$ = Rx.Observable.timer(0, 40).buffer(Rx.Observable.timer(400)).subscribe(function (val) {
+	          (0, _chai.expect)(val).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+	        }, null, done);
+	      });
+	    });
+
+	    describe('BufferCount', function () {
+	      it('should buffer until buffer count is achieved, then start again', function (done) {
+	        var spy = sinon.spy();
+
+	        var src$ = Rx.Observable.of(1, 2, 3, 4, 5).bufferCount(3).subscribe(function (val) {
+	          spy(val);
+	        }, null, function () {
+	          (0, _chai.expect)(spy.calledWith([1, 2, 3])).to.be.true;
+	          (0, _chai.expect)(spy.calledWith([4, 5])).to.be.true;
+	          done();
+	        });
+	      });
+	    });
+	  });
 	});
 
 /***/ }),

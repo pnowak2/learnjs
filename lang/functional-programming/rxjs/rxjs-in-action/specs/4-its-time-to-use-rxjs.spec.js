@@ -166,6 +166,30 @@ describe('4 Its Time to Use RxJS', () => {
   });
   
   describe('4.5 Buffering in RxJS', () => {
-    
+    describe('Buffer', () => {
+      it('should buffer until buffer observable emits a value', (done) => {
+        const src$ = Rx.Observable.timer(0, 40)
+          .buffer(Rx.Observable.timer(400))
+          .subscribe(val => {
+            expect(val).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+          }, null, done);
+      });
+    });
+
+    describe('BufferCount', () => {
+      it('should buffer until buffer count is achieved, then start again', (done) => {
+        const spy = sinon.spy();
+
+        const src$ = Rx.Observable.of(1, 2, 3, 4, 5)
+          .bufferCount(3)
+          .subscribe(val => {
+            spy(val)
+          }, null, () => {
+            expect(spy.calledWith([1, 2, 3])).to.be.true;
+            expect(spy.calledWith([4, 5])).to.be.true;
+            done();
+          });
+      });
+    });
   });
 });
