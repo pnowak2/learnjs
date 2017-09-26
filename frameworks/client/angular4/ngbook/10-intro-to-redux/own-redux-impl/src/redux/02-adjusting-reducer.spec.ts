@@ -1,4 +1,4 @@
-import { reducer, incrementAction, decrementAction } from './02-adjusting-reducer';
+import { reducer, incrementAction, decrementAction, Action } from './02-adjusting-reducer';
 
 describe('Adjusting Reducer', () => {
   it('should return original state', () => {
@@ -22,4 +22,15 @@ describe('Adjusting Reducer', () => {
     result = reducer(5, decrementAction);
     expect(result).toBe(4);
   });
+
+  it('should use payload', () => {
+    const action: Action = {
+      type: 'PLUS',
+      payload: 5
+    };
+
+    const result = reducer(3, action);
+    expect(result).toBe(8);
+  });
+
 });

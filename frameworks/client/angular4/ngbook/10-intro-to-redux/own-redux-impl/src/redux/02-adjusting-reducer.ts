@@ -15,6 +15,8 @@ export let reducer: Reducer<number> = (state: number, action: Action) => {
       return state + 1;
     case 'DECREMENT':
       return state - 1;
+    case 'PLUS':
+      return state + action.payload;
     default:
       return state;
   }
