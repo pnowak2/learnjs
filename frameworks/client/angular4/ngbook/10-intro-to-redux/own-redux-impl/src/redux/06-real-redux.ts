@@ -11,7 +11,7 @@ export interface AppState {
 
 export const initialState: AppState = { messages: [] };
 
-export const reducer: Reducer<AppState> = (state: AppState = initialState, action: Action) => {
+export const reducer: Reducer<AppState> = (state: AppState = initialState, action: Action): AppState => {
   switch (action.type) {
     case 'ADD_MESSAGE':
       return {
