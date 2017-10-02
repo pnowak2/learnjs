@@ -47,7 +47,8 @@
 	__webpack_require__(1);
 	__webpack_require__(206);
 	__webpack_require__(564);
-	module.exports = __webpack_require__(566);
+	__webpack_require__(566);
+	module.exports = __webpack_require__(569);
 
 
 /***/ }),
@@ -44408,6 +44409,73 @@
 	    }
 	  };
 	};
+
+/***/ }),
+/* 569 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(570)
+	__webpack_require__(205);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 570 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _chai = __webpack_require__(88);
+
+	var _sinon = __webpack_require__(128);
+
+	var sinon = _interopRequireWildcard(_sinon);
+
+	var _rxjs = __webpack_require__(216);
+
+	var Rx = _interopRequireWildcard(_rxjs);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	describe('5 Applied Reactive Streams', function () {
+	  describe('5.1 One for all, and all for one!', function () {
+	    describe('5.1.1 Interleave events by merging streams', function () {
+	      it('should merge events to one stream', function (done) {
+	        var spy = sinon.spy();
+	        var src1$ = Rx.Observable.interval(20).map(function (x) {
+	          return 'Source 1 ' + x;
+	        }).take(2);
+	        var src2$ = Rx.Observable.interval(20).map(function (y) {
+	          return 'Source 2 ' + y;
+	        }).take(2);
+
+	        var src$ = Rx.Observable.merge(src1$, src2$);
+
+	        src$.subscribe(function (val) {
+	          spy(val);
+	        }, null, function () {
+	          (0, _chai.expect)(spy.callCount).to.eql(4);
+
+	          (0, _chai.expect)(spy.getCall(0).calledWith('Source 1 0')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(1).calledWith('Source 2 0')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(2).calledWith('Source 1 1')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(3).calledWith('Source 2 1')).to.be.true;
+	          done();
+	        });
+	      });
+	    });
+	  });
+	});
 
 /***/ })
 /******/ ]);
