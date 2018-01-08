@@ -40,7 +40,7 @@ export class Observable {
     return new Observable((observer) => {
       o$.subscribe({
         next() { shouldStop = true },
-        complete() { shoultStop = true }
+        complete() { shouldStop = true }
       });
 
       return this.subscribe({
@@ -71,7 +71,6 @@ export class Observable {
   }
 
   distinct() {
-
     return new Observable((observer) => {
       let last;
 
@@ -116,7 +115,7 @@ export class Observable {
         if (i === 10) {
           observer.complete();
         }
-      }, 50);
+      }, time);
 
       return () => clearInterval(id);
     });

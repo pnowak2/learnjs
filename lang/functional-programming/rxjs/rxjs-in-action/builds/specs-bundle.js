@@ -44450,7 +44450,7 @@
 	describe('5 Applied Reactive Streams', function () {
 	  describe('5.1 One for all, and all for one!', function () {
 	    describe('5.1.1 Interleave events by merging streams', function () {
-	      it('should merge events to one stream', function (done) {
+	      it('should use static merge events to one stream', function (done) {
 	        var spy = sinon.spy();
 	        var src1$ = Rx.Observable.interval(20).map(function (x) {
 	          return 'Source 1 ' + x;
@@ -44460,6 +44460,30 @@
 	        }).take(2);
 
 	        var src$ = Rx.Observable.merge(src1$, src2$);
+
+	        src$.subscribe(function (val) {
+	          spy(val);
+	        }, null, function () {
+	          (0, _chai.expect)(spy.callCount).to.eql(4);
+
+	          (0, _chai.expect)(spy.getCall(0).calledWith('Source 1 0')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(1).calledWith('Source 2 0')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(2).calledWith('Source 1 1')).to.be.true;
+	          (0, _chai.expect)(spy.getCall(3).calledWith('Source 2 1')).to.be.true;
+	          done();
+	        });
+	      });
+
+	      it('should use instance merge events to one stream', function (done) {
+	        var spy = sinon.spy();
+	        var src1$ = Rx.Observable.interval(20).map(function (x) {
+	          return 'Source 1 ' + x;
+	        }).take(2);
+	        var src2$ = Rx.Observable.interval(20).map(function (y) {
+	          return 'Source 2 ' + y;
+	        }).take(2);
+
+	        var src$ = src1$.merge(src2$);
 
 	        src$.subscribe(function (val) {
 	          spy(val);
