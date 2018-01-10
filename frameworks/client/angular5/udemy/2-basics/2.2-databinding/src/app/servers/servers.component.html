@@ -1,2 +1,36 @@
-<app-server></app-server>
-<app-server></app-server>
+<label for="">Server Name</label>
+<!-- <input type="text"
+       class="form-control"
+       (input)="onUpdateServerName($event)"> -->
+<!-- <input type="text"
+       class="form-control"
+       [value]="serverName"> -->
+
+<input type="text"
+       class="form-control"
+       [(ngModel)]="serverName">
+
+<!-- <p>{{ serverName }}</p> -->
+
+<button class="btn btn-primary"
+        [disabled]="!allowNewServer"
+        (click)="onCreateServer($event)">
+  Add Server
+</button>
+
+<button class="btn btn-secondary" (click)="onToggleDetails()">
+  Display details
+</button>
+<p *ngIf="isDetailsVisible">Secred password: spam</p>
+<ul>
+  <li *ngFor="let log of logs; let i = index" [ngClass]="{ highghlight: i > 3 }">{{ i }} - {{ log }}</li>
+</ul>
+<p *ngIf="serverCreated; else noServer">
+  Server was created, server name is {{ serverName }}
+</p>
+<ng-template #noServer>
+  <p>No server was created!</p>
+</ng-template>
+
+<app-server *ngFor="let server of servers"></app-server>
+
