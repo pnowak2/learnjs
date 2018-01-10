@@ -1,0 +1,12 @@
+<form>
+  <input type="radio" name="age" value="10">
+  <input type="radio" name="age" value="20">
+</form>
+
+<script>
+let form = document.forms[0];
+
+let ageElems = form.elements.age;
+
+console.log(ageElems[0].value); // 10, the first input value
+</script>

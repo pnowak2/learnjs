@@ -1,0 +1,44 @@
+<style type="text/css">
+  #main {
+    background-color: red;
+  }
+  
+  #example {
+    width: 300px;
+    height: 200px;
+    overflow: auto;
+    border: 25px solid #E8C48F;
+    padding: 20px;
+  }
+</style>
+
+<main style="position: relative" id="main">
+  <article>
+
+    <div id="example" style="position: absolute; left: 180px; top: 180px;">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus
+      aut voluptates expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates
+      expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur
+      adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque
+      quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque quas soluta, aliquam
+      veniam saepe dicta delectus placeat ut.
+    </div>
+  </article>
+</main>
+<script>
+  // Properties clientWidth/clientHeight only account for the visible part of the element.
+  // Properties scrollWidth/scrollHeight also include the scrolled out (hidden) part:
+
+  console.log('scrollWidth', example.scrollWidth);
+  console.log('clientWidth', example.clientWidth);
+  console.log('clientHeight', example.clientHeight);
+  console.log('scrollHeight', example.scrollHeight);
+
+  example.addEventListener('click', (e) => {
+    let target = e.target;
+    target.style.height = target.scrollHeight + 'px';
+  });
+
+</script>

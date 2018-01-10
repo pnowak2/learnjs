@@ -1,0 +1,54 @@
+<style type="text/css">
+  #main {
+    background-color: red;
+  }
+  
+  .example {
+    width: 300px;
+    height: 200px;
+    overflow: auto;
+    border: 25px solid #E8C48F;
+    padding: 20px;
+  }
+</style>
+
+<main style="position: relative" id="main">
+  <article>
+
+    <div id="example" class="example" style="position: absolute; left: 180px; top: 180px;">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus
+      aut voluptates expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates
+      expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur
+      adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque
+      quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque quas soluta, aliquam
+      veniam saepe dicta delectus placeat ut.
+    </div>
+
+    <div id="examplertl" class="example" style="position: absolute; left: 680px; top: 180px; direction: rtl">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus
+      aut voluptates expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates
+      expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur
+      adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque
+      quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque quas soluta, aliquam
+      veniam saepe dicta delectus placeat ut.
+    </div>
+  </article>
+</main>
+<script>
+  console.log('clientTop', example.clientTop); // – top border width
+  console.log('clientLeft', example.clientLeft); // left border width
+
+  // …But to be precise – they are not borders, but relative coordinates of the inner side from the outer side.
+  
+  // What’s the difference?
+  // It becomes visible when the document is right-to-left (the operation system is in arabic or hebrew languages). The scrollbar is then not on the right, but on the left, and then clientLeft also includes the scrollbar width.
+  // In that case clientLeft in our example would be not 25, but with the scrollbar width 25+16=41:
+
+  console.log('examplertl.clientTop', examplertl.clientTop);
+  console.log('examplertl.clientLeft', examplertl.clientLeft);
+
+</script>

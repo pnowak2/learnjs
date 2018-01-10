@@ -1,0 +1,11 @@
+<button id="button">Alt+Shift+Click on me!</button>
+
+<script>
+  button.onclick = function (event) {
+    console.log('altKey', event.altKey);
+    console.log('shiftKey', event.shiftKey);
+    console.log('ctrlKey', event.ctrlKey);
+    console.log('metaKey (cmd on mac)', event.metaKey);
+  };
+
+</script>

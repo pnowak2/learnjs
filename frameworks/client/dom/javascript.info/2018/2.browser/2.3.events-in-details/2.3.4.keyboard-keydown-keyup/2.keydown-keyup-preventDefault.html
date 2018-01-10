@@ -1,0 +1,16 @@
+<input type="text" id="input" placeholder="Phone numbers only please">
+
+<script>
+  function checkPhoneKey(key) {
+    return (key >= '0' && key <= '9') || key == '+' || key == '(' || key == ')' || key == '-'; // this is returning boolean to preventDefault alternative for on<event> events.
+  }
+
+  input.onkeydown = function (evt) {
+    console.log('key', evt.key);
+    console.log('code', evt.code);
+    console.log('repeat', evt.repeat); // is button constantly pressed
+
+    return checkPhoneKey(evt.key);
+  }
+
+</script>

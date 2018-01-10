@@ -1,0 +1,17 @@
+<html><head></head><body>
+  <script>
+    // HTML is "dense" to evade extra "blank" text nodes.
+
+    // parent of <body> is <html>
+    console.log(document.body.parentNode === document.documentElement); // true
+
+    // after <head> goes <body>
+    console.log(document.head.nextSibling); // HTMLBodyElement
+
+    // before <body> goes <head>
+    console.log(document.body.previousSibling); // HTMLHeadElement
+
+  </script>
+</body>
+
+</html>

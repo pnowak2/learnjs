@@ -1,0 +1,48 @@
+<style type="text/css">
+  #main {
+    background-color: red;
+  }
+  
+  #example {
+    width: 300px;
+    height: 200px;
+    overflow: auto;
+    border: 25px solid #E8C48F;
+    padding: 20px;
+  }
+</style>
+
+<main style="position: relative" id="main">
+  <article>
+
+    <div id="example" style="position: absolute; left: 180px; top: 180px;">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus
+      aut voluptates expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates
+      expedita cumque quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur
+      adipisicing elit. Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque
+      quas soluta, aliquam veniam saepe dicta delectus placeat ut. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Hic ipsa, dolore assumenda error, dolores nobis itaque necessitatibus aut voluptates expedita cumque quas soluta, aliquam
+      veniam saepe dicta delectus placeat ut.
+    </div>
+  </article>
+</main>
+<script>
+  // These two properties are the simplest ones. They provide the “outer” width/height of the element. Or, in other words, its full size including borders.
+
+  console.log('offsetWidth', example.offsetWidth); // offsetWidth = 390, the outer width, can be calculated as inner CSS-width (300px) plus paddings (2*20px) and borders (2*25px).
+  console.log('offsetHeight', example.offsetHeight); // offsetHeight = 290, the outer height.
+
+  // Geometry properties are calculated only for shown elements.
+
+  // If an element (or any of its ancestors) has display:none or is not in the document, then all geometry properties are zero or null depending on what it is.
+  // For example, offsetParent is null, and offsetWidth, offsetHeight are 0.
+  // We can use this to check if an element is hidden, like this:
+
+  // function isHidden(elem) {
+  //   return !elem.offsetWidth && !elem.offsetHeight;
+  // }
+
+  // Please note that such isHidden returns true for elements that are on-screen, but have zero sizes (like an empty <div>).
+
+</script>
