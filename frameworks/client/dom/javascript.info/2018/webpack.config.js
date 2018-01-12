@@ -1,8 +1,10 @@
 var path = require('path');
+var glob = require('glob')
 
 module.exports = {
   entry: [
-    'mocha!./specs/1.1.intro-to-js.spec.js'
+    'mocha!./specs/1.javascript-language/1.introduction.spec.js',
+    'mocha!./specs/1.javascript-language/2.javascript-fundamentals.spec.js',
   ],
   output: {
     path: 'builds',
