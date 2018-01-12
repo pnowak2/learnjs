@@ -6,14 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  odds: number[] = [];
-  evens: number[] = [];
+  loadedFeature = 'recipe';
 
-  onTick(nb: number) {
-    if (nb % 2 === 0) {
-      this.odds.push(nb);
-    } else {
-      this.evens.push(nb);
-    }
+  onNavigate(feature: string) {
+    this.loadedFeature = feature;
   }
 }

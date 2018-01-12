@@ -15,3 +15,9 @@
     </div>
   </div>
 </div>
+
+<hr>
+
+<app-game-control (tick)="onTick($event)"></app-game-control>
+<app-odd *ngFor="let odd of odds" [number]="odd"></app-odd>
+<app-even *ngFor="let even of evens" [number]="even"></app-even>
