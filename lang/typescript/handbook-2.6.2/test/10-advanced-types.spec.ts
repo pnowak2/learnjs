@@ -296,10 +296,124 @@ describe('Advanced Types', () => {
       }
     });
   });
-  
-  describe('Polymorphic this types', () => {
-    it('should behave...', () => {
 
+  describe('Polymorphic this types', () => {
+    it('should use polymorphism using this keyword', () => {
+      class BasicCalculator {
+        public constructor(protected value: number = 0) { }
+        public currentValue(): number {
+          return this.value;
+        }
+        public add(operand: number): this {
+          this.value += operand;
+          return this;
+        }
+        public multiply(operand: number): this {
+          this.value *= operand;
+          return this;
+        }
+        // ... other operations go here ...
+      }
+
+      let v = new BasicCalculator(2)
+        .multiply(5)
+        .add(1)
+        .currentValue();
+
+      expect(v).to.eql(11);
+
+      class ScientificCalculator extends BasicCalculator {
+        public constructor(value = 0) {
+          super(value);
+        }
+        public sqrt() {
+          this.value = Math.sqrt(this.value);
+          return this;
+        }
+      }
+
+      let v2 = new ScientificCalculator(2)
+        .multiply(5)
+        .add(6)
+        .sqrt()
+        .currentValue();
+
+      expect(v2).to.eql(4);
     });
   });
+
+  describe('Index Types', () => {
+    it('should allow to compile time check property names', () => {
+      function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+        return names.map(n => o[n]);
+      }
+
+      interface Person {
+        name: string;
+        age: number;
+      }
+
+      let p: Person = {
+        name: 'Peter',
+        age: 37
+      };
+
+      let strings: string[] = pluck(p, ['name']);
+
+      expect(strings).to.eql(['Peter']);
+    });
+
+    it('should index types and string index signatures check', () => {
+      interface Map<T> {
+        [key: string]: T;
+      }
+      let keys: keyof Map<number>; // string
+    });
+  });
+
+  describe('Mapped Types', () => {
+    it('should mark interface with ? or readonly by hand', () => {
+      interface PersonPartial {
+        name?: string;
+        age?: number;
+      }
+
+      interface PersonReadonly {
+        readonly name: string;
+        readonly age: number;
+      }
+    });
+
+    it('should make it more automatic', () => {
+      interface Person {
+        name: string;
+        age: number;
+      }
+
+      type ReadOnly<T> = {
+        readonly [P in keyof T]: T[P] // p is key of object of T type - [P in keyof T], where T[P] represents value of this key
+      }
+      type Optional<T> = {
+        [P in keyof T]?: T[P] // p is key of object of T type - [P in keyof T], where T[P] represents value of this key
+      }
+      type ReadonlyPerson = Readonly<Person>;
+      type OptionalPerson = Optional<Person>;
+
+      let p: Person = {
+        name: 'peter',
+        age: 37
+      }
+      p.age = 38;
+
+      let p2: ReadOnly<Person> = {
+        name: 'peter',
+        age: 37
+      }
+
+      let p3: OptionalPerson = {} // Possible because mapped Person to OptionalPerson where all properties are optional
+      // p2.age = 38; // compilation error, readonly !
+    });
+
+  });
+
 });
