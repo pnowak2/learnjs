@@ -405,7 +405,20 @@ describe('Advanced Types', () => {
       }
     });
 
-    it('should make it more automatic', () => {
+
+    it('should make simples mapped type', () => {
+      type Keys = 'option1' | 'option2';
+      type Flags = {[K in Keys]: boolean };
+
+      let f: Flags = {
+        option1: true,
+        option2: false,
+        // option3: true // not allowed, only names from Keys are valid there
+      }
+    });
+
+
+    it('should make it more automatic, using keyof instead of manual union type like above', () => {
       interface Person {
         name: string;
         age: number;
@@ -435,5 +448,4 @@ describe('Advanced Types', () => {
       // p2.age = 38; // compilation error, readonly !
     });
   });
-
 });
