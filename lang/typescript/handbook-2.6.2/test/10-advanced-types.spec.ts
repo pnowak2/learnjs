@@ -343,6 +343,27 @@ describe('Advanced Types', () => {
   });
 
   describe('Index Types', () => {
+    it('should explain keyof keyword. It returns type which is a union of public property names of given type', () => {
+      interface Person {
+        name: string;
+        age: number;
+      }
+
+      // this is nice, because pto is dynamically accepting any property name added later to Person interface
+      let pto: keyof Person;
+      pto = 'name';
+      pto = 'age';
+      // pto = 'other' // error, pto can accept only 'name' and 'age'
+
+      // manual equivalent
+
+      let pdo: 'name' | 'age';
+      pdo = 'name';
+      pdo = 'age';
+      // pdo = 'other' // error, pdo can accept only 'name' and 'age'
+    });
+
+
     it('should allow to compile time check property names', () => {
       function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
         return names.map(n => o[n]);
@@ -413,7 +434,6 @@ describe('Advanced Types', () => {
       let p3: OptionalPerson = {} // Possible because mapped Person to OptionalPerson where all properties are optional
       // p2.age = 38; // compilation error, readonly !
     });
-
   });
 
 });

@@ -1,8 +1,13 @@
 <h4>Welcome to Server Manager 4.0</h4>
 <p>Manage your Servers and Users.</p>
 
+<div *ngIf="notAuthorized" class="alert alert-danger">
+  You are not authorized to open that content
+</div>
+
 <button
   class="btn btn-primary"
-  (click)="onLoadServers()">Load Servers</button>
+  (click)="onLoadServer(1)">Load Server 1</button>
 
-
+<button class="btn btn-default" (click)="onLogin()">Login</button>
+<button class="btn btn-default" (click)="onLogout()">Logout</button>
