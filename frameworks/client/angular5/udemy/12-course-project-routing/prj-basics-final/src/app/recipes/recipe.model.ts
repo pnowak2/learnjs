@@ -1,4 +1,5 @@
-import { Ingredient } from './../../../../../12-course-project-routing/prj-basics-final/src/app/shared/ingredient.model';
+import { Ingredient } from './../shared/ingredient.model';
+
 export class Recipe {
   public name: string;
   public description: string;

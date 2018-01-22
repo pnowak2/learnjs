@@ -1,9 +1,10 @@
-import { Directive, Input, TemplateRef, ElementRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, TemplateRef, ElementRef, ViewContainerRef, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[appUnless]'
 })
-export class UnlessDirective {
+export class UnlessDirective implements OnInit {
+  @Input() appUnlessInfo: string;
   @Input() set appUnless(condition: boolean) {
     if (!condition) {
       this.vcRef.createEmbeddedView(this.templateRef);
@@ -14,4 +15,7 @@ export class UnlessDirective {
 
   constructor(private templateRef: TemplateRef<any>, private vcRef: ViewContainerRef) { }
 
+  ngOnInit() {
+    console.log(this.appUnlessInfo);
+  }
 }

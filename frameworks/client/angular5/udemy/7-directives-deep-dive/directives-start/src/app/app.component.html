@@ -39,9 +39,9 @@
       <p appBasicHighlight="red">Hello world</p>
       <p appBetterHighlight="red" defaultColor="yellow">Hello world</p>
 
-      <p *appUnless="onlyOdd">Conditional here</p>
-      <ng-template [appUnless]="onlyOdd">
-        <p>Conditional here</p>
+      <p *appUnless="onlyOdd; info: 'test'">AppUnless Conditional here</p>
+      <ng-template [appUnless]="onlyOdd" [appUnlessInfo]="'info 2'">
+        <p>AppUnless Conditional here</p>
       </ng-template>
 
       <div [ngSwitch]="value">
