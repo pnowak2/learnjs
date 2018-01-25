@@ -1,0 +1,48 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // single var
+    let message = 'Hello';
+    console.log(message);
+
+    // multiple vars
+    let name = 'peter', age = 38;
+    console.log(name, age);
+
+    // variables as references, box metaphore
+    let hello = 'Hello';
+    let msg;
+
+    msg = hello;
+
+    console.log(msg, hello);
+
+    // weird names allowed
+    $ = 'boo';
+    _ = 'lodash';
+
+    console.log($, _);
+
+    // cannot start with number
+    // let 1name = 'test'; -> error
+
+    // constants
+    const birthday = '28.05.1980';
+    // birthday = 'other day'; // error -> constant value
+    console.log(birthday);
+
+    // make constants uppercase
+    const COLOR_RED = '#f00';
+    console.log(COLOR_RED);
+  </script>
+</body>
+
+</html>
