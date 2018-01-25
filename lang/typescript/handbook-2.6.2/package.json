@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.69",
-    "jquery": "^2.2.0"
+    "jquery": "^2.2.0",
+    "lodash": "^4.17.4",
+    "underscore": "^1.8.3"
   }
 }

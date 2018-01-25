@@ -1,2 +1,1 @@
-export { EmailValidator as RegexpEmailValidator } from './exporting-statements';
-export { ZipCodeValidator as RegexpZipCodeValidator } from './exporting-declaration';
+export { StringValidator as Boo } from './validation';
