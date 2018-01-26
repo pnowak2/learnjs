@@ -1,5 +1,6 @@
-import { expect } from 'chai';
+// /// <reference path="./modules/declarations.d.ts" />
 
+import { expect } from 'chai';
 import { StringValidator } from './modules/validation';
 import { ZipCodeValidator } from './modules/exporting-declaration';
 import { EmailValidator, ElectronicMailValidator } from './modules/exporting-statements';
@@ -8,9 +9,15 @@ import { StringValidator as SV } from './modules/exporting-reexporting-all';
 import * as All from './modules/exporting-reexporting';
 import MyJquery, { vr } from './modules/exporting-default-export';
 import AmdValidator = require('./modules/exporting-export-amd-cjs');
-/// <reference path="./modules/mynode.d" />
+
+// declare typings for existing module without type definitions
+// /// <reference path="./modules/mynode.d" />
+// import * as URL from "url";
+// let myUrl = URL.parse("http://www.typescriptlang.org");
+
 
 describe('Modules', () => {
+  
   describe('Exporting', () => {
     it('should export items', () => {
       // export const numberRegexp = /^[0-9]+$/;
@@ -164,8 +171,16 @@ describe('Modules', () => {
   describe('Working wiht Other JavaScript Libraries', () => {
     // To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
     // We call declarations that don’t define an implementation “ambient”. Typically, these are defined in .d.ts files. If you’re familiar with C/C++, you can think of these as .h files. Let’s look at a few examples.
-    it('should behave...', () => {
-      import 
+    it('should make declaration of existing library so typings are known for ts', () => {
+      // /// <reference path="./modules/mynode.d" />
+      // import * as URL from "url";
+      // let myUrl = URL.parse("http://www.typescriptlang.org");
     });
+    
+    it('should make shorthand ambient module always giving type <any> to imported things', () => {
+      // declare module "hot-new-module";
+      // import x, {y} from "hot-new-module";
+    });
+      
   });
 });

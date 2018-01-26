@@ -8969,7 +8969,84 @@
 	      it('should convert undefined to NaN', function () {
 	        expect(Number(undefined)).to.be.NaN;
 	      });
+
+	      it('should convert null to 0', function () {
+	        expect(Number(null)).to.eql(0);
+	      });
+
+	      it('should convert true to 1', function () {
+	        expect(Number(true)).to.eql(1);
+	      });
+
+	      it('should convert false to 0', function () {
+	        expect(Number(false)).to.eql(0);
+	      });
+
+	      it('should convert empty space to 0', function () {
+	        expect(Number('')).to.eql(0);
+	      });
+
+	      it('should convert "abc" space to NaN', function () {
+	        expect(Number('abc')).to.eql(NaN);
+	      });
 	    });
+
+	    describe('ToBoolean', function () {
+	      it('should convert 1 to true', function () {
+	        expect(Boolean(1)).to.eql(true);
+	      });
+
+	      it('should convert 0 to false', function () {
+	        expect(Boolean(0)).to.eql(false);
+	      });
+
+	      it('should empty string to false', function () {
+	        expect(Boolean('')).to.eql(false);
+	      });
+
+	      it('should nont empty string to true', function () {
+	        expect(Boolean('abc')).to.eql(true);
+	      });
+	    });
+	  });
+
+	  describe('2.7 Operators"', function () {
+	    it('should read the section', function () {});
+
+	    describe('Concatenation with +', function () {
+	      it('should concatenate strings', function () {
+	        expect('my' + 'string').to.eql('mystring');
+	      });
+
+	      it('should concatenate string and number converting number to string', function () {
+	        expect('1' + 2).to.eql('12');
+	      });
+
+	      it('should not concatenate string and number with anything other than plus operator', function () {
+	        expect('1' - 2).to.eql(-1);
+	      });
+	    });
+
+	    describe('Unary +', function () {
+	      it('should do nothing with numbers', function () {
+	        expect(+5).to.eql(5);
+	      });
+
+	      it('should convert to number for non numbers', function () {
+	        expect(+'5').to.eql(5);
+	        expect(+'').to.eql(0);
+	        expect(+true).to.eql(1);
+	      });
+
+	      it('should sum two strings as numbers (like got them from html inputs)', function () {
+	        var inp1 = '5';
+	        var inp2 = '6';
+
+	        expect(+inp1 + +inp2).to.eql(11);
+	      });
+	    });
+
+	    describe('Assignment', function () {});
 	  });
 	});
 
