@@ -1,3 +1,20 @@
 .container {
   display: flex;
+  flex-flow: row;
+  border: 1px solid white;
+  width: 800px;
+}
+
+.container div {
+  width: 100px;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.container div:nth-child(2) {
+  flex-grow: 3;
+}
+
+.container div:nth-child(3) {
+  flex-grow: 3;
 }
