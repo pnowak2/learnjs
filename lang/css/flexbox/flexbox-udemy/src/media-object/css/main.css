@@ -1,0 +1,19 @@
+.media {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.figure {
+  align-self: flex-start;
+  flex: 1 1 10%;
+  flex-basis: 10%;
+}
+
+.media-body {
+  flex: 1 1 90%;
+  flex-basis :90%;
+}
+
+p {
+  margin: 0 10px 20px 10px;
+}
