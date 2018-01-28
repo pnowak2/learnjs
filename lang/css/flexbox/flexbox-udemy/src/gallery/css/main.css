@@ -1,0 +1,27 @@
+.grid {
+  display: flex;
+}
+
+.gutters {
+  margin: -10px 0 10px -10px;
+}
+
+.gutters > .cell {
+  padding: 10px 0 0 10px ;
+}
+
+.cell {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+}
+
+.cell > div {
+  background-color: rgba(255, 255, 255, 0.5);
+  height: 100%;
+  padding: 10px;
+}
+
+.large {
+  flex-grow: 3;
+}

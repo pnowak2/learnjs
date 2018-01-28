@@ -1,0 +1,37 @@
+.grid {
+  display: flex;
+}
+
+.grid div div {
+  background-color: rgba(255, 255, 255, 0.5);
+  height: 100%;
+}
+
+.gutters {
+  margin: -10px 0 10px -10px;
+}
+
+.gutters > div {
+  padding: 10px 0 0 10px ;
+}
+
+.half {
+  flex-basis: 50%;
+}
+
+.third {
+  flex-basis: 33.3333%;
+}
+
+.fourth {
+  flex-basis: 25%;
+}
+
+.fifth {
+  flex-basis: 20%;
+}
+
+.sixth {
+  flex-basis: 16.6666%;
+}
+
