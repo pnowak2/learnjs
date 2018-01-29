@@ -405,10 +405,10 @@ describe('Advanced Types', () => {
       }
     });
 
-
     it('should make simples mapped type', () => {
       type Keys = 'option1' | 'option2';
       type Flags = {[K in Keys]: boolean };
+      // type Flags = {[K in 'option1' | 'option2']: boolean }; // equivalent of above
 
       let f: Flags = {
         option1: true,
@@ -425,10 +425,10 @@ describe('Advanced Types', () => {
       }
 
       type ReadOnly<T> = {
-        readonly [P in keyof T]: T[P] // p is key of object of T type - [P in keyof T], where T[P] represents value of this key
+        readonly [P in keyof T]: T[P] // P is key of object of T type - [P in keyof T], where T[P] represents typed value of this key
       }
       type Optional<T> = {
-        [P in keyof T]?: T[P] // p is key of object of T type - [P in keyof T], where T[P] represents value of this key
+        [P in keyof T]?: T[P] // P is key of object of T type - [P in keyof T], where T[P] represents typed value of this key
       }
       type ReadonlyPerson = Readonly<Person>;
       type OptionalPerson = Optional<Person>;
