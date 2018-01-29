@@ -15,9 +15,8 @@ import AmdValidator = require('./modules/exporting-export-amd-cjs');
 // import * as URL from "url";
 // let myUrl = URL.parse("http://www.typescriptlang.org");
 
-
 describe('Modules', () => {
-  
+
   describe('Exporting', () => {
     it('should export items', () => {
       // export const numberRegexp = /^[0-9]+$/;
@@ -167,20 +166,100 @@ describe('Modules', () => {
       // }
     });
   });
-  
+
   describe('Working wiht Other JavaScript Libraries', () => {
     // To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
     // We call declarations that don’t define an implementation “ambient”. Typically, these are defined in .d.ts files. If you’re familiar with C/C++, you can think of these as .h files. Let’s look at a few examples.
-    it('should make declaration of existing library so typings are known for ts', () => {
+    it('should make declaration of existing library so typings are known for ts, in one file, thus module keyword', () => {
       // /// <reference path="./modules/mynode.d" />
       // import * as URL from "url";
       // let myUrl = URL.parse("http://www.typescriptlang.org");
     });
-    
+
     it('should make shorthand ambient module always giving type <any> to imported things', () => {
       // declare module "hot-new-module";
       // import x, {y} from "hot-new-module";
     });
-      
+
+    it('should make wildcard module declarations for other types than ts files', () => {
+      // in .d.ts file need to declare possibility to import from '/path/folder/asset.txt'
+      // declare module "*!text" {
+      //     const content: string;
+      //     export default content;
+      // }
+
+      // then can import like below
+
+      // import fileContent from "./xyz.txt!text";
+
+      // needs to be supported by transpiler like webpack etc.
+    });
+
+    it('should use UMD modules', () => {
+      // in d.ts file
+      // export function isPrime(x: number): boolean;
+      // export as namespace mathLib;
+
+      // then can import like below
+
+      // import { isPrime } from "math-lib";
+      // isPrime(2);
+      // mathLib.isPrime(2); // ERROR: can't use the global definition from inside a module
+      // It can also be used as a global variable, but only inside of a script. (A script is a file with no imports or exports.)
+
+      // mathLib.isPrime(2);
+    });
+  });
+
+  describe('Guidance For Structuring Modules', () => {
+    it('should not export too nested resources', () => { });
+
+    it('should export as default if possible', () => {
+      // MyClass.ts
+
+      // export default class SomeType {
+      //   constructor() { ... }
+      // }
+      // MyFunc.ts
+
+      // export default function getThing() { return "thing"; }
+      // Consumer.ts
+
+      // import t from "./MyClass";
+      // import f from "./MyFunc";
+      // let x = new t();
+      // console.log(f());
+    });
+
+    it('should put exports at the same level', () => {
+      // MyThings.ts
+
+      // export class SomeType { /* ... */ }
+      // export function someFunc() { /* ... */ }
+      // Conversely when importing:
+
+      // Explicitly list imported names
+
+      // Consumer.ts
+
+      // import { SomeType, someFunc } from "./MyThings";
+      // let x = new SomeType();
+      // let y = someFunc();
+    });
+
+    it('should use namespace import pattern for importing large number of things', () => {
+      // MyLargeModule.ts
+
+      // export class Dog { ... }
+      // export class Cat { ... }
+      // export class Tree { ... }
+      // export class Flower { ... }
+      // Consumer.ts
+
+      // import * as myLargeModule from "./MyLargeModule.ts";
+      // let x = new myLargeModule.Dog();
+    });
+
+    it('should not use namespaces in modules', () => { });
   });
 });
