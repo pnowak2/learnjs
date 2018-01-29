@@ -91,8 +91,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!C:\\projects\\learnjs\\frameworks\\client\\dom\\javascript.info\\2018\\node_modules\\css-loader\\index.js!C:\\projects\\learnjs\\frameworks\\client\\dom\\javascript.info\\2018\\node_modules\\mocha\\mocha.css", function() {
-			var newContent = require("!!C:\\projects\\learnjs\\frameworks\\client\\dom\\javascript.info\\2018\\node_modules\\css-loader\\index.js!C:\\projects\\learnjs\\frameworks\\client\\dom\\javascript.info\\2018\\node_modules\\mocha\\mocha.css");
+		module.hot.accept("!!C:\\projects\\learnjs\\lang\\javascript\\javascript.info\\2018\\node_modules\\css-loader\\index.js!C:\\projects\\learnjs\\lang\\javascript\\javascript.info\\2018\\node_modules\\mocha\\mocha.css", function() {
+			var newContent = require("!!C:\\projects\\learnjs\\lang\\javascript\\javascript.info\\2018\\node_modules\\css-loader\\index.js!C:\\projects\\learnjs\\lang\\javascript\\javascript.info\\2018\\node_modules\\mocha\\mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -9046,7 +9046,156 @@
 	      });
 	    });
 
-	    describe('Assignment', function () {});
+	    describe('Assignment', function () {
+	      it('should be possible to chain assignments', function () {
+	        var a = void 0,
+	            b = void 0,
+	            c = void 0;
+	        a = b = c = 2 + 2;
+
+	        expect(a).to.eql(4);
+	        expect(b).to.eql(4);
+	        expect(c).to.eql(4);
+	      });
+
+	      it('should return value too', function () {
+	        var x = void 0;
+	        expect(x = 'test').to.eql('test');
+	      });
+	    });
+
+	    describe('Remainder %', function () {
+	      it('should return remainder of integer division', function () {
+	        expect(10 % 3).to.eql(1);
+	        expect(10 % 2).to.eql(0);
+	      });
+	    });
+
+	    describe('Exponentiation **', function () {
+	      it('should work as x^n or Math.pow (i suppose)', function () {
+	        expect(Math.pow(3, 3)).to.eql(27);
+	        expect(Math.pow(3, 3)).to.eql(27);
+	      });
+	    });
+
+	    describe('Increment / Decrement', function () {
+	      it('should increment by 1', function () {
+	        var counter = 2;
+	        counter++;
+	        expect(counter).to.eql(3);
+
+	        expect(++counter).to.eql(4);
+	      });
+
+	      it('should decrement by 1', function () {
+	        var counter = 2;
+	        counter--;
+	        expect(counter).to.eql(1);
+
+	        expect(--counter).to.eql(0);
+	      });
+	    });
+
+	    describe('Bitwise operators', function () {
+	      it('should have those operators', function () {
+	        // AND ( & )
+	        // OR ( | )
+	        // XOR ( ^ )
+	        // NOT ( ~ )
+	        // LEFT SHIFT ( << )
+	        // RIGHT SHIFT ( >> )
+	        // ZERO-FILL RIGHT SHIFT ( >>> )
+	      });
+
+	      it('should increment by 1', function () {
+	        var reg = 0xf & 4;
+
+	        expect(reg).to.eql(0x4);
+	      });
+	    });
+
+	    describe('Modify in Place', function () {
+	      it('should use shorthand modify in place syntax', function () {
+	        var n = 2;
+	        n += 5;
+
+	        expect(n).to.eql(7);
+	      });
+	    });
+
+	    describe('Comma', function () {
+	      it('should evaluate all expressions, but return only last one', function () {
+	        expect((1 + 2, 3 + 4)).to.eql(7);
+	      });
+	    });
+	  });
+
+	  describe('2.8 Comparisons', function () {
+	    it('should read the section', function () {});
+
+	    describe('Boolean as Result', function () {
+	      it('should return always boolean', function () {
+	        expect(2 > 1).to.eql(true);
+	      });
+	    });
+
+	    describe('String Comparison', function () {
+	      it('should compare string treating as numbers from ascii (my simplification)', function () {
+	        expect('Z' > 'A').to.eql(true);
+	      });
+
+	      it('should compare strings char by char', function () {
+	        // G is the same as G.
+	        // l is the same as l.
+	        // o is greater than e. Stop here. The first string is greater.
+	        expect('Glow' > 'Glee').to.eql(true);
+	      });
+	    });
+
+	    describe('Comparison of Different Types', function () {
+	      it('should convert to numbers before compare', function () {
+	        expect('2' > 1).to.eql(true); // string '2' becomes number first
+	        expect(true > 0).to.eql(true);
+	        // because
+	        expect(Number(true)).to.eql(1);
+	      });
+	    });
+
+	    describe('Strict equality', function () {
+	      it('should not use equality check for secure comparisons', function () {
+	        // works because types are converted to number by == operator
+	        expect(0 == false).to.be.true;
+	      });
+
+	      it('should use strict equality check for secure comparisons', function () {
+	        // no type conversion made here below
+	        expect(0 === false).to.be.false;
+	      });
+	    });
+
+	    describe('Comparison with Null and Undefined', function () {
+	      it('should work as expected with strict equality', function () {
+	        // works because types are converted to number by == operator
+	        expect(null === undefined).to.be.false;
+	      });
+
+	      it('should NOT work as expected with normal equality', function () {
+	        // works because types are converted to number by == operator
+	        expect(null == undefined).to.be.true;
+
+	        // even though those are different when converted to number
+	        expect(Number(null)).to.eql(0);
+	        expect(Number(undefined)).to.eql(NaN);
+	      });
+	    });
+	  });
+
+	  describe('2.9 Interaction alert, prompt, confirm', function () {
+	    it('should read the section', function () {});
+
+	    describe('Name of the group', function () {
+	      it('should behave...', function () {});
+	    });
 	  });
 	});
 
