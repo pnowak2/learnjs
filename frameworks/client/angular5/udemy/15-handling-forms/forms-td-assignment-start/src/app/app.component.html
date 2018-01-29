@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!-- Add a Form with the following Inputs (and Validators)
+           1) Mail address (should not be empty and should be an email address)
+           2) A Dropdown which allows the user to select from three different Subscriptions ("Basic", "Advanced", "Pro")
+              Set "Advanced" as Default
+           3) A Password field (should not be empty)
+           4) A Submit Button
+
+           Display a warning message if the Form is invalid AND was touched. Display a warning message below each input if it's invalid.
+
+           Upon submitting the form, you should simply print the Value of the Form to the Console.
+           Optionally, display it in your template.
+      -->
+    </div>
+  </div>
+  <div *ngIf="!f.valid && f.touched" class="row">
+    <div class="col-xs-12">
+      <div class="alert alert-danger">
+        Data of the form is not valid
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            #email="ngModel"
+            ngModel
+            required
+            email
+            name="email"
+            class="form-control"
+            type="text">
+            <div
+              *ngIf="!email.valid && email.touched"
+              class="text-muted text-danger">Email is invalid
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label>Subscription</label>
+          <select
+            #subscription="ngModel"
+            [ngModel]="selectedSubscription"
+            required
+            name="subscription"
+            class="form-control">
+            <option [value]="s" *ngFor="let s of subscriptions">{{ s }}</option>
+          </select>
+            <div
+              *ngIf="!subscription.valid && subscription.touched"
+              class="text-muted text-danger">Subscription is invalid
+            </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            #password="ngModel"
+            ngModel
+            required
+            name="password"
+            class="form-control"
+            type="password">
+            <div
+              *ngIf="!password.valid && password.touched"
+              class="text-muted text-danger">Password is invalid
+            </div>
+        </div>
+        <button
+          [disabled]="!f.valid"
+          class="btn btn-primary"
+          type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="row" *ngIf="submitted">
+    <div class="col-xs-12">
+      <h3>Submitted Data</h3>
+      <p>Email: {{ data.email }}</p>
+      <p>Subscription: {{ data.subscription }}</p>
+      <p>Password: {{ data.password }}</p>
+    </div>
+  </div>
+</div>
