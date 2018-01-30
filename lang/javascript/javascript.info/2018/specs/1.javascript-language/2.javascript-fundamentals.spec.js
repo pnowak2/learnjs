@@ -443,8 +443,109 @@ describe('2. JavaScript Fundamentals', function () {
       });
     });
   });
-  
+
   describe('2.12 Loops while and for', () => {
     it('should read the section', function () { });
+
+    describe('while loop', () => {
+      it('should use while loop', () => {
+        let i = 0;
+        while (i <= 3) {
+          i += 1;
+        }
+
+        expect(i).to.eql(4);
+      });
+
+      it('should convert while condition to boolean', () => {
+        let i = 3;
+
+        while (i/* when 0, this is false Boolean(0) === false */) {
+          i -= 1;
+        }
+
+        expect(i).to.eql(0);
+      });
+    });
+
+    describe('do while loop', () => {
+      it('should execute body before first iteration', () => {
+        let i = 0;
+        const spy = sinon.spy();
+
+        do {
+          spy(i);
+          i += 1;
+        } while (i < 3);
+
+        expect(spy.calledWith(0)).to.be.true;
+      });
+    });
+
+    describe('for loop', () => {
+      it('should iterate over data', () => {
+        const spy = sinon.spy();
+
+        for (let i = 0; i < 3; i++) {
+          spy(i);
+        }
+
+        expect(typeof i).to.eql('undefined');
+        expect(spy.calledThrice).to.be.true;
+      });
+
+      it('should break the loop', () => {
+        let sum = 0;
+
+        while (true) {
+          sum += 3;
+          if (sum > 10) {
+            break;
+          }
+        }
+
+        expect(sum).to.eql(12);
+      });
+
+      it('should continue the loop to next iteration, Helps decrease nesting level', () => {
+        let n = 0;
+
+        for (; n < 10; n++) {
+          if (n % 2 === 0) {
+            continue;
+          }
+          n += n;
+        }
+
+        expect(n).to.eql(15);
+      });
+
+      it('should use labels for breaks and continue', () => {
+        let sum = 0;
+
+        outer: for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
+              sum += 1;
+              if (sum > 10) {
+                break outer;
+              }
+            }
+          }
+        }
+
+        expect(sum).to.eql(11);
+      });
+
+
+    });
+  });
+  
+  describe('2.13 The Switch Statement', () => {
+    describe('Name of the group', () => {
+      it('should behave...', () => {
+        
+      });
+    });
   });
 });

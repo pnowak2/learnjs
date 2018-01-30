@@ -9359,6 +9359,103 @@
 
 	  describe('2.12 Loops while and for', function () {
 	    it('should read the section', function () {});
+
+	    describe('while loop', function () {
+	      it('should use while loop', function () {
+	        var i = 0;
+	        while (i <= 3) {
+	          i += 1;
+	        }
+
+	        expect(i).to.eql(4);
+	      });
+
+	      it('should convert while condition to boolean', function () {
+	        var i = 3;
+
+	        while (i /* when 0, this is false Boolean(0) === false */) {
+	          i -= 1;
+	        }
+
+	        expect(i).to.eql(0);
+	      });
+	    });
+
+	    describe('do while loop', function () {
+	      it('should execute body before first iteration', function () {
+	        var i = 0;
+	        var spy = sinon.spy();
+
+	        do {
+	          spy(i);
+	          i += 1;
+	        } while (i < 3);
+
+	        expect(spy.calledWith(0)).to.be.true;
+	      });
+	    });
+
+	    describe('for loop', function () {
+	      it('should iterate over data', function () {
+	        var spy = sinon.spy();
+
+	        for (var _i = 0; _i < 3; _i++) {
+	          spy(_i);
+	        }
+
+	        expect(typeof i === 'undefined' ? 'undefined' : (0, _typeof3.default)(i)).to.eql('undefined');
+	        expect(spy.calledThrice).to.be.true;
+	      });
+
+	      it('should break the loop', function () {
+	        var sum = 0;
+
+	        while (true) {
+	          sum += 3;
+	          if (sum > 10) {
+	            break;
+	          }
+	        }
+
+	        expect(sum).to.eql(12);
+	      });
+
+	      it('should continue the loop to next iteration, Helps decrease nesting level', function () {
+	        var n = 0;
+
+	        for (; n < 10; n++) {
+	          if (n % 2 === 0) {
+	            continue;
+	          }
+	          n += n;
+	        }
+
+	        expect(n).to.eql(15);
+	      });
+
+	      it('should use labels for breaks and continue', function () {
+	        var sum = 0;
+
+	        outer: for (var _i2 = 0; _i2 < 3; _i2++) {
+	          for (var _i3 = 0; _i3 < 3; _i3++) {
+	            for (var _i4 = 0; _i4 < 3; _i4++) {
+	              sum += 1;
+	              if (sum > 10) {
+	                break outer;
+	              }
+	            }
+	          }
+	        }
+
+	        expect(sum).to.eql(11);
+	      });
+	    });
+	  });
+
+	  describe('2.13 The Switch Statement', function () {
+	    describe('Name of the group', function () {
+	      it('should behave...', function () {});
+	    });
 	  });
 	});
 
