@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var sinon = require('sinon');
 
 describe('2. JavaScript Fundamentals', function () {
   describe('2.1 Hello, world!', function () {
@@ -213,7 +214,7 @@ describe('2. JavaScript Fundamentals', function () {
       });
     });
   });
-  
+
   describe('2.8 Comparisons', () => {
     it('should read the section', function () { });
 
@@ -273,14 +274,177 @@ describe('2. JavaScript Fundamentals', function () {
       });
     });
   });
-  
+
   describe('2.9 Interaction alert, prompt, confirm', () => {
     it('should read the section', function () { });
-    
-    describe('Name of the group', () => {
-      it('should behave...', () => {
-        
+    it('should use alert() to show modal with info', function () { });
+    it('should use prompt() to prompt for text value, returns text from field or null', function () { });
+    it('should use confirm() to get true / false response', function () { });
+  });
+
+  describe('2.10 Conditional Operators: if, "?"', () => {
+    it('should read the section', function () { });
+
+    describe('The if statement', () => {
+      it('should execute code if returns true condition', () => {
+        let year = 2018;
+        let is2018 = false;
+
+        if (year === 2018) {
+          is2018 = true;
+        }
+
+        expect(is2018).to.be.true;
       });
     });
+
+    describe('Boolean Conversion', () => {
+      it('should convert if statement to boolean', () => {
+        // 0, null, undefined, "" are falsy, according to Boolean() function
+        const spy1 = sinon.spy();
+        const spy2 = sinon.spy();
+
+        if ('') {
+          spy1();
+        }
+
+        if ('-1') {
+          spy2();
+        }
+        expect(spy1.notCalled).to.be.true;
+        expect(spy2.called).to.be.true;
+      });
+    });
+
+    describe('Else Clause', () => {
+      it('should execute option else block if condition is false', () => {
+        const spy1 = sinon.spy();
+        const spy2 = sinon.spy();
+
+        if (false) {
+          spy1();
+        } else {
+          spy2();
+        }
+        expect(spy1.notCalled).to.be.true;
+        expect(spy2.called).to.be.true;
+      });
+    });
+
+    describe('Several Conditions "else if"', () => {
+      it('should go to next else if when condition is falsy', () => {
+        const spy1 = sinon.spy();
+        const spy2 = sinon.spy();
+        const spy3 = sinon.spy();
+
+        if (false) {
+          spy1();
+        } else if (true) {
+          spy2();
+        } else {
+
+        }
+        expect(spy1.notCalled).to.be.true;
+        expect(spy2.called).to.be.true;
+        expect(spy3.notCalled).to.be.true;
+      });
+    });
+
+    describe('Ternary operator "?"', () => {
+      it('should perform one line if-else and return value', () => {
+        const age = 19;
+
+        const who = (age > 18) ? 'adult' : 'kid';
+
+        expect(who).to.eql('adult');
+      });
+
+      it('should work with multiple nests', () => {
+        const age = 17;
+
+        const who = (age > 18) ? 'adult' :
+          age < 16 ? 'baby' : 'teenager';
+
+        expect(who).to.eql('teenager');
+      });
+    });
+  });
+
+  describe('2.11 Logical Operators', () => {
+    it('should read the section', function () { });
+
+    describe('|| OR', () => {
+      it('should or boolean values', () => {
+        expect(true || false).to.be.true;
+      });
+
+      it('should convert non boolean to boolean values and return first argument which is truthy', () => {
+        expect(1 || 0).to.eql(1);
+      });
+
+      it('should seek first truthy value, omit next one - short circuit', () => {
+        const spy1 = sinon.spy();
+        const spy2 = sinon.spy();
+
+        function getVal1() {
+          spy1();
+          return true;
+        }
+
+        function getVal2() {
+          spy2();
+          return false;
+        }
+
+        expect(getVal1() || getVal2()).to.eql(true);
+        expect(spy1.called).to.be.true;
+        expect(spy2.notCalled).to.be.true;
+      });
+    });
+
+    describe('&& AND', () => {
+      it('should and boolean values', () => {
+        expect(true && false).to.be.false;
+      });
+
+      it('should convert non boolean to boolean values and return last argument which is truthy', () => {
+        expect(1 && 0).to.eql(0);
+      });
+
+      it('should seek first falsy value, omit next one - short circuit', () => {
+        const spy1 = sinon.spy();
+        const spy2 = sinon.spy();
+
+        function getVal1() {
+          spy1();
+          return true;
+        }
+
+        function getVal2() {
+          spy2();
+          return false;
+        }
+
+        expect(getVal1() && getVal2()).to.eql(false);
+        expect(spy1.called).to.be.true;
+        expect(spy2.called).to.be.true;
+      });
+    });
+
+    describe('! NOT', () => {
+      it('should negate boolean values', () => {
+        expect(!true).to.be.false;
+        expect(!1).to.be.false;
+      });
+
+      it('should use double !! to convert to boolean', () => {
+        expect(!!null).to.be.false;
+        expect(!!'a').to.be.true;
+      });
+    });
+  });
+  
+  describe('2.12 Loops while and for', () => {
+    it('should read the section', function () { });
   });
 });
