@@ -22,6 +22,26 @@ export class AppComponent implements OnInit {
       'gender': new FormControl('female'),
       'hobbys': new FormArray([])
     });
+
+    this.signupForm.valueChanges.subscribe((value) => {
+      console.log(value);
+    });
+    this.signupForm.statusChanges.subscribe((status) => {
+      console.log(status);
+    });
+    // this.signupForm.setValue({
+    //   userData: {
+    //     username: 'test',
+    //     email: 'peter@test.com'
+    //   },
+    //   gender: 'female',
+    //   hobbys: []
+    // });
+    this.signupForm.patchValue({
+      userData: {
+        username: 'boo',
+      }
+    });
   }
 
   onAddHobby() {
@@ -32,6 +52,7 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signupForm);
+    this.signupForm.reset();
   }
 
   forbiddenNames(control: FormControl): { [key: string]: boolean } {
