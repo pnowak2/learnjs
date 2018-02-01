@@ -58,6 +58,17 @@
                 [value]="status">{{ status }}</option>
             </select>
           </div>
+          <div formArrayName="roles">
+            <h3>
+              Roles
+              <button class="btn btn-secondary" (click)="onAddRole()">Add Role</button>
+            </h3>
+
+            <div class="form-group"
+                *ngFor="let role of form.get('roles').controls; let i = index">
+              <input type="text" [formControlName]="i" >
+            </div>
+          </div>
           <button
             type="submit"
             [disabled]="!form.valid"

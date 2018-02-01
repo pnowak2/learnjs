@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -15,12 +15,20 @@ export class AppComponent implements OnInit {
     this.form = new FormGroup({
       'name': new FormControl('', [Validators.required], [this.forbiddenAsync.bind(this)]),
       'email': new FormControl('', [Validators.required, Validators.email]),
-      'status': new FormControl('Critical', [Validators.required])
+      'status': new FormControl('Critical', [Validators.required]),
+      'roles': new FormArray([
+        new FormControl('Boo')
+      ])
     });
   }
 
   onSubmit() {
     console.log(this.form.value);
+  }
+
+  onAddRole() {
+    const fa = (this.form.get('roles') as FormArray);
+    fa.push(new FormControl('', Validators.required));
   }
 
   forbidden(control: FormControl): { [key: string]: boolean } {
@@ -46,6 +54,5 @@ export class AppComponent implements OnInit {
 
       }, 1500);
     });
-
   }
 }
