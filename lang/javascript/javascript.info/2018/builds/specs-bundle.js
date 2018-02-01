@@ -9453,9 +9453,55 @@
 	  });
 
 	  describe('2.13 The Switch Statement', function () {
-	    describe('Name of the group', function () {
-	      it('should behave...', function () {});
+	    describe('The Syntax', function () {
+	      it('should consider many case blocks', function () {
+	        var v = 2;
+	        var spy = sinon.spy();
+
+	        switch (v) {
+	          case 1:
+	            spy(1);
+	            break;
+	          case 2:
+	            spy(2);
+	            break;
+	          case 3:
+	            spy(3);
+	            break;
+	          default:
+	        }
+
+	        expect(spy.calledWith(2)).to.be.true;
+	        expect(spy.calledWith(1)).not.to.be.true;
+	        expect(spy.calledWith(3)).not.to.be.true;
+	        expect(spy.calledWith('default')).not.to.be.true;
+	      });
+
+	      it('should continue to other cases plus default too, if no breaks', function () {
+	        var v = 1;
+	        var spy = sinon.spy();
+
+	        switch (v) {
+	          case 1:
+	            spy(1);
+	          case 2:
+	            spy(2);
+	          case 3:
+	            spy(3);
+	          default:
+	            spy('default');
+	        }
+
+	        expect(spy.calledWith(1)).to.be.true;
+	        expect(spy.calledWith(2)).to.be.true;
+	        expect(spy.calledWith(3)).to.be.true;
+	        expect(spy.calledWith('default')).to.be.true;
+	      });
 	    });
+	  });
+
+	  describe('2.14 Functions', function () {
+	    describe('Function Declaration', function () {});
 	  });
 	});
 
