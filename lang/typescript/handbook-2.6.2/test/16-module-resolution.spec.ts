@@ -125,7 +125,7 @@ describe('Module Resolution', () => {
           // /root/src/moduleB/package.json contains { "main": "lib/mainModule.js" }
           // './root/src/moduleB/lib/mainModule.js';
         });
-        
+
         it('should look for moduleB folder and file index.js inside', () => {
           // './root/src/moduleB/index.js';
         });
@@ -190,36 +190,190 @@ describe('Module Resolution', () => {
         });
       });
 
-      xdescribe('Non Relative Imports', () => {
-        // import { b } from "moduleB" in /root/src/moduleA.ts
+      describe('Non Relative Imports', () => {
+        // import { b } from "moduleB" in source file /root/src/moduleA.ts
 
-        it('should look for ts file', () => {
-          // './root/src/moduleB.ts';
+        it('should look for ts file in node_modules', () => {
+          // /root/src/node_modules/moduleB.ts
         });
 
-        it('should look for tsx file', () => {
-          // './root/src/moduleB.tsx';
+        it('should look for tsx file in node_modules', () => {
+          // /root/src/node_modules/moduleB.tsx
         });
 
-        it('should look for .d.ts file', () => {
-          // './root/src/moduleB.d.ts';
+        it('should look for .d.ts file in node_modules', () => {
+          // /root/src/node_modules/moduleB.d.ts
         });
 
-        it('should look for moduleB folder and file index.ts inside', () => {
-          // './root/src/moduleB/index.ts';
+        it('should look for moduleB folder in node_modules and its entry "types" in package.json file', () => {
+          // /root/src/node_modules/moduleB/package.json (if it specifies a "types" property)
         });
 
-        it('should look for moduleB folder and file index.tsx inside', () => {
-          // './root/src/moduleB/index.tsx';
+        it('should look for moduleB folder in node_modules and file index.ts inside', () => {
+          // /root/src/node_modules/moduleB/index.ts
         });
 
-        it('should look for moduleB folder and file index.d.ts inside', () => {
-          // './root/src/moduleB/index.d.ts';
+        it('should look for moduleB folder in node_modules and file index.tsx inside', () => {
+          // /root/src/node_modules/moduleB/index.tsx
         });
 
-        it('should look for moduleB folder and its entry "types" in package.json file', () => {
-          // /root/src/moduleB/package.json contains { "types": ".." }
-          // './root/src/moduleB/lib/mainModule.js';
+        it('should look for moduleB folder in node_modules and file index.d.ts inside', () => {
+          // /root/src/node_modules/moduleB/index.d.ts 
+        });
+
+        it('should repeat above up the tree until root node_modules', () => {
+          // /root/node_modules/moduleB.ts
+          // /root/node_modules/moduleB.tsx
+          // /root/node_modules/moduleB.d.ts
+          // /root/node_modules/moduleB/package.json (if it specifies a "types" property)
+          // /root/node_modules/moduleB/index.ts
+          // /root/node_modules/moduleB/index.tsx
+          // /root/node_modules/moduleB/index.d.ts 
+
+          // /node_modules/moduleB.ts
+          // /node_modules/moduleB.tsx
+          // /node_modules/moduleB.d.ts
+          // /node_modules/moduleB/package.json (if it specifies a "types" property)
+          // /node_modules/moduleB/index.ts
+          // /node_modules/moduleB/index.tsx
+          // /node_modules/moduleB/index.d.ts
+        });
+
+      });
+
+      describe('Additional Module Resolution Flags', () => {
+        describe('Base URL', () => {
+          it('should inform where to find modules. All non-relative names are assumed to be relative to baseUrl', () => { });
+          it('should be provided as cmd line argument', () => { });
+          it('should be provided as entry in tsconfig.json file (relative to tsconfig.json)', () => { });
+          it('should not impact relative modules resolution', () => { });
+        });
+
+        describe('Path mapping', () => {
+          it('should always work with baseUrl baseUrl', () => { });
+          it('should point exact folder for non relative modules under baseUrl', () => { });
+          it('should work as entry in tsconfig.json', () => {
+            // {
+            //   "compilerOptions": {
+            //     "baseUrl": ".", // This must be specified if "paths" is.
+            //     "paths": {
+            //       "jquery": ["node_modules/jquery/dist/jquery"] // This mapping is relative to "baseUrl"
+            //     }
+            //   }
+            // }
+          });
+          it('should allow to have many search areas using star', () => {
+            // {
+            //   "compilerOptions": {
+            //     "baseUrl": ".",
+            //     "paths": {
+            //       "*": [
+            //         "*",
+            //         "generated/*"
+            //       ]
+            //     }
+            //   }
+            // }
+
+            // "*": meaning the same name unchanged, so map <moduleName> => <baseUrl>/<moduleName>
+            // "generated/*" meaning the module name with an appended prefix “generated”, so map <moduleName> => <baseUrl>/generated/<moduleName>
+
+
+            // Following this logic, the compiler will attempt to resolve the two imports as such:
+
+            // import ‘folder1/file2’
+            // pattern ‘*’ is matched and wildcard captures the whole module name
+            // try first substitution in the list: ‘*’ -> folder1/file2
+            // result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder1/file2.ts.
+            // File exists. Done.
+            // import ‘folder2/file3’
+            // pattern ‘*’ is matched and wildcard captures the whole module name
+            // try first substitution in the list: ‘*’ -> folder2/file3
+            // result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder2/file3.ts.
+            // File does not exist, move to the second substitution
+            // second substitution ‘generated/*’ -> generated/folder2/file3
+            // result of substitution is non-relative name - combine it with baseUrl -> projectRoot/generated/folder2/file3.ts.
+            // File exists. Done.
+          });
+        });
+
+        describe('Virtual Directories With rootDirs', () => {
+          // Every time the compiler sees a relative module import in a subfolder of one of the rootDirs, 
+          // it will attempt to look for this import in each of the entries of rootDirs.
+          it('should inform compiler that files from different dirs will be in one dir after build is done', () => {
+
+            // A build step will copy the files in /src/views and /generated/templates/views to the same directory 
+            // in the output. 
+            //
+            // At run-time, a view can expect its template to exist next to it, and thus should import it using
+            //  a relative name as "./template".
+            //
+            //  src
+            //  └── views
+            //      └── view1.ts (imports './template1')
+            //      └── view2.ts
+
+            //  generated
+            //  └── templates
+            //          └── views
+            //              └── template1.ts (imports './view2')
+
+            // tsconfig.json
+            // {
+            //   "compilerOptions": {
+            //     "rootDirs": [
+            //       "src/views",
+            //       "generated/templates/views"
+            //     ]
+            //   }
+            // }
+
+          });
+
+        });
+
+        describe('Tracing Module Resolution', () => {
+          it('should activate with --traceResolution compiler flag', () => { });
+
+          it('should print detailed infos where module is being searched', () => {
+            // tsc --traceResolution
+            // Results in an output such as:
+
+            // ======== Resolving module 'typescript' from 'src/app.ts'. ========
+            // Module resolution kind is not specified, using 'NodeJs'.
+            // Loading module 'typescript' from 'node_modules' folder.
+            // File 'src/node_modules/typescript.ts' does not exist.
+            // File 'src/node_modules/typescript.tsx' does not exist.
+            // File 'src/node_modules/typescript.d.ts' does not exist.
+            // File 'src/node_modules/typescript/package.json' does not exist.
+            // File 'node_modules/typescript.ts' does not exist.
+            // File 'node_modules/typescript.tsx' does not exist.
+            // File 'node_modules/typescript.d.ts' does not exist.
+            // Found 'package.json' at 'node_modules/typescript/package.json'.
+            // 'package.json' has 'types' field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+            // File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module resolution result.
+            // ======== Module name 'typescript' was successfully resolved to 'node_modules/typescript/lib/typescript.d.ts'. ========
+          });
+        });
+        
+        describe('--noResolvle flag', () => {
+          it('should instruct the compiler not to "add" any files to the compilation that were not passed on the command line', () => {
+            // Normally the compiler will attempt to resolve all module imports before it starts the compilation process. Every time it successfully resolves an import to a file, the file is added to the set of files the compiler will process later on.
+
+            // The --noResolve compiler options instructs the compiler not to “add” any files to the compilation that were not passed on the command line. It will still try to resolve the module to files, but if the file is not specified, it will not be included.
+
+            // For instance:
+
+            // app.ts
+
+            // import * as A from "moduleA" // OK, 'moduleA' passed on the command-line
+            // import * as B from "moduleB" // Error TS2307: Cannot find module 'moduleB'.
+            // tsc app.ts moduleA.ts --noResolve
+            // Compiling app.ts using --noResolve should result in:
+
+            // Correctly finding moduleA as it was passed on the command-line.
+            // Error for not finding moduleB as it was not passed.
+          });
         });
       });
     });
