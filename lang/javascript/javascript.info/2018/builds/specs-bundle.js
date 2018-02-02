@@ -9501,7 +9501,9 @@
 	  });
 
 	  describe('2.14 Functions', function () {
-	    describe('Function Declaration', function () {});
+	    describe('Function Declaration', function () {
+	      it('should behave...', function () {});
+	    });
 	  });
 	});
 

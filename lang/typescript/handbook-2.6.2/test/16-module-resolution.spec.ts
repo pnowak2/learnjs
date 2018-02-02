@@ -250,7 +250,7 @@ describe('Module Resolution', () => {
         });
 
         describe('Path mapping', () => {
-          it('should always work with baseUrl baseUrl', () => { });
+          it('should always work with baseUrl', () => { });
           it('should point exact folder for non relative modules under baseUrl', () => { });
           it('should work as entry in tsconfig.json', () => {
             // {
@@ -356,7 +356,7 @@ describe('Module Resolution', () => {
           });
         });
         
-        describe('--noResolvle flag', () => {
+        describe('--noResolve flag', () => {
           it('should instruct the compiler not to "add" any files to the compilation that were not passed on the command line', () => {
             // Normally the compiler will attempt to resolve all module imports before it starts the compilation process. Every time it successfully resolves an import to a file, the file is added to the set of files the compiler will process later on.
 

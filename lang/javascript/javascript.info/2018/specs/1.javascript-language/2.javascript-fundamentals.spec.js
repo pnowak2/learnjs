@@ -540,14 +540,14 @@ describe('2. JavaScript Fundamentals', function () {
 
     });
   });
-  
+
   describe('2.13 The Switch Statement', () => {
     describe('The Syntax', () => {
       it('should consider many case blocks', () => {
         let v = 2;
         const spy = sinon.spy();
 
-        switch(v) {
+        switch (v) {
           case 1:
             spy(1);
             break;
@@ -570,7 +570,7 @@ describe('2. JavaScript Fundamentals', function () {
         let v = 1;
         const spy = sinon.spy();
 
-        switch(v) {
+        switch (v) {
           case 1:
             spy(1);
           case 2:
@@ -588,14 +588,12 @@ describe('2. JavaScript Fundamentals', function () {
       });
     });
   });
-  
+
   describe('2.14 Functions', () => {
     describe('Function Declaration', () => {
-      
-      it('should ', () => {
-        
+      it('should behave...', () => {
+
       });
-              
     });
   });
 });
