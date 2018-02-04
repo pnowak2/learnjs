@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!--
+          Create a Form with the following Controls and Validators
+          1) Project Name (should not be empty)
+          2) Mail (should not be a empty and a valid email)
+          3) Project Status Dropdown, with three values: 'Stable', 'Critical', 'Finished'
+          4) Submit Button
+
+          Add your own Validator which doesn't allow "Test" as a Project Name
+
+          Also implement that Validator as an async Validator (replace the other one)
+
+          Upon submitting the form, simply print the value to the console
+      -->
+        <div *ngIf="!form.valid && form.dirty" class="alert alert-danger">
+          Some data of the form is invalid
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              #name
+              id="name"
+              type="text"
+              class="form-control"
+              formControlName="name">
+              <div *ngIf="!form.get('name').valid && form.get('name').dirty">
+                <span *ngIf="form.get('name').errors?.required"
+                  class="help-block">This field is required</span>
+                <span *ngIf="form.get('name').errors?.forbidden"
+                  class="help-block">This name is forbidden</span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              class="form-control"
+              formControlName="email">
+              <div *ngIf="!form.get('email').valid && form.get('email').dirty">
+                <span *ngIf="form.get('email').errors.required"
+                  class="help-block">This field is required</span>
+                <span *ngIf="form.get('email').errors.email"
+                  class="help-block">This is not valid email</span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select
+              id="status"
+              class="form-control"
+              formControlName="status">
+              <option
+                *ngFor="let status of statuses"
+                [value]="status">{{ status }}</option>
+            </select>
+          </div>
+          <div formArrayName="roles">
+            <h3>
+              Roles
+              <button class="btn btn-secondary" (click)="onAddRole()">Add Role</button>
+            </h3>
+
+            <div class="form-group"
+                *ngFor="let role of form.get('roles').controls; let i = index">
+              <input type="text" [formControlName]="i" >
+            </div>
+          </div>
+          <button
+            type="submit"
+            [disabled]="!form.valid"
+            class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+  </div>
+</div>

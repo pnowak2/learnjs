@@ -1,14 +1,14 @@
 // /// <reference path="./modules/declarations.d.ts" />
 
 import { expect } from 'chai';
-import { StringValidator } from './modules/validation';
-import { ZipCodeValidator } from './modules/exporting-declaration';
-import { EmailValidator, ElectronicMailValidator } from './modules/exporting-statements';
-import { Boo } from './modules/exporting-reexporting';
-import { StringValidator as SV } from './modules/exporting-reexporting-all';
-import * as All from './modules/exporting-reexporting';
-import MyJquery, { vr } from './modules/exporting-default-export';
-import AmdValidator = require('./modules/exporting-export-amd-cjs');
+import { StringValidator } from './13-modules/validation';
+import { ZipCodeValidator } from './13-modules/exporting-declaration';
+import { EmailValidator, ElectronicMailValidator } from './13-modules/exporting-statements';
+import { Boo } from './13-modules/exporting-reexporting';
+import { StringValidator as SV } from './13-modules/exporting-reexporting-all';
+import * as All from './13-modules/exporting-reexporting';
+import MyJquery, { vr } from './13-modules/exporting-default-export';
+import AmdValidator = require('./13-modules/exporting-export-amd-cjs');
 
 // declare typings for existing module without type definitions
 // /// <reference path="./modules/mynode.d" />
