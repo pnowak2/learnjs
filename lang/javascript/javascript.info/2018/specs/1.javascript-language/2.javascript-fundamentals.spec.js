@@ -591,8 +591,169 @@ describe('2. JavaScript Fundamentals', function () {
 
   describe('2.14 Functions', () => {
     describe('Function Declaration', () => {
-      it('should behave...', () => {
+      it('should declare simple function', () => {
+        function showMessage() {
+          return 'hello';
+        }
 
+        expect(showMessage()).to.eql('hello');
+      });
+    });
+
+    describe('Local Variables', () => {
+      it('should be visible only inside function', () => {
+        function showMessage() {
+          let msg = 'hello';
+          return msg;
+        }
+
+        expect(showMessage()).to.eql('hello');
+        expect(typeof msg).to.eql('undefined');
+      });
+    });
+
+    describe('Outer Variables', () => {
+      it('should access them', () => {
+        let msg = 'hello';
+
+        function showMessage() {
+          return msg;
+        }
+
+        expect(showMessage()).to.eql('hello');
+        expect(typeof msg).to.eql('string');
+      });
+
+      it('should access them and allow modifying them', () => {
+        let msg = 'hello';
+
+        function showMessage() {
+          msg = 'boo';
+          return msg;
+        }
+
+        expect(showMessage()).to.eql('boo');
+        expect(msg).to.eql('boo');
+      });
+
+      it('should shadow same variable if defined inside function', () => {
+        let msg = 'hello';
+
+        function showMessage() {
+          let msg = 'another';
+          return msg;
+        }
+
+        expect(showMessage()).to.eql('another');
+        expect(typeof msg).to.eql('string');
+      });
+    })
+
+    describe('Parameters', () => {
+      it('should pass arbitrary params to function', () => {
+        function showMessage(from, to) {
+          return `${from}: ${to}`;
+        }
+
+        expect(showMessage('here', 'there')).to.eql('here: there');
+      });
+
+      it('should make copy of passed params', () => {
+        let from = 'there';
+
+        function showMessage(from, to) {
+          from = 'bye';
+          return `${from}: ${to}`;
+        }
+
+        expect(showMessage('1', '2')).to.eql('bye: 2');
+        expect(from).to.eql('there'); // not changed at all!
+      });
+    });
+
+    describe('Default Values', () => {
+      it('should provide default value, instead undefined will be default value', () => {
+        function showMessage(greet = 'no text given') {
+          return greet;
+        }
+
+        function showMessage2(greet) {
+          return greet;
+        }
+
+        expect(showMessage()).to.eql('no text given');
+        expect(showMessage2()).to.be.undefined;
+      });
+
+      it('should polyfill old fashion way', () => {
+        let text;
+
+        expect(text || 'default').to.eql('default');
+      });
+    });
+
+    describe('Returning a value', () => {
+      it('should never put new line after return, it assumes semicolon ;', () => {
+        function msg() {
+          return
+          'hello';
+        }
+
+        expect(msg()).to.be.undefined;
+      });
+    });
+
+    describe('Naming a function', () => {
+      it('should be named after its purpose, should be focues and doing one thing good', () => { });
+    });
+  });
+
+  describe('2.15 Functions Expressions and Arrows', () => {
+    describe('Declaring', () => {
+      it('should make function expression', () => {
+        let sayHi = function () {
+          return 'hello';
+        }
+
+        expect(sayHi()).to.eql('hello');
+      });
+
+      it('should be a normal variable', () => {
+        let sayHi = function () {
+          return 'hello';
+        }
+
+        let greet = sayHi;
+
+        expect(greet()).to.eql('hello');
+      });
+    });
+
+    describe('Callback Functions', () => {
+      it('should behave...', () => {
+        function ask(question, yesFn, noFn) {
+          if (question === 'why') {
+            noFn();
+          } else {
+            Yes();
+          }
+        }
+
+        const spy = sinon.spy();
+
+        ask(
+          'why',
+          function () { spy('yes'); },
+          function () { spy('no'); }
+        );
+
+        expect(spy.calledWith('no')).to.be.true;
+      });
+    });
+
+    describe('Function Expression vs Function Declaration', () => {
+      it('should..', () => {
+        
       });
     });
   });
