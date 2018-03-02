@@ -24189,6 +24189,10 @@
 	  describe('4.2 Garbage Collection', function () {
 	    it('should read the section', function () {});
 	  });
+
+	  describe('4.3 Symbol Type', function () {
+	    it('should read the section', function () {});
+	  });
 	});
 
 /***/ }),

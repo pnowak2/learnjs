@@ -218,5 +218,9 @@ describe('4. Objects the Basics', () => {
     it('should read the section', function () { });
   });
 
+  describe('4.3 Symbol Type', function () {
+    it('should read the section', function () { });
+  });
+
 });
 
