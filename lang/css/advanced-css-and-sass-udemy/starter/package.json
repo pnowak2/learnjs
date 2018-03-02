@@ -1,0 +1,16 @@
+{
+  "name": "starter",
+  "version": "1.0.0",
+  "description": "css course",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "node-sass sass/main.scss css/style.css -w"
+  },
+  "author": "piotr nowak",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.0",
+    "node-sass": "^4.7.2"
+  },
+  "dependencies": {}
+}
