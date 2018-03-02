@@ -220,7 +220,99 @@ describe('4. Objects the Basics', () => {
 
   describe('4.3 Symbol Type', function () {
     it('should read the section', function () { });
+
+    describe('Symbols', () => {
+      it('should define symbol', () => {
+        let id = Symbol();
+
+        expect(id).to.be.a('Symbol');
+      });  
+
+      it('should define symbol with name', () => {
+        let id = Symbol('id');
+
+        expect(id).to.be.a('Symbol');
+      }); 
+
+      it('should be always unique', () => {
+        let id1 = Symbol('id');
+        let id2 = Symbol('id');
+
+        expect(id1 == id2).to.be.false;
+      });
+
+      it('should create hidden properties', () => {
+        let user = { name: 'peter' };
+        let id = Symbol('id');
+
+        user[id] = 'secret';
+
+        expect(user[id]).to.eql('secret');
+        expect(user['id']).to.be.undefined;
+      });
+
+      it('should use symbols in object literal', () => {
+        const id = Symbol('id');
+
+        let user = {
+          name: 'peter',
+          [id]: 'secret'
+        }
+
+        expect(user[id]).to.eql('secret');
+      });
+
+      it('should not list symbols in for in loop', () => {
+        const id = Symbol('id');
+
+        let user = {
+          name: 'peter',
+          [id]: 'secret'
+        }
+
+        let result = '';
+        for(let key in user) {
+          result += `${key}|`;
+        }
+
+        expect(result).to.eql('name|');
+      });
+
+      it('should use global symbols registry', () => {
+        let id = Symbol.for('id'); // Symbol('id) is not global, not in registry, there's a difference
+        let idAgain = Symbol.for('id');
+
+        expect(id).to.be.a('Symbol');
+        expect(id === idAgain).to.be.true;
+      });
+
+      it('should use .keyFor to retrieve key for given symbol', () => {
+        let id = Symbol.for('myid');
+
+        expect(Symbol.keyFor(id)).to.eql('myid');
+      });
+
+      it('should use System Symbols', () => {
+        // Symbol.hasInstance
+        // Symbol.isConcatSpreadable
+        // Symbol.iterator
+        // Symbol.toPrimitive
+        // …and so on.
+
+        let person = {
+          name: 'peter',
+          [Symbol.toPrimitive]: function () {
+            return this.name.length;
+          }
+        }
+
+        expect(person - 2).to.eql(3);
+      });
+    });
   });
 
+  describe('4.4 Object Methods, this', function () {
+    it('should read the section', function () { });
+  });
 });
 

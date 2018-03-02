@@ -24192,6 +24192,96 @@
 
 	  describe('4.3 Symbol Type', function () {
 	    it('should read the section', function () {});
+
+	    describe('Symbols', function () {
+	      it('should define symbol', function () {
+	        var id = Symbol();
+
+	        expect(id).to.be.a('Symbol');
+	      });
+
+	      it('should define symbol with name', function () {
+	        var id = Symbol('id');
+
+	        expect(id).to.be.a('Symbol');
+	      });
+
+	      it('should be always unique', function () {
+	        var id1 = Symbol('id');
+	        var id2 = Symbol('id');
+
+	        expect(id1 == id2).to.be.false;
+	      });
+
+	      it('should create hidden properties', function () {
+	        var user = { name: 'peter' };
+	        var id = Symbol('id');
+
+	        user[id] = 'secret';
+
+	        expect(user[id]).to.eql('secret');
+	        expect(user['id']).to.be.undefined;
+	      });
+
+	      it('should use symbols in object literal', function () {
+	        var id = Symbol('id');
+
+	        var user = (0, _defineProperty3.default)({
+	          name: 'peter'
+	        }, id, 'secret');
+
+	        expect(user[id]).to.eql('secret');
+	      });
+
+	      it('should not list symbols in for in loop', function () {
+	        var id = Symbol('id');
+
+	        var user = (0, _defineProperty3.default)({
+	          name: 'peter'
+	        }, id, 'secret');
+
+	        var result = '';
+	        for (var key in user) {
+	          result += key + '|';
+	        }
+
+	        expect(result).to.eql('name|');
+	      });
+
+	      it('should use global symbols registry', function () {
+	        var id = Symbol.for('id'); // Symbol('id) is not global, not in registry, there's a difference
+	        var idAgain = Symbol.for('id');
+
+	        expect(id).to.be.a('Symbol');
+	        expect(id === idAgain).to.be.true;
+	      });
+
+	      it('should use .keyFor to retrieve key for given symbol', function () {
+	        var id = Symbol.for('myid');
+
+	        expect(Symbol.keyFor(id)).to.eql('myid');
+	      });
+
+	      it('should use System Symbols', function () {
+	        // Symbol.hasInstance
+	        // Symbol.isConcatSpreadable
+	        // Symbol.iterator
+	        // Symbol.toPrimitive
+	        // …and so on.
+
+	        var person = (0, _defineProperty3.default)({
+	          name: 'peter'
+	        }, Symbol.toPrimitive, function () {
+	          return this.name.length;
+	        });
+
+	        expect(person - 2).to.eql(3);
+	      });
+	    });
+	  });
+
+	  describe('4.4 Object Methods, this', function () {
+	    it('should read the section', function () {});
 	  });
 	});
 
