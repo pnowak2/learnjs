@@ -45,7 +45,9 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(53);
+	__webpack_require__(53);
+	__webpack_require__(182);
+	module.exports = __webpack_require__(184);
 
 
 /***/ }),
@@ -9453,6 +9455,8 @@
 	  });
 
 	  describe('2.13 The Switch Statement', function () {
+	    it('should read the section', function () {});
+
 	    describe('The Syntax', function () {
 	      it('should consider many case blocks', function () {
 	        var v = 2;
@@ -9501,6 +9505,8 @@
 	  });
 
 	  describe('2.14 Functions', function () {
+	    it('should read the section', function () {});
+
 	    describe('Function Declaration', function () {
 	      it('should declare simple function', function () {
 	        function showMessage() {
@@ -9622,6 +9628,8 @@
 	  });
 
 	  describe('2.15 Functions Expressions and Arrows', function () {
+	    it('should read the section', function () {});
+
 	    describe('Declaring', function () {
 	      it('should make function expression', function () {
 	        var sayHi = function sayHi() {
@@ -9665,7 +9673,85 @@
 	    });
 
 	    describe('Function Expression vs Function Declaration', function () {
-	      it('should..', function () {});
+	      it('should define function declaration in whole scope, accessible before declared too', function () {
+	        expect(fn).to.be.a('function');
+
+	        function fn() {}
+
+	        expect(fn).to.be.a('function');
+	      });
+
+	      it('should define function expression at the line of declaration', function () {
+	        expect(fn).to.be.undefined;
+	        var fn = function fn() {};
+	        expect(fn).to.be.a('function');
+	      });
+
+	      it('should see function declaration inside local code block only', function () {
+	        var age = 12;
+
+	        if (age < 18) {
+	          var _welcome = function _welcome() {};
+
+	          expect(typeof _welcome === 'undefined' ? 'undefined' : (0, _typeof3.default)(_welcome)).to.eql('function');
+	        }
+
+	        expect(typeof welcome === 'undefined' ? 'undefined' : (0, _typeof3.default)(welcome)).to.eql('undefined');
+	      });
+	    });
+
+	    describe('Arrow Functions', function () {
+	      it('should declare function', function () {
+	        var fn = function fn() {};
+	        // same as
+	        var fn2 = function fn2() {};
+
+	        expect(fn).to.be.a('function');
+	        expect(fn2).to.be.a('function');
+	      });
+
+	      it('should omit parenthesis if only one argument defined', function () {
+	        var pow = function pow(arg) {
+	          return arg * arg;
+	        };
+
+	        expect(pow(5)).to.eql(25);
+	      });
+	    });
+	  });
+
+	  describe('2.16 Javascript Specials', function () {
+	    it('should read the section', function () {});
+
+	    describe('Code structure', function () {
+	      it('should delimit lines with semicolons', function () {
+	        var x = 5;
+	        var y = 10;
+	      });
+
+	      it('should not put semicolon after code blocks', function () {
+	        function fn() {}
+
+	        for (var _i5 = 0; _i5 < 5; _i5++) {}
+
+	        // not needed
+	      });
+	    });
+
+	    describe('Strict Mode', function () {
+	      it('should put "use strict" at beginning of file or function to force strict mode', function () {
+	        function fn() {
+	          'use strict';
+	        }
+	      });
+	    });
+
+	    describe('Interaction', function () {
+	      it('should use alert, prompt, confirm modals', function () {});
+	    });
+
+	    describe('Other simple stuff already known', function () {
+	      it('should read the section', function () {});
 	    });
 	  });
 	});
@@ -23740,6 +23826,420 @@
 	};
 
 	module.exports = fakeServerWithClock;
+
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(183)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof2 = __webpack_require__(55);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var expect = __webpack_require__(11).expect;
+
+	describe('3. Code Quality', function () {
+	  describe('3.1 Debugging in Chrome', function () {
+	    it('should read the section', function () {});
+	    it('should use console', function () {});
+	    it('should use breakpoints', function () {});
+	    it('should use conditional breakpoints', function () {});
+	    it('should pause at breakpoint', function () {});
+	    it('should trace the execution', function () {});
+	  });
+
+	  describe('3.2 Coding Style', function () {
+	    it('should read the section', function () {});
+	  });
+
+	  describe('3.3 Comments', function () {
+	    it('should read the section', function () {});
+	  });
+
+	  describe('3.4 Ninja Code', function () {
+	    it('should read the section', function () {});
+	  });
+
+	  describe('3.5 Automated Testing With Mocha', function () {
+	    it('should read the section', function () {});
+
+	    describe('The Spec In Action', function () {
+	      function pow(number, power) {
+	        var result = void 0;
+
+	        if (power === 0) {
+	          return 1;
+	        } else if (power < 0) {
+	          return 1 / (number * pow(number, -power - 1));
+	        } else if (power !== 1) {
+	          return number * pow(number, power - 1);
+	        } else {
+	          return number;
+	        }
+	      }
+
+	      it('should pow be defined', function () {
+	        expect(typeof pow === 'undefined' ? 'undefined' : (0, _typeof3.default)(pow)).to.eql('function');
+	      });
+
+	      it('should 2 raised to 3 power be 8', function () {
+	        expect(pow(2, 3)).to.eql(8);
+	      });
+
+	      it('should 3 raised to 3 power be 27', function () {
+	        expect(pow(3, 3)).to.eql(27);
+	      });
+
+	      it('should 4 raised to 4 power be 256', function () {
+	        expect(pow(4, 4)).to.eql(256);
+	      });
+
+	      it('should 12 raised to 1 power be 12', function () {
+	        expect(pow(12, 1)).to.eql(12);
+	      });
+
+	      it('should 4 raised to 0 power be 1', function () {
+	        expect(pow(4, 0)).to.eql(1);
+	      });
+
+	      it('should 2 raised to -2 power be 0.25', function () {
+	        expect(pow(2, -2)).to.eql(0.25);
+	      });
+
+	      it('should 2 raised to -3 power be 0.125', function () {
+	        expect(pow(2, -3)).to.eql(0.125);
+	      });
+	    });
+	  });
+
+	  describe('3.6 Polyfills', function () {
+	    it('should read the section', function () {});
+	  });
+	});
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(185)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _defineProperty2 = __webpack_require__(186);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var expect = __webpack_require__(11).expect;
+
+	describe('4. Objects the Basics', function () {
+	  describe('4.1 Objects', function () {
+	    it('should read the section', function () {});
+
+	    describe('Creation of Object', function () {
+	      it('should declare as new Object()', function () {
+	        var user = new Object();
+
+	        expect(user).to.be.an('object');
+	      });
+
+	      it('should declare as literal syntax', function () {
+	        var user = {};
+
+	        expect(user).to.be.an('object');
+	      });
+	    });
+
+	    describe('Literals and Properties', function () {
+	      it('should put some props to literal object', function () {
+	        var user = {
+	          name: 'Peter',
+	          age: 38
+	        };
+
+	        expect(user.name).to.eql('Peter');
+	        expect(user.age).to.eql(38);
+	      });
+
+	      it('should put new props to literal object', function () {
+	        var user = {
+	          name: 'Peter',
+	          age: 38
+	        };
+
+	        user.isAdmin = true;
+
+	        expect(user.isAdmin).to.be.true;
+	      });
+
+	      it('should delete props from literal object', function () {
+	        var user = {
+	          name: 'Peter',
+	          age: 38
+	        };
+
+	        expect(user.name).to.eql('Peter');
+
+	        delete user.name;
+
+	        expect(user.name).to.be.undefined;
+	      });
+
+	      it('should use string multi word property names with square brackets', function () {
+	        var user = {
+	          name: 'Peter',
+	          age: 38,
+	          'likes birds': true
+	        };
+
+	        expect(user['likes birds']).to.be.true;
+	      });
+
+	      it('should use computed properties', function () {
+	        var prop = 'hello world';
+
+	        var user = (0, _defineProperty3.default)({}, prop, 22);
+
+	        expect(user[prop]).to.eql(22);
+	      });
+
+	      it('should use property value shorthand', function () {
+	        var name = 'peter',
+	            age = 38;
+	        var person = {
+	          name: name, age: age
+	        };
+
+	        expect(person.name).to.eql('peter');
+	        expect(person.age).to.eql(38);
+	      });
+	    });
+
+	    describe('Existence check', function () {
+	      it('should check if property exists with undefined', function () {
+	        var person = {
+	          name: 'peter'
+	        };
+
+	        expect(person.age).to.eql(undefined);
+	      });
+
+	      it('should check if property exists with "key in object" syntax', function () {
+	        var person = {
+	          name: 'peter'
+	        };
+
+	        expect('name' in person).to.be.true;
+	        expect('age' in person).to.be.false;
+	      });
+	    });
+
+	    describe('The "for ... in" loop', function () {
+	      it('should iterate over object properties', function () {
+	        var user = {
+	          name: "John",
+	          age: 30,
+	          isAdmin: true
+	        };
+
+	        var result = '';
+	        for (var key in user) {
+	          result += key + '|';
+	        }
+
+	        expect(result).to.eql('name|age|isAdmin|');
+	      });
+	    });
+
+	    describe('Copying by reference', function () {
+	      it('should copy by reference', function () {
+	        var user = { name: 'peter' };
+	        var admin = user;
+
+	        expect(admin.name).to.eql('peter');
+
+	        admin.name = 'admin';
+
+	        expect(admin.name).to.eql('admin');
+	      });
+	    });
+
+	    describe('Comparison By Reference', function () {
+	      it('should behave...', function () {
+	        var a = {};
+	        var b = {};
+	        var c = b;
+
+	        expect(a == b).to.eql(false);
+	        expect(c == b).to.eql(true);
+	      });
+	    });
+
+	    describe('Const Object', function () {
+	      it('should be changed', function () {
+	        var person = {
+	          name: 'peter'
+	        };
+
+	        person.name = 'other';
+
+	        expect(person.name).to.eql('other');
+	      });
+	    });
+
+	    describe('Cloning and Merging, Object.assign()', function () {
+	      it('should make copy of object by hand', function () {
+	        var user = {
+	          name: 'peter',
+	          age: 38
+	        };
+
+	        var clone = {};
+
+	        for (var key in user) {
+	          clone[key] = user[key];
+	        }
+
+	        expect(clone.name).to.eql('peter');
+	        expect(clone.age).to.eql(38);
+	        expect(user).not.to.equal(clone);
+	        expect(user == clone).to.be.false;
+
+	        clone.name = 'other';
+
+	        expect(user.name).to.eql('peter');
+	        expect(clone.name).to.eql('other');
+	      });
+
+	      it('should make copy of object using Object.assign() (shallow copy only)', function () {
+	        var user = {
+	          name: 'peter',
+	          age: 38
+	        };
+
+	        var clone = Object.assign({}, user);
+
+	        expect(clone.name).to.eql('peter');
+	        expect(clone.age).to.eql(38);
+	        expect(user).not.to.equal(clone);
+	        expect(user == clone).to.be.false;
+
+	        clone.name = 'other';
+
+	        expect(user.name).to.eql('peter');
+	        expect(clone.name).to.eql('other');
+	      });
+
+	      it('should use Object.assign() to copy properties to object', function () {
+	        var user = { name: 'peter' };
+
+	        var perm1 = { canView: true };
+	        var perm2 = { canEdit: true };
+
+	        var target = Object.assign(user, perm1, perm2);
+
+	        expect(target === user).to.be.true;
+	        expect(user.canView).to.be.true;
+	        expect(user.canEdit).to.be.true;
+	      });
+	    });
+	  });
+	});
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(187);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(188), __esModule: true };
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(189);
+	var $Object = __webpack_require__(66).Object;
+	module.exports = function defineProperty(it, key, desc) {
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(64);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(74), 'Object', { defineProperty: __webpack_require__(70).f });
 
 
 /***/ })

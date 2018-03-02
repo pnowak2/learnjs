@@ -142,7 +142,7 @@ describe('Decorators', () => {
 
   describe('Method Decorators', () => {
     it('should behave...', () => {
-      
+
     });
   });
 });
