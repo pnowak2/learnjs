@@ -137,7 +137,7 @@ describe('Generics', () => {
       }
 
       // createInstance(Lion).keeper.nametag;  // typechecks!
-      // createInstance(Bee).keeper.hasMask;   // typechecks!
+      // create(Bee).keeper.hasMask;   // typechecks!
     });
 
   });

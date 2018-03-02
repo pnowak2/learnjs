@@ -1,3 +1,5 @@
+'use strict'
+
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
@@ -542,6 +544,8 @@ describe('2. JavaScript Fundamentals', function () {
   });
 
   describe('2.13 The Switch Statement', () => {
+    it('should read the section', function () { });
+
     describe('The Syntax', () => {
       it('should consider many case blocks', () => {
         let v = 2;
@@ -590,6 +594,8 @@ describe('2. JavaScript Fundamentals', function () {
   });
 
   describe('2.14 Functions', () => {
+    it('should read the section', function () { });
+
     describe('Function Declaration', () => {
       it('should declare simple function', () => {
         function showMessage() {
@@ -709,6 +715,8 @@ describe('2. JavaScript Fundamentals', function () {
   });
 
   describe('2.15 Functions Expressions and Arrows', () => {
+    it('should read the section', function () { });
+
     describe('Declaring', () => {
       it('should make function expression', () => {
         let sayHi = function () {
@@ -752,9 +760,86 @@ describe('2. JavaScript Fundamentals', function () {
     });
 
     describe('Function Expression vs Function Declaration', () => {
-      it('should..', () => {
-        
+      it('should define function declaration in whole scope, accessible before declared too', () => {
+        expect(fn).to.be.a('function');
+
+        function fn() { }
+
+        expect(fn).to.be.a('function');
       });
+
+      it('should define function expression at the line of declaration', () => {
+        expect(fn).to.be.undefined;
+        let fn = () => { };
+        expect(fn).to.be.a('function');
+      });
+
+      it('should see function declaration inside local code block only', () => {
+        const age = 12;
+
+        if (age < 18) {
+          function welcome() { }
+          expect(typeof welcome).to.eql('function');
+        }
+
+        expect(typeof welcome).to.eql('undefined');
+      });
+    });
+
+    describe('Arrow Functions', () => {
+      it('should declare function', () => {
+        let fn = () => { }
+        // same as
+        let fn2 = function () { }
+
+        expect(fn).to.be.a('function');
+        expect(fn2).to.be.a('function');
+      });
+
+      it('should omit parenthesis if only one argument defined', () => {
+        let pow = arg => arg * arg;
+
+        expect(pow(5)).to.eql(25);
+      });
+    });
+  });
+
+  describe('2.16 Javascript Specials', () => {
+    it('should read the section', function () { });
+
+    describe('Code structure', () => {
+      it('should delimit lines with semicolons', () => {
+        let x = 5;
+        let y = 10;
+      });
+
+      it('should not put semicolon after code blocks', () => {
+        function fn() {
+
+        }
+
+        for (let i = 0; i < 5; i++) {
+
+        }
+
+        // not needed
+      });
+    });
+
+    describe('Strict Mode', () => {
+      it('should put "use strict" at beginning of file or function to force strict mode', () => {
+        function fn() {
+          'use strict';
+        }
+      });
+    });
+
+    describe('Interaction', () => {
+      it('should use alert, prompt, confirm modals', () => { });
+    });
+
+    describe('Other simple stuff already known', () => {
+      it('should read the section', function () { });
     });
   });
 });
