@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+// import { Reflect } from 'reflect-metadata';
 
 describe('Decorators', () => {
   describe('Introduction', () => {
@@ -117,32 +118,117 @@ describe('Decorators', () => {
     });
 
     it('should override the constructor extending it with new props', () => {
-      function classDecorator<T extends { new(...args: any[]): any }>(constructor: T) {
-        return class extends constructor {
-          newProperty = 'im new';
-          hello = 'override';
-        }
+      function ClassDecorator(
+        target: Function // The class the decorator is declared on
+      ) {
+        console.log("ClassDecorator called on: ", target);
       }
 
-      @classDecorator
-      class Greeter {
-        property = "property";
-        hello: string;
-        constructor(m: string) {
-          this.hello = m;
-        }
+      @ClassDecorator
+      class ClassDecoratorExample {
       }
-
-      let g = new Greeter('bonjour');
-
-      expect(g.hello).to.eql('override');
-      expect((g as any).newProperty).to.eql('im new');
     });
   });
 
   describe('Method Decorators', () => {
-    it('should behave...', () => {
+    // If the method decorator returns a value, it will be used as the Property Descriptor for the method.
 
+    it('should change method in runtime', () => {
+      function MethodDecorator(
+        target: Object, // The prototype of the class
+        propertyKey: string, // The name of the method
+        descriptor: TypedPropertyDescriptor<any>
+      ) {
+        console.log("MethodDecorator called on: ", target, propertyKey, descriptor);
+      }
+
+      class MethodDecoratorExample {
+        @MethodDecorator
+        method() {
+        }
+      }
+    });
+  });
+
+  describe('Accessor Decorators', () => {
+    it('should decorate get or set props', () => {
+      function configurable(value: boolean) {
+        return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+          descriptor.configurable = value;
+          descriptor.get = () => {
+            return 100;
+          }
+        };
+      }
+
+      class Point {
+        private _x: number;
+        private _y: number;
+        constructor(x: number, y: number) {
+          this._x = x;
+          this._y = y;
+        }
+
+        @configurable(false)
+        get x() { return this._x; }
+
+        @configurable(false)
+        get y() { return this._y; }
+      }
+
+      const p = new Point(2, 1);
+
+      expect(p.x).to.eql(100);
+    });
+  });
+
+  describe('Property Decorators', () => {
+    it('should decorate property', () => {
+      function PropertyDecorator(
+        target: Object, // The prototype of the class
+        propertyKey: string | symbol // The name of the property
+      ) {
+        console.log("PropertyDecorator called on: ", target, propertyKey);
+      }
+
+      class PropertyDecoratorExample {
+        @PropertyDecorator
+        name: string;
+      }
+    });
+  });
+
+  describe('Static Method Decorator', () => {
+    it('should decorate static method', () => {
+      function StaticMethodDecorator(
+        target: Function, // the function itself and not the prototype
+        propertyKey: string | symbol, // The name of the static method
+        descriptor: TypedPropertyDescriptor<any>
+      ) {
+        console.log("StaticMethodDecorator called on: ", target, propertyKey, descriptor);
+      }
+
+      class StaticMethodDecoratorExample {
+        @StaticMethodDecorator
+        static staticMethod() {
+        }
+      }
+    });
+  });
+
+  describe('Parameter Decorators', () => {
+    it('should log parameters', () => {
+      function ParameterDecorator(target: any, key: string, index: number) {
+        console.log("ParameterDecorator called on: ", target, key, index);
+      }
+
+      class ParameterDecoratorExample {
+        method(@ParameterDecorator param1: string, @ParameterDecorator param2: number) {
+        }
+      }
+
+      const p = new ParameterDecoratorExample();
+      p.method('one', 2);
     });
   });
 });
