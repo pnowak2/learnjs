@@ -7,6 +7,7 @@ module.exports = {
     'mocha!./specs/1.javascript-language/2.javascript-fundamentals.spec.js',
     'mocha!./specs/1.javascript-language/3.code-quality.spec.js',
     'mocha!./specs/1.javascript-language/4.objects-the-basics.spec.js',
+    'mocha!./specs/1.javascript-language/5.data-types.spec.js',
   ],
   output: {
     path: 'builds',

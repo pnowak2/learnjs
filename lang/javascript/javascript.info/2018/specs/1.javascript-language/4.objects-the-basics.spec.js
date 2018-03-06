@@ -374,7 +374,7 @@ describe('4. Objects the Basics', () => {
 
         expect(function () {
           sayHi();
-        }).to.throw('Cannot read property \'name\' of undefined');
+        }).to.throw();
       });
     });
 
@@ -459,6 +459,54 @@ describe('4. Objects the Basics', () => {
 
   describe('4.Constructor, operator new', function () {
     it('should read the section', function () { });
+
+    describe('Constructor Function', () => {
+      it('should declare function used with new', () => {
+        function Person(name) {
+          // this = {};
+          this.name = name;
+
+          // return this;
+        }
+
+        const p = new Person('peter');
+
+        expect(p.name).to.eql('peter');
+      });
+    });
+
+    describe('new.target', () => {
+      it('should check how function was called', () => {
+        // function Person(name) {
+        //   if(!new.target) {
+        //     throw new Error('function not called with new');
+        //   }
+
+        //   this.name = name;
+        // }
+
+        // expect(function() {
+        //   Person('peter');
+        // }).to.throw('function not called with new');
+      });
+    });
+
+    describe('Return From Constructors', () => {
+      it('should return object with returned from constructor (primitives are ignored)', () => {
+        function Person(name) {
+          this.name = name;
+
+          return {
+            age: 'buba'
+          }
+        }
+
+        let p = new Person();
+
+        expect(p.age).to.eql('buba');
+        expect(p.name).to.be.undefined;
+      });
+    });
   });
 });
 
