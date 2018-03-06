@@ -23972,6 +23972,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var expect = __webpack_require__(11).expect;
+	var sinon = __webpack_require__(122);
 
 	describe('4. Objects the Basics', function () {
 	  describe('4.1 Objects', function () {
@@ -24281,6 +24282,153 @@
 	  });
 
 	  describe('4.4 Object Methods, this', function () {
+	    it('should read the section', function () {});
+	    describe('Method examples', function () {
+	      it('should add method to object', function () {
+	        var user = {
+	          name: 'John'
+	        };
+
+	        user.sayHi = function () {
+	          return 'hello';
+	        };
+
+	        expect(user.sayHi()).to.eql('hello');
+	      });
+
+	      it('should use method shorthand', function () {
+	        var user = {
+	          name: 'john',
+	          sayHi: function sayHi() {
+	            return 'hello';
+	          }
+	        };
+
+	        expect(user.sayHi()).to.eql('hello');
+	      });
+	    });
+
+	    describe('This in methods', function () {
+	      it('should access object properties with this', function () {
+	        var user = {
+	          name: 'john',
+	          sayHi: function sayHi() {
+	            return 'hello, ' + this.name;
+	          }
+	        };
+
+	        expect(user.sayHi()).to.eql('hello, john');
+	      });
+
+	      it('should swap functions using this', function () {
+	        var user = { name: "John" };
+	        var admin = { name: "Admin" };
+
+	        function sayHi() {
+	          return this.name;
+	        }
+
+	        // use the same functions in two objects
+	        user.f = sayHi;
+	        admin.f = sayHi;
+
+	        user.f(); // John  (this == user)
+	        admin.f(); // Admin  (this == admin)
+	      });
+
+	      it('should have consequences if using function without this', function () {
+	        function sayHi() {
+	          return this.name;
+	        }
+
+	        expect(function () {
+	          sayHi();
+	        }).to.throw('Cannot read property \'name\' of undefined');
+	      });
+	    });
+
+	    describe('Arrow functions have no this', function () {
+	      it('should take this from outer context instead', function () {
+	        var user = {
+	          name: 'peter',
+	          greet: function greet() {
+	            var _this = this;
+
+	            var arrow = function arrow() {
+	              return _this.name;
+	            };
+
+	            return arrow();
+	          }
+	        };
+
+	        expect(user.greet()).to.eql('peter');
+	      });
+	    });
+	  });
+
+	  describe('4.5 Object To Primitive Conversion', function () {
+	    it('should read the section', function () {});
+
+	    describe('Symbol.toPrimitive', function () {
+	      var user = (0, _defineProperty3.default)({
+	        name: 'peter',
+	        money: 5
+	      }, Symbol.toPrimitive, function (hint) {
+	        return hint === 'string' ? 'name: ' + this.name : this.money;
+	      });
+
+	      it('should call hint with string', function () {
+	        var result = String(user);
+	        expect(result).to.eql('name: peter');
+	      });
+
+	      it('should call hint with number', function () {
+	        var result = +user;
+	        expect(result).to.eql(5);
+	      });
+
+	      it('should call hint with default', function () {
+	        var result = user + 'test';
+	        expect(result).to.eql('5test');
+	      });
+	    });
+
+	    describe('toString / valueOf', function () {
+	      var user = {
+	        name: 'peter',
+	        money: 1000,
+
+	        // for hint="string"
+	        toString: function toString() {
+	          return 'name: ' + this.name;
+	        },
+
+
+	        // for hint="number" or "default"
+	        valueOf: function valueOf() {
+	          return this.money;
+	        }
+	      };
+
+	      it('should use old toString to convert to string if no Symbol.toPromitive defined', function () {
+	        var result = String(user);
+	        expect(result).to.eql('name: peter');
+	      });
+
+	      it('should call hint with number', function () {
+	        var result = +user;
+	        expect(result).to.eql(1000);
+	      });
+
+	      it('should call hint with default', function () {
+	        var result = user + 'test';
+	        expect(result).to.eql('1000test');
+	      });
+	    });
+	  });
+
+	  describe('4.Constructor, operator new', function () {
 	    it('should read the section', function () {});
 	  });
 	});

@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var sinon = require('sinon');
 
 describe('4. Objects the Basics', () => {
   describe('4.1 Objects', function () {
@@ -47,7 +48,7 @@ describe('4. Objects the Basics', () => {
         };
 
         expect(user.name).to.eql('Peter');
-        
+
         delete user.name;
 
         expect(user.name).to.be.undefined;
@@ -112,7 +113,7 @@ describe('4. Objects the Basics', () => {
         };
 
         let result = '';
-        for(let key in user) {
+        for (let key in user) {
           result += `${key}|`;
         }
 
@@ -165,7 +166,7 @@ describe('4. Objects the Basics', () => {
 
         let clone = {};
 
-        for(let key in user) {
+        for (let key in user) {
           clone[key] = user[key];
         }
 
@@ -226,13 +227,13 @@ describe('4. Objects the Basics', () => {
         let id = Symbol();
 
         expect(id).to.be.a('Symbol');
-      });  
+      });
 
       it('should define symbol with name', () => {
         let id = Symbol('id');
 
         expect(id).to.be.a('Symbol');
-      }); 
+      });
 
       it('should be always unique', () => {
         let id1 = Symbol('id');
@@ -271,7 +272,7 @@ describe('4. Objects the Basics', () => {
         }
 
         let result = '';
-        for(let key in user) {
+        for (let key in user) {
           result += `${key}|`;
         }
 
@@ -312,6 +313,151 @@ describe('4. Objects the Basics', () => {
   });
 
   describe('4.4 Object Methods, this', function () {
+    it('should read the section', function () { });
+    describe('Method examples', () => {
+      it('should add method to object', () => {
+        let user = {
+          name: 'John'
+        }
+
+        user.sayHi = function () {
+          return 'hello';
+        }
+
+        expect(user.sayHi()).to.eql('hello');
+      });
+
+      it('should use method shorthand', () => {
+        let user = {
+          name: 'john',
+          sayHi() {
+            return 'hello';
+          }
+        }
+
+        expect(user.sayHi()).to.eql('hello');
+      });
+    });
+
+    describe('This in methods', () => {
+      it('should access object properties with this', () => {
+        let user = {
+          name: 'john',
+          sayHi() {
+            return `hello, ${this.name}`;
+          }
+        }
+
+        expect(user.sayHi()).to.eql('hello, john');
+      });
+
+      it('should swap functions using this', () => {
+        let user = { name: "John" };
+        let admin = { name: "Admin" };
+
+        function sayHi() {
+          return this.name;
+        }
+
+        // use the same functions in two objects
+        user.f = sayHi;
+        admin.f = sayHi;
+
+        user.f(); // John  (this == user)
+        admin.f(); // Admin  (this == admin)
+      });
+
+      it('should have consequences if using function without this', () => {
+        function sayHi() {
+          return this.name;
+        }
+
+        expect(function () {
+          sayHi();
+        }).to.throw('Cannot read property \'name\' of undefined');
+      });
+    });
+
+    describe('Arrow functions have no this', () => {
+      it('should take this from outer context instead', () => {
+        let user = {
+          name: 'peter',
+          greet() {
+            let arrow = () => {
+              return this.name;
+            }
+
+            return arrow();
+          }
+        }
+
+        expect(user.greet()).to.eql('peter');
+      });
+    });
+  });
+
+  describe('4.5 Object To Primitive Conversion', function () {
+    it('should read the section', function () { });
+
+    describe('Symbol.toPrimitive', () => {
+      let user = {
+        name: 'peter',
+        money: 5,
+        [Symbol.toPrimitive](hint) {
+          return (hint === 'string') ? `name: ${this.name}` : this.money
+        }
+      }
+
+      it('should call hint with string', () => {
+        let result = String(user);
+        expect(result).to.eql('name: peter');
+      });
+
+      it('should call hint with number', () => {
+        let result = +user;
+        expect(result).to.eql(5);
+      });
+
+      it('should call hint with default', () => {
+        let result = user + 'test';
+        expect(result).to.eql('5test');
+      });
+    });
+
+    describe('toString / valueOf', () => {
+      let user = {
+        name: 'peter',
+        money: 1000,
+
+        // for hint="string"
+        toString() {
+          return `name: ${this.name}`;
+        },
+
+        // for hint="number" or "default"
+        valueOf() {
+          return this.money;
+        }
+      };
+
+      it('should use old toString to convert to string if no Symbol.toPromitive defined', () => {
+        let result = String(user);
+        expect(result).to.eql('name: peter');
+      });
+
+      it('should call hint with number', () => {
+        let result = +user;
+        expect(result).to.eql(1000);
+      });
+
+      it('should call hint with default', () => {
+        let result = user + 'test';
+        expect(result).to.eql('1000test');
+      });
+    });
+  });
+
+  describe('4.Constructor, operator new', function () {
     it('should read the section', function () { });
   });
 });
