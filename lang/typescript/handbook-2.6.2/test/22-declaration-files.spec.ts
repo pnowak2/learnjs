@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { foo } from 'c22-declaration-files';
 
 describe('Declaration Files', () => {
   describe('Introduction', () => {
@@ -106,7 +105,7 @@ describe('Declaration Files', () => {
           // If your library depends on a global library, use a /// <reference types="..." /> directive:
 
           // /// <reference types="someLib" />
-          
+
           // function getThing(): someLib.thing;
         });
       });
@@ -116,7 +115,7 @@ describe('Declaration Files', () => {
           // If your library depends on a module, use an import statement:
 
           // import * as moment from "moment";
-          
+
           // function getThing(): moment;
         });
       });
@@ -127,11 +126,148 @@ describe('Declaration Files', () => {
     describe('Global Variables', () => {
       // console.log("Half the number of widgets is " + (foo / 2));
       // Declaration
-      
+
       // Use declare var to declare variables. If the variable is read-only, you can use declare const. You can also use declare let if the variable is block-scoped.
-      
+
       // /** The number of widgets present */
       // declare var foo: number;
+    });
+
+    describe('Global Functions', () => {
+      // greet("hello, world");
+
+      // declare function greet(greeting: string): void;
+    });
+
+    describe('Objects With Properties', () => {
+      // let result = myLib.greet("hello, world");
+      // console.log("The computed greeting is:" + result);
+
+      // let count = myLib.quantity;
+
+      // declare namespace myLib {
+      //   function greet(name: string);
+      //   let quantity: number;
+      // }
+
+    });
+
+    describe('Overloaded Functions', () => {
+      // let x: Widget = getWidget(43);
+      // let arr: Widget[] = getWidget("all of them");
+
+      // declare function getWidget(n: number): Widget;
+      // declare function getWidget(s: string): Widget[];
+    });
+
+    describe('Reusable Types, Interfaces', () => {
+      // greet({
+      //   greeting: "hello world",
+      //   duration: 4000
+      // });
+      // Declaration
+
+      // Use an interface to define a type with properties.
+
+      // interface GreetingSettings {
+      //   greeting: string;
+      //   duration?: number;
+      //   color?: string;
+      // }
+
+      // declare function greet(setting: GreetingSettings): void;
+    });
+
+    describe('Reusable Types, Type Aliases', () => {
+      // function getGreeting() {
+      //   return "howdy";
+      // }
+      // class MyGreeter extends Greeter { }
+
+      // greet("hello");
+      // greet(getGreeting);
+      // greet(new MyGreeter());
+      // Declaration
+
+      // You can use a type alias to make a shorthand for a type:
+
+      //   type GreetingLike = string | (() => string) | MyGreeter;
+
+      // declare function greet(g: GreetingLike): void;
+    });
+  });
+
+  describe('Dos and Donts', () => {
+    it('should read the section', () => { });
+  });
+
+  describe('Deep Dive', () => {
+    it('should read the section', () => { });
+  });
+
+  describe('Templates', () => {
+    it('should read the section', () => { });
+  });
+
+  describe('Publishing', () => {
+    it('should read the section', () => { });
+
+    describe('Including declarations in your npm package', () => {
+      describe('Bundle with your npm package', () => {
+        it('should bundle types within npm', () => {
+          // If your package has a main .js file, you will need to indicate the main declaration file in your package.json file as well. Set the types property to point to your bundled declaration file. For example:
+  
+          // {
+          //     "name": "awesome",
+          //     "author": "Vandelay Industries",
+          //     "version": "1.0.0",
+          //     "main": "./lib/main.js",
+          //     "types": "./lib/main.d.ts"
+          //     "typings": "./lib/main.d.ts" <-- synonim of types
+          // }
+          // Note that the "typings" field is synonymous with "types", and could be used as well.
+  
+          // Also note that if your main declaration file is named index.d.ts and lives at the root of the package (next to index.js) you do not need to mark the "types" property, though it is advisable to do so.
+        });
+  
+        it('should use <reference types="">', () => {
+          // Red flags
+          // /// <reference path="..." />
+          // Don’t use /// <reference path="..." /> in your declaration files.
+  
+          // /// <reference path="../typescript/lib/typescriptServices.d.ts" />
+          // ....
+          // Do use /// <reference types="..." /> instead.
+        });
+      });
+      // or
+      describe('Publish to the @types organization on npm.', () => {
+        it('should read the section', () => { });
+      });
+    });
+  });
+
+
+
+  describe('Consumption', () => {
+    it('should read the section', () => {
+      // Getting type declarations in TypeScript 2.0 and above requires no tools apart from npm.
+
+      // As an example, getting the declarations for a library like lodash takes nothing more than the following command
+      
+      // npm install --save @types/lodash
+      // It is worth noting that if the npm package already includes its declaration file as described in Publishing, downloading the corresponding @types package is not needed.
+      
+      // Consuming
+      // From there you’ll be able to use lodash in your TypeScript code with no fuss. This works for both modules and global code.
+      
+      // For example, once you’ve npm install-ed your type declarations, you can use imports and write
+      
+      // import * as _ from "lodash";
+      // _.padStart("Hello TypeScript!", 20, " ");
+      // or if you’re not using modules, you can just use the global variable _.
+      
+      // _.padStart("Hello TypeScript!", 20, " ");
     });
   });
 });
