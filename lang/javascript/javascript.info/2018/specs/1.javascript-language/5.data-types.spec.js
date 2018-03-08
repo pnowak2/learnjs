@@ -19,9 +19,7 @@ describe('5. Data Types', () => {
     });
 
     describe('null / undefined', () => {
-      it('should have no methods, no wrappers', () => {
-
-      });
+      it('should have no methods, no wrappers', () => { });
     });
   });
 
@@ -182,6 +180,99 @@ world`);
           let line = 'hello \'peter\'';
 
           expect(line).to.eql(`hello 'peter'`);
+        });
+
+        it('should use string length', () => {
+          expect('he\n'.length).to.eql(3);
+        });
+
+        describe('Accessing characters', () => {
+          it('should use brackets []', () => {
+            expect('string'[3]).to.eql('i');
+          });
+
+          it('should use charAt()', () => {
+            expect('string'.charAt(3)).to.eql('i');
+          });
+
+          it('should see difference between [n] and charAt()', () => {
+            expect('test'[22]).to.be.undefined;
+            expect('test'[22]).not.to.eql('');
+            expect('test'.charAt(22)).to.eql('');
+          });
+        });
+
+        describe('Strings are Immutable', () => {
+          it('should not be possible to change characterin string', () => {
+            let str = 'hello';
+            
+            expect(function() {
+              str[0] = 'b';
+            }).to.throw();
+
+            expect(str).to.eql('hello');
+          });
+        });
+
+        describe('Changing The Case', () => {
+          it('should change to upper', () => {
+            expect('test'.toUpperCase()).to.eql('TEST');
+          });
+
+          it('should change to lower', () => {
+            expect('TEST'.toLowerCase()).to.eql('test');
+          });
+        });
+
+        describe('Searching For a Substring', () => {
+          it('should use .indexOf()', () => {
+            expect('test'.indexOf('st')).to.eql(2);
+            expect('test'.indexOf('ast')).to.eql(-1);
+          });
+
+          it('should use .indexOf() with starting index position', () => {
+            expect('hello'.indexOf('lo', 4)).to.eql(-1);
+          });
+
+          it('should use .lastIndexOf() to find index of last occurence', () => {
+            expect('hello hello'.lastIndexOf('o')).to.eql(10);
+          });
+
+          it('should use ~ operator for bitwise NOT trick', () => {
+            expect('test'.indexOf('test')).to.eql(0);
+            // trick when using if
+            expect(~'test'.indexOf('test')).to.eql(-1);
+
+            expect(0b00000000000000000000000000000010).to.eql(2);
+            expect(~0b00000000000000000000000000000010).to.eql(-3);
+            
+            expect(-0b11).to.eql(-3);
+            expect(~2).to.eql(-3)
+          });
+
+          it('should use .includes()', () => {
+            expect('hello'.includes('lo')).to.be.true;
+          });
+
+          it('should use .startsWith()', () => {
+            expect('hello'.startsWith('he')).to.be.true;
+          });
+
+          it('should use .endsWith()', () => {
+            expect('hello'.endsWith('lo')).to.be.true;
+          });
+        });
+
+        describe('Getting a Substring', () => {
+          it('should use .slice()', () => {
+            expect('hello'.slice(1, 3)).to.eql('el');
+            expect('hello'.slice(3)).to.eql('lo');
+            expect('hello'.slice()).to.eql('hello');
+          });
+
+          it('should use .substring()', () => {
+            
+          });
         });
       });
     });
