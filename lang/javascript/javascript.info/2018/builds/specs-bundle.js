@@ -24743,93 +24743,174 @@
 	        it('should use string length', function () {
 	          expect('he\n'.length).to.eql(3);
 	        });
+	      });
+	    });
 
-	        describe('Accessing characters', function () {
-	          it('should use brackets []', function () {
-	            expect('string'[3]).to.eql('i');
-	          });
+	    describe('Accessing characters', function () {
+	      it('should use brackets []', function () {
+	        expect('string'[3]).to.eql('i');
+	      });
 
-	          it('should use charAt()', function () {
-	            expect('string'.charAt(3)).to.eql('i');
-	          });
+	      it('should use charAt()', function () {
+	        expect('string'.charAt(3)).to.eql('i');
+	      });
 
-	          it('should see difference between [n] and charAt()', function () {
-	            expect('test'[22]).to.be.undefined;
-	            expect('test'[22]).not.to.eql('');
-	            expect('test'.charAt(22)).to.eql('');
-	          });
-	        });
+	      it('should see difference between [n] and charAt()', function () {
+	        expect('test'[22]).to.be.undefined;
+	        expect('test'[22]).not.to.eql('');
+	        expect('test'.charAt(22)).to.eql('');
+	      });
+	    });
 
-	        describe('Strings are Immutable', function () {
-	          it('should not be possible to change characterin string', function () {
-	            var str = 'hello';
+	    describe('Strings are Immutable', function () {
+	      it('should not be possible to change characterin string', function () {
+	        var str = 'hello';
 
-	            expect(function () {
-	              str[0] = 'b';
-	            }).to.throw();
+	        expect(function () {
+	          str[0] = 'b';
+	        }).to.throw();
 
-	            expect(str).to.eql('hello');
-	          });
-	        });
+	        expect(str).to.eql('hello');
+	      });
+	    });
 
-	        describe('Changing The Case', function () {
-	          it('should change to upper', function () {
-	            expect('test'.toUpperCase()).to.eql('TEST');
-	          });
+	    describe('Changing The Case', function () {
+	      it('should change to upper', function () {
+	        expect('test'.toUpperCase()).to.eql('TEST');
+	      });
 
-	          it('should change to lower', function () {
-	            expect('TEST'.toLowerCase()).to.eql('test');
-	          });
-	        });
+	      it('should change to lower', function () {
+	        expect('TEST'.toLowerCase()).to.eql('test');
+	      });
+	    });
 
-	        describe('Searching For a Substring', function () {
-	          it('should use .indexOf()', function () {
-	            expect('test'.indexOf('st')).to.eql(2);
-	            expect('test'.indexOf('ast')).to.eql(-1);
-	          });
+	    describe('Searching For a Substring', function () {
+	      it('should use .indexOf()', function () {
+	        expect('test'.indexOf('st')).to.eql(2);
+	        expect('test'.indexOf('ast')).to.eql(-1);
+	      });
 
-	          it('should use .indexOf() with starting index position', function () {
-	            expect('hello'.indexOf('lo', 4)).to.eql(-1);
-	          });
+	      it('should use .indexOf() with starting index position', function () {
+	        expect('hello'.indexOf('lo', 4)).to.eql(-1);
+	      });
 
-	          it('should use .lastIndexOf() to find index of last occurence', function () {
-	            expect('hello hello'.lastIndexOf('o')).to.eql(10);
-	          });
+	      it('should use .lastIndexOf() to find index of last occurence', function () {
+	        expect('hello hello'.lastIndexOf('o')).to.eql(10);
+	      });
 
-	          it('should use ~ operator for bitwise NOT trick', function () {
-	            expect('test'.indexOf('test')).to.eql(0);
-	            // trick when using if
-	            expect(~'test'.indexOf('test')).to.eql(-1);
+	      it('should use ~ operator for bitwise NOT trick', function () {
+	        expect('test'.indexOf('test')).to.eql(0);
+	        // trick when using if
+	        expect(~'test'.indexOf('test')).to.eql(-1);
 
-	            expect(2).to.eql(2);
-	            expect(~2).to.eql(-3);
+	        expect(2).to.eql(2);
+	        expect(~2).to.eql(-3);
 
-	            expect(-3).to.eql(-3);
-	            expect(~2).to.eql(-3);
-	          });
+	        expect(-3).to.eql(-3);
+	        expect(~2).to.eql(-3);
+	      });
 
-	          it('should use .includes()', function () {
-	            expect('hello'.includes('lo')).to.be.true;
-	          });
+	      it('should use .includes()', function () {
+	        expect('hello'.includes('lo')).to.be.true;
+	      });
 
-	          it('should use .startsWith()', function () {
-	            expect('hello'.startsWith('he')).to.be.true;
-	          });
+	      it('should use .startsWith()', function () {
+	        expect('hello'.startsWith('he')).to.be.true;
+	      });
 
-	          it('should use .endsWith()', function () {
-	            expect('hello'.endsWith('lo')).to.be.true;
-	          });
-	        });
+	      it('should use .endsWith()', function () {
+	        expect('hello'.endsWith('lo')).to.be.true;
+	      });
+	    });
 
-	        describe('Getting a Substring', function () {
-	          it('should use .slice()', function () {
-	            expect('hello'.slice(1, 3)).to.eql('el');
-	            expect('hello'.slice(3)).to.eql('lo');
-	            expect('hello'.slice()).to.eql('hello');
-	          });
+	    describe('Getting a Substring', function () {
+	      it('should use .slice()', function () {
+	        expect('hello'.slice(1, 3)).to.eql('el');
+	        expect('hello'.slice(3)).to.eql('lo');
+	        expect('hello'.slice()).to.eql('hello');
+	      });
 
-	          it('should use .substring()', function () {});
-	        });
+	      it('should use .substring(), same as slice() but can have start bigger than end index', function () {
+	        expect('hello'.substring(1, 3)).to.eql('el');
+	      });
+
+	      it('should use .substr(), from start, with the given length', function () {
+	        expect('hello'.substr(1, 3)).to.eql('ell');
+	      });
+	    });
+
+	    describe('Comparing Strings', function () {
+	      it('should lower case be always greater than uppercase', function () {
+	        expect('a' > 'A').to.be.true;
+	      });
+
+	      it('should umlauts/diacritical be out of order', function () {
+	        expect('Österreich' > 'Zeeland').to.be.true;
+	      });
+
+	      it('should get number representation of character with .codePointAt()', function () {
+	        expect('a'.codePointAt(0)).to.eql(97);
+	        expect('A'.codePointAt(0)).to.eql(65);
+	      });
+
+	      it('should get character by number representation', function () {
+	        expect(String.fromCodePoint(97)).to.eql('a');
+	      });
+
+	      it('should see chars betwen 65.220', function () {
+	        var str = '';
+
+	        for (var i = 65; i <= 220; i++) {
+	          str += String.fromCodePoint(i);
+	        }
+
+	        expect(str).to.contain('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+	      });
+
+	      it('should use .localeCompare() (ie10 >) to properly compare strings', function () {
+	        expect('Österreich'.localeCompare('Zealand')).to.eql(-1);
+	      });
+	    });
+	  });
+
+	  describe('5.4 Arrays', function () {
+	    describe('Declaration', function () {
+	      it('should declare array with Object syntax', function () {
+	        var arr = new Array('a', 'b');
+
+	        expect(arr).to.eql(['a', 'b']);
+	      });
+
+	      it('should declare array with literal syntax', function () {
+	        var arr = ['a', 'b'];
+
+	        expect(arr).to.eql(['a', 'b']);
+	      });
+
+	      it('should retrieve value with square brackets', function () {
+	        var arr = ['a', 'b', 'c'];
+
+	        expect(arr[1]).to.eql('b');
+	      });
+
+	      it('should add new item to array ', function () {
+	        var arr = ['a', 'b', 'c'];
+
+	        arr[3] = 'd';
+
+	        expect(arr[3]).to.eql('d');
+	      });
+
+	      it('should check length of array', function () {
+	        var arr = ['a', 'b', 'c'];
+
+	        expect(arr.length).to.eql(3);
+	      });
+
+	      it('should have ability to keep different typed elements', function () {
+	        var arr = ['apple', { name: 'peter' }, 6];
+
+	        expect(arr[1].name).to.eql('peter');
 	      });
 	    });
 	  });
