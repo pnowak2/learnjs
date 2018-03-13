@@ -24913,6 +24913,98 @@
 	        expect(arr[1].name).to.eql('peter');
 	      });
 	    });
+
+	    describe('Methods for putting / removing values', function () {
+	      describe('.push()', function () {
+	        it('should append element to the end', function () {
+	          var fruits = ['a', 'b'];
+	          fruits.push('c');
+
+	          expect(fruits).to.eql(['a', 'b', 'c']);
+	        });
+	      });
+
+	      describe('.pop()', function () {
+	        it('should remove last element from array and return it', function () {
+	          var fruits = ['a', 'b', 'c'];
+	          var el = fruits.pop();
+
+	          expect(fruits).to.eql(['a', 'b']);
+	          expect(el).to.eql('c');
+	        });
+	      });
+
+	      describe('.shift()', function () {
+	        it('should remove first element and return it', function () {
+	          var fruits = ['a', 'b', 'c'];
+	          var el = fruits.shift();
+
+	          expect(fruits).to.eql(['b', 'c']);
+	          expect(el).to.eql('a');
+	        });
+	      });
+
+	      describe('.unshift()', function () {
+	        it('should add element to beginning of array', function () {
+	          var fruits = ['b', 'c'];
+	          var el = fruits.unshift('a');
+
+	          expect(fruits).to.eql(['a', 'b', 'c']);
+	          expect(el).to.eql(3); // size
+	        });
+	      });
+	    });
+
+	    describe('Internals', function () {
+	      it('should be an object, not primitive', function () {
+	        var fruits = ['banana'];
+	        var arr = fruits;
+
+	        expect(arr === fruits).to.be.true;
+
+	        fruits.push('apple');
+
+	        expect(arr).to.eql(['banana', 'apple']);
+	      });
+	    });
+	  });
+
+	  describe('5.5 Array Methods', function () {
+	    describe('.splice() for add, remove and insert elements, destructive', function () {
+	      it('should delete items and return deleted elements array', function () {
+	        var arr = ['a', 'b', 'c'];
+	        var spliced = arr.splice(1, 1);
+
+	        expect(arr).to.eql(['a', 'c']);
+	        expect(spliced).to.eql(['b']);
+	      });
+
+	      it('should remove 2 elements and add two', function () {
+	        var arr = ['a', 'b', 'c'];
+	        var spliced = arr.splice(1, 2, 'hello', 'world');
+
+	        expect(arr).to.eql(['a', 'hello', 'world']);
+	        expect(spliced).to.eql(['b', 'c']);
+	      });
+
+	      it('should add elements without any removals', function () {
+	        var arr = ['a', 'b', 'c'];
+	        var spliced = arr.splice(1, 0, 'hello', 'world');
+
+	        expect(arr).to.eql(['a', 'hello', 'world', 'b', 'c']);
+	        expect(spliced).to.eql([]);
+	      });
+	    });
+
+	    describe('.slice() for getting part of arrays (non destructive)', function () {
+	      it('should get part of array', function () {
+	        var arr = ['a', 'b', 'c'];
+	        var sliced = arr.slice(1, 1);
+
+	        expect(arr).to.eql(['a', 'b', 'c']);
+	        expect(sliced).to.eql(['a', 'c']);
+	      });
+	    });
 	  });
 	});
 
