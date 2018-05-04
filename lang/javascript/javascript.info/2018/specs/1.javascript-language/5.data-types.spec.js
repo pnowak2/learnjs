@@ -24,6 +24,8 @@ describe('5. Data Types', () => {
   });
 
   describe('5.2 Numbers', () => {
+    it('should read the section', function () { });
+
     describe('More ways to write a number', () => {
       it('should write billion', () => {
         let billion = 1000000000;
@@ -144,6 +146,8 @@ describe('5. Data Types', () => {
   });
 
   describe('5.3 Strings', () => {
+    it('should read the section', function () { });
+
     describe('Quotes', () => {
       it('should use double quotes', () => {
         const s = "test";
@@ -157,10 +161,10 @@ describe('5. Data Types', () => {
 
       it('should use backticks for multiline', () => {
         const s = `
-          hello
-          world
+        hello
+        world
         `;
-        expect(s).to.eql('\n          hello\n          world\n        ');
+        expect(s).to.eql('\n        hello\n        world\n        ');
       });
 
       it('should use backticks for interpolation', () => {
@@ -316,6 +320,8 @@ world`);
   });
 
   describe('5.4 Arrays', () => {
+    it('should read the section', function () { });
+
     describe('Declaration', () => {
       it('should declare array with Object syntax', () => {
         let arr = new Array('a', 'b');
@@ -412,6 +418,8 @@ world`);
   });
 
   describe('5.5 Array Methods', () => {
+    it('should read the section', function () { });
+
     describe('.splice() for add, remove and insert elements, destructive', () => {
       it('should delete items and return deleted elements array', () => {
         let arr = ['a', 'b', 'c'];
@@ -447,6 +455,325 @@ world`);
         expect(sliced).to.eql(['b']);
       });
     });
+
+    describe('.concat() for joining arrays together', () => {
+      it('should concat two arrays', () => {
+        let arr = [1, 2];
+
+        expect([3, 4].concat(arr)).to.eql([3, 4, 1, 2]);
+      });
+    });
+
+    describe('Searching in array', () => {
+      describe('.indexOf', () => {
+        it('should find index of found element', () => {
+          let arr = [1, 0, false];
+          expect(arr.indexOf(false)).to.eql(2);
+        });
+      });
+
+      describe('.lastIndexOf', () => {
+        it('should find last index of found element', () => {
+          let arr = [1, false, 0, false];
+          expect(arr.lastIndexOf(false)).to.eql(3);
+        });
+      });
+
+      describe('.includes()', () => {
+        it('should check if array includes the element', () => {
+          let arr = [1, false, 0, false];
+          expect(arr.includes(false)).to.be.true;
+        });
+      });
+
+      describe('.find()', () => {
+        it('should find one element in array with predicate', () => {
+          let users = [
+            { id: 1, name: 'John' },
+            { id: 2, name: 'Piotr' },
+            { id: 3, name: 'Alicja' }
+          ]
+
+          let user = users.find((item, idx, array) => item.id === 1);
+
+          expect(user).to.eql(users[0]);
+        });
+      });
+
+      describe('.findIndex()', () => {
+        it('should find index of one element in array with predicate', () => {
+          let users = [
+            { id: 1, name: 'John' },
+            { id: 2, name: 'Piotr' },
+            { id: 3, name: 'Alicja' }
+          ]
+
+          let userIndex = users.findIndex((item, idx, array) => item.id === 3);
+
+          expect(userIndex).to.eql(2);
+        });
+      });
+
+      describe('.filter()', () => {
+        it('should filter array with predicate', () => {
+          let users = [
+            { id: 1, name: 'John' },
+            { id: 2, name: 'Piotr' },
+            { id: 3, name: 'Alicja' }
+          ]
+
+          let someUsers = users.filter((item, idx, array) => {
+            return item.id < 3
+          });
+
+          expect(someUsers).to.eql([
+            { id: 1, name: 'John' },
+            { id: 2, name: 'Piotr' }
+          ])
+        });
+      });
+    });
+
+    describe('Transform an array', () => {
+      describe('.map()', () => {
+        it('should map array to another array', () => {
+          let lengths = ['Bilbo', 'Gandalf', 'Nazgul'].map((item, index, array) => {
+            return item.length;
+          });
+
+          expect(lengths).to.eql([5, 7, 6]);
+        });
+      });
+
+      describe('.map()', () => {
+        it('should map array to another array', () => {
+          let lengths = ['Bilbo', 'Gandalf', 'Nazgul'].map((item, index, array) => {
+            return item.length;
+          });
+
+          expect(lengths).to.eql([5, 7, 6]);
+        });
+      });
+
+      describe('.sort()', () => {
+        it('should sort an array, by default as strings', () => {
+          let sorted = [1, 2, 15].sort();
+
+          expect(sorted).to.eql([1, 15, 2]);
+        });
+
+        it('should sort an array with custom comparer', () => {
+          let sorted = [1, 2, 15].sort((a, b) => {
+            if (a > b) return 1;
+            if (a < b) return -1;
+            if (a == b) return 0;
+          });
+
+          expect(sorted).to.eql([1, 2, 15]);
+        });
+      });
+
+      describe('.reverse()', () => {
+        it('should reverse array order', () => {
+          let arr = [1, 2, 15]
+          arr.reverse();
+
+          expect(arr).to.eql([15, 2, 1]);
+        });
+      });
+
+      describe('.split()', () => {
+        it('should split string by delimiter to array', () => {
+          let names = 'Bilbo, Gandalf, Nazgul';
+          let arr = names.split(', ');
+
+          expect(arr).to.eql(['Bilbo', 'Gandalf', 'Nazgul']);
+        });
+      });
+
+      describe('.join()', () => {
+        it('should join array by delimiter to string', () => {
+          let arr = ['Bilbo', 'Gandalf', 'Nazgul']
+          let text = arr.join(', ');
+
+          expect(text).to.eql('Bilbo, Gandalf, Nazgul');
+        });
+      });
+
+      describe('.reduce()', () => {
+        it('should reduce array to one value', () => {
+          let arr = ['Bilbo', 'Gandalf', 'Nazgul']
+          let text = arr.reduce((prevItem, item, idx, arr) => {
+            return prevItem + ':' + item
+          }, '');
+
+          expect(text).to.eql(':Bilbo:Gandalf:Nazgul');
+        });
+      });
+
+      describe('.reduce()', () => {
+        it('should reduce array to one value (from right)', () => {
+          let arr = ['Bilbo', 'Gandalf', 'Nazgul'];
+          let text = arr.reduceRight((prevItem, item, idx, arr) => {
+            return prevItem + ':' + item
+          }, '');
+
+          expect(text).to.eql(':Nazgul:Gandalf:Bilbo');
+        });
+      });
+    });
+
+    describe('Iterating', () => {
+      describe('.forEach()', () => {
+        it('should iterate over array', () => {
+          let arr = ['Bilbo', 'Gandalf', 'Nazgul'];
+          let result = '';
+
+          arr.forEach((item, idx, array) => {
+            result += item;
+          });
+
+          expect(result).to.eql(arr.join(''));
+        });
+      });
+    });
+
+    describe('Other', () => {
+      describe('.isArray()', () => {
+        it('should check for arrayness', () => {
+          expect(Array.isArray([])).to.be.true;
+          expect(Array.isArray({
+            0: 'hello',
+            length: 1
+          })).to.be.false;
+        });
+      });
+
+      describe('thisArg', () => {
+        it('should replace this object within methods', () => {
+          let user = {
+            age: 18,
+            younger(otherUser) {
+              return otherUser.age < this.age;
+            }
+          };
+
+          let users = [
+            { age: 12 },
+            { age: 16 },
+            { age: 32 }
+          ];
+
+          // find all users younger than user          thisArg
+          let youngerUsers = users.filter(user.younger, user);
+
+          expect(youngerUsers).to.eql([
+            { age: 12 },
+            { age: 16 }
+          ])
+        });
+      });
+    });
+  });
+
+  describe('5.6 Iterables', () => {
+    it('should read the section', function () { });
+
+    it('should write own simple iterator', function () {
+      let range = {
+        from: 1,
+        to: 5,
+        [Symbol.iterator]() {
+          let from = this.from;
+          let to = this.to;
+          let current = this.from;
+
+          return {
+            next() {
+              let result = {
+                value: current,
+                done: current > to
+              }
+              current = current + 1;
+
+              return result;
+            }
+          }
+        }
+      }
+
+      let result = '';
+      for (let n of range) {
+        result += n;
+      }
+
+      expect(result).to.eql('12345');
+    });
+
+    it('should write generator function', () => {
+      function* gen() {
+        yield 1;
+        yield 2;
+      }
+
+      var g = gen();
+      expect(g.next().value).to.eql(1);
+      expect(g.next().value).to.eql(2);
+      expect(g.next().done).to.be.true;
+      expect(g.next().value).to.be.undefined;
+    });
+
+    it('should call iterator explicitly', () => {
+      let it = 'piotr'[Symbol.iterator]();
+
+      expect(it.next().value).to.eql('p');
+    });
+
+    describe('Array.from()', () => {
+      it('should joing iterables and array likes with Array.from', () => {
+        let arrayLike = {
+          0: "Hello",
+          1: "World",
+          length: 2
+        };
+
+        let arr = Array.from(arrayLike);
+
+        expect(Array.isArray(arr)).to.be.true;
+        expect(arr[1]).to.eql('World');
+      });
+
+      it('should convert function args to real array', () => {
+        function fn() {
+          let ars = Array.from(arguments);
+          return ars;
+        }
+
+        let args = fn(1, 2, 3);
+
+        expect(Array.isArray(args)).to.be.true;
+        expect(args).to.eql([1, 2, 3]);
+      });
+
+      it('should map elements before getting array', () => {
+        let arrayLike = {
+          0: "Hello",
+          1: "World",
+          length: 2
+        };
+
+        let arr = Array.from(arrayLike, (el, idx) => {
+          return el + idx
+        });
+
+        expect(arr).to.eql(['Hello0', 'World1']);
+      });
+    });
+  });
+
+  describe('5.7 Map, Set, WeakMap and WeakSet', () => {
+    it('should read the section', function () { });
+
   });
 });
 
