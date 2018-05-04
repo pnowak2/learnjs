@@ -135,7 +135,7 @@ describe('4. Objects the Basics', () => {
     });
 
     describe('Comparison By Reference', () => {
-      it('should behave...', () => {
+      it('should compare by reference', () => {
         let a = {};
         let b = {};
         let c = b;
@@ -477,17 +477,17 @@ describe('4. Objects the Basics', () => {
 
     describe('new.target', () => {
       it('should check how function was called', () => {
-        // function Person(name) {
-        //   if(!new.target) {
-        //     throw new Error('function not called with new');
-        //   }
+         function Person(name) {
+           if(!new.target) {
+             throw new Error('function not called with new');
+           }
 
-        //   this.name = name;
-        // }
+           this.name = name;
+         }
 
-        // expect(function() {
-        //   Person('peter');
-        // }).to.throw('function not called with new');
+         expect(function() {
+           Person('peter');
+         }).to.throw('function not called with new');
       });
     });
 

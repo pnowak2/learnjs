@@ -24108,7 +24108,7 @@
 	    });
 
 	    describe('Comparison By Reference', function () {
-	      it('should behave...', function () {
+	      it('should compare by reference', function () {
 	        var a = {};
 	        var b = {};
 	        var c = b;
@@ -24449,17 +24449,17 @@
 
 	    describe('new.target', function () {
 	      it('should check how function was called', function () {
-	        // function Person(name) {
-	        //   if(!new.target) {
-	        //     throw new Error('function not called with new');
-	        //   }
+	        function Person(name) {
+	          if (!new.target) {
+	            throw new Error('function not called with new');
+	          }
 
-	        //   this.name = name;
-	        // }
+	          this.name = name;
+	        }
 
-	        // expect(function() {
-	        //   Person('peter');
-	        // }).to.throw('function not called with new');
+	        expect(function () {
+	          Person('peter');
+	        }).to.throw('function not called with new');
 	      });
 	    });
 
@@ -24999,10 +24999,10 @@
 	    describe('.slice() for getting part of arrays (non destructive)', function () {
 	      it('should get part of array', function () {
 	        var arr = ['a', 'b', 'c'];
-	        var sliced = arr.slice(1, 1);
+	        var sliced = arr.slice(1, 2);
 
 	        expect(arr).to.eql(['a', 'b', 'c']);
-	        expect(sliced).to.eql(['a', 'c']);
+	        expect(sliced).to.eql(['b']);
 	      });
 	    });
 	  });

@@ -441,10 +441,10 @@ world`);
     describe('.slice() for getting part of arrays (non destructive)', () => {
       it('should get part of array', () => {
         let arr = ['a', 'b', 'c'];
-        let sliced = arr.slice(1, 1);
+        let sliced = arr.slice(1, 2);
 
         expect(arr).to.eql(['a', 'b', 'c']);
-        expect(sliced).to.eql(['a', 'c']);
+        expect(sliced).to.eql(['b']);
       });
     });
   });
