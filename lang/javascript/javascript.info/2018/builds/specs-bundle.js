@@ -24562,6 +24562,18 @@
 
 	'use strict';
 
+	var _objectWithoutProperties2 = __webpack_require__(212);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _toArray2 = __webpack_require__(204);
+
+	var _toArray3 = _interopRequireDefault(_toArray2);
+
+	var _slicedToArray2 = __webpack_require__(195);
+
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
 	var _regenerator = __webpack_require__(192);
 
 	var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -25360,6 +25372,397 @@
 
 	  describe('5.7 Map, Set, WeakMap and WeakSet', function () {
 	    it('should read the section', function () {});
+
+	    describe('Map', function () {
+	      it('should be collection of keyed data itmes', function () {
+	        var map = new Map();
+	        map.set(1, 'foo');
+	        map.set(2, 'bar');
+
+	        expect(map.get(1)).to.eql('foo');
+	        expect(map.get(2)).to.eql('bar');
+	      });
+
+	      describe('.get(), .set()', function () {
+	        it('should retrieve data', function () {
+	          var map = new Map();
+	          map.set(1, 'foo');
+
+	          expect(map.get(1)).to.eql('foo');
+	        });
+	      });
+
+	      describe('Using Objects as Keys', function () {
+	        var obj = {
+	          foo: 'bar'
+	        };
+
+	        var map = new Map();
+	        map.set(obj, 'value');
+
+	        expect(map.get(obj)).to.eql('value');
+	      });
+
+	      describe('Chaining', function () {
+	        it('should chain sets', function () {
+	          var map = new Map();
+	          map.set('1', 'one').set('2', 'bar');
+
+	          expect(map.get('2')).to.eql('bar');
+	        });
+	      });
+
+	      describe('Map from Object', function () {
+	        it('should create a map from object', function () {
+	          var map = new Map([['1', 'one'], ['2', 'two']]);
+
+	          expect(map.get('1')).to.eql('one');
+	        });
+	      });
+
+	      describe('Iteration Over Map', function () {
+	        it('.keys()', function () {
+	          var recipeMap = new Map([['cucumber', 500], ['tomatoes', 350], ['onion', 50]]);
+
+	          var result = '';
+	          var _iteratorNormalCompletion2 = true;
+	          var _didIteratorError2 = false;
+	          var _iteratorError2 = undefined;
+
+	          try {
+	            for (var _iterator2 = recipeMap.keys()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	              var key = _step2.value;
+
+	              result += key;
+	            }
+	          } catch (err) {
+	            _didIteratorError2 = true;
+	            _iteratorError2 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                _iterator2.return();
+	              }
+	            } finally {
+	              if (_didIteratorError2) {
+	                throw _iteratorError2;
+	              }
+	            }
+	          }
+
+	          expect(result).to.eql('cucumbertomatoesonion');
+	        });
+
+	        it('.keys()', function () {
+	          var recipeMap = new Map([['cucumber', 500], ['tomatoes', 350], ['onion', 50]]);
+
+	          var result = '';
+	          var _iteratorNormalCompletion3 = true;
+	          var _didIteratorError3 = false;
+	          var _iteratorError3 = undefined;
+
+	          try {
+	            for (var _iterator3 = recipeMap.values()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	              var value = _step3.value;
+
+	              result += value;
+	            }
+	          } catch (err) {
+	            _didIteratorError3 = true;
+	            _iteratorError3 = err;
+	          } finally {
+	            try {
+	              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                _iterator3.return();
+	              }
+	            } finally {
+	              if (_didIteratorError3) {
+	                throw _iteratorError3;
+	              }
+	            }
+	          }
+
+	          expect(result).to.eql('50035050');
+	        });
+
+	        it('.entries', function () {
+	          var recipeMap = new Map([['cucumber', 500], ['tomatoes', 350]]);
+
+	          expect(recipeMap.entries().next).to.be.a('function');
+	          expect(recipeMap.entries().next().value).to.eql(['cucumber', 500]);
+	        });
+	      });
+
+	      describe('Checking for key', function () {
+	        it('should check for given key', function () {
+	          var recipeMap = new Map([['cucumber', 500], ['tomatoes', 350]]);
+
+	          expect(recipeMap.has('cucumber')).to.be.true;
+	          expect(recipeMap.has('other')).to.be.false;
+	        });
+	      });
+	    });
+
+	    describe('Set', function () {
+	      it('should be collection where each value may occur only once', function () {
+	        var set = new Set();
+	        set.add(1);
+	        set.add(2);
+	        set.add(1);
+	        set.add(4);
+	        set.add(1);
+
+	        expect(set.size).to.eql(3);
+	      });
+	    });
+
+	    describe('WeakMap / WeakSet', function () {
+	      it('should use objects as keys', function () {
+	        var wm = new WeakMap();
+
+	        expect(function () {
+	          wm.set('one', 'two');
+	        }).to.throw();
+
+	        var obj = {};
+	        wm.set(obj, 'bar');
+	        expect(wm.get(obj)).to.eql('bar');
+	      });
+
+	      it('should garbage collect key and map if key is freed', function () {
+	        var wm = new WeakMap();
+	        var key = { name: 'John' };
+
+	        wm.set(key, 'bar');
+	        expect(wm.get(key)).to.eql('bar');
+
+	        key = null;
+	        expect(wm.get(key)).to.be.undefined;
+	      });
+	    });
+	  });
+
+	  describe('5.8 Object.keys, values, entries', function () {
+	    it('Object.keys()', function () {
+	      var obj = {
+	        one: 'jeden',
+	        two: 'dwa'
+	      };
+
+	      expect(Object.keys(obj).join(',')).to.eql('one,two');
+	    });
+
+	    it('Object.values()', function () {
+	      var obj = {
+	        one: 'jeden',
+	        two: 'dwa'
+	      };
+
+	      expect(Object.values(obj).join(',')).to.eql('jeden,dwa');
+	    });
+
+	    it('Object.entries()', function () {
+	      var obj = {
+	        one: 'jeden',
+	        two: 'dwa'
+	      };
+
+	      expect(Object.entries(obj)).to.eql([['one', 'jeden'], ['two', 'dwa']]);
+	    });
+	  });
+
+	  describe('5.9 Destructuring assignment', function () {
+	    describe('Array destructuring', function () {
+	      it('should destructure', function () {
+	        var arr = ['one', 'two', 'three'];
+	        var first = arr[0],
+	            second = arr[1];
+
+
+	        expect(first).to.eql('one');
+	        expect(second).to.eql('two');
+	      });
+
+	      it('should ignore first args', function () {
+	        var arr = ['one', 'two', 'three'];
+	        var last = arr[2];
+
+
+	        expect(last).to.eql('three');
+	      });
+
+	      it('should work with any iterable', function () {
+	        var _HelloWorld = 'Hello world',
+	            _HelloWorld2 = (0, _slicedToArray3.default)(_HelloWorld, 2),
+	            a = _HelloWorld2[0],
+	            b = _HelloWorld2[1];
+
+	        expect(a).to.eql('H');
+	        expect(b).to.eql('e');
+	      });
+
+	      it('should user ... rest operator to get last values', function () {
+	        var _Hello = 'Hello',
+	            _Hello2 = (0, _toArray3.default)(_Hello),
+	            a = _Hello2[0],
+	            b = _Hello2[1],
+	            rest = _Hello2.slice(2);
+
+	        expect(rest).to.eql(['l', 'l', 'o']);
+	      });
+
+	      it('should use default values', function () {
+	        var _ref = [],
+	            _ref$ = _ref[0],
+	            first = _ref$ === undefined ? 'first' : _ref$,
+	            second = _ref[1];
+
+
+	        expect(first).to.eql('first');
+	        expect(second).to.be.undefined;
+	      });
+	    });
+
+	    describe('Object destructuring', function () {
+	      it('should destructure objects', function () {
+	        var _name$address$age = {
+	          name: 'peter',
+	          address: 'mamer',
+	          age: 38
+	        },
+	            name = _name$address$age.name,
+	            age = _name$address$age.age;
+
+
+	        expect(name).to.eql('peter');
+	        expect(age).to.eql(38);
+	      });
+
+	      it('should destructure and rename on the fly', function () {
+	        var _name$address$age2 = {
+	          name: 'peter',
+	          address: 'mamer',
+	          age: 38
+	        },
+	            n = _name$address$age2.name,
+	            a = _name$address$age2.age;
+
+
+	        expect(n).to.eql('peter');
+	        expect(a).to.eql(38);
+	      });
+
+	      it('should use ... rest operator', function () {
+	        var _name$address$age3 = {
+	          name: 'peter',
+	          address: 'mamer',
+	          age: 38
+	        },
+	            n = _name$address$age3.name,
+	            rest = (0, _objectWithoutProperties3.default)(_name$address$age3, ['name']);
+
+
+	        expect(n).to.eql('peter');
+	        expect(rest).to.eql({
+	          address: 'mamer',
+	          age: 38
+	        });
+	      });
+
+	      it('should use nested destructuring', function () {
+	        var options = {
+	          size: {
+	            width: 100,
+	            height: 200
+	          },
+	          items: ["Cake", "Donut"],
+	          extra: true // something extra that we will not destruct
+	        };
+
+	        // destructuring assignment on multiple lines for clarity
+
+	        var _options$size = options.size,
+	            width = _options$size.width,
+	            height = _options$size.height,
+	            _options$items = (0, _slicedToArray3.default)(options.items, 2),
+	            item1 = _options$items[0],
+	            item2 = _options$items[1],
+	            _options$title = options.title,
+	            title = _options$title === undefined ? "Menu" : _options$title;
+
+	        expect(height).to.eql(200);
+	      });
+	    });
+
+	    describe('Function declarations destructure', function () {
+	      it('should destructure function input params', function () {
+	        function fn(_ref2) {
+	          var _ref2$name = _ref2.name,
+	              name = _ref2$name === undefined ? 'peter' : _ref2$name,
+	              age = _ref2.age;
+
+	          return name + ': ' + age;
+	        }
+
+	        expect(fn({
+	          foo: 'bar',
+	          name: 'andrew',
+	          age: 12,
+	          other: 2
+	        })).to.eql('andrew: 12');
+	      });
+	    });
+	  });
+
+	  describe('5.10 Date and Time', function () {
+	    it('should create date object', function () {
+	      var now = new Date();
+	      expect(now).to.be.a('date');
+	    });
+
+	    it('should create from miliseconds', function () {
+	      var now = new Date(24 * 3600 * 1000);
+	      expect(now).to.be.a('date');
+	    });
+
+	    it('should parse from string', function () {
+	      var dt = new Date('2018-05-07');
+
+	      expect(dt.getMonth()).to.eql(4);
+	    });
+
+	    it('should provide all params', function () {
+	      var dt = new Date(2018, 4, 7, 12, 45, 2, 6);
+
+	      expect(dt.getMonth()).to.eql(4);
+	    });
+
+	    it('should use getters for date properties', function () {
+	      var dt = new Date(2018, 4, 7, 12, 45, 2, 6);
+
+	      expect(dt.getFullYear()).to.eql(2018);
+	      expect(dt.getMonth()).to.eql(4);
+	      expect(dt.getDate()).to.eql(7);
+	      expect(dt.getHours()).to.eql(12);
+	      expect(dt.getUTCHours()).to.eql(10); // UTC time
+	      expect(dt.getMinutes()).to.eql(45);
+	      expect(dt.getSeconds()).to.eql(2);
+	      expect(dt.getMilliseconds()).to.eql(6);
+	      expect(dt.getTime()).to.be.a('number');
+	    });
+
+	    it('should modify the date / time', function () {
+	      var dt = new Date();
+	      dt.setHours(0);
+
+	      expect(dt.getHours()).to.eql(0);
+	    });
+
+	    it('should parse from string', function () {
+	      var dt = Date.parse('2012-01-26T13:51:50.417-07:00');
+
+	      expect(dt).to.be.a('number');
+	    });
 	  });
 	});
 
@@ -26143,6 +26546,334 @@
 	  (function() { return this })() || Function("return this")()
 	);
 
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _isIterable2 = __webpack_require__(196);
+
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+	var _getIterator2 = __webpack_require__(200);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+
+	    return _arr;
+	  }
+
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(197), __esModule: true };
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(102);
+	__webpack_require__(58);
+	module.exports = __webpack_require__(198);
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var classof = __webpack_require__(199);
+	var ITERATOR = __webpack_require__(99)('iterator');
+	var Iterators = __webpack_require__(81);
+	module.exports = __webpack_require__(66).isIterable = function (it) {
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    // eslint-disable-next-line no-prototype-builtins
+	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// getting tag from 19.1.3.6 Object.prototype.toString()
+	var cof = __webpack_require__(89);
+	var TAG = __webpack_require__(99)('toStringTag');
+	// ES3 wrong here
+	var ARG = cof(function () { return arguments; }()) == 'Arguments';
+
+	// fallback for IE11 Script Access Denied error
+	var tryGet = function (it, key) {
+	  try {
+	    return it[key];
+	  } catch (e) { /* empty */ }
+	};
+
+	module.exports = function (it) {
+	  var O, T, B;
+	  return it === undefined ? 'Undefined' : it === null ? 'Null'
+	    // @@toStringTag case
+	    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+	    // builtinTag case
+	    : ARG ? cof(O)
+	    // ES3 arguments fallback
+	    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+	};
+
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(201), __esModule: true };
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(102);
+	__webpack_require__(58);
+	module.exports = __webpack_require__(202);
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(71);
+	var get = __webpack_require__(203);
+	module.exports = __webpack_require__(66).getIterator = function (it) {
+	  var iterFn = get(it);
+	  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var classof = __webpack_require__(199);
+	var ITERATOR = __webpack_require__(99)('iterator');
+	var Iterators = __webpack_require__(81);
+	module.exports = __webpack_require__(66).getIteratorMethod = function (it) {
+	  if (it != undefined) return it[ITERATOR]
+	    || it['@@iterator']
+	    || Iterators[classof(it)];
+	};
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _from = __webpack_require__(205);
+
+	var _from2 = _interopRequireDefault(_from);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (arr) {
+	  return Array.isArray(arr) ? arr : (0, _from2.default)(arr);
+	};
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(206), __esModule: true };
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(58);
+	__webpack_require__(207);
+	module.exports = __webpack_require__(66).Array.from;
+
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var ctx = __webpack_require__(67);
+	var $export = __webpack_require__(64);
+	var toObject = __webpack_require__(101);
+	var call = __webpack_require__(208);
+	var isArrayIter = __webpack_require__(209);
+	var toLength = __webpack_require__(91);
+	var createProperty = __webpack_require__(210);
+	var getIterFn = __webpack_require__(203);
+
+	$export($export.S + $export.F * !__webpack_require__(211)(function (iter) { Array.from(iter); }), 'Array', {
+	  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+	  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+	    var O = toObject(arrayLike);
+	    var C = typeof this == 'function' ? this : Array;
+	    var aLen = arguments.length;
+	    var mapfn = aLen > 1 ? arguments[1] : undefined;
+	    var mapping = mapfn !== undefined;
+	    var index = 0;
+	    var iterFn = getIterFn(O);
+	    var length, result, step, iterator;
+	    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+	    // if object isn't iterable or it's array with default iterator - use simple case
+	    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
+	      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+	        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
+	      }
+	    } else {
+	      length = toLength(O.length);
+	      for (result = new C(length); length > index; index++) {
+	        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
+	      }
+	    }
+	    result.length = index;
+	    return result;
+	  }
+	});
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// call something on iterator step with safe closing on error
+	var anObject = __webpack_require__(71);
+	module.exports = function (iterator, fn, value, entries) {
+	  try {
+	    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
+	  // 7.4.6 IteratorClose(iterator, completion)
+	  } catch (e) {
+	    var ret = iterator['return'];
+	    if (ret !== undefined) anObject(ret.call(iterator));
+	    throw e;
+	  }
+	};
+
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// check on default Array iterator
+	var Iterators = __webpack_require__(81);
+	var ITERATOR = __webpack_require__(99)('iterator');
+	var ArrayProto = Array.prototype;
+
+	module.exports = function (it) {
+	  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
+	};
+
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var $defineProperty = __webpack_require__(70);
+	var createDesc = __webpack_require__(78);
+
+	module.exports = function (object, index, value) {
+	  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
+	  else object[index] = value;
+	};
+
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var ITERATOR = __webpack_require__(99)('iterator');
+	var SAFE_CLOSING = false;
+
+	try {
+	  var riter = [7][ITERATOR]();
+	  riter['return'] = function () { SAFE_CLOSING = true; };
+	  // eslint-disable-next-line no-throw-literal
+	  Array.from(riter, function () { throw 2; });
+	} catch (e) { /* empty */ }
+
+	module.exports = function (exec, skipClosing) {
+	  if (!skipClosing && !SAFE_CLOSING) return false;
+	  var safe = false;
+	  try {
+	    var arr = [7];
+	    var iter = arr[ITERATOR]();
+	    iter.next = function () { return { done: safe = true }; };
+	    arr[ITERATOR] = function () { return iter; };
+	    exec(arr);
+	  } catch (e) { /* empty */ }
+	  return safe;
+	};
+
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (obj, keys) {
+	  var target = {};
+
+	  for (var i in obj) {
+	    if (keys.indexOf(i) >= 0) continue;
+	    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+	    target[i] = obj[i];
+	  }
+
+	  return target;
+	};
 
 /***/ })
 /******/ ]);

@@ -774,6 +774,346 @@ world`);
   describe('5.7 Map, Set, WeakMap and WeakSet', () => {
     it('should read the section', function () { });
 
+    describe('Map', () => {
+      it('should be collection of keyed data itmes', () => {
+        let map = new Map();
+        map.set(1, 'foo');
+        map.set(2, 'bar');
+
+        expect(map.get(1)).to.eql('foo');
+        expect(map.get(2)).to.eql('bar');
+      });
+
+      describe('.get(), .set()', () => {
+        it('should retrieve data', () => {
+          let map = new Map();
+          map.set(1, 'foo');
+
+          expect(map.get(1)).to.eql('foo');
+        });
+      });
+
+      describe('Using Objects as Keys', () => {
+        let obj = {
+          foo: 'bar'
+        }
+
+        let map = new Map();
+        map.set(obj, 'value');
+
+        expect(map.get(obj)).to.eql('value');
+      });
+
+      describe('Chaining', () => {
+        it('should chain sets', () => {
+          let map = new Map();
+          map
+            .set('1', 'one')
+            .set('2', 'bar');
+
+          expect(map.get('2')).to.eql('bar');
+        });
+      });
+
+      describe('Map from Object', () => {
+        it('should create a map from object', () => {
+          let map = new Map([
+            ['1', 'one'],
+            ['2', 'two']
+          ]);
+
+          expect(map.get('1')).to.eql('one');
+        });
+      });
+
+      describe('Iteration Over Map', () => {
+        it('.keys()', () => {
+          let recipeMap = new Map([
+            ['cucumber', 500],
+            ['tomatoes', 350],
+            ['onion', 50]
+          ]);
+
+          let result = '';
+          for (let key of recipeMap.keys()) {
+            result += key;
+          }
+
+          expect(result).to.eql('cucumbertomatoesonion');
+        });
+
+        it('.keys()', () => {
+          let recipeMap = new Map([
+            ['cucumber', 500],
+            ['tomatoes', 350],
+            ['onion', 50]
+          ]);
+
+          let result = '';
+          for (let value of recipeMap.values()) {
+            result += value;
+          }
+
+          expect(result).to.eql('50035050');
+        });
+
+        it('.entries', () => {
+          let recipeMap = new Map([
+            ['cucumber', 500],
+            ['tomatoes', 350]
+          ]);
+
+          expect(recipeMap.entries().next).to.be.a('function');
+          expect(recipeMap.entries().next().value).to.eql(['cucumber', 500]);
+        });
+      });
+
+      describe('Checking for key', () => {
+        it('should check for given key', () => {
+          let recipeMap = new Map([
+            ['cucumber', 500],
+            ['tomatoes', 350]
+          ]);
+
+          expect(recipeMap.has('cucumber')).to.be.true;
+          expect(recipeMap.has('other')).to.be.false;
+        });
+      });
+    });
+
+    describe('Set', () => {
+      it('should be collection where each value may occur only once', () => {
+        let set = new Set();
+        set.add(1);
+        set.add(2);
+        set.add(1);
+        set.add(4);
+        set.add(1);
+
+        expect(set.size).to.eql(3);
+      });
+    });
+
+    describe('WeakMap / WeakSet', () => {
+      it('should use objects as keys', () => {
+        let wm = new WeakMap();
+
+        expect(function () {
+          wm.set('one', 'two');
+        }).to.throw();
+
+        const obj = {};
+        wm.set(obj, 'bar');
+        expect(wm.get(obj)).to.eql('bar');
+      });
+
+      it('should garbage collect key and map if key is freed', () => {
+        let wm = new WeakMap();
+        let key = { name: 'John' };
+
+        wm.set(key, 'bar');
+        expect(wm.get(key)).to.eql('bar');
+
+        key = null;
+        expect(wm.get(key)).to.be.undefined;
+      });
+    });
+  });
+
+  describe('5.8 Object.keys, values, entries', () => {
+    it('Object.keys()', () => {
+      let obj = {
+        one: 'jeden',
+        two: 'dwa'
+      }
+
+      expect(Object.keys(obj).join(',')).to.eql('one,two');
+    });
+
+    it('Object.values()', () => {
+      let obj = {
+        one: 'jeden',
+        two: 'dwa'
+      }
+
+      expect(Object.values(obj).join(',')).to.eql('jeden,dwa');
+    });
+
+    it('Object.entries()', () => {
+      let obj = {
+        one: 'jeden',
+        two: 'dwa'
+      }
+
+      expect(Object.entries(obj)).to.eql([
+        ['one', 'jeden'],
+        ['two', 'dwa']
+      ]);
+    });
+  });
+
+  describe('5.9 Destructuring assignment', () => {
+    describe('Array destructuring', () => {
+      it('should destructure', () => {
+        let arr = ['one', 'two', 'three'];
+        let [first, second] = arr;
+
+        expect(first).to.eql('one');
+        expect(second).to.eql('two');
+      });
+
+      it('should ignore first args', () => {
+        let arr = ['one', 'two', 'three'];
+        let [, , last] = arr;
+
+        expect(last).to.eql('three');
+      });
+
+      it('should work with any iterable', () => {
+        let [a, b] = 'Hello world';
+        expect(a).to.eql('H');
+        expect(b).to.eql('e');
+      });
+
+      it('should user ... rest operator to get last values', () => {
+        let [a, b, ...rest] = 'Hello';
+        expect(rest).to.eql(['l', 'l', 'o']);
+      });
+
+      it('should use default values', () => {
+        let [first = 'first', second] = [];
+
+        expect(first).to.eql('first');
+        expect(second).to.be.undefined;
+      });
+    });
+
+    describe('Object destructuring', () => {
+      it('should destructure objects', () => {
+        let { name, age } = {
+          name: 'peter',
+          address: 'mamer',
+          age: 38
+        };
+
+        expect(name).to.eql('peter');
+        expect(age).to.eql(38);
+      });
+
+      it('should destructure and rename on the fly', () => {
+        let { name: n, age: a } = {
+          name: 'peter',
+          address: 'mamer',
+          age: 38
+        };
+
+        expect(n).to.eql('peter');
+        expect(a).to.eql(38);
+      });
+
+      it('should use ... rest operator', () => {
+        let { name: n, ...rest } = {
+          name: 'peter',
+          address: 'mamer',
+          age: 38
+        };
+
+        expect(n).to.eql('peter');
+        expect(rest).to.eql({
+          address: 'mamer',
+          age: 38
+        });
+      });
+
+      it('should use nested destructuring', () => {
+        let options = {
+          size: {
+            width: 100,
+            height: 200
+          },
+          items: ["Cake", "Donut"],
+          extra: true    // something extra that we will not destruct
+        };
+
+        // destructuring assignment on multiple lines for clarity
+        let {
+          size: { // put size here
+            width,
+            height
+          },
+          items: [item1, item2], // assign items here
+          title = "Menu" // not present in the object (default value is used)
+        } = options;
+
+        expect(height).to.eql(200);
+      });
+    });
+
+    describe('Function declarations destructure', () => {
+      it('should destructure function input params', () => {
+        function fn({ name = 'peter', age }) {
+          return `${name}: ${age}`;
+        }
+
+        expect(fn({
+          foo: 'bar',
+          name: 'andrew',
+          age: 12,
+          other: 2
+        })).to.eql('andrew: 12');
+      });
+    });
+  });
+
+  describe('5.10 Date and Time', () => {
+    it('should create date object', () => {
+      let now = new Date();
+      expect(now).to.be.a('date');
+    });
+
+    it('should create from miliseconds', () => {
+      let now = new Date(24 * 3600 * 1000);
+      expect(now).to.be.a('date');
+    });
+
+    it('should parse from string', () => {
+      let dt = new Date('2018-05-07');
+
+      expect(dt.getMonth()).to.eql(4);
+    });
+
+    it('should provide all params', () => {
+      let dt = new Date(2018, 4, 7, 12, 45, 2, 6);
+
+      expect(dt.getMonth()).to.eql(4);
+    });
+
+    it('should use getters for date properties', () => {
+      let dt = new Date(2018, 4, 7, 12, 45, 2, 6);
+
+      expect(dt.getFullYear()).to.eql(2018);
+      expect(dt.getMonth()).to.eql(4);
+      expect(dt.getDate()).to.eql(7);
+      expect(dt.getHours()).to.eql(12);
+      expect(dt.getUTCHours()).to.eql(10); // UTC time
+      expect(dt.getMinutes()).to.eql(45);
+      expect(dt.getSeconds()).to.eql(2);
+      expect(dt.getMilliseconds()).to.eql(6);
+      expect(dt.getTime()).to.be.a('number');
+    });
+
+    it('should modify the date / time', () => {
+      let dt = new Date();
+      dt.setHours(0);
+
+      expect(dt.getHours()).to.eql(0);
+    });
+
+    it('should parse from string', () => {
+      let dt = Date.parse('2012-01-26T13:51:50.417-07:00');
+
+      expect(dt).to.be.a('number');
+    });
   });
 });
 
