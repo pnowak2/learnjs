@@ -1115,5 +1115,92 @@ world`);
       expect(dt).to.be.a('number');
     });
   });
+
+  describe('5.10 JSON methods, toJSON()', () => {
+    it('should implement it by hand..', () => {
+      let usr = {
+        name: 'peter',
+        age: 38,
+        toString() {
+          return `name: ${this.name}, age: ${this.age}`
+        }
+      }
+
+      expect(usr.toString()).to.eql('name: peter, age: 38');
+    });
+
+    describe('JSON.stringify()', () => {
+      it('should convert js object to json string', () => {
+        let usr = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(usr)).to.eql('{"name":"peter","age":38}');
+      });
+
+      it('should point which properties to encode', () => {
+        let usr = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(usr, ['age'])).to.eql('{"age":38}');
+      });
+
+      it('should use replacer function', () => {
+        let usr = {
+          age: 38
+        }
+
+        expect(JSON.stringify(usr, function (key, value) {
+          return key === 'age' ? `ux-${value}` : value;
+        })).to.eql('{"age":"ux-38"}');
+      });
+
+      it('should format spacer', () => {
+        let usr = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(usr, null, 2)).to.eql('{\n  "name": "peter",\n  "age": 38\n}');
+      });
+
+      it('should use custom toJSON() from object', () => {
+        let usr = {
+          name: 'peter',
+          toJSON() {
+            return `custom - ${this.name}`;
+          }
+        }
+
+        expect(JSON.stringify(usr)).to.eql('"custom - peter"');
+      });
+    });
+
+    describe('JSON.parse()', () => {
+      it('should parse string to object', () => {
+        let value = JSON.parse('{"name": "peter"}');
+
+        expect(value).to.eql({
+          name: 'peter'
+        });
+      });
+
+      it('should use reviver to convert certain properties to correct type', () => {
+        let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+        let obj = JSON.parse(str, function(key, value) {
+          if(key === 'date') {
+            return new Date(value);
+          } else {
+            return value;
+          }
+        });
+
+        expect(obj.date.getFullYear()).to.eql(2017);
+      });
+    });
+  });
 });
 
