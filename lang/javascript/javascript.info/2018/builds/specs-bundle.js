@@ -27413,7 +27413,38 @@
 	    });
 	  });
 
-	  describe('Currying And Partials', function () {
+	  describe('6.11 Currying And Partials', function () {
+	    it('should behave...', function () {
+	      function curry(fn) {
+	        return function curried() {
+	          for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	            args[_key3] = arguments[_key3];
+	          }
+
+	          if (args.length >= fn.length) {
+	            return fn.apply(this, args);
+	          } else {
+	            return function () {
+	              for (var _len4 = arguments.length, args2 = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+	                args2[_key4] = arguments[_key4];
+	              }
+
+	              return curried.apply(this, [].concat(args, args2));
+	            };
+	          }
+	        };
+	      }
+
+	      function mul(a, b) {
+	        return a * b;
+	      }
+
+	      var dbl = curry(mul);
+	      expect(dbl(5)(2)).to.eql(10);
+	    });
+	  });
+
+	  describe('6.12 Arrow Functions Revisited', function () {
 	    it('should behave...', function () {});
 	  });
 	});

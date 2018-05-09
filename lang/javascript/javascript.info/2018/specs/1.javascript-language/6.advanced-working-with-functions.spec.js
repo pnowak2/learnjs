@@ -414,9 +414,32 @@ describe('6. Advanced Working With Functions', () => {
     });
   });
 
-  describe('Currying And Partials', () => {
+  describe('6.11 Currying And Partials', () => {
+    it('should behave...', () => {
+      function curry(fn) {
+        return function curried(...args) {
+          if(args.length >= fn.length) {
+            return fn.apply(this, args);
+          } else {
+            return function(...args2) {
+              return curried.apply(this, [...args, ...args2]);
+            }
+          }
+        }
+      }      
+
+      function mul(a, b) {
+        return a * b;
+      }
+
+      let dbl = curry(mul);
+      expect(dbl(5)(2)).to.eql(10);
+    });  
+  });
+
+  describe('6.12 Arrow Functions Revisited', () => {
     it('should behave...', () => {
       
-    });  
+    }); 
   });
 });
