@@ -27284,7 +27284,138 @@
 	    });
 	  });
 
-	  describe('6.9 Decorators, forwarding with call() and apply()', function () {});
+	  describe('6.9 Decorators, forwarding with call() and apply()', function () {
+	    it('should make caching wrapper', function () {
+	      function wrapper(fn) {
+	        var cache = new Map();
+
+	        return function (x) {
+	          if (cache.has(x)) {
+	            return cache.get(x);
+	          } else {
+	            var value = fn(x);
+	            cache.set(x, value);
+	            return value;
+	          }
+	        };
+	      }
+
+	      function slow(x) {
+	        slow.counter++;
+	        return x;
+	      }
+
+	      slow.counter = 0;
+
+	      var wrapped = wrapper(slow);
+
+	      expect(wrapped(1)).to.eql(1);
+	      expect(slow.counter).to.eql(1);
+	      expect(wrapped(1)).to.eql(1);
+	      expect(slow.counter).to.eql(1);
+
+	      expect(wrapped(2)).to.eql(2);
+	      expect(slow.counter).to.eql(2);
+	      expect(wrapped(2)).to.eql(2);
+	      expect(slow.counter).to.eql(2);
+	      expect(wrapped(2)).to.eql(2);
+	      expect(slow.counter).to.eql(2);
+	    });
+
+	    describe('Call Invocation', function () {
+	      it('should call function passing this object', function () {
+	        function fn(p1, p2) {
+	          return p1 + p2;
+	        }
+
+	        var result = fn.call(null, 2, 5);
+
+	        expect(result).to.eql(7);
+	      });
+
+	      it('should call function with this object', function () {
+	        var obj = {
+	          name: 'peter',
+	          greet: function greet(salutation) {
+	            return salutation + ', ' + this.name;
+	          }
+	        };
+
+	        expect(obj.greet('hello')).to.eql('hello, peter');
+	        var result = obj.greet.call({ name: 'michel' }, 'welcome');
+
+	        expect(result).to.eql('welcome, michel');
+	      });
+
+	      it('should apply function with this object', function () {
+	        var obj = {
+	          name: 'peter',
+	          greet: function greet(p1, p2) {
+	            return p1 + ', ' + p2 + ', ' + this.name;
+	          }
+	        };
+
+	        expect(obj.greet('hello', 'hi')).to.eql('hello, hi, peter');
+	        var result = obj.greet.apply({ name: 'michel' }, ['welcome', 'yo']);
+
+	        expect(result).to.eql('welcome, yo, michel');
+	      });
+
+	      it('should do method borrowing', function () {
+	        expect([].slice.call([1, 2, 3], 1, 2)).to.eql([2]);
+	      });
+	    });
+	  });
+
+	  describe('6.10 Functions Binding', function () {
+	    it('should write own bind function', function () {
+	      function bind(fn, obj) {
+	        return function () {
+	          var args = Array.prototype.slice.call(arguments, 0, arguments.length);
+	          return fn.apply(obj, args);
+	        };
+	      }
+
+	      function fn(param) {
+	        return this.name + param;
+	      }
+
+	      var boundFn = bind(fn, { name: 'peter' });
+	      expect(boundFn('nowak')).to.eql('peternowak');
+	    });
+
+	    it('should write own bind function, using spreads', function () {
+	      function bind(fn, obj) {
+	        return function () {
+	          for (var _len2 = arguments.length, params = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	            params[_key2] = arguments[_key2];
+	          }
+
+	          return fn.apply(obj, params);
+	        };
+	      }
+
+	      function fn(param) {
+	        return this.name + param;
+	      }
+
+	      var boundFn = bind(fn, { name: 'peter' });
+	      expect(boundFn('nowak')).to.eql('peternowak');
+	    });
+
+	    it('should use Function.prototype.bind()', function () {
+	      function fn(param) {
+	        return this.name + param;
+	      }
+
+	      var boundFn = fn.bind({ name: 'peter' });
+	      expect(boundFn('nowak')).to.eql('peternowak');
+	    });
+	  });
+
+	  describe('Currying And Partials', function () {
+	    it('should behave...', function () {});
+	  });
 	});
 
 /***/ })

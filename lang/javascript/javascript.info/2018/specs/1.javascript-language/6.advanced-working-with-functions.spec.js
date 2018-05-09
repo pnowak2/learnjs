@@ -272,7 +272,7 @@ describe('6. Advanced Working With Functions', () => {
         let id = setTimeout((done) => {
           expect(true).to.be.false;
           done();
-        }, 20);        
+        }, 20);
 
         clearTimeout(id);
       });
@@ -290,6 +290,133 @@ describe('6. Advanced Working With Functions', () => {
   });
 
   describe('6.9 Decorators, forwarding with call() and apply()', () => {
-    
+    it('should make caching wrapper', () => {
+      function wrapper(fn) {
+        let cache = new Map();
+
+        return function (x) {
+          if (cache.has(x)) {
+            return cache.get(x);
+          } else {
+            let value = fn(x);
+            cache.set(x, value);
+            return value;
+          }
+        }
+      }
+
+      function slow(x) {
+        slow.counter++;
+        return x;
+      }
+
+      slow.counter = 0;
+
+      let wrapped = wrapper(slow);
+
+      expect(wrapped(1)).to.eql(1);
+      expect(slow.counter).to.eql(1);
+      expect(wrapped(1)).to.eql(1);
+      expect(slow.counter).to.eql(1);
+
+      expect(wrapped(2)).to.eql(2);
+      expect(slow.counter).to.eql(2);
+      expect(wrapped(2)).to.eql(2);
+      expect(slow.counter).to.eql(2);
+      expect(wrapped(2)).to.eql(2);
+      expect(slow.counter).to.eql(2);
+    });
+
+    describe('Call Invocation', () => {
+      it('should call function passing this object', () => {
+        function fn(p1, p2) {
+          return p1 + p2;
+        }
+
+        let result = fn.call(null, 2, 5);
+
+        expect(result).to.eql(7);
+      });
+
+      it('should call function with this object', () => {
+        let obj = {
+          name: 'peter',
+          greet(salutation) {
+            return `${salutation}, ${this.name}`;
+          }
+        }
+
+        expect(obj.greet('hello')).to.eql('hello, peter');
+        let result = obj.greet.call({ name: 'michel' }, 'welcome');
+
+        expect(result).to.eql('welcome, michel');
+      });
+
+      it('should apply function with this object', () => {
+        let obj = {
+          name: 'peter',
+          greet(p1, p2) {
+            return `${p1}, ${p2}, ${this.name}`;
+          }
+        }
+
+        expect(obj.greet('hello', 'hi')).to.eql('hello, hi, peter');
+        let result = obj.greet.apply({ name: 'michel' }, ['welcome', 'yo']);
+
+        expect(result).to.eql('welcome, yo, michel');
+      });
+
+      it('should do method borrowing', () => {
+        expect([].slice.call([1, 2, 3], 1, 2)).to.eql([2]);
+      });
+    });
+  });
+
+  describe('6.10 Functions Binding', () => {
+    it('should write own bind function', () => {
+      function bind(fn, obj) {
+        return function () {
+          let args = Array.prototype.slice.call(arguments, 0, arguments.length);
+          return fn.apply(obj, args);
+        }
+      }
+
+      function fn(param) {
+        return this.name + param;
+      }
+
+      let boundFn = bind(fn, { name: 'peter' });
+      expect(boundFn('nowak')).to.eql('peternowak');
+    });
+
+    it('should write own bind function, using spreads', () => {
+      function bind(fn, obj) {
+        return function (...params) {
+          return fn.apply(obj, params);
+        }
+      }
+
+      function fn(param) {
+        return this.name + param;
+      }
+
+      let boundFn = bind(fn, { name: 'peter' });
+      expect(boundFn('nowak')).to.eql('peternowak');
+    });
+
+    it('should use Function.prototype.bind()', () => {
+      function fn(param) {
+        return this.name + param;
+      }
+
+      let boundFn = fn.bind({ name: 'peter' })
+      expect(boundFn('nowak')).to.eql('peternowak');
+    });
+  });
+
+  describe('Currying And Partials', () => {
+    it('should behave...', () => {
+      
+    });  
   });
 });
