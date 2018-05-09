@@ -24,7 +24,7 @@ describe('2. JavaScript Fundamentals', function () {
     it('should read the section', function () { });
 
     describe('typeof', () => {
-      it('should behave...', () => {
+      it('should check type of inspected element', () => {
         expect(typeof 5).to.eql('number')
       });
     });

@@ -49,7 +49,8 @@
 	__webpack_require__(182);
 	__webpack_require__(184);
 	__webpack_require__(190);
-	module.exports = __webpack_require__(213);
+	__webpack_require__(213);
+	module.exports = __webpack_require__(215);
 
 
 /***/ }),
@@ -8944,7 +8945,7 @@
 	    it('should read the section', function () {});
 
 	    describe('typeof', function () {
-	      it('should behave...', function () {
+	      it('should check type of inspected element', function () {
 	        expect((0, _typeof3.default)(5)).to.eql('number');
 	      });
 	    });
@@ -27435,16 +27436,131 @@
 	        };
 	      }
 
-	      function mul(a, b) {
-	        return a * b;
+	      function mul(a, b, c) {
+	        return a * b * c;
 	      }
 
 	      var dbl = curry(mul);
-	      expect(dbl(5)(2)).to.eql(10);
+	      expect(dbl(5)(2)(3)).to.eql(30);
 	    });
 	  });
 
 	  describe('6.12 Arrow Functions Revisited', function () {
+	    it('Dont have this object', function () {});
+	    it('Cannot be run with new', function () {});
+	    it('Do not have arguments variable', function () {});
+	  });
+	});
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(216)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var expect = __webpack_require__(11).expect;
+	var sinon = __webpack_require__(122);
+
+	describe('7. Objects, Classes, Inheritance', function () {
+	  describe('7.1 Property Flags And Descriptors', function () {
+	    it('should be configurable', function () {});
+	    it('should be writable', function () {});
+	    it('should be enumerable', function () {});
+
+	    describe('Object.getOwnPropertyDescriptor()', function () {
+	      it('should retrieve property descriptor', function () {
+	        var user = {
+	          name: 'peter'
+	        };
+
+	        var descr = Object.getOwnPropertyDescriptor(user, 'name');
+
+	        expect(descr.configurable).to.eql(true);
+	        expect(descr.writable).to.eql(true);
+	        expect(descr.enumerable).to.eql(true);
+	        expect(descr.value).to.eql('peter');
+	      });
+	    });
+
+	    describe('Object.defineProperty()', function () {
+	      it('should define property for object', function () {
+	        var user = {
+	          name: 'peter'
+	        };
+
+	        Object.defineProperty(user, 'age', {
+	          writable: false,
+	          configurable: false,
+	          enumerable: false,
+	          value: 12
+	        });
+
+	        expect(user.age).to.eql(12);
+	      });
+	    });
+
+	    describe('Object.defineProperties()', function () {
+	      it('should define properties for object', function () {
+	        var user = {
+	          name: 'peter'
+	        };
+
+	        Object.defineProperties(user, {
+	          age: {
+	            value: 38
+	          },
+	          job: {
+	            value: 'it guy'
+	          }
+	        });
+
+	        expect(user.age).to.eql(38);
+	        expect(user.job).to.eql('it guy');
+	      });
+	    });
+
+	    describe('Object.getOwnPropertyDescriptors()', function () {
+	      it('should get own property descriptors', function () {
+	        var user = {
+	          name: 'peter'
+	        };
+
+	        var descrs = Object.getOwnPropertyDescriptors(user);
+	        console.log(descrs);
+	        expect(descrs.name.value).to.eql('peter');
+	      });
+	    });
+
+	    describe('Sealing an object globally', function () {
+	      it('Object.preventExtensions() - forbids adding properties', function () {});
+	      it('Object.seal() - forbids adding / removing properites, configurable = false', function () {});
+	      it('Object.freeze() - forbids adding / removing / modifiying properties, configurable = false, writable = false', function () {});
+	      it('Object.isExtensible()', function () {});
+	      it('Object.isSealed()', function () {});
+	      it('Object.isFrozen()', function () {});
+	    });
+	  });
+
+	  describe('7.2 Property Getters and Setters', function () {
 	    it('should behave...', function () {});
 	  });
 	});

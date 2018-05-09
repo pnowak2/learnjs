@@ -428,18 +428,18 @@ describe('6. Advanced Working With Functions', () => {
         }
       }      
 
-      function mul(a, b) {
-        return a * b;
+      function mul(a, b, c) {
+        return a * b * c;
       }
 
       let dbl = curry(mul);
-      expect(dbl(5)(2)).to.eql(10);
+      expect(dbl(5)(2)(3)).to.eql(30);
     });  
   });
 
   describe('6.12 Arrow Functions Revisited', () => {
-    it('should behave...', () => {
-      
-    }); 
+    it('Dont have this object', () => { }); 
+    it('Cannot be run with new', () => { }); 
+    it('Do not have arguments variable', () => { }); 
   });
 });
