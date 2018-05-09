@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="progress"></div>
+
+  <script>
+    let i = 0;
+
+    function count() {
+      for (let j = 0; j < 1e6; j++) {
+        i++;
+        // put the current i into the <div>
+        // (we'll talk more about innerHTML in the specific chapter, should be obvious here)
+        progress.innerHTML = i;
+      }
+    }
+
+    count();
+  </script>
+</body>
+
+</html>

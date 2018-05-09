@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="progress"></div>
+
+  <script>
+    let i = 0;
+
+    function count() {
+
+      // do a piece of the heavy job (*)
+      do {
+        i++;
+        progress.innerHTML = i;
+      } while (i % 1e3 != 0);
+
+      if (i < 1e9) {
+        setTimeout(count, 0);
+      }
+
+    }
+
+    count();
+  </script>
+</body>
+
+</html>

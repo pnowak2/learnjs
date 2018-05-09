@@ -176,8 +176,120 @@ describe('6. Advanced Working With Functions', () => {
   });
 
   describe('6.5 Global Object', () => {
-    it('should..', () => {
-      
-    });    
+    it('should be window in browser', () => {
+      window.myName = 'peter';
+      expect(myName).to.eql('peter');
+    });
+
+    it('should check for global defined features', () => {
+      expect(typeof XMLHttpRequest).to.eql('function');
+    });
+
+    it('should use this in global window', () => {
+      (function () {
+        // expect(this === window).to.be.true;
+      })();
+    });
+  });
+  describe('6.6 Function Object NFE', () => {
+    describe('name property', () => {
+      it('should have name property', () => {
+        function hello() { }
+        let isNew = function () { }
+
+        expect(hello.name).to.eql('hello');
+        expect(isNew.name).to.eql('isNew');
+      });
+
+      it('should have no name', () => {
+        expect((function () { }).name).to.eql('');
+
+      });
+    });
+
+    describe('length property', () => {
+      it('should return number of params', () => {
+        function fn(a, b, c) { }
+        expect(fn.length).to.eql(3);
+      });
+    });
+
+    describe('Adding custom properties to function', () => {
+      it('should provide counter property', () => {
+        function fn() {
+          fn.counter++;
+          return 'hello';
+        }
+
+        fn.counter = 0;
+
+        fn();
+        fn();
+
+        expect(fn.counter).to.eql(2);
+      });
+    });
+
+    describe('Named Function Expression - NFE', () => {
+      it('should have two names', () => {
+        let fn = function myFn() {
+          return 'hello';
+        }
+
+        expect(fn()).to.eql('hello');
+      });
+
+      it('should not be accessible outside function', () => {
+        let fn = function myFn() {
+          return 'hello: ' + typeof (myFn);
+        }
+
+        expect(typeof myFn).to.eql('undefined');
+        expect(fn()).to.eql('hello: function');
+      });
+
+    });
+  });
+
+  describe('6.7 The new Function Syntax', () => {
+    it('should declare function', () => {
+      let sum = new Function('a', 'b', 'return a + b');
+      expect(sum(1, 6)).to.eql(7);
+    });
+  });
+
+  describe('6.8 Scheduling, setTimeout, setInterval', () => {
+    describe('setTimeout', () => {
+      it('should delay function and pass it params (IE not compatibile)', (done) => {
+        setTimeout((p1, p2) => {
+          expect(p1).to.eql('one');
+          expect(p2).to.eql('two');
+          done();
+        }, 5, 'one', 'two');
+      });
+
+      it('should cancel with clearTimeout', () => {
+        let id = setTimeout((done) => {
+          expect(true).to.be.false;
+          done();
+        }, 20);        
+
+        clearTimeout(id);
+      });
+    });
+
+    describe('setInterval', () => {
+      it('should run function in same intervals', (done) => {
+        let id = setInterval(() => {
+        }, 5);
+
+        clearInterval(id);
+        done();
+      });
+    });
+  });
+
+  describe('6.9 Decorators, forwarding with call() and apply()', () => {
+    
   });
 });
