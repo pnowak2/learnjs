@@ -70,7 +70,7 @@ describe('6. Advanced Working With Functions', () => {
         function outer() {
           let name = 'peter';
 
-          return function() { 
+          return function () {
             return name;
           }
         }
@@ -85,7 +85,7 @@ describe('6. Advanced Working With Functions', () => {
         function makeCounter() {
           let counter = 0;
 
-          return function() {
+          return function () {
             return counter++;
           }
         }
@@ -102,10 +102,82 @@ describe('6. Advanced Working With Functions', () => {
         expect(d()).to.eql(1);
         expect(d()).to.eql(2);
       });
+    });
 
-      it('should behave...', () => {
-        
+    describe('Code blocks and Loops, IIFE', () => {
+      it('should provide lexical environment in if', () => {
+        let phrase = 'hello';
+
+        if (true) {
+          let user = 'peter';
+        }
+
+        // below will fail, outside of scope
+        // expect(`${phrase}, ${user}`).to.eql('hello, peter');
+      });
+
+      it('should use IIFE', () => {
+        (function () {
+          let user = 'peter';
+          expect(true).to.be.true;
+        })();
+
+        expect(typeof user).to.eql('undefined');
+      });
+
+      it('should use another IIFE expressions', () => {
+        // brackets around the whole thing
+        (function () {
+
+        })();
+
+        // brackets around the function
+        (function () {
+
+        }());
+
+        // bitwise NOT starts the expression
+        !function () {
+
+        }();
+
+        // Unary plus starts the expression
+        +function () {
+
+        }();
       });
     });
+  });
+
+  describe('6.4 The Old var', () => {
+    it('should not have block scope', () => {
+      if (true) {
+        var phrase = 'peter';
+      }
+
+      expect(phrase).to.eql('peter');
+    });
+
+    it('should hoist variable to the top', () => {
+      function sayHi() {
+        phrase = "Hello";
+        console.log(phrase);
+        var phrase;
+      }
+
+      // …Is technically the same as this (moved var phrase above):
+
+      function sayHi() {
+        var phrase;
+        phrase = "Hello";
+        console.log(phrase);
+      }
+    });
+  });
+
+  describe('6.5 Global Object', () => {
+    it('should..', () => {
+      
+    });    
   });
 });
