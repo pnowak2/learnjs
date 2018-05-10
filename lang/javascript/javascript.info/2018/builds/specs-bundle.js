@@ -28399,7 +28399,28 @@
 	  });
 
 	  describe('7.11 Mixins', function () {
-	    it('should behave...', function () {});
+	    it('should mixin some methods to class', function () {
+	      var utilsMixin = {
+	        print: function print() {
+	          return 'print: ' + this.name;
+	        },
+	        render: function render() {
+	          return 'render: ' + this.name;
+	        }
+	      };
+
+	      var Person = function Person(name) {
+	        (0, _classCallCheck3.default)(this, Person);
+
+	        this.name = name;
+	      };
+
+	      Object.assign(Person.prototype, utilsMixin);
+	      var peter = new Person('peter');
+
+	      expect(peter.print()).to.eql('print: peter');
+	      expect(peter.render()).to.eql('render: peter');
+	    });
 	  });
 	});
 

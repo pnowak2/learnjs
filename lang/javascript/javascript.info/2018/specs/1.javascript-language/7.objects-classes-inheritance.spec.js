@@ -784,8 +784,28 @@ describe('7. Objects, Classes, Inheritance', () => {
   });
 
   describe('7.11 Mixins', () => {
-    it('should behave...', () => {
-      
+    it('should mixin some methods to class', () => {
+      let utilsMixin = {
+        print() {
+          return `print: ${this.name}`;
+        },
+
+        render() {
+          return `render: ${this.name}`;
+        }
+      }
+
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+      }
+
+      Object.assign(Person.prototype, utilsMixin);
+      let peter = new Person('peter');
+
+      expect(peter.print()).to.eql('print: peter');
+      expect(peter.render()).to.eql('render: peter');
     });
   });
 });
