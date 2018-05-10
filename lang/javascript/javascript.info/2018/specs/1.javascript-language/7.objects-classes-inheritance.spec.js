@@ -66,7 +66,6 @@ describe('7. Objects, Classes, Inheritance', () => {
         };
 
         let descrs = Object.getOwnPropertyDescriptors(user);
-        console.log(descrs);
         expect(descrs.name.value).to.eql('peter');
       });
     });
@@ -269,9 +268,151 @@ describe('7. Objects, Classes, Inheritance', () => {
 
   describe('7.5 Native Prototypes', () => {
     describe('Object.prototype', () => {
-      it('should behave...', () => {
-        
+      it('should inherit from Object.prototype', () => {
+        let obj = {};
+
+        expect(obj.__proto__ === Object.prototype).to.be.true;
       });
+
+      it('should Object.prototype have no parent proto', () => {
+        expect(Object.prototype.__proto__).to.be.null;
+      });
+
+      it('should array have its prototype', () => {
+        expect([1, 2, 3].__proto__ === Array.prototype).to.be.true;
+        expect([1, 2, 3].__proto__.__proto__ === Object.prototype).to.be.true;
+      });
+
+      it('should function have its prototype', () => {
+        function fn() { }
+
+        expect(fn.__proto__ === Function.prototype).to.be.true;
+      });
+
+      it('should be possible to change native prototype', () => {
+        String.prototype.hello = function () {
+          return `Hello, ${this}`;
+        }
+
+        expect('Peter'.hello()).to.eql('Hello, Peter');
+      });
+    });
+  });
+
+  describe('7.6 Methods For Prototypes', () => {
+    describe('Object.create()', () => {
+      it('should create a object with prototype and properties', () => {
+        let animal = {
+          eats: true
+        }
+
+        let rabbit = Object.create(animal, {
+          name: {
+            value: 'jack'
+          }
+        });
+
+        expect(rabbit.eats).to.be.true;
+        expect(rabbit.name).to.eql('jack');
+        expect(rabbit.__proto__ === animal).to.be.true;
+      });
+    });
+    describe('Object.getPrototypeOf()', () => {
+      it('should return prototype of an object', () => {
+        let animal = {
+          eats: true
+        }
+
+        let rabbit = {
+          __proto__: animal
+        }
+
+        expect(Object.getPrototypeOf(rabbit) === animal).to.be.true;
+      });
+    });
+
+    describe('Object.setPrototypeOf()', () => {
+      it('should return prototype of an object', () => {
+        let animal = {
+          eats: true
+        }
+
+        let rabbit = {
+        }
+
+        Object.setPrototypeOf(rabbit, animal);
+
+        expect(Object.getPrototypeOf(rabbit) === animal).to.be.true;
+      });
+    });
+
+    describe('Object.keys(), Object.values(), Object.entries()', () => {
+      it('should retrieve keys of an object (enumarable)', () => {
+        let human = {
+          dignity: true
+        }
+
+        let usr = {
+          name: 'peter',
+          age: 38,
+          __proto__: human
+        };
+
+        expect(Object.keys(usr)).to.eql(['name', 'age']);
+        expect(Object.values(usr)).to.eql(['peter', 38]);
+        expect(Object.entries(usr)).to.eql([
+          ['name', 'peter'],
+          ['age', 38]
+        ]);
+      });
+    });
+
+    describe('Object.getOwnPropertySymbols()', () => {
+      it('should return array of all own symbolic names', () => {
+        let usr = {
+          [Symbol.iterator]: function () { }
+        }
+
+        expect(Object.getOwnPropertySymbols(usr)).to.eql([Symbol.iterator]);
+      });
+    });
+
+    describe('Object.getOwnPropertyNames()', () => {
+      it('should return array of all own symbolic names', () => {
+        let human = {
+          dignity: true
+        }
+
+        let usr = {
+          name: 'peter',
+          age: 38,
+          __proto__: human
+        };
+
+        expect(Object.getOwnPropertyNames(usr)).to.eql(['name', 'age']);
+      });
+    });
+
+    describe('Reflect.ownKeys()', () => {
+      it('should return array of all own names including symbols', () => {
+        let s = Symbol('test');
+        let human = {
+          dignity: true
+        }
+
+        let usr = {
+          name: 'peter',
+          age: 38,
+          [s]: 'hello',          
+          __proto__: human
+        };
+
+        expect(Reflect.ownKeys(usr)).to.eql(['name', 'age', s]);
+      });
+    });
+
+    describe('Object.prototype.hasOwnProperty', () => {
+      
     });
   });
 });

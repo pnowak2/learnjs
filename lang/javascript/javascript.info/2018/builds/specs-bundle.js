@@ -3950,97 +3950,65 @@
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
-	function getLens (b64) {
+	function placeHoldersCount (b64) {
 	  var len = b64.length
-
 	  if (len % 4 > 0) {
 	    throw new Error('Invalid string. Length must be a multiple of 4')
 	  }
 
-	  // Trim off extra bytes after placeholder bytes are found
-	  // See: https://github.com/beatgammit/base64-js/issues/42
-	  var validLen = b64.indexOf('=')
-	  if (validLen === -1) validLen = len
-
-	  var placeHoldersLen = validLen === len
-	    ? 0
-	    : 4 - (validLen % 4)
-
-	  return [validLen, placeHoldersLen]
+	  // the number of equal signs (place holders)
+	  // if there are two placeholders, than the two characters before it
+	  // represent one byte
+	  // if there is only one, then the three characters before it represent 2 bytes
+	  // this is just a cheap hack to not do indexOf twice
+	  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
 	}
 
-	// base64 is 4/3 + up to two characters of the original data
 	function byteLength (b64) {
-	  var lens = getLens(b64)
-	  var validLen = lens[0]
-	  var placeHoldersLen = lens[1]
-	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-	}
-
-	function _byteLength (b64, validLen, placeHoldersLen) {
-	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+	  // base64 is 4/3 + up to two characters of the original data
+	  return (b64.length * 3 / 4) - placeHoldersCount(b64)
 	}
 
 	function toByteArray (b64) {
-	  var tmp
-	  var lens = getLens(b64)
-	  var validLen = lens[0]
-	  var placeHoldersLen = lens[1]
+	  var i, l, tmp, placeHolders, arr
+	  var len = b64.length
+	  placeHolders = placeHoldersCount(b64)
 
-	  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
-
-	  var curByte = 0
+	  arr = new Arr((len * 3 / 4) - placeHolders)
 
 	  // if there are placeholders, only get up to the last complete 4 chars
-	  var len = placeHoldersLen > 0
-	    ? validLen - 4
-	    : validLen
+	  l = placeHolders > 0 ? len - 4 : len
 
-	  for (var i = 0; i < len; i += 4) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 18) |
-	      (revLookup[b64.charCodeAt(i + 1)] << 12) |
-	      (revLookup[b64.charCodeAt(i + 2)] << 6) |
-	      revLookup[b64.charCodeAt(i + 3)]
-	    arr[curByte++] = (tmp >> 16) & 0xFF
-	    arr[curByte++] = (tmp >> 8) & 0xFF
-	    arr[curByte++] = tmp & 0xFF
+	  var L = 0
+
+	  for (i = 0; i < l; i += 4) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+	    arr[L++] = (tmp >> 16) & 0xFF
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
 	  }
 
-	  if (placeHoldersLen === 2) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 2) |
-	      (revLookup[b64.charCodeAt(i + 1)] >> 4)
-	    arr[curByte++] = tmp & 0xFF
-	  }
-
-	  if (placeHoldersLen === 1) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 10) |
-	      (revLookup[b64.charCodeAt(i + 1)] << 4) |
-	      (revLookup[b64.charCodeAt(i + 2)] >> 2)
-	    arr[curByte++] = (tmp >> 8) & 0xFF
-	    arr[curByte++] = tmp & 0xFF
+	  if (placeHolders === 2) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+	    arr[L++] = tmp & 0xFF
+	  } else if (placeHolders === 1) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
 	  }
 
 	  return arr
 	}
 
 	function tripletToBase64 (num) {
-	  return lookup[num >> 18 & 0x3F] +
-	    lookup[num >> 12 & 0x3F] +
-	    lookup[num >> 6 & 0x3F] +
-	    lookup[num & 0x3F]
+	  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
 	}
 
 	function encodeChunk (uint8, start, end) {
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp =
-	      ((uint8[i] << 16) & 0xFF0000) +
-	      ((uint8[i + 1] << 8) & 0xFF00) +
-	      (uint8[i + 2] & 0xFF)
+	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -4050,33 +4018,30 @@
 	  var tmp
 	  var len = uint8.length
 	  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+	  var output = ''
 	  var parts = []
 	  var maxChunkLength = 16383 // must be multiple of 3
 
 	  // go through the array every three bytes, we'll deal with trailing stuff later
 	  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-	    parts.push(encodeChunk(
-	      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-	    ))
+	    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
 	  }
 
 	  // pad the end with zeros, but make sure to not forget the extra bytes
 	  if (extraBytes === 1) {
 	    tmp = uint8[len - 1]
-	    parts.push(
-	      lookup[tmp >> 2] +
-	      lookup[(tmp << 4) & 0x3F] +
-	      '=='
-	    )
+	    output += lookup[tmp >> 2]
+	    output += lookup[(tmp << 4) & 0x3F]
+	    output += '=='
 	  } else if (extraBytes === 2) {
-	    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
-	    parts.push(
-	      lookup[tmp >> 10] +
-	      lookup[(tmp >> 4) & 0x3F] +
-	      lookup[(tmp << 2) & 0x3F] +
-	      '='
-	    )
+	    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+	    output += lookup[tmp >> 10]
+	    output += lookup[(tmp >> 4) & 0x3F]
+	    output += lookup[(tmp << 2) & 0x3F]
+	    output += '='
 	  }
+
+	  parts.push(output)
 
 	  return parts.join('')
 	}
@@ -4088,7 +4053,7 @@
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 	  var e, m
-	  var eLen = (nBytes * 8) - mLen - 1
+	  var eLen = nBytes * 8 - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var nBits = -7
@@ -4101,12 +4066,12 @@
 	  e = s & ((1 << (-nBits)) - 1)
 	  s >>= (-nBits)
 	  nBits += eLen
-	  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  m = e & ((1 << (-nBits)) - 1)
 	  e >>= (-nBits)
 	  nBits += mLen
-	  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  if (e === 0) {
 	    e = 1 - eBias
@@ -4121,7 +4086,7 @@
 
 	exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 	  var e, m, c
-	  var eLen = (nBytes * 8) - mLen - 1
+	  var eLen = nBytes * 8 - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -4154,7 +4119,7 @@
 	      m = 0
 	      e = eMax
 	    } else if (e + eBias >= 1) {
-	      m = ((value * c) - 1) * Math.pow(2, mLen)
+	      m = (value * c - 1) * Math.pow(2, mLen)
 	      e = e + eBias
 	    } else {
 	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -9913,8 +9878,9 @@
 	'use strict';
 	var LIBRARY = __webpack_require__(63);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(80);
+	var redefine = __webpack_require__(79);
 	var hide = __webpack_require__(69);
+	var has = __webpack_require__(80);
 	var Iterators = __webpack_require__(81);
 	var $iterCreate = __webpack_require__(82);
 	var setToStringTag = __webpack_require__(98);
@@ -9941,7 +9907,7 @@
 	  var VALUES_BUG = false;
 	  var proto = Base.prototype;
 	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-	  var $default = $native || getMethod(DEFAULT);
+	  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
 	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
 	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
 	  var methods, key, IteratorPrototype;
@@ -9952,7 +9918,7 @@
 	      // Set @@toStringTag to native iterators
 	      setToStringTag(IteratorPrototype, TAG, true);
 	      // fix for some old engines
-	      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
+	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
@@ -9996,7 +9962,6 @@
 	var core = __webpack_require__(66);
 	var ctx = __webpack_require__(67);
 	var hide = __webpack_require__(69);
-	var has = __webpack_require__(79);
 	var PROTOTYPE = 'prototype';
 
 	var $export = function (type, name, source) {
@@ -10014,7 +9979,7 @@
 	  for (key in source) {
 	    // contains in native
 	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && has(exports, key)) continue;
+	    if (own && key in exports) continue;
 	    // export native or passed
 	    out = own ? target[key] : source[key];
 	    // prevent global pollution for namespaces
@@ -10072,7 +10037,7 @@
 /* 66 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.6' };
+	var core = module.exports = { version: '2.5.3' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -10247,19 +10212,19 @@
 
 /***/ }),
 /* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(69);
+
+
+/***/ }),
+/* 80 */
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
 	module.exports = function (it, key) {
 	  return hasOwnProperty.call(it, key);
 	};
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(69);
 
 
 /***/ }),
@@ -10371,7 +10336,7 @@
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var toIObject = __webpack_require__(87);
 	var arrayIndexOf = __webpack_require__(90)(false);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
@@ -10494,18 +10459,12 @@
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(66);
 	var global = __webpack_require__(65);
 	var SHARED = '__core-js_shared__';
 	var store = global[SHARED] || (global[SHARED] = {});
-
-	(module.exports = function (key, value) {
-	  return store[key] || (store[key] = value !== undefined ? value : {});
-	})('versions', []).push({
-	  version: core.version,
-	  mode: __webpack_require__(63) ? 'pure' : 'global',
-	  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-	});
+	module.exports = function (key) {
+	  return store[key] || (store[key] = {});
+	};
 
 
 /***/ }),
@@ -10542,7 +10501,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(70).f;
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var TAG = __webpack_require__(99)('toStringTag');
 
 	module.exports = function (it, tag, stat) {
@@ -10572,7 +10531,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var toObject = __webpack_require__(101);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
 	var ObjectProto = Object.prototype;
@@ -10709,10 +10668,10 @@
 	'use strict';
 	// ECMAScript 6 symbols shim
 	var global = __webpack_require__(65);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var DESCRIPTORS = __webpack_require__(74);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(80);
+	var redefine = __webpack_require__(79);
 	var META = __webpack_require__(110).KEY;
 	var $fails = __webpack_require__(75);
 	var shared = __webpack_require__(94);
@@ -10948,7 +10907,7 @@
 
 	var META = __webpack_require__(95)('meta');
 	var isObject = __webpack_require__(72);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var setDesc = __webpack_require__(70).f;
 	var id = 0;
 	var isExtensible = Object.isExtensible || function () {
@@ -11108,7 +11067,7 @@
 	var createDesc = __webpack_require__(78);
 	var toIObject = __webpack_require__(87);
 	var toPrimitive = __webpack_require__(77);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var IE8_DOM_DEFINE = __webpack_require__(73);
 	var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -14493,18 +14452,15 @@
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-	            (typeof self !== "undefined" && self) ||
-	            window;
-	var apply = Function.prototype.apply;
+	/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
 
 	// DOM APIs, for completeness
 
 	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 	};
 	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 	};
 	exports.clearTimeout =
 	exports.clearInterval = function(timeout) {
@@ -14519,7 +14475,7 @@
 	}
 	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 	Timeout.prototype.close = function() {
-	  this._clearFn.call(scope, this._id);
+	  this._clearFn.call(window, this._id);
 	};
 
 	// Does not start the time, just sets up the members needed.
@@ -14547,7 +14503,7 @@
 
 	// setimmediate attaches itself to the global object
 	__webpack_require__(154);
-	// On some exotic environments, it's not clear which object `setimmediate` was
+	// On some exotic environments, it's not clear which object `setimmeidate` was
 	// able to install onto.  Search each possibility in the same order as the
 	// `setimmediate` library.
 	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
@@ -27204,7 +27160,6 @@
 	    it('should hoist variable to the top', function () {
 	      function sayHi() {
 	        phrase = "Hello";
-	        console.log(phrase);
 	        var phrase;
 	      }
 
@@ -27213,7 +27168,6 @@
 	      function sayHi() {
 	        var phrase;
 	        phrase = "Hello";
-	        console.log(phrase);
 	      }
 	    });
 	  });
@@ -27521,6 +27475,10 @@
 
 	'use strict';
 
+	var _defineProperty2 = __webpack_require__(186);
+
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 	var _typeof2 = __webpack_require__(55);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
@@ -27595,7 +27553,6 @@
 	        };
 
 	        var descrs = Object.getOwnPropertyDescriptors(user);
-	        console.log(descrs);
 	        expect(descrs.name.value).to.eql('peter');
 	      });
 	    });
@@ -27796,8 +27753,144 @@
 
 	  describe('7.5 Native Prototypes', function () {
 	    describe('Object.prototype', function () {
-	      it('should behave...', function () {});
+	      it('should inherit from Object.prototype', function () {
+	        var obj = {};
+
+	        expect(obj.__proto__ === Object.prototype).to.be.true;
+	      });
+
+	      it('should Object.prototype have no parent proto', function () {
+	        expect(Object.prototype.__proto__).to.be.null;
+	      });
+
+	      it('should array have its prototype', function () {
+	        expect([1, 2, 3].__proto__ === Array.prototype).to.be.true;
+	        expect([1, 2, 3].__proto__.__proto__ === Object.prototype).to.be.true;
+	      });
+
+	      it('should function have its prototype', function () {
+	        function fn() {}
+
+	        expect(fn.__proto__ === Function.prototype).to.be.true;
+	      });
+
+	      it('should be possible to change native prototype', function () {
+	        String.prototype.hello = function () {
+	          return 'Hello, ' + this;
+	        };
+
+	        expect('Peter'.hello()).to.eql('Hello, Peter');
+	      });
 	    });
+	  });
+
+	  describe('7.6 Methods For Prototypes', function () {
+	    describe('Object.create()', function () {
+	      it('should create a object with prototype and properties', function () {
+	        var animal = {
+	          eats: true
+	        };
+
+	        var rabbit = Object.create(animal, {
+	          name: {
+	            value: 'jack'
+	          }
+	        });
+
+	        expect(rabbit.eats).to.be.true;
+	        expect(rabbit.name).to.eql('jack');
+	        expect(rabbit.__proto__ === animal).to.be.true;
+	      });
+	    });
+	    describe('Object.getPrototypeOf()', function () {
+	      it('should return prototype of an object', function () {
+	        var animal = {
+	          eats: true
+	        };
+
+	        var rabbit = {
+	          __proto__: animal
+	        };
+
+	        expect(Object.getPrototypeOf(rabbit) === animal).to.be.true;
+	      });
+	    });
+
+	    describe('Object.setPrototypeOf()', function () {
+	      it('should return prototype of an object', function () {
+	        var animal = {
+	          eats: true
+	        };
+
+	        var rabbit = {};
+
+	        Object.setPrototypeOf(rabbit, animal);
+
+	        expect(Object.getPrototypeOf(rabbit) === animal).to.be.true;
+	      });
+	    });
+
+	    describe('Object.keys(), Object.values(), Object.entries()', function () {
+	      it('should retrieve keys of an object (enumarable)', function () {
+	        var human = {
+	          dignity: true
+	        };
+
+	        var usr = {
+	          name: 'peter',
+	          age: 38,
+	          __proto__: human
+	        };
+
+	        expect(Object.keys(usr)).to.eql(['name', 'age']);
+	        expect(Object.values(usr)).to.eql(['peter', 38]);
+	        expect(Object.entries(usr)).to.eql([['name', 'peter'], ['age', 38]]);
+	      });
+	    });
+
+	    describe('Object.getOwnPropertySymbols()', function () {
+	      it('should return array of all own symbolic names', function () {
+	        var usr = (0, _defineProperty3.default)({}, Symbol.iterator, function () {});
+
+	        expect(Object.getOwnPropertySymbols(usr)).to.eql([Symbol.iterator]);
+	      });
+	    });
+
+	    describe('Object.getOwnPropertyNames()', function () {
+	      it('should return array of all own symbolic names', function () {
+	        var human = {
+	          dignity: true
+	        };
+
+	        var usr = {
+	          name: 'peter',
+	          age: 38,
+	          __proto__: human
+	        };
+
+	        expect(Object.getOwnPropertyNames(usr)).to.eql(['name', 'age']);
+	      });
+	    });
+
+	    describe('Reflect.ownKeys()', function () {
+	      it('should return array of all own names including symbols', function () {
+	        var _usr2;
+
+	        var s = Symbol('test');
+	        var human = {
+	          dignity: true
+	        };
+
+	        var usr = (_usr2 = {
+	          name: 'peter',
+	          age: 38
+	        }, (0, _defineProperty3.default)(_usr2, s, 'hello'), _usr2.__proto__ = human, _usr2);
+
+	        expect(Reflect.ownKeys(usr)).to.eql(['name', 'age', s]);
+	      });
+	    });
+
+	    describe('Object.prototype.hasOwnProperty', function () {});
 	  });
 	});
 

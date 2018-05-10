@@ -161,7 +161,6 @@ describe('6. Advanced Working With Functions', () => {
     it('should hoist variable to the top', () => {
       function sayHi() {
         phrase = "Hello";
-        console.log(phrase);
         var phrase;
       }
 
@@ -170,7 +169,6 @@ describe('6. Advanced Working With Functions', () => {
       function sayHi() {
         var phrase;
         phrase = "Hello";
-        console.log(phrase);
       }
     });
   });
