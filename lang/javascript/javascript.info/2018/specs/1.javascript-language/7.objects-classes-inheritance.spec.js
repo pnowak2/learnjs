@@ -56,7 +56,7 @@ describe('7. Objects, Classes, Inheritance', () => {
 
         expect(user.age).to.eql(38);
         expect(user.job).to.eql('it guy');
-      }); 
+      });
     });
 
     describe('Object.getOwnPropertyDescriptors()', () => {
@@ -82,8 +82,144 @@ describe('7. Objects, Classes, Inheritance', () => {
   });
 
   describe('7.2 Property Getters and Setters', () => {
-    it('should behave...', () => {
-      
-    }); 
+    it('should understand getters and setters', () => {
+      let obj = {
+        _name: '',
+
+        get name() {
+          return this._name;
+        },
+
+        set name(value) {
+          this._name = value + ' [setter]';
+        }
+      }
+
+      obj.name = 'john';
+
+      expect(obj.name).to.eql('john [setter]');
+    });
+
+    it('should use accessor descriptors', () => {
+      let user = {
+        _age: 0,
+        name: 'peter'
+      };
+
+      Object.defineProperty(user, 'age', {
+        get() {
+          return this._age;
+        },
+
+        set(value) {
+          this._age = value;
+        }
+      });
+
+      expect(user.age).to.eql(0);
+    });
+
+  });
+
+  describe('7.3 Prototypal Inheritance', () => {
+    describe('[[Prototype]] feature', () => {
+      it('should do simple prototype chain', () => {
+        let animal = {
+          eats: true,
+          walk() {
+            return 'animal walk';
+          }
+        }
+
+        let rabbit = {
+          jumps: true
+        }
+
+        rabbit.__proto__ = animal;
+
+        expect(rabbit.eats).to.be.true;
+        expect(rabbit.jumps).to.be.true;
+        expect(rabbit.walk()).to.eql('animal walk');
+      });
+
+      it('should do longer chain', () => {
+        let animal = {
+          eats: true,
+          walk() {
+            return 'animal walk';
+          }
+        };
+
+        let rabbit = {
+          jumps: true,
+          __proto__: animal
+        };
+
+        let longEar = {
+          earLength: 10,
+          __proto__: rabbit
+        }
+
+        expect(longEar.eats).to.be.true;
+        expect(longEar.jumps).to.be.true;
+        expect(longEar.earLength).to.eql(10);
+        expect(longEar.walk()).to.eql('animal walk');
+      });
+    });
+
+    describe('Read/Write Rules', () => {
+      it('should first find property/method in object directly', () => {
+        let animal = {
+          eats: true,
+          walk() {
+            return 'animal walk';
+          }
+        }
+
+        let rabbit = {
+          jumps: true,
+          __proto__: animal,
+          walk() {
+            return 'jump, jump';
+          }
+        }
+
+        expect(rabbit.walk()).to.eql('jump, jump');
+      });
+    });
+
+    describe('The value of "this"', () => {
+      it('should affect on current object', () => {
+        let animal = {
+          walk() {
+            if (!this.isSleeping) {
+              alert(`I walk`);
+            }
+          },
+          sleep() {
+            this.isSleeping = true;
+          }
+        };
+
+        let rabbit = {
+          name: "White Rabbit",
+          __proto__: animal
+        };
+
+        // modifies rabbit.isSleeping
+        rabbit.sleep();
+
+        expect(rabbit.isSleeping).to.be.true;
+        expect(typeof animal.isSleeping).to.eql('undefined');
+      });
+    });
+  });
+
+  describe('7.4 F.prototype', () => {
+    describe('The "prototype" property', () => {
+      it('should behave...', () => {
+        
+      });
+    });
   });
 });
