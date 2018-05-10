@@ -27475,23 +27475,23 @@
 
 	'use strict';
 
-	var _get2 = __webpack_require__(228);
+	var _get2 = __webpack_require__(217);
 
 	var _get3 = _interopRequireDefault(_get2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(219);
+	var _possibleConstructorReturn2 = __webpack_require__(225);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(220);
+	var _inherits2 = __webpack_require__(226);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
-	var _classCallCheck2 = __webpack_require__(217);
+	var _classCallCheck2 = __webpack_require__(234);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-	var _createClass2 = __webpack_require__(218);
+	var _createClass2 = __webpack_require__(235);
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -28310,209 +28310,75 @@
 	        expect(rabbit.speed).to.eql(0);
 	        expect(rabbit.earLength).to.eql(20);
 	      });
+
+	      it('should inherit static methods', function () {
+	        var Animal = function () {
+	          function Animal() {
+	            (0, _classCallCheck3.default)(this, Animal);
+	          }
+
+	          (0, _createClass3.default)(Animal, null, [{
+	            key: 'greet',
+	            value: function greet() {
+	              return 'static hello';
+	            }
+	          }]);
+	          return Animal;
+	        }();
+
+	        var Person = function (_Animal4) {
+	          (0, _inherits3.default)(Person, _Animal4);
+
+	          function Person() {
+	            (0, _classCallCheck3.default)(this, Person);
+	            return (0, _possibleConstructorReturn3.default)(this, (Person.__proto__ || Object.getPrototypeOf(Person)).apply(this, arguments));
+	          }
+
+	          return Person;
+	        }(Animal);
+
+	        expect(Person.greet()).to.eql('static hello');
+	        expect(Person.__proto__ === Animal).to.be.true;
+	        expect(Animal.__proto__ === Function.prototype).to.be.true;
+	      });
+
+	      it('should extend natives too', function () {
+	        var Rabbit = function (_Object) {
+	          (0, _inherits3.default)(Rabbit, _Object);
+
+	          function Rabbit(name) {
+	            (0, _classCallCheck3.default)(this, Rabbit);
+
+	            var _this5 = (0, _possibleConstructorReturn3.default)(this, (Rabbit.__proto__ || Object.getPrototypeOf(Rabbit)).call(this));
+
+	            _this5.name = name;
+	            return _this5;
+	          }
+
+	          return Rabbit;
+	        }(Object);
+
+	        var rabbit = new Rabbit("peter");
+
+	        expect(rabbit.hasOwnProperty('name')).to.be.true;
+	      });
 	    });
 	  });
 	});
 
 /***/ }),
 /* 217 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	exports.default = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-
-/***/ }),
-/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _defineProperty = __webpack_require__(187);
-
-	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-	    }
-	  }
-
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	}();
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _typeof2 = __webpack_require__(55);
-
-	var _typeof3 = _interopRequireDefault(_typeof2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-
-	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
-	};
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _setPrototypeOf = __webpack_require__(221);
-
-	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
-
-	var _create = __webpack_require__(225);
-
-	var _create2 = _interopRequireDefault(_create);
-
-	var _typeof2 = __webpack_require__(55);
-
-	var _typeof3 = _interopRequireDefault(_typeof2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
-	  }
-
-	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
-	};
-
-/***/ }),
-/* 221 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(222), __esModule: true };
-
-/***/ }),
-/* 222 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(223);
-	module.exports = __webpack_require__(66).Object.setPrototypeOf;
-
-
-/***/ }),
-/* 223 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $export = __webpack_require__(64);
-	$export($export.S, 'Object', { setPrototypeOf: __webpack_require__(224).set });
-
-
-/***/ }),
-/* 224 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// Works with __proto__ only. Old v8 can't work with null proto objects.
-	/* eslint-disable no-proto */
-	var isObject = __webpack_require__(72);
-	var anObject = __webpack_require__(71);
-	var check = function (O, proto) {
-	  anObject(O);
-	  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-	};
-	module.exports = {
-	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-	    function (test, buggy, set) {
-	      try {
-	        set = __webpack_require__(67)(Function.call, __webpack_require__(118).f(Object.prototype, '__proto__').set, 2);
-	        set(test, []);
-	        buggy = !(test instanceof Array);
-	      } catch (e) { buggy = true; }
-	      return function setPrototypeOf(O, proto) {
-	        check(O, proto);
-	        if (buggy) O.__proto__ = proto;
-	        else set(O, proto);
-	        return O;
-	      };
-	    }({}, false) : undefined),
-	  check: check
-	};
-
-
-/***/ }),
-/* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(226), __esModule: true };
-
-/***/ }),
-/* 226 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(227);
-	var $Object = __webpack_require__(66).Object;
-	module.exports = function create(P, D) {
-	  return $Object.create(P, D);
-	};
-
-
-/***/ }),
-/* 227 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var $export = __webpack_require__(64);
-	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	$export($export.S, 'Object', { create: __webpack_require__(83) });
-
-
-/***/ }),
-/* 228 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _getPrototypeOf = __webpack_require__(229);
+	var _getPrototypeOf = __webpack_require__(218);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-	var _getOwnPropertyDescriptor = __webpack_require__(233);
+	var _getOwnPropertyDescriptor = __webpack_require__(222);
 
 	var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
 
@@ -28544,28 +28410,28 @@
 	};
 
 /***/ }),
-/* 229 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(230), __esModule: true };
+	module.exports = { "default": __webpack_require__(219), __esModule: true };
 
 /***/ }),
-/* 230 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(231);
+	__webpack_require__(220);
 	module.exports = __webpack_require__(66).Object.getPrototypeOf;
 
 
 /***/ }),
-/* 231 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 Object.getPrototypeOf(O)
 	var toObject = __webpack_require__(101);
 	var $getPrototypeOf = __webpack_require__(100);
 
-	__webpack_require__(232)('getPrototypeOf', function () {
+	__webpack_require__(221)('getPrototypeOf', function () {
 	  return function getPrototypeOf(it) {
 	    return $getPrototypeOf(toObject(it));
 	  };
@@ -28573,7 +28439,7 @@
 
 
 /***/ }),
-/* 232 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// most Object methods by ES6 should accept primitives
@@ -28589,16 +28455,16 @@
 
 
 /***/ }),
-/* 233 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(234), __esModule: true };
+	module.exports = { "default": __webpack_require__(223), __esModule: true };
 
 /***/ }),
-/* 234 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(235);
+	__webpack_require__(224);
 	var $Object = __webpack_require__(66).Object;
 	module.exports = function getOwnPropertyDescriptor(it, key) {
 	  return $Object.getOwnPropertyDescriptor(it, key);
@@ -28606,19 +28472,205 @@
 
 
 /***/ }),
-/* 235 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 	var toIObject = __webpack_require__(87);
 	var $getOwnPropertyDescriptor = __webpack_require__(118).f;
 
-	__webpack_require__(232)('getOwnPropertyDescriptor', function () {
+	__webpack_require__(221)('getOwnPropertyDescriptor', function () {
 	  return function getOwnPropertyDescriptor(it, key) {
 	    return $getOwnPropertyDescriptor(toIObject(it), key);
 	  };
 	});
 
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _typeof2 = __webpack_require__(55);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+	};
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _setPrototypeOf = __webpack_require__(227);
+
+	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
+
+	var _create = __webpack_require__(231);
+
+	var _create2 = _interopRequireDefault(_create);
+
+	var _typeof2 = __webpack_require__(55);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
+	  }
+
+	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
+	};
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(228), __esModule: true };
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(229);
+	module.exports = __webpack_require__(66).Object.setPrototypeOf;
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $export = __webpack_require__(64);
+	$export($export.S, 'Object', { setPrototypeOf: __webpack_require__(230).set });
+
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Works with __proto__ only. Old v8 can't work with null proto objects.
+	/* eslint-disable no-proto */
+	var isObject = __webpack_require__(72);
+	var anObject = __webpack_require__(71);
+	var check = function (O, proto) {
+	  anObject(O);
+	  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+	};
+	module.exports = {
+	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
+	    function (test, buggy, set) {
+	      try {
+	        set = __webpack_require__(67)(Function.call, __webpack_require__(118).f(Object.prototype, '__proto__').set, 2);
+	        set(test, []);
+	        buggy = !(test instanceof Array);
+	      } catch (e) { buggy = true; }
+	      return function setPrototypeOf(O, proto) {
+	        check(O, proto);
+	        if (buggy) O.__proto__ = proto;
+	        else set(O, proto);
+	        return O;
+	      };
+	    }({}, false) : undefined),
+	  check: check
+	};
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(232), __esModule: true };
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(233);
+	var $Object = __webpack_require__(66).Object;
+	module.exports = function create(P, D) {
+	  return $Object.create(P, D);
+	};
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(64);
+	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+	$export($export.S, 'Object', { create: __webpack_require__(83) });
+
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(187);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
 
 /***/ })
 /******/ ]);

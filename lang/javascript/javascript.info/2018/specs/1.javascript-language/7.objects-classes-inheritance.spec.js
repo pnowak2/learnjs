@@ -714,9 +714,9 @@ describe('7. Objects, Classes, Inheritance', () => {
             this.name = name;
           }
         }
-        
+
         class Rabbit extends Animal {
-        
+
           constructor(name, earLength) {
             super(name);
             this.earLength = earLength;
@@ -727,6 +727,35 @@ describe('7. Objects, Classes, Inheritance', () => {
         expect(rabbit.name).to.eql('jack');
         expect(rabbit.speed).to.eql(0);
         expect(rabbit.earLength).to.eql(20);
+      });
+
+      it('should inherit static methods', () => {
+        class Animal {
+          static greet() {
+            return 'static hello';
+          }
+        }
+
+        class Person extends Animal {
+
+        }
+
+        expect(Person.greet()).to.eql('static hello');
+        expect(Person.__proto__ === Animal).to.be.true;
+        expect(Animal.__proto__ === Function.prototype).to.be.true;
+      });
+
+      it('should extend natives too', () => {
+        class Rabbit extends Object {
+          constructor(name) {
+            super();
+            this.name = name;
+          }
+        }
+
+        let rabbit = new Rabbit("peter");
+
+        expect(rabbit.hasOwnProperty('name')).to.be.true;
       });
     });
   });
