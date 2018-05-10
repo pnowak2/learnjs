@@ -28364,6 +28364,43 @@
 	      });
 	    });
 	  });
+
+	  describe('7.10 Class Checking instanceof', function () {
+	    it('should use to check class instance', function () {
+	      var Human = function Human() {
+	        (0, _classCallCheck3.default)(this, Human);
+	      };
+
+	      var Person = function (_Human) {
+	        (0, _inherits3.default)(Person, _Human);
+
+	        function Person() {
+	          (0, _classCallCheck3.default)(this, Person);
+	          return (0, _possibleConstructorReturn3.default)(this, (Person.__proto__ || Object.getPrototypeOf(Person)).apply(this, arguments));
+	        }
+
+	        return Person;
+	      }(Human);
+
+	      expect(new Person() instanceof Human).to.be.true;
+	    });
+
+	    it('should check prototype hierarchy', function () {
+	      // obj.__proto__ === Class.prototype
+	      // obj.__proto__.__proto__ === Class.prototype
+	      // obj.__proto__.__proto__.__proto__ === Class.prototype
+	    });
+
+	    it('should use Symbol.toStringTag', function () {
+	      var user = (0, _defineProperty3.default)({}, Symbol.toStringTag, "User");
+
+	      expect(user.toString()).to.eql('[object User]');
+	    });
+	  });
+
+	  describe('7.11 Mixins', function () {
+	    it('should behave...', function () {});
+	  });
 	});
 
 /***/ }),

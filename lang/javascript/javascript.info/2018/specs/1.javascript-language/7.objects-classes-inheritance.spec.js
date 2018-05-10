@@ -759,4 +759,33 @@ describe('7. Objects, Classes, Inheritance', () => {
       });
     });
   });
+
+  describe('7.10 Class Checking instanceof', () => {
+    it('should use to check class instance', () => {
+      class Human { }
+      class Person extends Human { }
+
+      expect(new Person() instanceof Human).to.be.true;
+    });
+
+    it('should check prototype hierarchy', () => {
+      // obj.__proto__ === Class.prototype
+      // obj.__proto__.__proto__ === Class.prototype
+      // obj.__proto__.__proto__.__proto__ === Class.prototype
+    });
+
+    it('should use Symbol.toStringTag', () => {
+      let user = {
+        [Symbol.toStringTag]: "User"
+      };
+
+      expect(user.toString()).to.eql('[object User]');
+    });
+  });
+
+  describe('7.11 Mixins', () => {
+    it('should behave...', () => {
+      
+    });
+  });
 });
