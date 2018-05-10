@@ -28756,12 +28756,119 @@
 
 	'use strict';
 
+	var _classCallCheck2 = __webpack_require__(234);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(225);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(226);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var expect = __webpack_require__(11).expect;
 	var sinon = __webpack_require__(122);
 
 	describe('8. Error Handling', function () {
 	  describe('8.1 Try, Catch', function () {
-	    it('should..', function () {});
+	    it('should catch error in catch block', function () {
+	      try {
+	        throw 'boo';
+	      } catch (e) {
+	        expect(e).to.eql('boo');
+	        return;
+	      }
+
+	      fail();
+	    });
+
+	    it('should have error object', function () {
+	      try {
+	        throw new Error('problem');
+	      } catch (e) {
+	        expect(e.name).to.eql('Error');
+	        expect(e.message).to.eql('problem');
+	        expect(e.stack).to.be.a('string');
+	        return;
+	      }
+
+	      fail();
+	    });
+
+	    it('should use throw operator', function () {
+	      try {
+	        throw { name: 'Error', age: 38 };
+	      } catch (error) {
+	        expect(error.name).to.eql('Error');
+	        expect(error.age).to.eql(38);
+	        return;
+	      }
+
+	      fail();
+	    });
+
+	    it('should use built-in errors', function () {
+	      var message = 'problem has just occured';
+
+	      var error1 = new Error(message);
+	      var error2 = new SyntaxError(message);
+	      var error3 = new ReferenceError(message);
+	    });
+
+	    it('should use try-catch-finally', function (done) {
+	      try {
+	        throw { name: 'Error', age: 38 };
+	      } catch (error) {
+	        expect(error.name).to.eql('Error');
+	        expect(error.age).to.eql(38);
+	        return;
+	      } finally {
+	        done();
+	      }
+
+	      fail();
+	    });
+
+	    it('should window.onerror', function () {
+	      window.onerror = function (message, url, line, col, error) {
+	        // handle error here..
+	      };
+	    });
+	  });
+
+	  describe('8.2 Custom errors', function () {
+	    it('should make custom error class', function () {
+	      var ValidationError = function (_Error) {
+	        (0, _inherits3.default)(ValidationError, _Error);
+
+	        function ValidationError(message) {
+	          (0, _classCallCheck3.default)(this, ValidationError);
+
+	          var _this = (0, _possibleConstructorReturn3.default)(this, (ValidationError.__proto__ || Object.getPrototypeOf(ValidationError)).call(this, message));
+
+	          _this.name = 'ValidationError';
+	          return _this;
+	        }
+
+	        return ValidationError;
+	      }(Error);
+
+	      function test() {
+	        throw new ValidationError("Whoops!");
+	      }
+
+	      try {
+	        test();
+	      } catch (err) {
+	        expect(err.message).to.eql('Whoops!');
+	        expect(err.name).to.eql('ValidationError');
+	        return;
+	      }
+	    });
 	  });
 	});
 
