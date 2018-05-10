@@ -50,7 +50,8 @@
 	__webpack_require__(184);
 	__webpack_require__(190);
 	__webpack_require__(213);
-	module.exports = __webpack_require__(215);
+	__webpack_require__(215);
+	module.exports = __webpack_require__(236);
 
 
 /***/ }),
@@ -28729,6 +28730,40 @@
 	    return Constructor;
 	  };
 	}();
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(237)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var expect = __webpack_require__(11).expect;
+	var sinon = __webpack_require__(122);
+
+	describe('8. Error Handling', function () {
+	  describe('8.1 Try, Catch', function () {
+	    it('should..', function () {});
+	  });
+	});
 
 /***/ })
 /******/ ]);

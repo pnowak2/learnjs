@@ -10,6 +10,7 @@ module.exports = {
     'mocha!./specs/1.javascript-language/5.data-types.spec.js',
     'mocha!./specs/1.javascript-language/6.advanced-working-with-functions.spec.js',
     'mocha!./specs/1.javascript-language/7.objects-classes-inheritance.spec.js',
+    'mocha!./specs/1.javascript-language/8.error-handling.spec.js',
   ],
   output: {
     path: 'builds',
