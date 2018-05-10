@@ -403,7 +403,7 @@ describe('7. Objects, Classes, Inheritance', () => {
         let usr = {
           name: 'peter',
           age: 38,
-          [s]: 'hello',          
+          [s]: 'hello',
           __proto__: human
         };
 
@@ -412,7 +412,149 @@ describe('7. Objects, Classes, Inheritance', () => {
     });
 
     describe('Object.prototype.hasOwnProperty', () => {
-      
+      it('should check if object has own property and not from prototype chain', () => {
+        let human = {
+          dignity: true
+        }
+
+        let usr = {
+          name: 'peter',
+          age: 38,
+          __proto__: human
+        };
+
+        expect(usr.hasOwnProperty('name')).to.be.true;
+        expect(usr.hasOwnProperty('age')).to.be.true;
+        expect(usr.hasOwnProperty('dignity')).to.be.false;
+      });
+    });
+  });
+
+  describe('7.7 Class Patterns', () => {
+    describe('Functional Class Pattern', () => {
+      it('should use constructor as a class', () => {
+        function User(name, birthday) {
+          function calcAge() {
+            return new Date().getFullYear() - birthday.getFullYear();
+          }
+
+          this.sayHi = function () {
+            return `hi, ${name} (${calcAge()})`;
+          }
+        }
+
+        let user = new User('peter', new Date(1980, 4, 28));
+
+        expect(user.sayHi()).to.eql('hi, peter (38)')
+      });
+    });
+
+    describe('Factory Class Pattern', () => {
+      it('should not use new keyword at all, returning object from constructor', () => {
+        function User(name, birthday) {
+          function calcAge() {
+            return new Date().getFullYear() - birthday.getFullYear();
+          }
+
+          return {
+            sayHi: function () {
+              return `hi, ${name} (${calcAge()})`;
+            }
+          }
+        }
+
+        let user = User('peter', new Date(1980, 4, 28));
+
+        expect(user.sayHi()).to.eql('hi, peter (38)')
+      });
+    });
+
+    describe('Prototype Based Classes', () => {
+      it('should use prototypes to store methods for reuse and memory saving', () => {
+        function User(name, birthday) {
+          this._name = name;
+          this._birthday = birthday;
+        }
+
+        User.prototype._calcAge = function () {
+          return new Date().getFullYear() - this._birthday.getFullYear();
+        }
+
+        User.prototype.sayHi = function () {
+          return `hi, ${this._name} (${this._calcAge()})`;
+        }
+
+        let user = new User('peter', new Date(1980, 4, 28));
+
+        expect(user.sayHi()).to.eql('hi, peter (38)')
+      });
+    });
+
+    describe('Prototype-Based Inheritance for Classes', () => {
+      it('should setup prototype hierarchy to get inheritance', () => {
+        // Same Animal as before
+        function Animal(name) {
+          this.name = name;
+        }
+
+        // All animals can eat, right?
+        Animal.prototype.eat = function () {
+          return `${this.name} eats.`;
+        };
+
+        // Same Rabbit as before
+        function Rabbit(name) {
+          this.name = name;
+        }
+
+        Rabbit.prototype.jump = function () {
+          return `${this.name} jumps!`;
+        };
+
+        Object.setPrototypeOf(Rabbit.prototype, Animal.prototype);
+
+        let rabbit = new Rabbit("White Rabbit");
+        expect(rabbit.jump()).to.eql('White Rabbit jumps!');
+        expect(rabbit.eat()).to.eql('White Rabbit eats.');
+      });
+    });
+  });
+
+  describe('7.8 Classes', () => {
+    describe('The Class Syntax', () => {
+      it('should use classic prototype approach', () => {
+        function User(name) {
+          this.name = name;
+        }
+
+        User.prototype.sayHi = function () {
+          return this.name;
+        }
+
+        let user = new User('John');
+        expect(user.sayHi()).to.eql('John');
+      });
+
+      it('should use class syntax', () => {
+        class User {
+          constructor(name) {
+            this.name = name;
+          }
+
+          sayHi() {
+            return this.name;
+          }
+        }
+
+        let user = new User('John');
+        expect(user.sayHi()).to.eql('John');
+
+        expect(User).to.be.a('function');
+        expect(User.prototype.constructor === User).to.be.true;
+        expect(Object.hasOwnProperty('name')).to.be.true;
+        expect(Object.getOwnPropertyNames(user)).to.eql(['name'])
+        expect(Object.getOwnPropertyNames(User.prototype)).to.eql(['constructor', 'sayHi'])
+      });
     });
   });
 });
