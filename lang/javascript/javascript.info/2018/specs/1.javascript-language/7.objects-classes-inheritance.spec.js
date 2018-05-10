@@ -556,5 +556,178 @@ describe('7. Objects, Classes, Inheritance', () => {
         expect(Object.getOwnPropertyNames(User.prototype)).to.eql(['constructor', 'sayHi'])
       });
     });
+
+    describe('Getters and Setters', () => {
+      it('should use proper notation', () => {
+        class User {
+          constructor(name) {
+            this._name = name;
+          }
+
+          get name() {
+            return this._name;
+          }
+
+          set name(value) {
+            this._name = value;
+          }
+
+          sayHi() {
+            return this.name;
+          }
+        }
+
+        let user = new User('John');
+        expect(user.sayHi()).to.eql('John');
+      });
+    });
+
+    describe('No properties allowed in classes (so far)', () => {
+      it('should put them in prototype', () => {
+        class User {
+          sayHi() {
+            return this.name;
+          }
+        }
+
+        User.prototype.name = 'peter';
+
+        expect(new User().sayHi()).to.eql('peter');
+      });
+    });
+
+    describe('Class expression', () => {
+      it('should make class dynamically', () => {
+        function makePerson(name) {
+          return class {
+            sayHi() {
+              return name;
+            }
+          }
+        }
+
+        let Person = makePerson('peter');
+
+        expect(new Person().sayHi()).to.eql('peter');
+      });
+    });
+
+    describe('Static methods', () => {
+      it('should be accessible from class level', () => {
+        class User {
+          constructor(name) {
+            this.name = name;
+          }
+          static sayHi() {
+            return this === User;
+          }
+
+          greet() {
+            return this.name;
+          }
+
+          static create(name) {
+            return new this(name);
+          }
+        }
+
+        expect(User.sayHi()).to.be.true;
+        expect(User.create('peter').greet()).to.eql('peter');
+      });
+    });
+  });
+
+  describe('7.9 Class Inheritance, Super', () => {
+    describe('Inheritance', () => {
+      it('should inherit from other class', () => {
+        class Animal {
+          constructor(name) {
+            this.speed = 0;
+            this.name = name;
+          }
+
+          run(speed) {
+            this.speed += speed;
+            return (`${this.name} runs with speed ${this.speed}.`);
+          }
+
+          stop() {
+            this.speed = 0;
+            return (`${this.name} stopped.`);
+          }
+
+        }
+
+        // Inherit from Animal
+        class Rabbit extends Animal {
+          hide() {
+            return (`${this.name} hides!`);
+          }
+        }
+
+        let rabbit = new Rabbit("White Rabbit");
+
+        expect(rabbit.run(5)).to.eql('White Rabbit runs with speed 5.');
+        expect(rabbit.hide()).to.eql('White Rabbit hides!');
+      });
+
+      it('should override method', () => {
+        class Animal {
+          constructor(name) {
+            this.speed = 0;
+            this.name = name;
+          }
+
+          run(speed) {
+            this.speed += speed;
+            return (`${this.name} runs with speed ${this.speed}.`);
+          }
+
+          stop() {
+            this.speed = 0;
+            return (`${this.name} stopped.`);
+          }
+
+        }
+
+        // Inherit from Animal
+        class Rabbit extends Animal {
+          hide() {
+            return (`${this.name} hides!`);
+          }
+
+          stop() {
+            return super.stop() + ' Not bouncing anymore !';
+          }
+        }
+
+        let rabbit = new Rabbit("White Rabbit");
+
+        expect(rabbit.run(5)).to.eql('White Rabbit runs with speed 5.');
+        expect(rabbit.stop()).to.eql('White Rabbit stopped. Not bouncing anymore !');
+      });
+
+      it('should override constructor with super()', () => {
+        class Animal {
+          constructor(name) {
+            this.speed = 0;
+            this.name = name;
+          }
+        }
+        
+        class Rabbit extends Animal {
+        
+          constructor(name, earLength) {
+            super(name);
+            this.earLength = earLength;
+          }
+        }
+
+        let rabbit = new Rabbit('jack', 20);
+        expect(rabbit.name).to.eql('jack');
+        expect(rabbit.speed).to.eql(0);
+        expect(rabbit.earLength).to.eql(20);
+      });
+    });
   });
 });
