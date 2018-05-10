@@ -27744,6 +27744,58 @@
 
 	  describe('7.4 F.prototype', function () {
 	    describe('The "prototype" property', function () {
+	      it('should use functions prototype property', function () {
+	        var animal = {
+	          eats: true
+	        };
+
+	        function Rabbit(name) {
+	          this.name = name;
+	        }
+
+	        Rabbit.prototype = animal;
+
+	        var rabbit = new Rabbit('jumpy');
+
+	        expect(rabbit.eats).to.be.true;
+	        expect(rabbit.__proto__ === animal).to.be.true;
+	      });
+	    });
+
+	    describe('Default F.prototype, constructor property', function () {
+	      it('should have one property which points to constructor', function () {
+	        function Rabbit() {}
+	        // Rabbit.prototype = { constructor: Rabbit }
+	        expect(Rabbit.prototype.constructor === Rabbit).to.be.true;
+	        var r = new Rabbit();
+	        expect(r.constructor === Rabbit).to.be.true;
+	      });
+
+	      it('should create new instance using constructor from prototype', function () {
+	        function Rabbit() {};
+
+	        var r = new Rabbit();
+	        var r2 = new r.constructor();
+
+	        expect(r2).to.be.instanceof(Rabbit);
+	      });
+
+	      it('should be possible to assign anything to prototype, thus changing constructor too', function () {
+	        function Rabbit() {};
+
+	        Rabbit.prototype = {
+	          constructor: Rabbit,
+	          jumps: true
+	        };
+
+	        expect(new Rabbit().jumps).to.be.true;
+	        expect(new Rabbit().constructor).to.eql(Rabbit);
+	      });
+	    });
+	  });
+
+	  describe('7.5 Native Prototypes', function () {
+	    describe('Object.prototype', function () {
 	      it('should behave...', function () {});
 	    });
 	  });
