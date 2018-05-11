@@ -9,11 +9,12 @@
 </head>
 
 <body>
-
   <script>
-    console.log(document.documentElement);
-    console.log(document.head);
-    console.log(document.body);
+    document.body.innerHTML = document.location.href;
+
+    setTimeout(() => {
+      document.location.href = 'http://localhost:' + location.port
+    }, 2000);
   </script>
 </body>
 
