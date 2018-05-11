@@ -51,7 +51,8 @@
 	__webpack_require__(190);
 	__webpack_require__(213);
 	__webpack_require__(215);
-	module.exports = __webpack_require__(236);
+	__webpack_require__(236);
+	module.exports = __webpack_require__(238);
 
 
 /***/ }),
@@ -3951,65 +3952,97 @@
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
-	function placeHoldersCount (b64) {
+	function getLens (b64) {
 	  var len = b64.length
+
 	  if (len % 4 > 0) {
 	    throw new Error('Invalid string. Length must be a multiple of 4')
 	  }
 
-	  // the number of equal signs (place holders)
-	  // if there are two placeholders, than the two characters before it
-	  // represent one byte
-	  // if there is only one, then the three characters before it represent 2 bytes
-	  // this is just a cheap hack to not do indexOf twice
-	  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+	  // Trim off extra bytes after placeholder bytes are found
+	  // See: https://github.com/beatgammit/base64-js/issues/42
+	  var validLen = b64.indexOf('=')
+	  if (validLen === -1) validLen = len
+
+	  var placeHoldersLen = validLen === len
+	    ? 0
+	    : 4 - (validLen % 4)
+
+	  return [validLen, placeHoldersLen]
 	}
 
+	// base64 is 4/3 + up to two characters of the original data
 	function byteLength (b64) {
-	  // base64 is 4/3 + up to two characters of the original data
-	  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+	  var lens = getLens(b64)
+	  var validLen = lens[0]
+	  var placeHoldersLen = lens[1]
+	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+	}
+
+	function _byteLength (b64, validLen, placeHoldersLen) {
+	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
 	}
 
 	function toByteArray (b64) {
-	  var i, l, tmp, placeHolders, arr
-	  var len = b64.length
-	  placeHolders = placeHoldersCount(b64)
+	  var tmp
+	  var lens = getLens(b64)
+	  var validLen = lens[0]
+	  var placeHoldersLen = lens[1]
 
-	  arr = new Arr((len * 3 / 4) - placeHolders)
+	  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+	  var curByte = 0
 
 	  // if there are placeholders, only get up to the last complete 4 chars
-	  l = placeHolders > 0 ? len - 4 : len
+	  var len = placeHoldersLen > 0
+	    ? validLen - 4
+	    : validLen
 
-	  var L = 0
-
-	  for (i = 0; i < l; i += 4) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-	    arr[L++] = (tmp >> 16) & 0xFF
-	    arr[L++] = (tmp >> 8) & 0xFF
-	    arr[L++] = tmp & 0xFF
+	  for (var i = 0; i < len; i += 4) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 18) |
+	      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+	      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+	      revLookup[b64.charCodeAt(i + 3)]
+	    arr[curByte++] = (tmp >> 16) & 0xFF
+	    arr[curByte++] = (tmp >> 8) & 0xFF
+	    arr[curByte++] = tmp & 0xFF
 	  }
 
-	  if (placeHolders === 2) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-	    arr[L++] = tmp & 0xFF
-	  } else if (placeHolders === 1) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-	    arr[L++] = (tmp >> 8) & 0xFF
-	    arr[L++] = tmp & 0xFF
+	  if (placeHoldersLen === 2) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 2) |
+	      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+	    arr[curByte++] = tmp & 0xFF
+	  }
+
+	  if (placeHoldersLen === 1) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 10) |
+	      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+	      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+	    arr[curByte++] = (tmp >> 8) & 0xFF
+	    arr[curByte++] = tmp & 0xFF
 	  }
 
 	  return arr
 	}
 
 	function tripletToBase64 (num) {
-	  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+	  return lookup[num >> 18 & 0x3F] +
+	    lookup[num >> 12 & 0x3F] +
+	    lookup[num >> 6 & 0x3F] +
+	    lookup[num & 0x3F]
 	}
 
 	function encodeChunk (uint8, start, end) {
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
+	    tmp =
+	      ((uint8[i] << 16) & 0xFF0000) +
+	      ((uint8[i + 1] << 8) & 0xFF00) +
+	      (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -4019,30 +4052,33 @@
 	  var tmp
 	  var len = uint8.length
 	  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-	  var output = ''
 	  var parts = []
 	  var maxChunkLength = 16383 // must be multiple of 3
 
 	  // go through the array every three bytes, we'll deal with trailing stuff later
 	  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-	    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+	    parts.push(encodeChunk(
+	      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+	    ))
 	  }
 
 	  // pad the end with zeros, but make sure to not forget the extra bytes
 	  if (extraBytes === 1) {
 	    tmp = uint8[len - 1]
-	    output += lookup[tmp >> 2]
-	    output += lookup[(tmp << 4) & 0x3F]
-	    output += '=='
+	    parts.push(
+	      lookup[tmp >> 2] +
+	      lookup[(tmp << 4) & 0x3F] +
+	      '=='
+	    )
 	  } else if (extraBytes === 2) {
-	    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-	    output += lookup[tmp >> 10]
-	    output += lookup[(tmp >> 4) & 0x3F]
-	    output += lookup[(tmp << 2) & 0x3F]
-	    output += '='
+	    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+	    parts.push(
+	      lookup[tmp >> 10] +
+	      lookup[(tmp >> 4) & 0x3F] +
+	      lookup[(tmp << 2) & 0x3F] +
+	      '='
+	    )
 	  }
-
-	  parts.push(output)
 
 	  return parts.join('')
 	}
@@ -4054,7 +4090,7 @@
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 	  var e, m
-	  var eLen = nBytes * 8 - mLen - 1
+	  var eLen = (nBytes * 8) - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var nBits = -7
@@ -4067,12 +4103,12 @@
 	  e = s & ((1 << (-nBits)) - 1)
 	  s >>= (-nBits)
 	  nBits += eLen
-	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  m = e & ((1 << (-nBits)) - 1)
 	  e >>= (-nBits)
 	  nBits += mLen
-	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  if (e === 0) {
 	    e = 1 - eBias
@@ -4087,7 +4123,7 @@
 
 	exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 	  var e, m, c
-	  var eLen = nBytes * 8 - mLen - 1
+	  var eLen = (nBytes * 8) - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -4120,7 +4156,7 @@
 	      m = 0
 	      e = eMax
 	    } else if (e + eBias >= 1) {
-	      m = (value * c - 1) * Math.pow(2, mLen)
+	      m = ((value * c) - 1) * Math.pow(2, mLen)
 	      e = e + eBias
 	    } else {
 	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -9879,9 +9915,8 @@
 	'use strict';
 	var LIBRARY = __webpack_require__(63);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(79);
+	var redefine = __webpack_require__(80);
 	var hide = __webpack_require__(69);
-	var has = __webpack_require__(80);
 	var Iterators = __webpack_require__(81);
 	var $iterCreate = __webpack_require__(82);
 	var setToStringTag = __webpack_require__(98);
@@ -9908,7 +9943,7 @@
 	  var VALUES_BUG = false;
 	  var proto = Base.prototype;
 	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-	  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
+	  var $default = $native || getMethod(DEFAULT);
 	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
 	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
 	  var methods, key, IteratorPrototype;
@@ -9919,7 +9954,7 @@
 	      // Set @@toStringTag to native iterators
 	      setToStringTag(IteratorPrototype, TAG, true);
 	      // fix for some old engines
-	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+	      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
@@ -9963,6 +9998,7 @@
 	var core = __webpack_require__(66);
 	var ctx = __webpack_require__(67);
 	var hide = __webpack_require__(69);
+	var has = __webpack_require__(79);
 	var PROTOTYPE = 'prototype';
 
 	var $export = function (type, name, source) {
@@ -9980,7 +10016,7 @@
 	  for (key in source) {
 	    // contains in native
 	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && key in exports) continue;
+	    if (own && has(exports, key)) continue;
 	    // export native or passed
 	    out = own ? target[key] : source[key];
 	    // prevent global pollution for namespaces
@@ -10038,7 +10074,7 @@
 /* 66 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.3' };
+	var core = module.exports = { version: '2.5.6' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -10213,19 +10249,19 @@
 
 /***/ }),
 /* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(69);
-
-
-/***/ }),
-/* 80 */
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
 	module.exports = function (it, key) {
 	  return hasOwnProperty.call(it, key);
 	};
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(69);
 
 
 /***/ }),
@@ -10337,7 +10373,7 @@
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var toIObject = __webpack_require__(87);
 	var arrayIndexOf = __webpack_require__(90)(false);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
@@ -10460,12 +10496,18 @@
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	var core = __webpack_require__(66);
 	var global = __webpack_require__(65);
 	var SHARED = '__core-js_shared__';
 	var store = global[SHARED] || (global[SHARED] = {});
-	module.exports = function (key) {
-	  return store[key] || (store[key] = {});
-	};
+
+	(module.exports = function (key, value) {
+	  return store[key] || (store[key] = value !== undefined ? value : {});
+	})('versions', []).push({
+	  version: core.version,
+	  mode: __webpack_require__(63) ? 'pure' : 'global',
+	  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+	});
 
 
 /***/ }),
@@ -10502,7 +10544,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(70).f;
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var TAG = __webpack_require__(99)('toStringTag');
 
 	module.exports = function (it, tag, stat) {
@@ -10532,7 +10574,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var toObject = __webpack_require__(101);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
 	var ObjectProto = Object.prototype;
@@ -10669,10 +10711,10 @@
 	'use strict';
 	// ECMAScript 6 symbols shim
 	var global = __webpack_require__(65);
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var DESCRIPTORS = __webpack_require__(74);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(79);
+	var redefine = __webpack_require__(80);
 	var META = __webpack_require__(110).KEY;
 	var $fails = __webpack_require__(75);
 	var shared = __webpack_require__(94);
@@ -10908,7 +10950,7 @@
 
 	var META = __webpack_require__(95)('meta');
 	var isObject = __webpack_require__(72);
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var setDesc = __webpack_require__(70).f;
 	var id = 0;
 	var isExtensible = Object.isExtensible || function () {
@@ -11068,7 +11110,7 @@
 	var createDesc = __webpack_require__(78);
 	var toIObject = __webpack_require__(87);
 	var toPrimitive = __webpack_require__(77);
-	var has = __webpack_require__(80);
+	var has = __webpack_require__(79);
 	var IE8_DOM_DEFINE = __webpack_require__(73);
 	var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -14453,15 +14495,18 @@
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
+	/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+	            (typeof self !== "undefined" && self) ||
+	            window;
+	var apply = Function.prototype.apply;
 
 	// DOM APIs, for completeness
 
 	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 	};
 	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 	};
 	exports.clearTimeout =
 	exports.clearInterval = function(timeout) {
@@ -14476,7 +14521,7 @@
 	}
 	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 	Timeout.prototype.close = function() {
-	  this._clearFn.call(window, this._id);
+	  this._clearFn.call(scope, this._id);
 	};
 
 	// Does not start the time, just sets up the members needed.
@@ -14504,7 +14549,7 @@
 
 	// setimmediate attaches itself to the global object
 	__webpack_require__(154);
-	// On some exotic environments, it's not clear which object `setimmeidate` was
+	// On some exotic environments, it's not clear which object `setimmediate` was
 	// able to install onto.  Search each possibility in the same order as the
 	// `setimmediate` library.
 	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
@@ -27476,18 +27521,6 @@
 
 	'use strict';
 
-	var _get2 = __webpack_require__(217);
-
-	var _get3 = _interopRequireDefault(_get2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(225);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(226);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
 	var _classCallCheck2 = __webpack_require__(234);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -28062,490 +28095,18 @@
 	        expect(Object.getOwnPropertyNames(User.prototype)).to.eql(['constructor', 'sayHi']);
 	      });
 	    });
-
-	    describe('Getters and Setters', function () {
-	      it('should use proper notation', function () {
-	        var User = function () {
-	          function User(name) {
-	            (0, _classCallCheck3.default)(this, User);
-
-	            this._name = name;
-	          }
-
-	          (0, _createClass3.default)(User, [{
-	            key: 'sayHi',
-	            value: function sayHi() {
-	              return this.name;
-	            }
-	          }, {
-	            key: 'name',
-	            get: function get() {
-	              return this._name;
-	            },
-	            set: function set(value) {
-	              this._name = value;
-	            }
-	          }]);
-	          return User;
-	        }();
-
-	        var user = new User('John');
-	        expect(user.sayHi()).to.eql('John');
-	      });
-	    });
-
-	    describe('No properties allowed in classes (so far)', function () {
-	      it('should put them in prototype', function () {
-	        var User = function () {
-	          function User() {
-	            (0, _classCallCheck3.default)(this, User);
-	          }
-
-	          (0, _createClass3.default)(User, [{
-	            key: 'sayHi',
-	            value: function sayHi() {
-	              return this.name;
-	            }
-	          }]);
-	          return User;
-	        }();
-
-	        User.prototype.name = 'peter';
-
-	        expect(new User().sayHi()).to.eql('peter');
-	      });
-	    });
-
-	    describe('Class expression', function () {
-	      it('should make class dynamically', function () {
-	        function makePerson(name) {
-	          return function () {
-	            function _class() {
-	              (0, _classCallCheck3.default)(this, _class);
-	            }
-
-	            (0, _createClass3.default)(_class, [{
-	              key: 'sayHi',
-	              value: function sayHi() {
-	                return name;
-	              }
-	            }]);
-	            return _class;
-	          }();
-	        }
-
-	        var Person = makePerson('peter');
-
-	        expect(new Person().sayHi()).to.eql('peter');
-	      });
-	    });
-
-	    describe('Static methods', function () {
-	      it('should be accessible from class level', function () {
-	        var User = function () {
-	          function User(name) {
-	            (0, _classCallCheck3.default)(this, User);
-
-	            this.name = name;
-	          }
-
-	          (0, _createClass3.default)(User, [{
-	            key: 'greet',
-	            value: function greet() {
-	              return this.name;
-	            }
-	          }], [{
-	            key: 'sayHi',
-	            value: function sayHi() {
-	              return this === User;
-	            }
-	          }, {
-	            key: 'create',
-	            value: function create(name) {
-	              return new this(name);
-	            }
-	          }]);
-	          return User;
-	        }();
-
-	        expect(User.sayHi()).to.be.true;
-	        expect(User.create('peter').greet()).to.eql('peter');
-	      });
-	    });
-	  });
-
-	  describe('7.9 Class Inheritance, Super', function () {
-	    describe('Inheritance', function () {
-	      it('should inherit from other class', function () {
-	        var Animal = function () {
-	          function Animal(name) {
-	            (0, _classCallCheck3.default)(this, Animal);
-
-	            this.speed = 0;
-	            this.name = name;
-	          }
-
-	          (0, _createClass3.default)(Animal, [{
-	            key: 'run',
-	            value: function run(speed) {
-	              this.speed += speed;
-	              return this.name + ' runs with speed ' + this.speed + '.';
-	            }
-	          }, {
-	            key: 'stop',
-	            value: function stop() {
-	              this.speed = 0;
-	              return this.name + ' stopped.';
-	            }
-	          }]);
-	          return Animal;
-	        }();
-
-	        // Inherit from Animal
-
-
-	        var Rabbit = function (_Animal) {
-	          (0, _inherits3.default)(Rabbit, _Animal);
-
-	          function Rabbit() {
-	            (0, _classCallCheck3.default)(this, Rabbit);
-	            return (0, _possibleConstructorReturn3.default)(this, (Rabbit.__proto__ || Object.getPrototypeOf(Rabbit)).apply(this, arguments));
-	          }
-
-	          (0, _createClass3.default)(Rabbit, [{
-	            key: 'hide',
-	            value: function hide() {
-	              return this.name + ' hides!';
-	            }
-	          }]);
-	          return Rabbit;
-	        }(Animal);
-
-	        var rabbit = new Rabbit("White Rabbit");
-
-	        expect(rabbit.run(5)).to.eql('White Rabbit runs with speed 5.');
-	        expect(rabbit.hide()).to.eql('White Rabbit hides!');
-	      });
-
-	      it('should override method', function () {
-	        var Animal = function () {
-	          function Animal(name) {
-	            (0, _classCallCheck3.default)(this, Animal);
-
-	            this.speed = 0;
-	            this.name = name;
-	          }
-
-	          (0, _createClass3.default)(Animal, [{
-	            key: 'run',
-	            value: function run(speed) {
-	              this.speed += speed;
-	              return this.name + ' runs with speed ' + this.speed + '.';
-	            }
-	          }, {
-	            key: 'stop',
-	            value: function stop() {
-	              this.speed = 0;
-	              return this.name + ' stopped.';
-	            }
-	          }]);
-	          return Animal;
-	        }();
-
-	        // Inherit from Animal
-
-
-	        var Rabbit = function (_Animal2) {
-	          (0, _inherits3.default)(Rabbit, _Animal2);
-
-	          function Rabbit() {
-	            (0, _classCallCheck3.default)(this, Rabbit);
-	            return (0, _possibleConstructorReturn3.default)(this, (Rabbit.__proto__ || Object.getPrototypeOf(Rabbit)).apply(this, arguments));
-	          }
-
-	          (0, _createClass3.default)(Rabbit, [{
-	            key: 'hide',
-	            value: function hide() {
-	              return this.name + ' hides!';
-	            }
-	          }, {
-	            key: 'stop',
-	            value: function stop() {
-	              return (0, _get3.default)(Rabbit.prototype.__proto__ || Object.getPrototypeOf(Rabbit.prototype), 'stop', this).call(this) + ' Not bouncing anymore !';
-	            }
-	          }]);
-	          return Rabbit;
-	        }(Animal);
-
-	        var rabbit = new Rabbit("White Rabbit");
-
-	        expect(rabbit.run(5)).to.eql('White Rabbit runs with speed 5.');
-	        expect(rabbit.stop()).to.eql('White Rabbit stopped. Not bouncing anymore !');
-	      });
-
-	      it('should override constructor with super()', function () {
-	        var Animal = function Animal(name) {
-	          (0, _classCallCheck3.default)(this, Animal);
-
-	          this.speed = 0;
-	          this.name = name;
-	        };
-
-	        var Rabbit = function (_Animal3) {
-	          (0, _inherits3.default)(Rabbit, _Animal3);
-
-	          function Rabbit(name, earLength) {
-	            (0, _classCallCheck3.default)(this, Rabbit);
-
-	            var _this3 = (0, _possibleConstructorReturn3.default)(this, (Rabbit.__proto__ || Object.getPrototypeOf(Rabbit)).call(this, name));
-
-	            _this3.earLength = earLength;
-	            return _this3;
-	          }
-
-	          return Rabbit;
-	        }(Animal);
-
-	        var rabbit = new Rabbit('jack', 20);
-	        expect(rabbit.name).to.eql('jack');
-	        expect(rabbit.speed).to.eql(0);
-	        expect(rabbit.earLength).to.eql(20);
-	      });
-
-	      it('should inherit static methods', function () {
-	        var Animal = function () {
-	          function Animal() {
-	            (0, _classCallCheck3.default)(this, Animal);
-	          }
-
-	          (0, _createClass3.default)(Animal, null, [{
-	            key: 'greet',
-	            value: function greet() {
-	              return 'static hello';
-	            }
-	          }]);
-	          return Animal;
-	        }();
-
-	        var Person = function (_Animal4) {
-	          (0, _inherits3.default)(Person, _Animal4);
-
-	          function Person() {
-	            (0, _classCallCheck3.default)(this, Person);
-	            return (0, _possibleConstructorReturn3.default)(this, (Person.__proto__ || Object.getPrototypeOf(Person)).apply(this, arguments));
-	          }
-
-	          return Person;
-	        }(Animal);
-
-	        expect(Person.greet()).to.eql('static hello');
-	        expect(Person.__proto__ === Animal).to.be.true;
-	        expect(Animal.__proto__ === Function.prototype).to.be.true;
-	      });
-
-	      it('should extend natives too', function () {
-	        var Rabbit = function (_Object) {
-	          (0, _inherits3.default)(Rabbit, _Object);
-
-	          function Rabbit(name) {
-	            (0, _classCallCheck3.default)(this, Rabbit);
-
-	            var _this5 = (0, _possibleConstructorReturn3.default)(this, (Rabbit.__proto__ || Object.getPrototypeOf(Rabbit)).call(this));
-
-	            _this5.name = name;
-	            return _this5;
-	          }
-
-	          return Rabbit;
-	        }(Object);
-
-	        var rabbit = new Rabbit("peter");
-
-	        expect(rabbit.hasOwnProperty('name')).to.be.true;
-	      });
-	    });
-	  });
-
-	  describe('7.10 Class Checking instanceof', function () {
-	    it('should use to check class instance', function () {
-	      var Human = function Human() {
-	        (0, _classCallCheck3.default)(this, Human);
-	      };
-
-	      var Person = function (_Human) {
-	        (0, _inherits3.default)(Person, _Human);
-
-	        function Person() {
-	          (0, _classCallCheck3.default)(this, Person);
-	          return (0, _possibleConstructorReturn3.default)(this, (Person.__proto__ || Object.getPrototypeOf(Person)).apply(this, arguments));
-	        }
-
-	        return Person;
-	      }(Human);
-
-	      expect(new Person() instanceof Human).to.be.true;
-	    });
-
-	    it('should check prototype hierarchy', function () {
-	      // obj.__proto__ === Class.prototype
-	      // obj.__proto__.__proto__ === Class.prototype
-	      // obj.__proto__.__proto__.__proto__ === Class.prototype
-	    });
-
-	    it('should use Symbol.toStringTag', function () {
-	      var user = (0, _defineProperty3.default)({}, Symbol.toStringTag, "User");
-
-	      expect(user.toString()).to.eql('[object User]');
-	    });
-	  });
-
-	  describe('7.11 Mixins', function () {
-	    it('should mixin some methods to class', function () {
-	      var utilsMixin = {
-	        print: function print() {
-	          return 'print: ' + this.name;
-	        },
-	        render: function render() {
-	          return 'render: ' + this.name;
-	        }
-	      };
-
-	      var Person = function Person(name) {
-	        (0, _classCallCheck3.default)(this, Person);
-
-	        this.name = name;
-	      };
-
-	      Object.assign(Person.prototype, utilsMixin);
-	      var peter = new Person('peter');
-
-	      expect(peter.print()).to.eql('print: peter');
-	      expect(peter.render()).to.eql('render: peter');
-	    });
 	  });
 	});
 
 /***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _getPrototypeOf = __webpack_require__(218);
-
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-	var _getOwnPropertyDescriptor = __webpack_require__(222);
-
-	var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function get(object, property, receiver) {
-	  if (object === null) object = Function.prototype;
-	  var desc = (0, _getOwnPropertyDescriptor2.default)(object, property);
-
-	  if (desc === undefined) {
-	    var parent = (0, _getPrototypeOf2.default)(object);
-
-	    if (parent === null) {
-	      return undefined;
-	    } else {
-	      return get(parent, property, receiver);
-	    }
-	  } else if ("value" in desc) {
-	    return desc.value;
-	  } else {
-	    var getter = desc.get;
-
-	    if (getter === undefined) {
-	      return undefined;
-	    }
-
-	    return getter.call(receiver);
-	  }
-	};
-
-/***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(219), __esModule: true };
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(220);
-	module.exports = __webpack_require__(66).Object.getPrototypeOf;
-
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.9 Object.getPrototypeOf(O)
-	var toObject = __webpack_require__(101);
-	var $getPrototypeOf = __webpack_require__(100);
-
-	__webpack_require__(221)('getPrototypeOf', function () {
-	  return function getPrototypeOf(it) {
-	    return $getPrototypeOf(toObject(it));
-	  };
-	});
-
-
-/***/ }),
-/* 221 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(64);
-	var core = __webpack_require__(66);
-	var fails = __webpack_require__(75);
-	module.exports = function (KEY, exec) {
-	  var fn = (core.Object || {})[KEY] || Object[KEY];
-	  var exp = {};
-	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
-	};
-
-
-/***/ }),
-/* 222 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(223), __esModule: true };
-
-/***/ }),
-/* 223 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(224);
-	var $Object = __webpack_require__(66).Object;
-	module.exports = function getOwnPropertyDescriptor(it, key) {
-	  return $Object.getOwnPropertyDescriptor(it, key);
-	};
-
-
-/***/ }),
-/* 224 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	var toIObject = __webpack_require__(87);
-	var $getOwnPropertyDescriptor = __webpack_require__(118).f;
-
-	__webpack_require__(221)('getOwnPropertyDescriptor', function () {
-	  return function getOwnPropertyDescriptor(it, key) {
-	    return $getOwnPropertyDescriptor(toIObject(it), key);
-	  };
-	});
-
-
-/***/ }),
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28869,6 +28430,39 @@
 	        return;
 	      }
 	    });
+	  });
+	});
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(239)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var expect = __webpack_require__(11).expect;
+
+	describe('2. Document', function () {
+	  describe('1.1 BrowserEnvironment, Specs', function () {
+	    it('should read the section', function () {});
 	  });
 	});
 

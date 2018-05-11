@@ -11,6 +11,8 @@ module.exports = {
     'mocha!./specs/1.javascript-language/6.advanced-working-with-functions.spec.js',
     'mocha!./specs/1.javascript-language/7.objects-classes-inheritance.spec.js',
     'mocha!./specs/1.javascript-language/8.error-handling.spec.js',
+
+    'mocha!./specs/2.browser/1.document.spec.js',
   ],
   output: {
     path: 'builds',
