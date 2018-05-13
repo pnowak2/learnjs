@@ -28577,7 +28577,9 @@
 	        }
 	      });
 
-	      it('should have rows', function () {
+	      it('should have table related properties', function () {
+	        expect(table).to.have.property('rows');
+	        expect(table).to.have.property('caption');
 	        expect(table).to.have.property('rows');
 	      });
 

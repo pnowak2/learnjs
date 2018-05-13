@@ -169,7 +169,9 @@ describe('2. Document', () => {
         }
       });
 
-      it('should have rows', () => {
+      it('should have table related properties', () => {
+        expect(table).to.have.property('rows');
+        expect(table).to.have.property('caption');
         expect(table).to.have.property('rows');
       });
 
