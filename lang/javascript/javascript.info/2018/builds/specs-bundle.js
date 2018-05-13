@@ -51,8 +51,8 @@
 	__webpack_require__(190);
 	__webpack_require__(213);
 	__webpack_require__(215);
-	__webpack_require__(236);
-	module.exports = __webpack_require__(238);
+	__webpack_require__(219);
+	module.exports = __webpack_require__(230);
 
 
 /***/ }),
@@ -3952,97 +3952,65 @@
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
-	function getLens (b64) {
+	function placeHoldersCount (b64) {
 	  var len = b64.length
-
 	  if (len % 4 > 0) {
 	    throw new Error('Invalid string. Length must be a multiple of 4')
 	  }
 
-	  // Trim off extra bytes after placeholder bytes are found
-	  // See: https://github.com/beatgammit/base64-js/issues/42
-	  var validLen = b64.indexOf('=')
-	  if (validLen === -1) validLen = len
-
-	  var placeHoldersLen = validLen === len
-	    ? 0
-	    : 4 - (validLen % 4)
-
-	  return [validLen, placeHoldersLen]
+	  // the number of equal signs (place holders)
+	  // if there are two placeholders, than the two characters before it
+	  // represent one byte
+	  // if there is only one, then the three characters before it represent 2 bytes
+	  // this is just a cheap hack to not do indexOf twice
+	  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
 	}
 
-	// base64 is 4/3 + up to two characters of the original data
 	function byteLength (b64) {
-	  var lens = getLens(b64)
-	  var validLen = lens[0]
-	  var placeHoldersLen = lens[1]
-	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-	}
-
-	function _byteLength (b64, validLen, placeHoldersLen) {
-	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+	  // base64 is 4/3 + up to two characters of the original data
+	  return (b64.length * 3 / 4) - placeHoldersCount(b64)
 	}
 
 	function toByteArray (b64) {
-	  var tmp
-	  var lens = getLens(b64)
-	  var validLen = lens[0]
-	  var placeHoldersLen = lens[1]
+	  var i, l, tmp, placeHolders, arr
+	  var len = b64.length
+	  placeHolders = placeHoldersCount(b64)
 
-	  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
-
-	  var curByte = 0
+	  arr = new Arr((len * 3 / 4) - placeHolders)
 
 	  // if there are placeholders, only get up to the last complete 4 chars
-	  var len = placeHoldersLen > 0
-	    ? validLen - 4
-	    : validLen
+	  l = placeHolders > 0 ? len - 4 : len
 
-	  for (var i = 0; i < len; i += 4) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 18) |
-	      (revLookup[b64.charCodeAt(i + 1)] << 12) |
-	      (revLookup[b64.charCodeAt(i + 2)] << 6) |
-	      revLookup[b64.charCodeAt(i + 3)]
-	    arr[curByte++] = (tmp >> 16) & 0xFF
-	    arr[curByte++] = (tmp >> 8) & 0xFF
-	    arr[curByte++] = tmp & 0xFF
+	  var L = 0
+
+	  for (i = 0; i < l; i += 4) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+	    arr[L++] = (tmp >> 16) & 0xFF
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
 	  }
 
-	  if (placeHoldersLen === 2) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 2) |
-	      (revLookup[b64.charCodeAt(i + 1)] >> 4)
-	    arr[curByte++] = tmp & 0xFF
-	  }
-
-	  if (placeHoldersLen === 1) {
-	    tmp =
-	      (revLookup[b64.charCodeAt(i)] << 10) |
-	      (revLookup[b64.charCodeAt(i + 1)] << 4) |
-	      (revLookup[b64.charCodeAt(i + 2)] >> 2)
-	    arr[curByte++] = (tmp >> 8) & 0xFF
-	    arr[curByte++] = tmp & 0xFF
+	  if (placeHolders === 2) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+	    arr[L++] = tmp & 0xFF
+	  } else if (placeHolders === 1) {
+	    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+	    arr[L++] = (tmp >> 8) & 0xFF
+	    arr[L++] = tmp & 0xFF
 	  }
 
 	  return arr
 	}
 
 	function tripletToBase64 (num) {
-	  return lookup[num >> 18 & 0x3F] +
-	    lookup[num >> 12 & 0x3F] +
-	    lookup[num >> 6 & 0x3F] +
-	    lookup[num & 0x3F]
+	  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
 	}
 
 	function encodeChunk (uint8, start, end) {
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp =
-	      ((uint8[i] << 16) & 0xFF0000) +
-	      ((uint8[i + 1] << 8) & 0xFF00) +
-	      (uint8[i + 2] & 0xFF)
+	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -4052,33 +4020,30 @@
 	  var tmp
 	  var len = uint8.length
 	  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+	  var output = ''
 	  var parts = []
 	  var maxChunkLength = 16383 // must be multiple of 3
 
 	  // go through the array every three bytes, we'll deal with trailing stuff later
 	  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-	    parts.push(encodeChunk(
-	      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-	    ))
+	    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
 	  }
 
 	  // pad the end with zeros, but make sure to not forget the extra bytes
 	  if (extraBytes === 1) {
 	    tmp = uint8[len - 1]
-	    parts.push(
-	      lookup[tmp >> 2] +
-	      lookup[(tmp << 4) & 0x3F] +
-	      '=='
-	    )
+	    output += lookup[tmp >> 2]
+	    output += lookup[(tmp << 4) & 0x3F]
+	    output += '=='
 	  } else if (extraBytes === 2) {
-	    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
-	    parts.push(
-	      lookup[tmp >> 10] +
-	      lookup[(tmp >> 4) & 0x3F] +
-	      lookup[(tmp << 2) & 0x3F] +
-	      '='
-	    )
+	    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+	    output += lookup[tmp >> 10]
+	    output += lookup[(tmp >> 4) & 0x3F]
+	    output += lookup[(tmp << 2) & 0x3F]
+	    output += '='
 	  }
+
+	  parts.push(output)
 
 	  return parts.join('')
 	}
@@ -4090,7 +4055,7 @@
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 	  var e, m
-	  var eLen = (nBytes * 8) - mLen - 1
+	  var eLen = nBytes * 8 - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var nBits = -7
@@ -4103,12 +4068,12 @@
 	  e = s & ((1 << (-nBits)) - 1)
 	  s >>= (-nBits)
 	  nBits += eLen
-	  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  m = e & ((1 << (-nBits)) - 1)
 	  e >>= (-nBits)
 	  nBits += mLen
-	  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  if (e === 0) {
 	    e = 1 - eBias
@@ -4123,7 +4088,7 @@
 
 	exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 	  var e, m, c
-	  var eLen = (nBytes * 8) - mLen - 1
+	  var eLen = nBytes * 8 - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -4156,7 +4121,7 @@
 	      m = 0
 	      e = eMax
 	    } else if (e + eBias >= 1) {
-	      m = ((value * c) - 1) * Math.pow(2, mLen)
+	      m = (value * c - 1) * Math.pow(2, mLen)
 	      e = e + eBias
 	    } else {
 	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -9915,8 +9880,9 @@
 	'use strict';
 	var LIBRARY = __webpack_require__(63);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(80);
+	var redefine = __webpack_require__(79);
 	var hide = __webpack_require__(69);
+	var has = __webpack_require__(80);
 	var Iterators = __webpack_require__(81);
 	var $iterCreate = __webpack_require__(82);
 	var setToStringTag = __webpack_require__(98);
@@ -9943,7 +9909,7 @@
 	  var VALUES_BUG = false;
 	  var proto = Base.prototype;
 	  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-	  var $default = $native || getMethod(DEFAULT);
+	  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
 	  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
 	  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
 	  var methods, key, IteratorPrototype;
@@ -9954,7 +9920,7 @@
 	      // Set @@toStringTag to native iterators
 	      setToStringTag(IteratorPrototype, TAG, true);
 	      // fix for some old engines
-	      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
+	      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
@@ -9998,7 +9964,6 @@
 	var core = __webpack_require__(66);
 	var ctx = __webpack_require__(67);
 	var hide = __webpack_require__(69);
-	var has = __webpack_require__(79);
 	var PROTOTYPE = 'prototype';
 
 	var $export = function (type, name, source) {
@@ -10016,7 +9981,7 @@
 	  for (key in source) {
 	    // contains in native
 	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if (own && has(exports, key)) continue;
+	    if (own && key in exports) continue;
 	    // export native or passed
 	    out = own ? target[key] : source[key];
 	    // prevent global pollution for namespaces
@@ -10074,7 +10039,7 @@
 /* 66 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.6' };
+	var core = module.exports = { version: '2.5.3' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -10249,19 +10214,19 @@
 
 /***/ }),
 /* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(69);
+
+
+/***/ }),
+/* 80 */
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
 	module.exports = function (it, key) {
 	  return hasOwnProperty.call(it, key);
 	};
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(69);
 
 
 /***/ }),
@@ -10373,7 +10338,7 @@
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var toIObject = __webpack_require__(87);
 	var arrayIndexOf = __webpack_require__(90)(false);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
@@ -10496,18 +10461,12 @@
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(66);
 	var global = __webpack_require__(65);
 	var SHARED = '__core-js_shared__';
 	var store = global[SHARED] || (global[SHARED] = {});
-
-	(module.exports = function (key, value) {
-	  return store[key] || (store[key] = value !== undefined ? value : {});
-	})('versions', []).push({
-	  version: core.version,
-	  mode: __webpack_require__(63) ? 'pure' : 'global',
-	  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-	});
+	module.exports = function (key) {
+	  return store[key] || (store[key] = {});
+	};
 
 
 /***/ }),
@@ -10544,7 +10503,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(70).f;
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var TAG = __webpack_require__(99)('toStringTag');
 
 	module.exports = function (it, tag, stat) {
@@ -10574,7 +10533,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var toObject = __webpack_require__(101);
 	var IE_PROTO = __webpack_require__(93)('IE_PROTO');
 	var ObjectProto = Object.prototype;
@@ -10711,10 +10670,10 @@
 	'use strict';
 	// ECMAScript 6 symbols shim
 	var global = __webpack_require__(65);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var DESCRIPTORS = __webpack_require__(74);
 	var $export = __webpack_require__(64);
-	var redefine = __webpack_require__(80);
+	var redefine = __webpack_require__(79);
 	var META = __webpack_require__(110).KEY;
 	var $fails = __webpack_require__(75);
 	var shared = __webpack_require__(94);
@@ -10950,7 +10909,7 @@
 
 	var META = __webpack_require__(95)('meta');
 	var isObject = __webpack_require__(72);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var setDesc = __webpack_require__(70).f;
 	var id = 0;
 	var isExtensible = Object.isExtensible || function () {
@@ -11110,7 +11069,7 @@
 	var createDesc = __webpack_require__(78);
 	var toIObject = __webpack_require__(87);
 	var toPrimitive = __webpack_require__(77);
-	var has = __webpack_require__(79);
+	var has = __webpack_require__(80);
 	var IE8_DOM_DEFINE = __webpack_require__(73);
 	var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -14495,18 +14454,15 @@
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-	            (typeof self !== "undefined" && self) ||
-	            window;
-	var apply = Function.prototype.apply;
+	/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
 
 	// DOM APIs, for completeness
 
 	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 	};
 	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
 	};
 	exports.clearTimeout =
 	exports.clearInterval = function(timeout) {
@@ -14521,7 +14477,7 @@
 	}
 	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 	Timeout.prototype.close = function() {
-	  this._clearFn.call(scope, this._id);
+	  this._clearFn.call(window, this._id);
 	};
 
 	// Does not start the time, just sets up the members needed.
@@ -14549,7 +14505,7 @@
 
 	// setimmediate attaches itself to the global object
 	__webpack_require__(154);
-	// On some exotic environments, it's not clear which object `setimmediate` was
+	// On some exotic environments, it's not clear which object `setimmeidate` was
 	// able to install onto.  Search each possibility in the same order as the
 	// `setimmediate` library.
 	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
@@ -27521,11 +27477,11 @@
 
 	'use strict';
 
-	var _classCallCheck2 = __webpack_require__(234);
+	var _classCallCheck2 = __webpack_require__(217);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-	var _createClass2 = __webpack_require__(235);
+	var _createClass2 = __webpack_require__(218);
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -28099,155 +28055,7 @@
 	});
 
 /***/ }),
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _typeof2 = __webpack_require__(55);
-
-	var _typeof3 = _interopRequireDefault(_typeof2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-
-	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
-	};
-
-/***/ }),
-/* 226 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	exports.__esModule = true;
-
-	var _setPrototypeOf = __webpack_require__(227);
-
-	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
-
-	var _create = __webpack_require__(231);
-
-	var _create2 = _interopRequireDefault(_create);
-
-	var _typeof2 = __webpack_require__(55);
-
-	var _typeof3 = _interopRequireDefault(_typeof2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
-	  }
-
-	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
-	};
-
-/***/ }),
-/* 227 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(228), __esModule: true };
-
-/***/ }),
-/* 228 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(229);
-	module.exports = __webpack_require__(66).Object.setPrototypeOf;
-
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $export = __webpack_require__(64);
-	$export($export.S, 'Object', { setPrototypeOf: __webpack_require__(230).set });
-
-
-/***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// Works with __proto__ only. Old v8 can't work with null proto objects.
-	/* eslint-disable no-proto */
-	var isObject = __webpack_require__(72);
-	var anObject = __webpack_require__(71);
-	var check = function (O, proto) {
-	  anObject(O);
-	  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-	};
-	module.exports = {
-	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-	    function (test, buggy, set) {
-	      try {
-	        set = __webpack_require__(67)(Function.call, __webpack_require__(118).f(Object.prototype, '__proto__').set, 2);
-	        set(test, []);
-	        buggy = !(test instanceof Array);
-	      } catch (e) { buggy = true; }
-	      return function setPrototypeOf(O, proto) {
-	        check(O, proto);
-	        if (buggy) O.__proto__ = proto;
-	        else set(O, proto);
-	        return O;
-	      };
-	    }({}, false) : undefined),
-	  check: check
-	};
-
-
-/***/ }),
-/* 231 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(232), __esModule: true };
-
-/***/ }),
-/* 232 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(233);
-	var $Object = __webpack_require__(66).Object;
-	module.exports = function create(P, D) {
-	  return $Object.create(P, D);
-	};
-
-
-/***/ }),
-/* 233 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var $export = __webpack_require__(64);
-	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	$export($export.S, 'Object', { create: __webpack_require__(83) });
-
-
-/***/ }),
-/* 234 */
+/* 217 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -28261,7 +28069,7 @@
 	};
 
 /***/ }),
-/* 235 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28293,12 +28101,12 @@
 	}();
 
 /***/ }),
-/* 236 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
 	mocha.setup("bdd");
-	__webpack_require__(237)
+	__webpack_require__(220)
 	__webpack_require__(51);
 	if(false) {
 		module.hot.accept();
@@ -28312,20 +28120,20 @@
 	}
 
 /***/ }),
-/* 237 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _classCallCheck2 = __webpack_require__(234);
+	var _classCallCheck2 = __webpack_require__(217);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(225);
+	var _possibleConstructorReturn2 = __webpack_require__(221);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(226);
+	var _inherits2 = __webpack_require__(222);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -28434,12 +28242,152 @@
 	});
 
 /***/ }),
-/* 238 */
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _typeof2 = __webpack_require__(55);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+	};
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _setPrototypeOf = __webpack_require__(223);
+
+	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
+
+	var _create = __webpack_require__(227);
+
+	var _create2 = _interopRequireDefault(_create);
+
+	var _typeof2 = __webpack_require__(55);
+
+	var _typeof3 = _interopRequireDefault(_typeof2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
+	  }
+
+	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
+	};
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(224), __esModule: true };
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(225);
+	module.exports = __webpack_require__(66).Object.setPrototypeOf;
+
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 19.1.3.19 Object.setPrototypeOf(O, proto)
+	var $export = __webpack_require__(64);
+	$export($export.S, 'Object', { setPrototypeOf: __webpack_require__(226).set });
+
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Works with __proto__ only. Old v8 can't work with null proto objects.
+	/* eslint-disable no-proto */
+	var isObject = __webpack_require__(72);
+	var anObject = __webpack_require__(71);
+	var check = function (O, proto) {
+	  anObject(O);
+	  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+	};
+	module.exports = {
+	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
+	    function (test, buggy, set) {
+	      try {
+	        set = __webpack_require__(67)(Function.call, __webpack_require__(118).f(Object.prototype, '__proto__').set, 2);
+	        set(test, []);
+	        buggy = !(test instanceof Array);
+	      } catch (e) { buggy = true; }
+	      return function setPrototypeOf(O, proto) {
+	        check(O, proto);
+	        if (buggy) O.__proto__ = proto;
+	        else set(O, proto);
+	        return O;
+	      };
+	    }({}, false) : undefined),
+	  check: check
+	};
+
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(228), __esModule: true };
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(229);
+	var $Object = __webpack_require__(66).Object;
+	module.exports = function create(P, D) {
+	  return $Object.create(P, D);
+	};
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(64);
+	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+	$export($export.S, 'Object', { create: __webpack_require__(83) });
+
+
+/***/ }),
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
 	mocha.setup("bdd");
-	__webpack_require__(239)
+	__webpack_require__(231)
 	__webpack_require__(51);
 	if(false) {
 		module.hot.accept();
@@ -28453,7 +28401,7 @@
 	}
 
 /***/ }),
-/* 239 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28467,6 +28415,174 @@
 
 	  describe('1.2 DOM tree', function () {
 	    it('should read the section', function () {});
+
+	    // There are 12 node types. In practice we usually work with 4 of them:
+
+	    // document – the “entry point” into DOM.
+	    // element nodes – HTML-tags, the tree building blocks.
+	    // text nodes – contain text.
+	    // comments – sometimes we can put the information there, it won’t be shown, but JS can read it from the DOM.
+	  });
+
+	  describe('1.3 Walking the DOM', function () {
+	    describe('Document', function () {
+	      describe('document', function () {
+	        it('should be top most root to access everything elese', function () {
+	          expect(document).to.be.defined;
+	        });
+	      });
+
+	      describe('documentElement', function () {
+	        it('should point to HTML tag', function () {
+	          expect(document.documentElement.tagName).to.eql('HTML');
+	        });
+	      });
+
+	      describe('document.body', function () {
+	        it('should point to BODY tag', function () {
+	          expect(document.body.tagName).to.eql('BODY');
+	        });
+	      });
+
+	      describe('document.head', function () {
+	        it('should point to HEAD tag', function () {
+	          expect(document.head.tagName).to.eql('HEAD');
+	        });
+	      });
+	    });
+
+	    describe('Children', function () {
+	      describe('.childNodes', function () {
+	        it('should list all direct children including comments and other types, including text nodes', function () {
+	          expect(document.body.childNodes).to.be.defined;
+	        });
+	      });
+
+	      describe('.firstChild', function () {
+	        it('should get first child of childNodes', function () {
+	          expect(document.body.firstChild).to.equal(document.body.childNodes[0]);
+	        });
+	      });
+
+	      describe('.lastChild', function () {
+	        it('should get last child of childNodes', function () {
+	          expect(document.body.lastChild).to.equal(document.body.childNodes[document.body.childNodes.length - 1]);
+	        });
+	      });
+
+	      describe('.hasChildNodes()', function () {
+	        it('should check if element has any children', function () {
+	          expect(document.body.hasChildNodes()).to.be.true;
+	        });
+	      });
+	    });
+
+	    describe('DOM Collections', function () {
+	      it('should childNodes not be a collection, but we can convert to such', function () {
+	        expect(document.body.childNodes).not.to.be.an('array');
+	        expect(Array.from(document.body.childNodes)).to.be.an('array');
+	      });
+
+	      it('should be read-only', function () {
+	        // its not allowed
+	        // document.body.childNodes[i] = 
+	      });
+	    });
+
+	    describe('Siblings and The Parent', function () {
+	      it('should be nodes having the same parent (like head and body)', function () {});
+
+	      describe('.parentNode', function () {
+	        it('should give direct parent of the node', function () {
+	          expect(document.body.parentNode).to.eql(document.documentElement);
+	        });
+	      });
+
+	      describe('.nextSibling', function () {
+	        it('should give next sibling node', function () {
+	          expect(document.head.nextSibling).to.eql(document.body);
+	        });
+	      });
+
+	      describe('.previousSibling', function () {
+	        it('should give next sibling node', function () {
+	          expect(document.body.previousSibling).to.eql(document.head);
+	        });
+	      });
+	    });
+
+	    describe('Element Only Navigation', function () {
+	      describe('Children', function () {
+	        describe('.childNodes', function () {
+	          it('should list all direct children elements only', function () {
+	            expect(document.body.children).to.be.defined;
+	          });
+	        });
+
+	        describe('.firstElementChild', function () {
+	          it('should get first element child of children', function () {
+	            expect(document.body.firstElementChild).to.equal(document.body.children[0]);
+	          });
+	        });
+
+	        describe('.lastElementChild', function () {
+	          it('should get last element child of children', function () {
+	            expect(document.body.lastElementChild).to.equal(document.body.children[document.body.children.length - 1]);
+	          });
+	        });
+	      });
+
+	      describe('Siblings and The Parent', function () {
+	        it('should be elements having the same parent', function () {});
+
+	        describe('.parentElement', function () {
+	          it('should give direct parent element', function () {
+	            expect(document.body.parentElement).to.eql(document.documentElement);
+	          });
+
+	          it('should return document in case of parentNode', function () {
+	            expect(document.documentElement.parentNode).to.eql(document);
+	          });
+
+	          it('should return null in case of parentElement', function () {
+	            expect(document.documentElement.parentElement).to.be.null;
+	          });
+	        });
+
+	        describe('.nextElementSibling', function () {
+	          it('should give next sibling element', function () {
+	            expect(document.head.nextElementSibling).to.eql(document.body);
+	          });
+	        });
+
+	        describe('.previousElementSibling', function () {
+	          it('should give next sibling element', function () {
+	            expect(document.body.previousElementSibling).to.eql(document.head);
+	          });
+	        });
+	      });
+	    });
+
+	    describe('Tables and Its Own Properties', function () {
+	      var tbl = void 0;
+	      beforeEach(function () {
+	        tbl = document.createElement('table');
+	        tbl.setAttribute('id', 'table');
+	        document.body.appendChild(tbl);
+	      });
+
+	      afterEach(function () {
+	        if (tbl) {
+	          tbl.remove();
+	        }
+	      });
+
+	      it('should have rows', function () {
+	        expect(table).to.have.property('rows');
+	      });
+
+	      it('should behave...', function () {});
+	    });
 	  });
 	});
 
