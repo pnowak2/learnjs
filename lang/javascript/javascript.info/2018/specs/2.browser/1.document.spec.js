@@ -290,8 +290,150 @@ describe('2. Document', () => {
 
   describe('1.5 Node Properties: type, tag and contents', () => {
     describe('DOM node classes', () => {
-      it('should behave...', () => {
-        
+      it('should know inheritance hierarchy', () => {
+        EventTarget, Node, Text, Element, Comment, HTMLElement, SVGElement, HTMLInputElement, HTMLBodyElement, HTMLAnchorElement
+      });
+
+      it('should be instance of certain class', () => {
+        expect(document.body instanceof HTMLBodyElement).to.be.true;
+        expect(document.body.constructor.name).to.eql('HTMLBodyElement');
+      });
+    });
+
+    describe('The nodeType Property', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <span id="myEl" class="myClass" name="myName">
+            <div class="footer">
+              <a class="link" href="#">Link</a> 
+              <!-- Hello comment -->
+            </div>
+          </span>`;
+        document.body.appendChild(container);
+      });
+
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should know base node types', () => {
+        expect(Node.ELEMENT_NODE).to.eql(1);
+        expect(Node.TEXT_NODE).to.eql(3);
+        expect(Node.COMMENT_NODE).to.eql(8);
+        expect(Node.DOCUMENT_NODE).to.eql(9);
+      });
+      
+      it('should check for node types', () => {
+        const footer = container.querySelector('.footer');
+        const comment = footer.childNodes[3];
+        const text = footer.childNodes[4];
+
+        expect(footer.nodeType).to.eql(Node.ELEMENT_NODE);
+        expect(comment.nodeType).to.eql(Node.COMMENT_NODE);
+        expect(text.nodeType).to.eql(Node.TEXT_NODE);
+        expect(comment.textContent).to.eql(' Hello comment ');
+      });
+    });
+
+    describe('nodeName and tagName properties', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <span id="myEl" class="myClass" name="myName">
+            <div class="footer">
+              <a class="link" href="#">Link</a> 
+              <!-- Hello comment -->
+            </div>
+          </span>`;
+        document.body.appendChild(container);
+      });
+
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should nodeName be specific to any Node', () => {
+        expect(document.nodeName).to.eql('#document');
+        expect(document.tagName).to.eql(undefined);
+      });
+
+      it('should tagName be specific to any Element', () => {
+        expect(container.nodeName).to.eql('DIV');
+        expect(container.tagName).to.eql('DIV');
+      });
+    });
+
+    describe('innerHTML, the contents', () => {
+      it('should read inner html contents', () => {
+        let div = document.createElement('div');
+        let p = document.createElement('p');
+        p.setAttribute('class', 'myClass');
+        p.innerText = 'hello';
+        div.appendChild(p);
+
+        expect(div.innerHTML).to.eql('<p class="myClass">hello</p>');
+      });
+
+      it('should write inner html as contents', () => {
+        let div = document.createElement('div');
+        div.innerHTML = '<p class="myClass">hello</p>';
+      });
+    });
+
+    describe('outerHTML, the contents', () => {
+      it('should read inner html contents', () => {
+        let div = document.createElement('div');
+        let p = document.createElement('p');
+        p.setAttribute('class', 'myClass');
+        p.innerText = 'hello';
+        div.appendChild(p);
+
+        expect(div.outerHTML).to.eql('<div><p class="myClass">hello</p></div>');
+      });
+
+      it('should replace element with new html contents', () => {
+        let div = document.createElement('div');
+        // div.outerHTML = '<p class="myClass">hello</p>';
+      });
+    });
+
+    describe('nodeValue / data for nodes', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <span id="myEl">
+            Hello world
+            <!-- Comment here -->
+          </span>`;
+        document.body.appendChild(container);
+      });
+  
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should read whats inside node (for non elements)', () => {
+        const span = container.querySelector('#myEl');
+        const text = span.childNodes[0];
+        const comment = span.childNodes[1];
+        expect(text.data).to.eql('\n            Hello world\n            ');
+        expect(text.nodeValue).to.eql('\n            Hello world\n            ');
+        expect(text.textContent).to.eql('\n            Hello world\n            ');
+
+        expect(comment.data).to.eql(' Comment here ');
       });
     });
   });
