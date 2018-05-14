@@ -327,7 +327,7 @@ describe('2. Document', () => {
         expect(Node.COMMENT_NODE).to.eql(8);
         expect(Node.DOCUMENT_NODE).to.eql(9);
       });
-      
+
       it('should check for node types', () => {
         const footer = container.querySelector('.footer');
         const comment = footer.childNodes[3];
@@ -418,7 +418,7 @@ describe('2. Document', () => {
           </span>`;
         document.body.appendChild(container);
       });
-  
+
       afterEach(() => {
         if (container) {
           container.remove();
@@ -434,6 +434,146 @@ describe('2. Document', () => {
         expect(text.textContent).to.eql('\n            Hello world\n            ');
 
         expect(comment.data).to.eql(' Comment here ');
+      });
+    });
+
+    describe('textContent', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <span id="myEl">
+            Hello world
+            <div>buba</div>
+          </span>`;
+        container.getElementsByTagName('div')[0].textContent = 'sie ma';
+        document.body.appendChild(container);
+      });
+
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should read text content minus tags', () => {
+        expect(container.textContent).to.eql('\n          \n            Hello world\n            sie ma\n          ');
+      });
+    });
+
+    describe('The hidden property', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <span id="myEl">
+          </span>`;
+        document.body.appendChild(container);
+      });
+
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should hide element just like with css display: none', () => {
+        container.hidden = true;
+        expect(container.hidden).to.be.true;
+      });
+    });
+
+    describe('Other specific properties', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.innerHTML = `
+          <input type="text" value="hello"/>`;
+        document.body.appendChild(container);
+      });
+
+      afterEach(() => {
+        if (container) {
+          container.remove();
+        }
+      });
+
+      it('should have other properties depending on node/element type', () => {
+        const input = container.children[0];
+
+        expect(input.type).to.eql('text');
+        expect(input.value).to.eql('hello');
+      });
+    });
+  });
+
+  describe('1.6 Attributes and Properties', () => {
+    describe('DOM Properties', () => {
+      it('should add props to document body clasically', () => {
+        document.body.myData = {
+          name: 'peter',
+          title: 'dev'
+        };
+
+        expect(document.body.myData.title).to.eql('dev');
+
+        delete document.body.myData;
+      });
+    });
+
+    describe('HTML attributes', () => {
+      it('should have standard attributes', () => {
+        const input = document.createElement('input');
+
+        expect(input.type).to.eql('text');
+      });
+
+      it('should have non standard attributes', () => {
+        document.body.setAttribute('id', 'myId');
+        expect(document.body.id).to.eql('myId');
+      });
+
+      describe('.hasAttribute()', () => {
+        it('should check for attribute presence', () => {
+          const div = document.createElement('div');
+          div.setAttribute('title', 'message');
+
+          expect(div.hasAttribute('title')).to.be.true;
+        });
+      });
+      
+      describe('.getAttribute()', () => {
+        it('should get attribute value', () => {
+          const div = document.createElement('div');
+          div.setAttribute('title', 'message');
+
+          expect(div.getAttribute('title')).to.eql('message');
+        });
+      });
+
+      describe('.setAttribute()', () => {
+        it('should set attribute value', () => {
+          const div = document.createElement('div');
+          div.setAttribute('title', 'message');
+
+          expect(div.getAttribute('title')).to.eql('message');
+        });
+      });
+
+      describe('.removeAttribute()', () => {
+        it('should remove attribute', () => {
+          const div = document.createElement('div');
+          div.setAttribute('title', 'message');
+
+          expect(div.hasAttribute('title')).to.be.true;
+          
+          div.removeAttribute('title');
+
+          expect(div.hasAttribute('title')).not.to.be.true;
+        });
       });
     });
   });

@@ -28824,6 +28824,139 @@
 	        expect(comment.data).to.eql(' Comment here ');
 	      });
 	    });
+
+	    describe('textContent', function () {
+	      var container = void 0;
+
+	      beforeEach(function () {
+	        container = document.createElement('div');
+	        container.innerHTML = '\n          <span id="myEl">\n            Hello world\n            <div>buba</div>\n          </span>';
+	        container.getElementsByTagName('div')[0].textContent = 'sie ma';
+	        document.body.appendChild(container);
+	      });
+
+	      afterEach(function () {
+	        if (container) {
+	          container.remove();
+	        }
+	      });
+
+	      it('should read text content minus tags', function () {
+	        expect(container.textContent).to.eql('\n          \n            Hello world\n            sie ma\n          ');
+	      });
+	    });
+
+	    describe('The hidden property', function () {
+	      var container = void 0;
+
+	      beforeEach(function () {
+	        container = document.createElement('div');
+	        container.innerHTML = '\n          <span id="myEl">\n          </span>';
+	        document.body.appendChild(container);
+	      });
+
+	      afterEach(function () {
+	        if (container) {
+	          container.remove();
+	        }
+	      });
+
+	      it('should hide element just like with css display: none', function () {
+	        container.hidden = true;
+	        expect(container.hidden).to.be.true;
+	      });
+	    });
+
+	    describe('Other specific properties', function () {
+	      var container = void 0;
+
+	      beforeEach(function () {
+	        container = document.createElement('div');
+	        container.innerHTML = '\n          <input type="text" value="hello"/>';
+	        document.body.appendChild(container);
+	      });
+
+	      afterEach(function () {
+	        if (container) {
+	          container.remove();
+	        }
+	      });
+
+	      it('should have other properties depending on node/element type', function () {
+	        var input = container.children[0];
+
+	        expect(input.type).to.eql('text');
+	        expect(input.value).to.eql('hello');
+	      });
+	    });
+	  });
+
+	  describe('1.6 Attributes and Properties', function () {
+	    describe('DOM Properties', function () {
+	      it('should add props to document body clasically', function () {
+	        document.body.myData = {
+	          name: 'peter',
+	          title: 'dev'
+	        };
+
+	        expect(document.body.myData.title).to.eql('dev');
+
+	        delete document.body.myData;
+	      });
+	    });
+
+	    describe('HTML attributes', function () {
+	      it('should have standard attributes', function () {
+	        var input = document.createElement('input');
+
+	        expect(input.type).to.eql('text');
+	      });
+
+	      it('should have non standard attributes', function () {
+	        document.body.setAttribute('id', 'myId');
+	        expect(document.body.id).to.eql('myId');
+	      });
+
+	      describe('.hasAttribute()', function () {
+	        it('should check for attribute presence', function () {
+	          var div = document.createElement('div');
+	          div.setAttribute('title', 'message');
+
+	          expect(div.hasAttribute('title')).to.be.true;
+	        });
+	      });
+
+	      describe('.getAttribute()', function () {
+	        it('should get attribute value', function () {
+	          var div = document.createElement('div');
+	          div.setAttribute('title', 'message');
+
+	          expect(div.getAttribute('title')).to.eql('message');
+	        });
+	      });
+
+	      describe('.setAttribute()', function () {
+	        it('should set attribute value', function () {
+	          var div = document.createElement('div');
+	          div.setAttribute('title', 'message');
+
+	          expect(div.getAttribute('title')).to.eql('message');
+	        });
+	      });
+
+	      describe('.removeAttribute()', function () {
+	        it('should remove attribute', function () {
+	          var div = document.createElement('div');
+	          div.setAttribute('title', 'message');
+
+	          expect(div.hasAttribute('title')).to.be.true;
+
+	          div.removeAttribute('title');
+
+	          expect(div.hasAttribute('title')).not.to.be.true;
+	        });
+	      });
+	    });
 	  });
 	});
 
