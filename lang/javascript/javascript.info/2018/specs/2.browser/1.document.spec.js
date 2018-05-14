@@ -58,7 +58,7 @@ describe('2. Document', () => {
 
       describe('.lastChild', () => {
         it('should get last child of childNodes', () => {
-          expect(document.body.lastChild).to.equal(document.body.childNodes[document.body.childNodes.length-1]);
+          expect(document.body.lastChild).to.equal(document.body.childNodes[document.body.childNodes.length - 1]);
         });
       });
 
@@ -110,23 +110,23 @@ describe('2. Document', () => {
             expect(document.body.children).to.be.defined;
           });
         });
-  
+
         describe('.firstElementChild', () => {
           it('should get first element child of children', () => {
             expect(document.body.firstElementChild).to.equal(document.body.children[0]);
           });
         });
-  
+
         describe('.lastElementChild', () => {
           it('should get last element child of children', () => {
-            expect(document.body.lastElementChild).to.equal(document.body.children[document.body.children.length-1]);
+            expect(document.body.lastElementChild).to.equal(document.body.children[document.body.children.length - 1]);
           });
         });
       });
 
       describe('Siblings and The Parent', () => {
         it('should be elements having the same parent', () => { });
-  
+
         describe('.parentElement', () => {
           it('should give direct parent element', () => {
             expect(document.body.parentElement).to.eql(document.documentElement);
@@ -140,13 +140,13 @@ describe('2. Document', () => {
             expect(document.documentElement.parentElement).to.be.null;
           });
         });
-  
+
         describe('.nextElementSibling', () => {
           it('should give next sibling element', () => {
             expect(document.head.nextElementSibling).to.eql(document.body);
           });
         });
-  
+
         describe('.previousElementSibling', () => {
           it('should give next sibling element', () => {
             expect(document.body.previousElementSibling).to.eql(document.head);
@@ -156,15 +156,17 @@ describe('2. Document', () => {
     });
 
     describe('Tables and Its Own Properties', () => {
-      let tbl;
+      let tbl, tr;
       beforeEach(() => {
         tbl = document.createElement('table');
+        tr = document.createElement('tr');
         tbl.setAttribute('id', 'table');
+        tbl.appendChild(tr);
         document.body.appendChild(tbl);
       });
 
       afterEach(() => {
-        if(tbl) {
+        if (tbl) {
           tbl.remove();
         }
       });
@@ -172,9 +174,122 @@ describe('2. Document', () => {
       it('should have table related properties', () => {
         expect(table).to.have.property('rows');
         expect(table).to.have.property('caption');
+        expect(table).to.have.property('tHead');
+        expect(table).to.have.property('tFoot');
+        expect(table).to.have.property('tBodies');
+        expect(table.tbody).to.be.defined;
         expect(table).to.have.property('rows');
+        expect(table.rows[0]).to.have.property('cells');
+      });
+    });
+  });
+
+  describe('1.4 Searching: getElement* and querySelector*', () => {
+    let container;
+
+    beforeEach(() => {
+      container = document.createElement('div');
+      container.innerHTML = `
+        <span id="myEl" class="myClass" name="myName">
+          <div class="footer">
+            <a class="link" href="#">Link</a> 
+          </div>
+        </span>`;
+      document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+      if (container) {
+        container.remove();
+      }
+    });
+
+    describe('document.getElementById() or just id', () => {
+      it('should use id global property if element with such id exists', () => {
+        expect(window.myEl).to.be.defined;
       });
 
+      it('should use getElementById()', () => {
+        expect(document.getElementById('myEl')).not.to.be.null;
+      });
+    });
+
+    describe('.getElementsByTagName()', () => {
+      it('should get elements by its tag name, called in the context of any DOM element', () => {
+        const result = container.getElementsByTagName('span');
+        expect(result.length).to.eql(1);
+        expect(result[0].getAttribute('id')).to.eql('myEl');
+      });
+    });
+
+    describe('.getElementsByClassName()', () => {
+      it('should get elements by its class name, called in the context of any DOM element', () => {
+        const result = container.getElementsByClassName('myClass');
+        expect(result.length).to.eql(1);
+        expect(result[0].getAttribute('class')).to.eql('myClass');
+      });
+    });
+
+    describe('document.getElementsByName()', () => {
+      it('should get elements by its name, called in the context of any DOM element', () => {
+        const result = document.getElementsByName('myName');
+        expect(result.length).to.eql(1);
+        expect(result[0].getAttribute('name')).to.eql('myName');
+      });
+    });
+
+    describe('.querySelectorAll()', () => {
+      it('should query for elements with selector inside element', () => {
+        const result = container.querySelectorAll('.myClass');
+        expect(result.length).to.eql(1);
+        expect(result[0].getAttribute('class')).to.eql('myClass');
+      });
+    });
+
+    describe('.querySelector()', () => {
+      it('should query for first element with selector inside element', () => {
+        const result = container.querySelector('.myClass');
+        expect(result.getAttribute('class')).to.eql('myClass');
+      });
+    });
+
+    describe('.matches()', () => {
+      it('should check if elem matches css selector', () => {
+        const result = container.querySelector('.myClass');
+        expect(result.matches('span.myClass')).to.be.true;
+      });
+    });
+
+    describe('.closest()', () => {
+      it('should match closes parent in the hierarchy satisfying the query', () => {
+        const result = container.querySelector('.link');
+        expect(result.closest('.myClass').tagName).to.eql('SPAN');
+      });
+    });
+
+    describe('.contains()', () => {
+      it('should check if elem contains another element', () => {
+        const myCmp = container.querySelector('.myClass');
+        const link = container.querySelector('.link');
+        expect(myCmp.contains(link)).to.be.true;
+      });
+    });
+
+    describe('Live Collections', () => {
+      it('should update collections live, works like live queries', () => {
+        const result = container.querySelector('.myClass');
+        expect(result.children.length).to.eql(1);
+
+        let div = document.createElement('span');
+        result.appendChild(div);
+
+        expect(result.children.length).to.eql(2);
+      });
+    });
+  });
+
+  describe('1.5 Node Properties: type, tag and contents', () => {
+    describe('DOM node classes', () => {
       it('should behave...', () => {
         
       });
