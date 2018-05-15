@@ -575,6 +575,17 @@ describe('2. Document', () => {
           expect(div.hasAttribute('title')).not.to.be.true;
         });
       });
+
+      describe('.attributes()', () => {
+        it('should list all attributes', () => {
+          const div = document.createElement('div');
+          div.setAttribute('title', 'message');
+
+          expect(div.attributes.length === 1).to.be.true;
+          expect(div.attributes['title'].value).to.eql('message');
+          expect(div.attributes[0].name).to.eql('title');
+        });
+      });
     });
   });
 });
