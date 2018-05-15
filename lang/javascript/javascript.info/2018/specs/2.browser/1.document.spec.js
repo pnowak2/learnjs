@@ -1021,9 +1021,97 @@ describe('2. Document', () => {
   });
 
   describe('1.8 Styles and Classes', () => {
-    describe('className and classList', () => {
-      it('should behave...', () => {
+    describe('className', () => {
+      it('should assign a class to element', () => {
+        const div = document.createElement('div');
+        div.className = 'myClass';
+
+        expect(div.outerHTML).to.eql('<div class="myClass"></div>')
+      });
+
+      it('should replace all existing classes', () => {
+        const div = document.createElement('div');
+        div.setAttribute('class', 'a b');
+        expect(div.outerHTML).to.eql('<div class="a b"></div>')
+
+        div.className = 'myClass';
+
+        expect(div.outerHTML).to.eql('<div class="myClass"></div>')
+      });
+    });
+
+    describe('classList', () => {
+      it('classList.contains()', () => {
+        const div = document.createElement('div');
+        div.setAttribute('class', 'a b');
+
+        expect(div.classList.contains('a')).to.be.true;
+        expect(div.classList.contains('c')).to.be.false;
+      });
+
+      it('classList.add()', () => {
+        const div = document.createElement('div');
+        div.classList.add('a');
         
+        expect(div.classList.contains('a')).to.be.true;
+        expect(div.classList.contains('c')).to.be.false;
+      });
+
+      it('classList.remove()', () => {
+        const div = document.createElement('div');
+        div.classList.add('a');
+
+        expect(div.classList.contains('a')).to.be.true;
+
+        div.classList.remove('a');
+
+        expect(div.classList.contains('a')).to.be.false;
+      });
+
+      it('should classList be iterable', () => {
+        const div = document.createElement('div');
+        div.classList.add('a');
+        div.classList.add('b');
+        div.classList.add('c');
+
+        const classes = Array.from(div.classList);
+
+        expect(classes).to.eql(['a', 'b', 'c']);
+      });
+    });
+
+    describe('element.style', () => {
+      it('should have properties from style', () => {
+        const div = document.createElement('div');
+        div.setAttribute('style', 'width: 100px; color: red; border-left-width: 5px');
+        
+        expect(div.style.width).to.eql('100px');
+        expect(div.style.color).to.eql('red');
+        expect(div.style.borderLeftWidth).to.eql('5px');
+      });
+
+      it('should reset the style property by assigning empty string to property', () => {
+        const div = document.createElement('div');
+        div.setAttribute('style', 'width: 100px');
+        
+        div.style.width = '';
+
+        expect(div.style.width).to.eql('');
+      });
+
+      it('should use cssText', () => {
+        const div = document.createElement('div');
+        div.style.cssText=`
+          color: red !important;
+          background-color: yellow;
+          width: 100px;
+          text-align: center;
+      `;
+        
+        expect(div.style.color).to.eql('red');
+        expect(div.style.width).to.eql('100px');
+        expect(div.style.backgroundColor).to.eql('yellow');
+        expect(div.style.textAlign).to.eql('center');
       });
     });
   });
