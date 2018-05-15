@@ -766,6 +766,264 @@ describe('2. Document', () => {
             expect(div.outerHTML).to.eql('<div><p>yo</p><span></span><p></p></div>');
           });
         });
+
+        describe('node.prepend(...nodes, or strings)', () => {
+          it('should prepend strings at the beginning of the node', () => {
+            const div = document.createElement('div');
+            div.innerHTML = '<p>yo</p>';
+            div.prepend('This is text');
+
+            expect(div.outerHTML).to.eql('<div>This is text<p>yo</p></div>');
+          });
+
+          it('should prepend nodes at the beginning of the node', () => {
+            const div = document.createElement('div');
+            div.innerHTML = '<p>yo</p>';
+            const span = document.createElement('span');
+            const p = document.createElement('p');
+            div.prepend(span, p);
+
+            expect(div.outerHTML).to.eql('<div><span></span><p></p><p>yo</p></div>');
+          });
+        });
+
+        describe('node.before(...nodes, or strings)', () => {
+          it('should insert text before node', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.before('Hello world');
+
+            expect(parent.outerHTML).to.eql('<div>Hello world<p>text</p></div>');
+          });
+
+          it('should insert node before node', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.before(document.createElement('span'));
+
+            expect(parent.outerHTML).to.eql('<div><span></span><p>text</p></div>');
+          });
+        });
+
+        describe('node.after(...nodes, or strings)', () => {
+          it('should insert text after node', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.after('Hello world');
+
+            expect(parent.outerHTML).to.eql('<div><p>text</p>Hello world</div>');
+          });
+
+          it('should insert node after node', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.after(document.createElement('span'));
+
+            expect(parent.outerHTML).to.eql('<div><p>text</p><span></span></div>');
+          });
+        });
+
+        describe('node.replaceWith(...nodes, or strings)', () => {
+          it('should replace node with text', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.replaceWith('Hello world');
+
+            expect(parent.outerHTML).to.eql('<div>Hello world</div>');
+          });
+
+          it('should replace node with another node', () => {
+            const parent = document.createElement('div');
+            const p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+ 
+            p.replaceWith(document.createElement('marquee'));
+
+            expect(parent.outerHTML).to.eql('<div><marquee></marquee></div>');
+          });
+        });
+      });
+
+      describe('insertAdjacentHTML/Text/Element', () => {
+        // type InsertPosition = "beforebegin" | "afterbegin" | "beforeend" | "afterend";
+        describe('parent.insertAdjacentElement()', () => {
+          let parent, p, span;
+
+          beforeEach(() => {
+            parent = document.createElement('div');
+            p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+  
+            span = document.createElement('span');
+          });
+
+          it('should insert "beforebegin"', () => {
+            p.insertAdjacentElement('beforebegin', span);
+            expect(parent.outerHTML).to.eql('<div><span></span><p>text</p></div>');
+          });
+
+          it('should insert "afterbegin"', () => {
+            p.insertAdjacentElement('afterbegin', span);
+            expect(parent.outerHTML).to.eql('<div><p><span></span>text</p></div>');
+          });
+
+          it('should insert "beforeend"', () => {
+            p.insertAdjacentElement('beforeend', span);
+            expect(parent.outerHTML).to.eql('<div><p>text<span></span></p></div>');
+          });
+
+          it('should insert "afterend"', () => {
+            p.insertAdjacentElement('afterend', span);
+            expect(parent.outerHTML).to.eql('<div><p>text</p><span></span></div>');
+          });
+        });
+
+        describe('parent.insertAdjacentText()', () => {
+          let parent, p;
+
+          beforeEach(() => {
+            parent = document.createElement('div');
+            p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+          });
+
+          it('should insert "beforebegin"', () => {
+            p.insertAdjacentText('beforebegin', 'hello');
+            expect(parent.outerHTML).to.eql('<div>hello<p>text</p></div>');
+          });
+
+          it('should insert "afterbegin"', () => {
+            p.insertAdjacentText('afterbegin', 'hello');
+            expect(parent.outerHTML).to.eql('<div><p>hellotext</p></div>');
+          });
+
+          it('should insert "beforeend"', () => {
+            p.insertAdjacentText('beforeend', 'hello');
+            expect(parent.outerHTML).to.eql('<div><p>texthello</p></div>');
+          });
+
+          it('should insert "afterend"', () => {
+            p.insertAdjacentText('afterend', 'hello');
+            expect(parent.outerHTML).to.eql('<div><p>text</p>hello</div>');
+          });
+        });
+
+        describe('parent.insertAdjacentHTML()', () => {
+          let parent, p;
+
+          beforeEach(() => {
+            parent = document.createElement('div');
+            p = document.createElement('p');
+            p.textContent = 'text';
+            parent.appendChild(p);
+          });
+
+          it('should insert "beforebegin"', () => {
+            p.insertAdjacentHTML('beforebegin', '<span></span>');
+            expect(parent.outerHTML).to.eql('<div><span></span><p>text</p></div>');
+          });
+
+          it('should insert "afterbegin"', () => {
+            p.insertAdjacentHTML('afterbegin', '<span></span>');
+            expect(parent.outerHTML).to.eql('<div><p><span></span>text</p></div>');
+          });
+
+          it('should insert "beforeend"', () => {
+            p.insertAdjacentHTML('beforeend', '<span></span>');
+            expect(parent.outerHTML).to.eql('<div><p>text<span></span></p></div>');
+          });
+
+          it('should insert "afterend"', () => {
+            p.insertAdjacentHTML('afterend', '<span></span>');
+            expect(parent.outerHTML).to.eql('<div><p>text</p><span></span></div>');
+          });
+        });
+      });
+
+      describe('All Insertion Methods Remove Node From Old Place', () => {
+        it('should remove node from old place', () => {
+          let div = document.createElement('div');
+          let a = document.createElement('a');
+          let b = document.createElement('b');
+
+          div.append(a, b);
+
+          b.after(a);
+
+          expect(div.outerHTML).to.eql('<div><b></b><a></a></div>');
+        });
+      });
+    });
+
+    describe('Cloning nodes: cloneNode()', () => {
+      it('should clone deeply (true)', () => {
+        let div = document.createElement('div');
+        div.innerHTML = `<span>hello<b>world</b></span>`;
+
+        const clone = div.cloneNode(true);
+
+        expect(clone.outerHTML).to.eql(`<div><span>hello<b>world</b></span></div>`);
+      });
+
+      it('should clone shallow, without child elements (false)', () => {
+        let div = document.createElement('div');
+        div.innerHTML = `<span>hello<b>world</b></span>`;
+
+        const clone = div.cloneNode(false);
+
+        expect(clone.outerHTML).to.eql(`<div></div>`);
+      });
+    });
+
+    describe('Removal Methods', () => {
+      describe('parentElem.removeChild(node)', () => {
+        it('should remove child node', () => {
+          let div = document.createElement('div');
+          div.insertAdjacentHTML('beforeend', '<span>hello</span><b id="bee">world</b>');
+          const b = div.children[1];
+
+          const removed = div.removeChild(b);
+
+          expect(div.outerHTML).to.eql('<div><span>hello</span></div>');
+          expect(removed.outerHTML).to.eql('<b id="bee">world</b>');
+        });
+
+        it('should remove node', () => {
+          let div = document.createElement('div');
+          div.insertAdjacentHTML('beforeend', '<span>hello</span><b id="bee">world</b>');
+          const b = div.children[1];
+
+          const removed = b.remove();
+
+          expect(div.outerHTML).to.eql('<div><span>hello</span></div>');
+          expect(removed).to.be.undefined;
+        });
+      });
+    });
+  });
+
+  describe('1.8 Styles and Classes', () => {
+    describe('className and classList', () => {
+      it('should behave...', () => {
+        
       });
     });
   });
