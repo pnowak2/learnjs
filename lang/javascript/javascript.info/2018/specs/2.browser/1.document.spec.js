@@ -544,7 +544,7 @@ describe('2. Document', () => {
           expect(div.hasAttribute('title')).to.be.true;
         });
       });
-      
+
       describe('.getAttribute()', () => {
         it('should get attribute value', () => {
           const div = document.createElement('div');
@@ -569,7 +569,7 @@ describe('2. Document', () => {
           div.setAttribute('title', 'message');
 
           expect(div.hasAttribute('title')).to.be.true;
-          
+
           div.removeAttribute('title');
 
           expect(div.hasAttribute('title')).not.to.be.true;
@@ -584,6 +584,187 @@ describe('2. Document', () => {
           expect(div.attributes.length === 1).to.be.true;
           expect(div.attributes['title'].value).to.eql('message');
           expect(div.attributes[0].name).to.eql('title');
+        });
+      });
+
+      describe('Property Synchronization', () => {
+        it('should standard properties sync with attributes', () => {
+          const input = document.createElement('input');
+          input.setAttribute('id', 'myId');
+
+          expect(input.id).to.eql('myId');
+
+          input.id = 'newId';
+
+          expect(input.getAttribute('id')).to.eql('newId');
+        });
+
+        it('should have exceptions like input.value', () => {
+          const input = document.createElement('input');
+          input.setAttribute('value', 'peter');
+
+          expect(input.value).to.eql('peter');
+
+          input.value = 'andrew';
+
+          expect(input.getAttribute('value')).to.eql('peter');
+        });
+      });
+
+      describe('DOM properties are typed', () => {
+        it('should attributes be always strings, while values not neccessarily', () => {
+          const checkbox = document.createElement('input');
+          checkbox.setAttribute('type', 'checkbox');
+          checkbox.setAttribute('checked', '');
+          checkbox.setAttribute('style', 'color: red, width: 50%');
+
+          expect(checkbox.getAttribute('checked')).to.eql('');
+          expect(checkbox.getAttribute('style')).to.eql('color: red, width: 50%');
+          expect(checkbox.checked).to.be.true;
+          expect(checkbox.style).to.haveOwnProperty('color');
+          expect(checkbox.style).to.haveOwnProperty('width');
+        });
+      });
+
+      describe('Non-standard attributes, dataset', () => {
+        it('should use data attributes', () => {
+          let div = document.createElement('div');
+          div.setAttribute('data-hello', 'world');
+
+          expect(div.dataset.hello).to.eql('world');
+        });
+      });
+    });
+  });
+
+  describe('1.7 Modifying the Document', () => {
+    describe('Creating element', () => {
+      describe('document.createElement()', () => {
+        it('should create an element', () => {
+          const div = document.createElement('div');
+
+          expect(div.outerHTML).to.eql('<div></div>');
+        });
+      });
+
+      describe('document.createTextNode()', () => {
+        it('should create a text node', () => {
+          const text = document.createTextNode('hello world');
+
+          expect(text.data).to.eql('hello world');
+          expect(text.nodeValue).to.eql('hello world');
+        });
+      });
+
+      describe('Create Element with Text', () => {
+        it('should create a text node', () => {
+          const div = document.createElement('div');
+          const text = document.createTextNode('hello world');
+          div.appendChild(text);
+
+          expect(div.outerHTML).to.eql('<div>hello world</div>');
+        });
+      });
+    });
+
+    describe('Insertion methods', () => {
+      describe('parent.appendChild()', () => {
+        it('should append child to parent', () => {
+          const parent = document.createElement('div');
+          const div = document.createElement('span');
+          div.className = 'hello';
+
+          parent.appendChild(div);
+
+          expect(parent.outerHTML).to.eql('<div><span class="hello"></span></div>');
+        });
+
+        it('should append a child and remove from other parent if it exists', () => {
+          const parent = document.createElement('div');
+          const div = document.createElement('span');
+          div.className = 'hello';
+
+          parent.appendChild(div);
+
+          expect(parent.outerHTML).to.eql('<div><span class="hello"></span></div>');
+
+          const newParent = document.createElement('div');
+          newParent.appendChild(div);
+
+          expect(parent.outerHTML).to.eql('<div></div>');
+          expect(newParent.outerHTML).to.eql('<div><span class="hello"></span></div>');
+          
+        });
+      });
+
+      describe('parent.insertBefore(node, nextSibling)', () => {
+        it('should insert node into parent, just before given sibling (prepend to sibling)', () => {
+          const parent = document.createElement('div');
+          parent.innerHTML = `
+          <ul id='list'>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+          </ul>
+          `;
+          const list = parent.querySelector('#list');
+          const newLi = document.createElement('li');
+          newLi.innerHTML = 'hello world';
+
+          list.insertBefore(newLi, list.children[1]);
+
+          const result = document.createElement('div');
+
+          expect(list.children[0].textContent).to.eql('1');
+          expect(list.children[1].textContent).to.eql('hello world');
+          expect(list.children[2].textContent).to.eql('2');
+          expect(list.children[3].textContent).to.eql('3');
+        });
+      });
+
+      describe('parent.replaceChild(node, oldChild)', () => {
+        it('should replace node into parent with new child, replacing the already existing one', () => {
+          const parent = document.createElement('div');
+          parent.innerHTML = `
+          <ul id='list'>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+          </ul>
+          `;
+          const list = parent.querySelector('#list');
+          const newLi = document.createElement('li');
+          newLi.innerHTML = 'hello world';
+
+          list.replaceChild(newLi, list.children[1]);
+
+          const result = document.createElement('div');
+
+          expect(list.children[0].textContent).to.eql('1');
+          expect(list.children[1].textContent).to.eql('hello world');
+          expect(list.children[2].textContent).to.eql('3');
+        });
+      });
+      
+      describe('prepend/append/before/after', () => {
+        describe('node.append(...nodes, or strings)', () => {
+          it('should append strings at the end of the node', () => {
+            const div = document.createElement('div');
+            div.innerHTML = '<p>yo</p>';
+            div.append('This is text');
+
+            expect(div.outerHTML).to.eql('<div><p>yo</p>This is text</div>');
+          });
+
+          it('should append nodes at the end of the node', () => {
+            const div = document.createElement('div');
+            div.innerHTML = '<p>yo</p>';
+            const span = document.createElement('span');
+            const p = document.createElement('p');
+            div.append(span, p);
+
+            expect(div.outerHTML).to.eql('<div><p>yo</p><span></span><p></p></div>');
+          });
         });
       });
     });
