@@ -1068,6 +1068,17 @@ describe('2. Document', () => {
         expect(div.classList.contains('a')).to.be.false;
       });
 
+      it('classList.toggle()', () => {
+        const div = document.createElement('div');
+        div.classList.toggle('a');
+
+        expect(div.classList.contains('a')).to.be.true;
+
+        div.classList.toggle('a');
+
+        expect(div.classList.contains('a')).to.be.false;
+      });
+
       it('should classList be iterable', () => {
         const div = document.createElement('div');
         div.classList.add('a');
