@@ -1113,6 +1113,30 @@ describe('2. Document', () => {
         expect(div.style.backgroundColor).to.eql('yellow');
         expect(div.style.textAlign).to.eql('center');
       });
+
+      it('should mind the units', () => {
+        const div = document.createElement('div');
+        div.setAttribute('style', 'width: 100px; top: 5rem');
+
+        expect(div.style.width).to.eql('100px');
+        expect(div.style.top).to.eql('5rem');
+      });
+    });
+
+    describe('Computed styles: .getComputedStyle()', () => {
+      it('should read computed style, resolved in px, not only from style property but computed once everything settled down', () => {
+        document.body.style.marginTop = '2rem';
+        expect(getComputedStyle(document.body).marginTop).to.eql('32px');
+        document.body.style.marginTop = '';
+      });
+    });
+  });
+
+  describe('1.9 Element Size And Scrolling', () => {
+    describe('Name of the group', () => {
+      it('should behave...', () => {
+        
+      });
     });
   });
 });
