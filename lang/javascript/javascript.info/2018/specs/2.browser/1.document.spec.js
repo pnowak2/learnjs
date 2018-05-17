@@ -1394,6 +1394,14 @@ describe('2. Document', () => {
       });
     });
   });
+
+  describe('1.10 Window Sizes And Scrolling', () => {
+    describe('Window Width / Height', () => {
+      it('should behave...', () => {
+        
+      });
+    });
+  });
 });
 
 function isFirefox() {
