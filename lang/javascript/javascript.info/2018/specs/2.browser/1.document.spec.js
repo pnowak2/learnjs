@@ -621,8 +621,6 @@ describe('2. Document', () => {
           expect(checkbox.getAttribute('checked')).to.eql('');
           expect(checkbox.getAttribute('style')).to.eql('color: red, width: 50%');
           expect(checkbox.checked).to.be.true;
-          expect(checkbox.style).to.haveOwnProperty('color');
-          expect(checkbox.style).to.haveOwnProperty('width');
         });
       });
 
@@ -693,7 +691,7 @@ describe('2. Document', () => {
 
           expect(parent.outerHTML).to.eql('<div></div>');
           expect(newParent.outerHTML).to.eql('<div><span class="hello"></span></div>');
-          
+
         });
       });
 
@@ -745,7 +743,7 @@ describe('2. Document', () => {
           expect(list.children[2].textContent).to.eql('3');
         });
       });
-      
+
       describe('prepend/append/before/after', () => {
         describe('node.append(...nodes, or strings)', () => {
           it('should append strings at the end of the node', () => {
@@ -793,7 +791,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.before('Hello world');
 
             expect(parent.outerHTML).to.eql('<div>Hello world<p>text</p></div>');
@@ -804,7 +802,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.before(document.createElement('span'));
 
             expect(parent.outerHTML).to.eql('<div><span></span><p>text</p></div>');
@@ -817,7 +815,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.after('Hello world');
 
             expect(parent.outerHTML).to.eql('<div><p>text</p>Hello world</div>');
@@ -828,7 +826,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.after(document.createElement('span'));
 
             expect(parent.outerHTML).to.eql('<div><p>text</p><span></span></div>');
@@ -841,7 +839,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.replaceWith('Hello world');
 
             expect(parent.outerHTML).to.eql('<div>Hello world</div>');
@@ -852,7 +850,7 @@ describe('2. Document', () => {
             const p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
- 
+
             p.replaceWith(document.createElement('marquee'));
 
             expect(parent.outerHTML).to.eql('<div><marquee></marquee></div>');
@@ -870,7 +868,7 @@ describe('2. Document', () => {
             p = document.createElement('p');
             p.textContent = 'text';
             parent.appendChild(p);
-  
+
             span = document.createElement('span');
           });
 
@@ -1052,7 +1050,7 @@ describe('2. Document', () => {
       it('classList.add()', () => {
         const div = document.createElement('div');
         div.classList.add('a');
-        
+
         expect(div.classList.contains('a')).to.be.true;
         expect(div.classList.contains('c')).to.be.false;
       });
@@ -1095,7 +1093,7 @@ describe('2. Document', () => {
       it('should have properties from style', () => {
         const div = document.createElement('div');
         div.setAttribute('style', 'width: 100px; color: red; border-left-width: 5px');
-        
+
         expect(div.style.width).to.eql('100px');
         expect(div.style.color).to.eql('red');
         expect(div.style.borderLeftWidth).to.eql('5px');
@@ -1104,7 +1102,7 @@ describe('2. Document', () => {
       it('should reset the style property by assigning empty string to property', () => {
         const div = document.createElement('div');
         div.setAttribute('style', 'width: 100px');
-        
+
         div.style.width = '';
 
         expect(div.style.width).to.eql('');
@@ -1112,13 +1110,13 @@ describe('2. Document', () => {
 
       it('should use cssText', () => {
         const div = document.createElement('div');
-        div.style.cssText=`
+        div.style.cssText = `
           color: red !important;
           background-color: yellow;
           width: 100px;
           text-align: center;
       `;
-        
+
         expect(div.style.color).to.eql('red');
         expect(div.style.width).to.eql('100px');
         expect(div.style.backgroundColor).to.eql('yellow');
@@ -1134,21 +1132,286 @@ describe('2. Document', () => {
       });
     });
 
-    describe('Computed styles: .getComputedStyle()', () => {
+    describe('.getComputedStyle()', () => {
       it('should read computed style, resolved in px, not only from style property but computed once everything settled down', () => {
         document.body.style.marginTop = '2rem';
         expect(getComputedStyle(document.body).marginTop).to.eql('32px');
         document.body.style.marginTop = '';
       });
+
+      describe('box-sizing', () => {
+        describe('content-box makes style width apply to content only, without padding and margin', () => {
+          it('should return size without border and padding', () => {
+            const div = document.createElement('div');
+            div.innerHTML = 'content-box <br/>Lorem ipsum dolor sit amet';
+            div.style.cssText = `
+            width: 300px;
+            height: 200px;
+            border: 25px solid #e8c48f;
+            box-sizing: content-box;
+            padding: 20px;
+          `;
+            document.body.appendChild(div);
+
+            expect(getComputedStyle(div).width).to.eql('300px')
+
+            div.remove();
+          });
+
+          it('should return size without border and padding and minus scroll (not firefox)', () => {
+            const div = document.createElement('div');
+            div.innerHTML = 'content-box, scroll <br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+            div.style.cssText = `
+            width: 300px;
+            height: 200px;
+            border: 25px solid #e8c48f;
+            box-sizing: content-box;
+            padding: 20px;
+            overflow: auto;
+          `;
+            document.body.appendChild(div);
+
+            if (isFirefox()) {
+              expect(getComputedStyle(div).width).to.eql('300px');
+            } else {
+              expect(getComputedStyle(div).width).to.eql(300 - getScrollSize() + 'px');
+            }
+
+            div.remove();
+          });
+        });
+
+        describe('border-box, makes style width apply to total width of box, including padding and margin, thus making content smaller', () => {
+          it('should return size including border and padding', () => {
+            const div = document.createElement('div');
+            div.innerHTML = 'border box, <br/>Lorem ipsum dolor sit amet';
+            div.style.cssText = `
+            width: 300px;
+            height: 200px;
+            border: 25px solid #e8c48f;
+            box-sizing: border-box;
+            padding: 20px;
+          `;
+            document.body.appendChild(div);
+
+            expect(getComputedStyle(div).width).to.eql('300px')
+
+            div.remove();
+          });
+
+          it('should return size including border and padding + scroll', () => {
+            const div = document.createElement('div');
+            div.innerHTML = 'border-box, scroll <br/>dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+            div.style.cssText = `
+            width: 300px;
+            height: 200px;
+            border: 25px solid #e8c48f;
+            box-sizing: border-box;
+            padding: 20px;
+            overflow: auto;
+          `;
+            document.body.appendChild(div);
+
+            expect(getComputedStyle(div).width).to.eql('300px')
+
+            div.remove();
+          });
+        });
+      });
     });
   });
 
   describe('1.9 Element Size And Scrolling', () => {
-    describe('Name of the group', () => {
-      it('should behave...', () => {
-        
+    let parent;
+    let div;
+
+    beforeEach(() => {
+      parent = document.createElement('div');
+      parent.className = 'parent';
+      parent.style.cssText = `
+        border: 1px solid red;
+        position: relative;
+        width: 500px;
+        height: 600px;
+      `;
+
+      div = document.createElement('div');
+      div.innerHTML = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+      div.style.cssText = `
+        width: 300px;
+        height: 200px;
+        border: 25px solid #e8c48f;
+        border-left-width: 15px;
+        border-right-width: 35px;
+        box-sizing: content-box;
+        position: absolute;
+        padding: 20px;
+        overflow: auto;
+        top: 50px;
+        left: 70px;
+      `;
+      parent.appendChild(div);
+      document.body.appendChild(parent);
+    });
+
+    afterEach(() => {
+      parent.remove();
+    });
+
+    describe('Scroll Size', () => {
+      it('should calculate scroll size using difference of offsetWidth and clientWidth', () => {
+        expect(getScrollSize()).to.be.a('number');
+      });
+    });
+
+    describe('Geometry properties', () => {
+      it('should know base box properties', () => {
+        const div = document.createElement('div');
+        div.offsetParent;
+        div.offsetTop;
+        div.offsetLeft;
+        div.offsetWidth;
+        div.offsetHeight;
+
+        div.scrollTop;
+        div.scrollLeft;
+        div.scrollWidth;
+        div.scrollHeight;
+
+        div.clientWidth;
+        div.clientHeight;
+        div.clientLeft;
+        div.clientTop;
+      });
+    });
+
+    it('should geometry props be zero for hidden elements', () => {
+      expect(div.offsetWidth).to.be.greaterThan(0);
+      expect(div.clientWidth).to.be.greaterThan(0);
+      
+      div.hidden = true;
+
+      expect(div.offsetWidth).to.eql(0);
+      expect(div.clientWidth).to.eql(0);
+    });
+
+    it('should not take geometry from getComputedStyle() / CSS, it depends on box sizing and browser inconsistencies (scroolbar i.e.)', () => { });
+
+    describe('Offset', () => {
+      describe('.offsetParent', () => {
+        it('should find first parent which is positioned (with position relative, absolute, fixed, tables or body)', () => {
+          expect(div.offsetParent === parent).to.be.true;
+        });
+      });
+
+      describe('.offsetTop', () => {
+        it('should return top distance from top/left offsetParent corner', () => {
+          expect(div.offsetTop).to.eql(50);
+        });
+      });
+
+      describe('.offsetLeft', () => {
+        it('should return left distance from top/left offsetParent corner', () => {
+          expect(div.offsetLeft).to.eql(70);
+        });
+      });
+
+      describe('.offsetWidth', () => {
+        it('should return outermost width including paddings and borders', () => {
+          expect(div.offsetWidth).to.eql(390);
+        });
+      });
+
+      describe('.offsetHeight', () => {
+        it('should return outermost height including paddings and borders', () => {
+          expect(div.offsetHeight).to.eql(290);
+        });
+      });
+    });
+
+    describe('Client', () => {
+      describe('.clientTop', () => {
+        it('should measure size of border-top-width, plus height of scrollbar if its on top', () => {
+          expect(div.clientTop).to.eql(25);
+        });
+      });
+
+      describe('.clientLeft', () => {
+        it('should measure size of border-left-width, plus height of scrollbar if its on left', () => {
+          expect(div.clientLeft).to.eql(15);
+        });
+      });
+
+      describe('.clientLeft with scroll', () => {
+        it('should measure size of border-left-width, plus height of scrollbar if its on left', () => {
+          div.style.direction = 'rtl';
+          expect(div.clientLeft).to.eql(15 + getScrollSize());
+        });
+      });
+
+      describe('.clientWidth', () => {
+        it('should return width together with paddings but without scrollbar', () => {
+          expect(div.clientWidth).to.eql(300 /* width */ + 2 * 20 /* paddings */ - getScrollSize());
+        });
+      });
+
+      describe('.clientHeight', () => {
+        it('should return height together with paddings but without scrollbar', () => {
+          expect(div.clientHeight).to.eql(200 /* width */ + 2 * 20 /* paddings */);
+        });
+      });
+    });
+
+    describe('Scroll', () => {
+      describe('.scrollWidth', () => {
+        it('should measure width of whole element, even that not visible, hidden behind scroll', () => {
+          expect(div.scrollWidth).to.eql(300 /* width */ + 2*20 /* paddings */ - getScrollSize());
+        });
+
+        it('should be same as clientWidth if no horizontal scroll', () => {
+          expect(div.scrollWidth).to.eql(div.clientWidth);
+        });
+      });
+
+      describe('.scrollHeight', () => {
+        it('should measure height of whole element, even that not visible, hidden behind scroll', () => {
+          expect(div.scrollHeight).to.be.greaterThan(300 /* hard to test on different browsers, its enought to know how it works */);
+        });
+      });
+
+      describe('.scrollTop', () => {
+        it('should measure amount of vertical scroll', () => {
+          div.scrollTop += 250;
+          expect(div.scrollTop).to.eql(250);
+        });
+      });
+
+      describe('.scrollLeft', () => {
+        it('should measure amount of horizontal scroll', () => {
+          div.scrollLeft += 50;
+          expect(div.scrollLeft).to.eql(0); // no scroll here from css styles and content, that's why 0
+        });
       });
     });
   });
 });
 
+function isFirefox() {
+  return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+}
+
+function getScrollSize() {
+  const div = document.createElement('div');
+  div.style.cssText = `
+    width: 50px;
+    height: 50px;
+    overflow-y: scroll;
+  `;
+  document.body.appendChild(div);
+
+  let size = div.offsetWidth - div.clientWidth;
+
+  div.remove();
+
+  return size;
+}
