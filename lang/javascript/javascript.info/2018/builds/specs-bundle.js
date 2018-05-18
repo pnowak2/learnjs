@@ -52,7 +52,8 @@
 	__webpack_require__(213);
 	__webpack_require__(215);
 	__webpack_require__(219);
-	module.exports = __webpack_require__(230);
+	__webpack_require__(230);
+	module.exports = __webpack_require__(232);
 
 
 /***/ }),
@@ -29812,6 +29813,55 @@
 	      });
 	    });
 	  });
+
+	  describe('1.11 Coordinates', function () {
+	    describe('element.getBoundingClientRect() - Window coordinates', function () {
+	      it('should window related coordinates rectangle points (they dont take scrolled part into account)', function () {
+	        var div = document.createElement('div');
+	        document.body.appendChild(div);
+
+	        // measured from top left window corner
+	        expect(div.getBoundingClientRect().top).to.be.a('number');
+	        expect(div.getBoundingClientRect().right).to.be.a('number');
+	        expect(div.getBoundingClientRect().bottom).to.be.a('number');
+	        expect(div.getBoundingClientRect().left).to.be.a('number');
+
+	        div.remove();
+	      });
+	    });
+
+	    describe('Document Coordinates', function () {
+	      it('should get Y coordinate by combining getBoundingClientRect().top and window.pageYOffset', function () {
+	        var div = document.createElement('div');
+	        document.body.appendChild(div);
+
+	        var y = div.getBoundingClientRect().top + pageYOffset;
+	        expect(y).to.be.a('number');
+
+	        div.remove();
+	      });
+
+	      it('should get X coordinate by combining getBoundingClientRect().left and window.pageXOffset', function () {
+	        var div = document.createElement('div');
+	        document.body.appendChild(div);
+
+	        var x = div.getBoundingClientRect().left + pageXOffset;
+	        expect(x).to.be.a('number');
+
+	        div.remove();
+	      });
+	    });
+
+	    describe('element.fromPoint(x, y) - gets the most nested element at this position', function () {
+	      it('should return most nested visible element at position', function () {
+	        expect(document.elementFromPoint(300, 300)).to.be.defined;
+	      });
+
+	      it('should return null for non visible', function () {
+	        expect(document.elementFromPoint(-300, 300)).to.be.null;
+	      });
+	    });
+	  });
 	});
 
 	function isFirefox() {
@@ -29838,6 +29888,43 @@
 
 	  return clientWidth !== clientWidthOvHidden;
 	}
+
+	function hasBodyScroll2() {
+	  return document.documentElement.clientWidth !== window.innerWidth;
+	}
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+	mocha.setup("bdd");
+	__webpack_require__(233)
+	__webpack_require__(51);
+	if(false) {
+		module.hot.accept();
+		module.hot.dispose(function() {
+			mocha.suite.suites.length = 0;
+			var stats = document.getElementById('mocha-stats');
+			var report = document.getElementById('mocha-report');
+			stats.parentNode.removeChild(stats);
+			report.parentNode.removeChild(report);
+		});
+	}
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var expect = __webpack_require__(11).expect;
+
+	describe('2. Introduction Into Events', function () {
+	  describe('2.1 Introduction to Browser Events', function () {
+	    it('should read the section', function () {});
+	  });
+	});
 
 /***/ })
 /******/ ]);

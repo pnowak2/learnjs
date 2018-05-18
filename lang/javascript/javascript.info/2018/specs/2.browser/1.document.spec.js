@@ -1502,6 +1502,55 @@ describe('2. Document', () => {
       });
     });
   });
+
+  describe('1.11 Coordinates', () => {
+    describe('element.getBoundingClientRect() - Window coordinates', () => {
+      it('should window related coordinates rectangle points (they dont take scrolled part into account)', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        // measured from top left window corner
+        expect(div.getBoundingClientRect().top).to.be.a('number');
+        expect(div.getBoundingClientRect().right).to.be.a('number');
+        expect(div.getBoundingClientRect().bottom).to.be.a('number');
+        expect(div.getBoundingClientRect().left).to.be.a('number');
+
+        div.remove();
+      });
+    });
+
+    describe('Document Coordinates', () => {
+      it('should get Y coordinate by combining getBoundingClientRect().top and window.pageYOffset', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        const y = div.getBoundingClientRect().top + pageYOffset;
+        expect(y).to.be.a('number');
+
+        div.remove();
+      });
+
+      it('should get X coordinate by combining getBoundingClientRect().left and window.pageXOffset', () => {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+
+        const x = div.getBoundingClientRect().left + pageXOffset;
+        expect(x).to.be.a('number');
+
+        div.remove();
+      });
+    });
+
+    describe('element.fromPoint(x, y) - gets the most nested element at this position', () => {
+      it('should return most nested visible element at position', () => {
+        expect(document.elementFromPoint(300, 300)).to.be.defined;
+      });
+
+      it('should return null for non visible', () => {
+        expect(document.elementFromPoint(-300, 300)).to.be.null;
+      });
+    });
+  });
 });
 
 function isFirefox() {
@@ -1531,4 +1580,8 @@ function hasBodyScroll() {
   document.body.style.overflow = '';
 
   return clientWidth !== clientWidthOvHidden;
+}
+
+function hasBodyScroll2() {
+  return document.documentElement.clientWidth !== window.innerWidth;
 }

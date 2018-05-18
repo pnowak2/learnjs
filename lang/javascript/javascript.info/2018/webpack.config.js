@@ -13,6 +13,7 @@ module.exports = {
     'mocha!./specs/1.javascript-language/8.error-handling.spec.js',
 
     'mocha!./specs/2.browser/1.document.spec.js',
+    'mocha!./specs/2.browser/2.introduction-to-events.spec.js',
   ],
   output: {
     path: 'builds',
