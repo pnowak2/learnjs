@@ -29693,7 +29693,7 @@
 
 	      describe('.scrollHeight', function () {
 	        it('should measure height of whole element, even that not visible, hidden behind scroll', function () {
-	          expect(div.scrollHeight).to.be.greaterThan(300 /* hard to test on different browsers, its enought to know how it works */);
+	          expect(div.scrollHeight).to.be.greaterThan(300 /* hard to test on different browsers, its enough to know how it works */);
 	        });
 	      });
 
@@ -29715,7 +29715,101 @@
 
 	  describe('1.10 Window Sizes And Scrolling', function () {
 	    describe('Window Width / Height', function () {
-	      it('should behave...', function () {});
+	      describe('documentElement.clientWidth', function () {
+	        it('should return window width without scrollbar', function () {
+	          expect(document.documentElement.clientWidth).to.be.a('number');
+	        });
+	      });
+
+	      describe('documentElement.clientHeight', function () {
+	        it('should return window height without scrollbar', function () {
+	          expect(document.documentElement.clientHeight).to.be.a('number');
+	        });
+	      });
+
+	      describe('window.innerWidth', function () {
+	        it('should return window width with scrollbar', function () {
+	          expect(window.innerWidth).to.be.a('number');
+	        });
+
+	        it('should be bigger or equal to documentElement width (may contain scroll)', function () {
+	          expect(window.innerWidth >= document.documentElement.clientWidth).to.be.true;
+	        });
+	      });
+
+	      describe('window.innerHeight', function () {
+	        it('should return window height with scrollbar', function () {
+	          expect(window.innerHeight).to.be.a('number');
+	        });
+
+	        it('should be bigger or equal to documentElement height (may contain scroll)', function () {
+	          expect(window.innerHeight >= document.documentElement.clientHeight).to.be.true;
+	        });
+	      });
+	    });
+
+	    describe('Width / Height of the document', function () {
+	      it('should get reliable document height method', function () {
+	        var scrollHeight = Math.max(document.documentElement.scrollHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
+
+	        expect(scrollHeight).to.be.a('number');
+	      });
+
+	      it('should get reliable document width method', function () {
+	        var scrollWidth = Math.max(document.documentElement.scrollWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
+
+	        expect(scrollWidth).to.be.a('number');
+	      });
+	    });
+
+	    describe('Getting Current Scroll', function () {
+	      describe('window.pageXOffset', function () {
+	        it('should get horizontal page scroll', function () {
+	          expect(window.pageXOffset).to.be.a('number');
+	        });
+	      });
+
+	      describe('window.pageYOffset', function () {
+	        it('should get vertical page scroll', function () {
+	          expect(window.pageYOffset).to.be.a('number');
+	        });
+	      });
+	    });
+
+	    describe('Scrolling', function () {
+	      describe('window.scrollTo()', function () {
+	        it('should scroll to specific x/y position', function () {
+	          window.scrollTo(0, document.documentElement.scrollHeight); // end of document
+	        });
+	      });
+
+	      describe('window.scrollBy()', function () {
+	        it('should scroll relatively by x/y units', function () {
+	          window.scrollBy(0, -10); // end of document
+	        });
+	      });
+
+	      describe('element.scrollIntoView(true/false)', function () {
+	        it('should scroll to show element on top', function () {
+	          var div = document.createElement('div');
+	          div.scrollIntoView(true);
+	        });
+
+	        it('should scroll to show element on bittin', function () {
+	          var div = document.createElement('div');
+	          div.scrollIntoView(false);
+	        });
+	      });
+
+	      describe('Forbid scrolling', function () {
+	        it('should deactivate scrolling with hidden overflow style', function () {
+	          document.body.style.overflow = 'hidden';
+	        });
+
+	        it('should deactivate scrolling with empty overflow style', function () {
+	          document.body.style.overflow = '';
+	        });
+	      });
 	    });
 	  });
 	});
@@ -29734,6 +29828,15 @@
 	  div.remove();
 
 	  return size;
+	}
+
+	function hasBodyScroll() {
+	  var clientWidth = document.documentElement.clientWidth;
+	  document.body.style.overflow = 'hidden';
+	  var clientWidthOvHidden = document.documentElement.clientWidth;
+	  document.body.style.overflow = '';
+
+	  return clientWidth !== clientWidthOvHidden;
 	}
 
 /***/ })
