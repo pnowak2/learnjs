@@ -1,0 +1,61 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .box {
+      background: lightblue;
+      border: 1px solid blue;
+      width: 25rem;
+      padding: 1rem;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .box__title {
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .box__content {
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h3 class="box__title">Title 1</h3>
+    <div class="box__content">The horse is one of two extant subspecies of Equus ferus. It is an odd-toed ungulate mammal belonging to the taxonomic family Equidae. The horse has evolved over the past 45 to 55 million years from a small multi-toed creature, Eohippus, into the large, single-toed animal of today.</div>
+  </div>
+  <div class="box">
+    <h3 class="box__title">Title 2</h3>
+    <div class="box__content">The horse is one of two extant subspecies of Equus ferus. It is an odd-toed ungulate mammal belonging to the taxonomic family Equidae. The horse has evolved over the past 45 to 55 million years from a small multi-toed creature, Eohippus, into the large, single-toed animal of today.</div>
+  </div>
+  <div class="box">
+    <h3 class="box__title">Title 3</h3>
+    <div class="box__content">The horse is one of two extant subspecies of Equus ferus. It is an odd-toed ungulate mammal belonging to the taxonomic family Equidae. The horse has evolved over the past 45 to 55 million years from a small multi-toed creature, Eohippus, into the large, single-toed animal of today.</div>
+  </div>
+
+  <script>
+    const boxes = document.querySelectorAll('.box');
+
+    for(let box of boxes) {
+      const close = document.createElement('div');
+      close.textContent = '[x]';
+      close.style.position = 'absolute';
+      close.style.right = '12';
+      close.style.top = '12';
+      close.addEventListener('click', function(evt) {
+        box.remove();
+      });
+      box.appendChild(close);
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .dropdown {
+      display: none;
+    }
+
+    .title {
+      
+    }
+
+    .title::before {
+      content: '▼ ';
+    }
+
+    .open .title::before {
+      content: '▶ ';
+    }
+
+    .open .dropdown{
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="menu">
+    <span class="title">sweeties, click me!</span>
+    <ul class="dropdown">
+      <li>Cake</li>
+      <li>Donut</li>
+      <li>Bar</li>
+    </ul>
+  </div>
+
+  <script>
+    const menu = document.querySelector(".menu");
+    const title = document.querySelector(".title");
+    title.addEventListener('click', function(evt) {
+      menu.classList.toggle('open');
+    });
+  </script>
+</body>
+
+</html>
