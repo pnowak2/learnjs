@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .field {
+      background: green;
+      border: 15px solid grey;
+      width: 600;
+      height: 400;
+      position: relative;
+      margin: auto auto;
+      cursor: pointer;
+      margin-top: 150vh;
+    }
+
+    .ball {
+      top: 0;
+      left: 0;
+      border-radius: 50px;
+      width: 50;
+      height: 50;
+      background: red;
+      position: absolute;
+      transition: all 1s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="field">
+    <div class="ball"></div>
+  </div>
+
+  <script>
+    const ball = document.querySelector('.ball');
+    const field = document.querySelector('.field');
+
+    field.addEventListener('click', (evt) => {
+      const pos = field.getBoundingClientRect();
+      let relX = evt.clientX - pos.left - field.clientLeft - ball.offsetWidth/2;
+      let relY = evt.clientY - pos.top - field.clientTop - ball.offsetHeight/2;
+
+      if(relX < 0) {
+        relX = 0;
+      }
+      if(relY < 0) {
+        relY = 0;
+      }
+
+      if(relX  > (field.clientWidth - ball.offsetWidth)) {
+        relX = field.clientWidth - ball.offsetWidth;
+      }
+
+      if(relY  > (field.clientHeight - ball.offsetHeight)) {
+        relY= field.clientHeight - ball.offsetHeight;
+      }
+
+      ball.style.left = relX + 'px';
+      ball.style.top = relY + 'px';
+    });
+  </script>
+</body>
+
+</html>
