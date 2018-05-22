@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="child">Click me</div>
+  </div>
+  <script>
+    const container = document.querySelector('.container');
+    const child = document.querySelector('.child');
+
+    container.addEventListener('click', (evt) => {
+      console.log(evt.target);
+      console.log(evt.currentTarget);
+    })
+  </script>
+</body>
+
+</html>

@@ -14,6 +14,7 @@ module.exports = {
 
     'mocha!./specs/2.browser/1.document.spec.js',
     'mocha!./specs/2.browser/2.introduction-to-events.spec.js',
+    'mocha!./specs/2.browser/3.events-in-details.spec.js',
   ],
   output: {
     path: 'builds',
