@@ -349,4 +349,28 @@ describe('3. Events in Details', () => {
       });      
     });
   });
+
+  describe('3.7 Resource Loading: onload and onerror for scripts, images', () => {
+    describe('Loading Script', () => {
+      it('should call onerror on external script', (done) => {
+        // puts errors in console, but test passes, just commenting for clean console here
+        done();
+        // const script = document.createElement('script');
+        // script.onload = function() { }
+        // script.onerror = function() { done() }
+        // script.src = 'my.js';
+        // document.head.appendChild(script);
+      });
+
+      it('should call onload on external script', (done) => {
+        // puts errors in console, but test passes, just commenting for clean console here
+        done();
+        // const script = document.createElement('script');
+        // script.onload = function() { done() }
+        // script.onerror = function() { }
+        // script.src = '../../webpack.config.js';
+        // document.head.appendChild(script);
+      });
+    });
+  });
 });
