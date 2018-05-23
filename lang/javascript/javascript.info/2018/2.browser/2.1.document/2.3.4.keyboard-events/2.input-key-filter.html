@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <input id="phone" placeholder="(48)505211498"></textarea>
+  <script>
+    phone.addEventListener('keydown', function(evt) {
+      if((evt.key >= '0' && evt.key <= '9') || evt.key === '(' || evt.key === ')' || evt.key === 'Backspace') {
+      } else {
+        evt.preventDefault();
+      }
+    });
+  </script>
+</body>
+
+</html>

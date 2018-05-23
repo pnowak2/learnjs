@@ -225,7 +225,128 @@ describe('3. Events in Details', () => {
     });
 
     describe('Detecting Droppables', () => {
-      it('should use technice with document.elementFromPoint(x, y) and hiding temporarily top elements to get to the lower ones', () => { });
+      it('should use technique with document.elementFromPoint(x, y) and hiding temporarily top elements to get to the lower ones', () => { });
+    });
+  });
+
+  describe('3.4 Keyboard: keydown and keyup', () => {
+    describe('Keydown and Keyup events', () => {
+      it('should key give exact character', (done) => {
+        const div = document.createElement('input');
+
+        div.addEventListener('keydown', function (evt) {
+          expect(evt.key).to.eql('a');
+          done();
+        });
+
+        div.dispatchEvent(new KeyboardEvent('keydown', {
+          key: 'a',
+        }));
+      });
+
+      it('should code give standarized code with KeyXXX', (done) => {
+        const div = document.createElement('input');
+
+        div.addEventListener('keydown', function (evt) {
+          expect(evt.code).to.eql('KeyA');
+          done();
+        });
+
+        div.dispatchEvent(new KeyboardEvent('keydown', {
+          code: 'KeyA'
+        }));
+      });
+
+      it('should have info about shift, alt, ctrl, meta keys', (done) => {
+        const div = document.createElement('input');
+
+        div.addEventListener('keydown', function (evt) {
+          expect(evt.key).to.eql('a');
+          expect(evt.shiftKey).to.be.true;
+          expect(evt.altKey).to.be.true;
+          expect(evt.ctrlKey).to.be.true;
+          expect(evt.metaKey).to.be.true;
+
+          done();
+        });
+
+        div.dispatchEvent(new KeyboardEvent('keydown', {
+          key: 'a',
+          shiftKey: true,
+          altKey: true,
+          ctrlKey: true,
+          metaKey: true
+        }));
+      });
+    });
+
+    describe('Default Actions', () => {
+      it('should allow only selected characters to be allowed to input (excercise)', () => { });
+    });
+  });
+
+  describe('3.5 Scrolling', () => {
+    it('should scroll using event', (done) => {
+      const div = document.createElement('div');
+      div.style.height = '80px';
+      div.style.width = '100px';
+      div.style.overflow = 'auto';
+      div.innerHTML = 'a<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>z';
+
+      div.addEventListener('scroll', function() {
+        div.remove();
+        done();
+      });
+      document.body.appendChild(div);
+      div.scrollBy(0, 20);
+    });
+
+    it('should prevent scrolling blocking whell event', () => {
+      const div = document.createElement('div');
+      div.style.height = '80px';
+      div.style.width = '100px';
+      div.style.overflow = 'auto';
+      div.innerHTML = 'a<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>z';
+
+      div.addEventListener('wheel', function(evt) {
+        evt.preventDefault();
+      });
+    });
+  });
+
+  describe('3.6 Page Lifecycle: DOMContentLoaded, load, beforeunload, unload', () => {
+    describe('DOMContentLoaded ', () => {
+      it('should run when dom tree is loaded but pictures, imgs and stylesheets may not be there yet', () => {
+        window.addEventListener('DOMContentCloaded', function(evt) { });
+      });
+    });
+
+    describe('window.onload', () => {
+      it('should run when dom tree is loaded and pictures, imgs and stylesheets too', () => {
+        window.addEventListener('load', function(evt) { });
+      });
+    });
+
+    describe('window.onbeforeunload', () => {
+      it('should run when user is about to leave the page', () => {
+        window.onbeforeunload = function(evt) { /* return 'are you sure ?' */ };
+      });
+    });
+
+    describe('window.onunload', () => {
+      it('should run when page is being unloaded, runs after beforeunload', () => {
+        window.addEventListener('unload', function(evt) { });
+      });
+    });
+
+    describe('readyState', () => {
+      it('should be loading', () => { });
+      it('should be interactive - document fully read', () => { });
+      it('should be complete - document fully read with all resources', () => { });
+
+      it('should add readystatechange event', () => {
+        document.addEventListener('readystatechange', () => console.log(document.readyState));
+      });      
     });
   });
 });

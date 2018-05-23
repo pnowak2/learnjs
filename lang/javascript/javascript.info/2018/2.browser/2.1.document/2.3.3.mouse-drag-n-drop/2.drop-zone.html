@@ -84,6 +84,7 @@
           evt.clientX < gateCoords.right &&
           evt.clientY > gateCoords.top &&
           evt.clientY < gateCoords.bottom) {
+          gate.style.opacity = '';
           ball.remove();
         }
       });

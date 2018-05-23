@@ -30664,7 +30664,130 @@
 	    });
 
 	    describe('Detecting Droppables', function () {
-	      it('should use technice with document.elementFromPoint(x, y) and hiding temporarily top elements to get to the lower ones', function () {});
+	      it('should use technique with document.elementFromPoint(x, y) and hiding temporarily top elements to get to the lower ones', function () {});
+	    });
+	  });
+
+	  describe('3.4 Keyboard: keydown and keyup', function () {
+	    describe('Keydown and Keyup events', function () {
+	      it('should key give exact character', function (done) {
+	        var div = document.createElement('input');
+
+	        div.addEventListener('keydown', function (evt) {
+	          expect(evt.key).to.eql('a');
+	          done();
+	        });
+
+	        div.dispatchEvent(new KeyboardEvent('keydown', {
+	          key: 'a'
+	        }));
+	      });
+
+	      it('should code give standarized code with KeyXXX', function (done) {
+	        var div = document.createElement('input');
+
+	        div.addEventListener('keydown', function (evt) {
+	          expect(evt.code).to.eql('KeyA');
+	          done();
+	        });
+
+	        div.dispatchEvent(new KeyboardEvent('keydown', {
+	          code: 'KeyA'
+	        }));
+	      });
+
+	      it('should have info about shift, alt, ctrl, meta keys', function (done) {
+	        var div = document.createElement('input');
+
+	        div.addEventListener('keydown', function (evt) {
+	          expect(evt.key).to.eql('a');
+	          expect(evt.shiftKey).to.be.true;
+	          expect(evt.altKey).to.be.true;
+	          expect(evt.ctrlKey).to.be.true;
+	          expect(evt.metaKey).to.be.true;
+
+	          done();
+	        });
+
+	        div.dispatchEvent(new KeyboardEvent('keydown', {
+	          key: 'a',
+	          shiftKey: true,
+	          altKey: true,
+	          ctrlKey: true,
+	          metaKey: true
+	        }));
+	      });
+	    });
+
+	    describe('Default Actions', function () {
+	      it('should allow only selected characters to be allowed to input (excercise)', function () {});
+	    });
+	  });
+
+	  describe('3.5 Scrolling', function () {
+	    it('should scroll using event', function (done) {
+	      var div = document.createElement('div');
+	      div.style.height = '80px';
+	      div.style.width = '100px';
+	      div.style.overflow = 'auto';
+	      div.innerHTML = 'a<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>z';
+
+	      div.addEventListener('scroll', function () {
+	        div.remove();
+	        done();
+	      });
+	      document.body.appendChild(div);
+	      div.scrollBy(0, 20);
+	    });
+
+	    it('should prevent scrolling blocking whell event', function () {
+	      var div = document.createElement('div');
+	      div.style.height = '80px';
+	      div.style.width = '100px';
+	      div.style.overflow = 'auto';
+	      div.innerHTML = 'a<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>z';
+
+	      div.addEventListener('wheel', function (evt) {
+	        evt.preventDefault();
+	      });
+	    });
+	  });
+
+	  describe('3.6 Page Lifecycle: DOMContentLoaded, load, beforeunload, unload', function () {
+	    describe('DOMContentLoaded ', function () {
+	      it('should run when dom tree is loaded but pictures, imgs and stylesheets may not be there yet', function () {
+	        window.addEventListener('DOMContentCloaded', function (evt) {});
+	      });
+	    });
+
+	    describe('window.onload', function () {
+	      it('should run when dom tree is loaded and pictures, imgs and stylesheets too', function () {
+	        window.addEventListener('load', function (evt) {});
+	      });
+	    });
+
+	    describe('window.onbeforeunload', function () {
+	      it('should run when user is about to leave the page', function () {
+	        window.onbeforeunload = function (evt) {/* return 'are you sure ?' */};
+	      });
+	    });
+
+	    describe('window.onunload', function () {
+	      it('should run when page is being unloaded, runs after beforeunload', function () {
+	        window.addEventListener('unload', function (evt) {});
+	      });
+	    });
+
+	    describe('readyState', function () {
+	      it('should be loading', function () {});
+	      it('should be interactive - document fully read', function () {});
+	      it('should be complete - document fully read with all resources', function () {});
+
+	      it('should add readystatechange event', function () {
+	        document.addEventListener('readystatechange', function () {
+	          return console.log(document.readyState);
+	        });
+	      });
 	    });
 	  });
 	});
