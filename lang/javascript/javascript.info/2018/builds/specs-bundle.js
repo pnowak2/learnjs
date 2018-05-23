@@ -30447,7 +30447,225 @@
 
 	describe('3. Events in Details', function () {
 	  describe('3.1 Mouse Events Basics', function () {
-	    it('should read the section', function () {});
+	    describe('Simple events', function () {
+	      it('should use mousedown/up, mouseover/out, mousemove', function () {});
+	    });
+
+	    describe('Complex events', function () {
+	      it('should use click, contextmenu, dblclick', function () {});
+	    });
+
+	    describe('Events Order', function () {
+	      it('should run events in correct order, mouse down, mouse up, click, dblclick', function () {
+	        var div = document.createElement('div');
+	        var mdSpy = sinon.spy();
+	        var muSpy = sinon.spy();
+	        var clickSpy = sinon.spy();
+
+	        div.addEventListener('mousedown', mdSpy);
+	        div.addEventListener('mouseup', muSpy);
+	        div.addEventListener('click', clickSpy);
+
+	        div.dispatchEvent(new MouseEvent('click'));
+
+	        // hard to test with dispatchEvent..
+	        // expect(mdSpy.calledOnce).to.be.true;
+	        // expect(muSpy.calledOnce).to.be.true;
+	        expect(clickSpy.calledOnce).to.be.true;
+	      });
+	    });
+
+	    describe('Getting The Button: which', function () {
+	      it('should check which button was clicked', function (done) {
+	        var div = document.createElement('div');
+
+	        div.addEventListener('mousedown', function (evt) {
+	          expect(evt.which).to.eql(1);
+	          done();
+	        });
+
+	        div.dispatchEvent(new MouseEvent('mousedown'));
+	      });
+
+	      it('should be 1 for left, 2 for middle, 3 for right button', function () {});
+	    });
+
+	    describe('Modifiers: shift, alt, ctrl and meta', function () {
+	      it('should check for shift key', function (done) {
+	        var div = document.createElement('div');
+
+	        div.addEventListener('mousedown', function (evt) {
+	          expect(evt.which).to.eql(1);
+	          expect(evt.shiftKey).to.be.true;
+	          done();
+	        });
+
+	        div.dispatchEvent(new MouseEvent('mousedown', {
+	          shiftKey: true
+	        }));
+	      });
+
+	      it('should check for alt key', function (done) {
+	        var div = document.createElement('div');
+
+	        div.addEventListener('mousedown', function (evt) {
+	          expect(evt.which).to.eql(1);
+	          expect(evt.altKey).to.be.true;
+	          done();
+	        });
+
+	        div.dispatchEvent(new MouseEvent('mousedown', {
+	          altKey: true
+	        }));
+	      });
+
+	      it('should check for ctrl key', function (done) {
+	        var div = document.createElement('div');
+
+	        div.addEventListener('mousedown', function (evt) {
+	          expect(evt.which).to.eql(1);
+	          expect(evt.ctrlKey).to.be.true;
+	          done();
+	        });
+
+	        div.dispatchEvent(new MouseEvent('mousedown', {
+	          ctrlKey: true
+	        }));
+	      });
+
+	      it('should check for meta key', function (done) {
+	        var div = document.createElement('div');
+
+	        div.addEventListener('mousedown', function (evt) {
+	          expect(evt.which).to.eql(1);
+	          expect(evt.metaKey).to.be.true;
+	          done();
+	        });
+
+	        div.dispatchEvent(new MouseEvent('mousedown', {
+	          metaKey: true
+	        }));
+	      });
+	    });
+
+	    describe('Coordinates', function () {
+	      describe('clientX/Y', function () {
+	        it('should return window relative coordinates', function (done) {
+	          var div = document.createElement('div');
+
+	          div.addEventListener('click', function (evt) {
+	            expect(evt.clientX).to.eql(52);
+	            expect(evt.clientY).to.eql(22);
+	            done();
+	          });
+
+	          div.dispatchEvent(new MouseEvent('click', {
+	            clientX: 52,
+	            clientY: 22
+	          }));
+	        });
+	      });
+
+	      describe('pageX/Y', function () {
+	        it('should return document relative coordinates', function (done) {
+	          var div = document.createElement('div');
+
+	          div.addEventListener('click', function (evt) {
+	            expect(evt.pageX).to.eql(52);
+	            expect(evt.pageY).to.eql(22);
+	            done();
+	          });
+
+	          div.dispatchEvent(new MouseEvent('click', {
+	            clientX: 52,
+	            clientY: 22
+	          }));
+	        });
+	      });
+	    });
+
+	    describe('No selection on mousedown', function () {
+	      it('should block with css', function () {
+	        var div = document.createElement('div');
+	        div.style.cssText = '\n          -webkit-user-select: none;\n          -moz-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n        ';
+	        div.innerHTML = 'cannot select me';
+
+	        document.body.appendChild(div);
+
+	        div.remove();
+	      });
+
+	      it('should block with prevent default', function () {
+	        var div = document.createElement('div');
+	        div.onmousedown = function (evt) {
+	          return false;
+	        };
+	        div.innerHTML = 'cannot select me';
+
+	        document.body.appendChild(div);
+
+	        div.remove();
+	      });
+
+	      it('should block with cancelling already done selection', function () {
+	        var div = document.createElement('div');
+	        div.ondblclick = function (evt) {
+	          window.getSelection().removeAllRanges();
+	        };
+	        div.innerHTML = 'cannot select me with dblclick';
+
+	        document.body.appendChild(div);
+
+	        div.remove();
+	      });
+	    });
+
+	    describe('Prevention of Copying', function () {
+	      it('should prevent copying', function () {
+	        var div = document.createElement('div');
+	        div.oncopy = function (evt) {
+	          alert('dont copy please');
+	          return false;
+	        };
+	        div.innerHTML = 'cannot copy me';
+
+	        document.body.appendChild(div);
+
+	        div.remove();
+	      });
+	    });
+	  });
+
+	  describe('3.2 Moving: mouseover/out, mouseenter/leave', function () {
+	    describe('Mouseover/out, relatedTarget', function () {
+	      it('should be triggered for nested elements too, may double', function () {});
+	      it('should relatedTarget point to previously mouseovered/mouseouted element', function () {});
+	      it('should bubble', function () {});
+	    });
+
+	    describe('Events Frequency', function () {
+	      it('should read the section', function () {});
+	    });
+
+	    describe('Mouseenter/leave, relatedTarget', function () {
+	      it('should read the section', function () {});
+	      it('should not bubble', function () {});
+	    });
+	  });
+
+	  describe('3.3 Drag&Drop with Mouse Events', function () {
+	    describe('The Algorithm', function () {
+	      it('should follow the steps and do excercise', function () {
+	        // Catch mousedown on a draggable element.
+	        // Prepare the element to moving (maybe create a copy of it or whatever).
+	        // Then on mousemove move it by changing left/top and position:absolute.
+	        // On mouseup (button release) – perform all actions related to a finished Drag’n’Drop.
+	      });
+	    });
+
+	    describe('Detecting Droppables', function () {
+	      it('should use technice with document.elementFromPoint(x, y) and hiding temporarily top elements to get to the lower ones', function () {});
+	    });
 	  });
 	});
 

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <style>
+    #container {
+      background: blue;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #ball {
+      width: 50px;
+      height: 50px;
+      background: red;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="ball"></div>
+  </div>
+
+  <script>
+    ball.addEventListener('mousedown', function(evt) {
+      this.style.position = 'absolute';
+      this.style.zIndex = 500;
+      ball.style.opacity = 0.5;     
+
+      let shiftX = evt.clientX - ball.getBoundingClientRect().left;
+      let shiftY = evt.clientY - ball.getBoundingClientRect().top;
+
+      document.body.appendChild(this);
+      moveAt(evt.pageX, evt.pageY);
+
+      function moveAt(pageX, pageY) {
+        ball.style.left = pageX - shiftX +  'px';
+        ball.style.top = pageY - shiftY + 'px';
+      }
+
+      function onMouseMove(evt) {
+        moveAt(evt.pageX, evt.pageY);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      ball.addEventListener('mouseup', function(evt) {
+        document.removeEventListener('mousemove', onMouseMove);
+        ball.style.opacity = 1;
+      });
+
+      ball.ondragstart = function() { return false }
+
+    });
+  </script>
+</body>
+
+</html>

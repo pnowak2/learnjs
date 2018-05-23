@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <style>
+    #container {
+      position: relative;
+      background: blue;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #gate {
+      width: 90px;
+      height: 90px;
+      background: yellow;
+    }
+
+    #ball {
+      position: absolute;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: red;
+      border-radius: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="gate"></div>
+    <div id="ball"></div>
+  </div>
+
+  <script>
+    ball.addEventListener('mousedown', function (evt) {
+      this.style.position = 'absolute';
+      this.style.zIndex = 500;
+      ball.style.opacity = 0.5;
+
+      let shiftX = evt.clientX - ball.getBoundingClientRect().left;
+      let shiftY = evt.clientY - ball.getBoundingClientRect().top;
+
+      document.body.appendChild(this);
+      moveAt(evt.pageX, evt.pageY);
+
+      function moveAt(pageX, pageY) {
+        ball.style.left = pageX - shiftX + 'px';
+        ball.style.top = pageY - shiftY + 'px';
+      }
+
+      function onMouseMove(evt) {
+        moveAt(evt.pageX, evt.pageY);
+
+        ball.hidden = true;
+        const elemBelow = document.elementFromPoint(evt.clientX, evt.clientY);
+        ball.hidden = false;
+
+        if (!elemBelow) { return; }
+
+        const droppableBelow = elemBelow.closest('#gate');
+
+        if (droppableBelow) {
+          gate.style.opacity = 0.5;
+        } else {
+          gate.style.opacity = '';
+        }
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      ball.addEventListener('mouseup', function (evt) {
+        document.removeEventListener('mousemove', onMouseMove);
+        const gateCoords = gate.getBoundingClientRect();
+        ball.style.opacity = '';
+
+        if (evt.clientX > gateCoords.left &&
+          evt.clientX < gateCoords.right &&
+          evt.clientY > gateCoords.top &&
+          evt.clientY < gateCoords.bottom) {
+          ball.remove();
+        }
+      });
+
+      ball.ondragstart = function () { return false }
+
+    });
+  </script>
+</body>
+
+</html>
