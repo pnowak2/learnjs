@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #results {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <form name="my">
+    <input name="firstName" value="peter">
+    <input name="isOnline" type="checkbox" value="yes" checked/>
+    <textarea name="txtArea">Description</textarea>
+    <input name="sbt" type="submit" value="submit" />
+  </form>
+
+  Results: <code id="results"></code>
+  <script>
+    document.forms.my.onsubmit = function (evt) {
+      evt.preventDefault();
+      results.innerHTML = Array.from(this.elements)
+        .filter(el => el.type !== 'submit')
+        .map(el => `${el.name}: ${el.value}`)
+        .join(',');
+    }
+  </script>
+</body>
+
+</html>

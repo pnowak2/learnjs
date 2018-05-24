@@ -31064,7 +31064,7 @@
 	    });
 	  });
 
-	  describe('Focusing: focus/blur', function () {
+	  describe('4.2 Focusing: focus/blur', function () {
 	    describe('Focus - Element ready to accept data', function () {
 	      it('should listen on focus event (no bubbling)', function (done) {
 	        var div = document.createElement('div');
@@ -31127,6 +31127,53 @@
 	      it('should tabindex allow focus to work on any element', function () {});
 	      it('should tabindex="0" make the element last', function () {});
 	      it('should tabindex="-10" make the element ignored during Tab jumping', function () {});
+	    });
+	  });
+
+	  describe('4.3 Events: change, input, cut, copy, paste', function () {
+	    describe('Change', function () {
+	      it('should trigger when element has finished changing', function () {
+	        // does not work in test, but in case of input change is triggered when blur is done
+	        var input = document.createElement('change');
+
+	        input.addEventListener('change', function (evt) {});
+
+	        input.value = 'test';
+	        input.focus();
+	        input.value = 'other';
+	        input.blur();
+	      });
+	    });
+
+	    describe('Input', function () {
+	      it('should trigger when value is modified, by keyboard, speech, clipboard etc etc', function () {
+	        // does not work in test, but in case of input change is triggered when blur is done
+	        var input = document.createElement('input');
+
+	        input.addEventListener('input', function (evt) {});
+
+	        input.value = 'test';
+	        input.focus();
+	        input.value = 'other';
+	        input.blur();
+	      });
+	    });
+
+	    describe('Cut, Copy, Paste', function () {
+	      it('should call a handler in case of those and get clipboard details', function () {
+	        var input = document.createElement('input');
+	        input.oncopy = input.oncut = input.onpaste = function (evt /* ClipboardEvent */) {
+	          evt.clipboardData.getData('text/plain');
+	        };
+	      });
+	    });
+	  });
+
+	  describe('4.4 Form Submission: event and method submit', function () {
+	    describe('Event: submit', function () {
+	      it('should use input with type="submit"', function () {});
+	      it('should use input with type="image"', function () {});
+	      it('should know that submit() method does not call onsubmit event', function () {});
 	    });
 	  });
 	});

@@ -264,7 +264,7 @@ describe('4. Forms, Controls', () => {
     });
   });
 
-  describe('Focusing: focus/blur', () => {
+  describe('4.2 Focusing: focus/blur', () => {
     describe('Focus - Element ready to accept data', () => {
       it('should listen on focus event (no bubbling)', (done) => {
         const div = document.createElement('div');
@@ -302,7 +302,7 @@ describe('4. Forms, Controls', () => {
     describe('Focusin', () => {
       it('should listen on focusin event (supports bubbling)', (done) => {
         const div = document.createElement('div');
-        div.addEventListener('focusin', function(evt) {
+        div.addEventListener('focusin', function (evt) {
           done();
         });
 
@@ -313,7 +313,7 @@ describe('4. Forms, Controls', () => {
     describe('Focusout', () => {
       it('should listen on focusout event (supports bubbling)', (done) => {
         const div = document.createElement('div');
-        div.addEventListener('focusout', function(evt) {
+        div.addEventListener('focusout', function (evt) {
           done();
         });
 
@@ -327,6 +327,57 @@ describe('4. Forms, Controls', () => {
       it('should tabindex allow focus to work on any element', () => { });
       it('should tabindex="0" make the element last', () => { });
       it('should tabindex="-10" make the element ignored during Tab jumping', () => { });
+    });
+  });
+
+  describe('4.3 Events: change, input, cut, copy, paste', () => {
+    describe('Change', () => {
+      it('should trigger when element has finished changing', () => {
+        // does not work in test, but in case of input change is triggered when blur is done
+        const input = document.createElement('change');
+
+        input.addEventListener('change', function (evt) {
+
+        });
+
+        input.value = 'test';
+        input.focus();
+        input.value = 'other';
+        input.blur();
+      });
+    });
+
+    describe('Input', () => {
+      it('should trigger when value is modified, by keyboard, speech, clipboard etc etc', () => {
+        // does not work in test, but in case of input change is triggered when blur is done
+        const input = document.createElement('input');
+
+        input.addEventListener('input', function (evt) {
+
+        });
+
+        input.value = 'test';
+        input.focus();
+        input.value = 'other';
+        input.blur();
+      });
+    });
+
+    describe('Cut, Copy, Paste', () => {
+      it('should call a handler in case of those and get clipboard details', () => {
+        const input = document.createElement('input');
+        input.oncopy = input.oncut = input.onpaste = function (evt /* ClipboardEvent */) {
+          evt.clipboardData.getData('text/plain');
+        }
+      });
+    });
+  });
+
+  describe('4.4 Form Submission: event and method submit', () => {
+    describe('Event: submit', () => {
+      it('should use input with type="submit"', () => { });
+      it('should use input with type="image"', () => { });
+      it('should know that submit() method does not call onsubmit event', () => {});
     });
   });
 });
