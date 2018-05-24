@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    :focus {
+      outline: 2px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="first" tabindex="1" autofocus>one</div>
+  <div tabindex="5">five</div>
+  <div tabindex="3">three</div>
+  <div tabindex="4">four</div>
+  <div tabindex="2">two</div>
+  <div tabindex="-1">skipped</div>
+  <div tabindex="0" id="last">last</div>
+
+  <script>
+    first.focus();
+
+    last.onblur = function (evt) {
+      first.focus();
+    }
+  </script>
+</body>
+
+</html>
