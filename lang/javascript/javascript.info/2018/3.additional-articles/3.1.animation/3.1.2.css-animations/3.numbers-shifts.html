@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    #digit {
+      cursor: pointer;
+      width: 3rem;
+      overflow: hidden;
+    }
+
+    #stripe {
+      display: inline-block;
+      font-size: 5rem;
+      letter-spacing: 0.5rem;
+    }
+
+    .animate {
+      transform: translateX(-88%);
+      transition: transform 3s ease-in-out 0s;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="digit">
+    <div id="stripe">123456789</div>
+  </div>
+
+  <script>
+    stripe.onclick = function () {
+      this.classList.toggle('animate');
+    }
+  </script>
+</body>
+
+</html>

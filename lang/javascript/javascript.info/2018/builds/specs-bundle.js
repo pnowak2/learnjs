@@ -31211,6 +31211,14 @@
 	  describe('1.1 Bezier Curve', function () {
 	    it('should read the section', function () {});
 	  });
+
+	  describe('1.2 CSS Animation', function () {
+	    it('should read the section', function () {});
+	    describe('5 Properties of css transitions', function () {
+	      it('should use transition properties: transition, duration, timing-function, delay', function () {});
+	      it('should use transition-timing-function', function () {});
+	    });
+	  });
 	});
 
 /***/ }),
