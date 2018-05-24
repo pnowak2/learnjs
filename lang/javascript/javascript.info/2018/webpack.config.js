@@ -16,6 +16,11 @@ module.exports = {
     'mocha!./specs/2.browser/2.introduction-to-events.spec.js',
     'mocha!./specs/2.browser/3.events-in-details.spec.js',
     'mocha!./specs/2.browser/4.forms-controls.spec.js',
+
+    'mocha!./specs/3.additional-articles/1.animation.spec.js',
+    'mocha!./specs/3.additional-articles/2.frames-and-windows.spec.js',
+    'mocha!./specs/3.additional-articles/3.regular-expressions.spec.js',
+    'mocha!./specs/3.additional-articles/4.promises-async-await.spec.js',
   ],
   output: {
     path: 'builds',

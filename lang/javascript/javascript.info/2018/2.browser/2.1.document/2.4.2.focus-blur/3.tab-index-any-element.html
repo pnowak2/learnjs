@@ -22,8 +22,9 @@
   <script>
     first.focus();
 
-    last.onblur = function (evt) {
+    last.onkeydown = function (evt) {
       first.focus();
+      return false
     }
   </script>
 </body>
