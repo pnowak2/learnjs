@@ -27416,7 +27416,7 @@
 	  });
 
 	  describe('6.11 Currying And Partials', function () {
-	    it('should behave...', function () {
+	    it('should curry function', function () {
 	      function curry(fn) {
 	        return function curried() {
 	          for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
@@ -31215,8 +31215,28 @@
 	  describe('1.2 CSS Animation', function () {
 	    it('should read the section', function () {});
 	    describe('5 Properties of css transitions', function () {
-	      it('should use transition properties: transition, duration, timing-function, delay', function () {});
-	      it('should use transition-timing-function', function () {});
+	      describe('transition, duration, timing-function, delay', function () {
+	        it('should read the section', function () {});
+	      });
+	      describe('Transition Timing Function', function () {
+	        it('should read the section', function () {});
+	        it('should have 2 points (0,0) and (1,1) always by default', function () {});
+	        it('should add more points to mark end of bezier handles (between 0 and 1)', function () {});
+	        it('should use steps() function for discrete changes (in steps)', function () {});
+	        it('should use transitionend event', function () {});
+	      });
+
+	      describe('Keyframes', function () {
+	        it('should define more complex transitions with many steps', function () {});
+	      });
+	    });
+	  });
+
+	  describe('1.3 Javascript Animations', function () {
+	    describe('setInterval', function () {
+	      it('should use the old fashion of animating properties', function () {});
+	      it('should use requestAnimationFrame to ask for animation frame', function () {});
+	      it('should use cancelAnimationFrame to ask for cancel of animation frame', function () {});
 	    });
 	  });
 	});
@@ -31246,7 +31266,11 @@
 
 	'use strict';
 
-	describe('Frames and Windows', function () {});
+	describe('Frames and Windows', function () {
+	  describe('Popup Blocking', function () {
+	    it('should behave...', function () {});
+	  });
+	});
 
 /***/ }),
 /* 242 */

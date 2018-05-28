@@ -1,0 +1,117 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    #box {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      background-color: grey;
+      transition-property: background-color;
+      transition-duration: 1s;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+  <script>
+    box.onclick = function () {
+      animate({
+        timing: makeEaseOut(curry(elastic)(1.5)),
+        draw: draw,
+        duration: 1000
+      });
+    }
+
+    function animate({ timing, draw, duration }) {
+      const start = performance.now();
+
+      requestAnimationFrame(function animate(time) {
+        let timeFraction = (time - start) / duration;
+
+        if (timeFraction > 1) {
+          timeFraction = 1;
+        }
+
+        let progress = timing(timeFraction);
+
+        draw(progress);
+
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+      });
+    }
+
+    function linear(timeFraction) {
+      return timeFraction;
+    }
+
+    function sqrt(timeFraction) {
+      return Math.pow(timeFraction, 2);
+    }
+
+    function cubic(timeFraction) {
+      return Math.pow(timeFraction, 3);
+    }
+
+    function circ(timeFraction) {
+      return 1 - Math.sin(Math.acos(timeFraction));
+    }
+
+    function back(x, timeFraction) {
+      return Math.pow(timeFraction, 2) * ((x + 1) * timeFraction - x)
+    }
+
+    function bounce(timeFraction) {
+      for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+        if (timeFraction >= (7 - 4 * a) / 11) {
+          return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+        }
+      }
+    }
+
+    function elastic(x, timeFraction) {
+      return Math.pow(2, 10 * (timeFraction - 1)) * Math.cos(20 * Math.PI * x / 3 * timeFraction)
+    }
+
+    function makeEaseOut(timing) {
+      return function (timeFraction) {
+        return 1 - timing(1 - timeFraction);
+      }
+    }
+
+    function makeEaseInOut(timing) {
+      return function (timeFraction) {
+        if (timeFraction < .5)
+          return timing(2 * timeFraction) / 2;
+        else
+          return (2 - timing(2 * (1 - timeFraction))) / 2;
+      }
+    }
+
+    function draw(progress) {
+      box.style.left = (200 * progress) + 'px';
+    }
+
+    function curry(fn) {
+      return function curried(...args) {
+        if (args.length >= fn.length) {
+          return fn.apply(this, args);
+        } else {
+          return function (...args2) {
+            return curried.apply(this, [...args, ...args2]);
+          }
+        }
+      }
+    } 
+  </script>
+</body>
+
+</html>

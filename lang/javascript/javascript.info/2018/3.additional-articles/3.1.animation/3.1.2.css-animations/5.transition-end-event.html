@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .box {
+      background: red;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      transition-duration: 1s;
+      transition-property: transform;
+    }
+
+    .box--moved {
+      transform: translateX(400px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script>
+    const box = document.querySelector('.box');
+    box.addEventListener('click', function(evt) {
+      this.classList.toggle('box--moved');
+    });
+    box.addEventListener('transitionend', function(evt /* */) {
+      alert(`transition end, prop: ${evt.propertyName}, elapsedTime: ${evt.elapsedTime}`);
+      TransitionEvent
+    });
+  </script>
+</body>
+
+</html>

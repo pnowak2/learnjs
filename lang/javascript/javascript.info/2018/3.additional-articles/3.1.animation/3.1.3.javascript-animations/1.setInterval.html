@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    #box {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      background-color: grey;
+      transition-property: background-color;
+      transition-duration: 1s;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+  <script>
+    box.onclick = function () {
+      animate();
+    }
+
+    function animate() {
+      const start = Date.now();
+
+      let timer = setInterval(function () {
+        const elapsed = Date.now() - start;
+
+        if (elapsed >= 600) {
+          clearInterval(timer);
+          return;
+        }
+
+        draw(elapsed);
+      }, 20);
+    }
+
+    function draw(elapsed) {
+      box.style.left = elapsed + 'px';
+    }
+  </script>
+</body>
+
+</html>

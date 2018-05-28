@@ -413,7 +413,7 @@ describe('6. Advanced Working With Functions', () => {
   });
 
   describe('6.11 Currying And Partials', () => {
-    it('should behave...', () => {
+    it('should curry function', () => {
       function curry(fn) {
         return function curried(...args) {
           if(args.length >= fn.length) {
