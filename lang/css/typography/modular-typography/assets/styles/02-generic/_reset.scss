@@ -1,5 +1,5 @@
 html {
-    font: normal 100%/#{$line-height} Georgia,serif;
+    font: normal 100%/#{$dm-settings_font-line-height} Georgia,serif;
 }
 
 body {
@@ -10,7 +10,7 @@ h1, h2, h3, h4, h5, h6,
 p, ul, ol, dl, dd, figure,
 blockquote, details, hr,
 fieldset, pre, table {
-	margin: 0 0 $line-height * 1rem;
+	margin: 0 0 $dm-settings_font-line-height * 1rem;
 }
 
 // @media only screen and (min-width: 60em) {
