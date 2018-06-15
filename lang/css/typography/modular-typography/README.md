@@ -16,3 +16,12 @@ $ npm run build
 
 https://learn-the-web.algonquindesign.ca/topics/modular-typography/
 https://type-scale.com
+
+## Process
+
+* Choose the typeface for the body copy.
+* Choose an appropriate font-size the body copy—usually 16px (100%).
+* Choose an appropriate line-height for the body text—usually between 1.3–1.5 (depending on screen size).
+* Choose a type scale, often based on a musical or other natural scale.
+* Set up the CSS font-sizes, line-heights, and margins to create the rhythm.
+* Create a set of utility classes to be used throughout your design.

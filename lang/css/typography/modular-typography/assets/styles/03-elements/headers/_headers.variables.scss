@@ -1,0 +1,14 @@
+
+$h6-font-size: $dm-settings_font-size-base;
+$h5-font-size: $dm-settings_font-size-md;
+$h4-font-size: $dm-settings_font-size-lg;
+$h3-font-size: $dm-settings_font-size-xl;
+$h2-font-size: $dm-settings_font-size-xxl;
+$h1-font-size: $dm-settings_font-size-xxxl;
+
+$h6-line-height: ceil($h6-font-size / $line-height) * ($line-height / $h6-font-size);
+$h5-line-height: ceil($h5-font-size / $line-height) * ($line-height / $h5-font-size);
+$h4-line-height: ceil($h4-font-size / $line-height) * ($line-height / $h4-font-size);
+$h3-line-height: ceil($h3-font-size / $line-height) * ($line-height / $h3-font-size);
+$h2-line-height: ceil($h2-font-size / $line-height) * ($line-height / $h2-font-size);
+$h1-line-height: ceil($h1-font-size / $line-height) * ($line-height / $h1-font-size);
