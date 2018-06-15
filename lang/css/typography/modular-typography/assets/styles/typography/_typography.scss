@@ -1,0 +1,49 @@
+html {
+    font: normal 100%/#{$line-height} Georgia,serif;
+}
+
+body {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, dl, dd, figure,
+blockquote, details, hr,
+fieldset, pre, table {
+	margin: 0 0 $line-height * 1rem;
+}
+
+p {
+    font-size: $p-font-size;
+    line-height: $p-line-height; 
+}
+
+h1 {
+    font-size: $h1-font-size;
+    line-height: $h1-line-height;
+}
+
+h2 {
+    font-size: $h2-font-size;
+    line-height: $h2-line-height;
+}
+
+h3 {
+    font-size: $h3-font-size;
+    line-height: $h3-line-height;
+}
+
+h4 {
+    font-size: $h4-font-size;
+    line-height: $h4-line-height;
+}
+
+h5 {
+    font-size: $h5-font-size;
+    line-height: $h5-line-height;
+}
+
+h6 {
+    font-size: $h6-font-size;
+    line-height: $h6-line-height;
+}

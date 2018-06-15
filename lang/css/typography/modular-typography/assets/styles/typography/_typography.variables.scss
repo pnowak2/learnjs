@@ -1,0 +1,19 @@
+$font-size: 1rem;
+$type-scale: 1.250;
+$line-height: 1.5;
+
+$p-font-size: $font-size;
+$h6-font-size: $font-size;
+$h5-font-size: $type-scale * $h6-font-size;
+$h4-font-size: $type-scale * $h5-font-size;
+$h3-font-size: $type-scale * $h4-font-size;
+$h2-font-size: $type-scale * $h3-font-size;
+$h1-font-size: $type-scale * $h2-font-size;
+
+$p-line-height: $line-height;
+$h6-line-height: ceil($h6-font-size / $line-height) * ($line-height / $h6-font-size);
+$h5-line-height: ceil($h5-font-size / $line-height) * ($line-height / $h5-font-size);
+$h4-line-height: ceil($h4-font-size / $line-height) * ($line-height / $h4-font-size);
+$h3-line-height: ceil($h3-font-size / $line-height) * ($line-height / $h3-font-size);
+$h2-line-height: ceil($h2-font-size / $line-height) * ($line-height / $h2-font-size);
+$h1-line-height: ceil($h1-font-size / $line-height) * ($line-height / $h1-font-size);
