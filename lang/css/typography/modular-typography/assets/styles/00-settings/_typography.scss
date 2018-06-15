@@ -17,6 +17,7 @@ $dm-settings_font-size-lg: $type-scale * $dm-settings_font-size-md !default;
 $dm-settings_font-size-xl: $type-scale * $dm-settings_font-size-lg !default;
 $dm-settings_font-size-xxl: $type-scale * $dm-settings_font-size-xl !default;
 $dm-settings_font-size-xxxl: $type-scale * $dm-settings_font-size-xxl !default;
+$dm-settings_font-size-mega: $type-scale * $dm-settings_font-size-xxxl !default;
 
 /* [2] */
 $dm-settings_font-size-xsm-line-height: ceil($dm-settings_font-size-xsm / $line-height) * ($line-height / $dm-settings_font-size-xsm) !default;
@@ -27,3 +28,4 @@ $dm-settings_font-size-lg-line-height: ceil($dm-settings_font-size-lg / $line-he
 $dm-settings_font-size-xl-line-height: ceil($dm-settings_font-size-xl / $line-height) * ($line-height / $dm-settings_font-size-xl) !default;
 $dm-settings_font-size-xxl-line-height: ceil($dm-settings_font-size-xxl / $line-height) * ($line-height / $dm-settings_font-size-xxl) !default;
 $dm-settings_font-size-xxxl-line-height: ceil($dm-settings_font-size-xxxl / $line-height) * ($line-height / $dm-settings_font-size-xxxl) !default;
+$dm-settings_font-size-mega-line-height: ceil($dm-settings_font-size-mega / $line-height) * ($line-height / $dm-settings_font-size-mega) !default;
