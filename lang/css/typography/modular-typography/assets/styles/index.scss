@@ -1,6 +1,9 @@
-@import './misc/module';
-
 @import '00-settings/module';
+@import '01-tools/module';
 @import '02-generic/module';
 @import '03-elements/module';
+@import '04-objects/module';
+@import '05-components/module';
+@import '06-themes/module';
 @import '07-utilities/module';
+@import 'healthcheck/module';
