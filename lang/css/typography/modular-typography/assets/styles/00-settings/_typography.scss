@@ -1,9 +1,9 @@
-$font-size: 1rem;
+$dm-settings_font-size-base: 1rem;
 $type-scale: 1.250;
 $line-height: 1.5;
 
-$p-font-size: $font-size;
-$h6-font-size: $font-size;
+$p-font-size: $dm-settings_font-size-base;
+$h6-font-size: $dm-settings_font-size-base;
 $h5-font-size: $type-scale * $h6-font-size;
 $h4-font-size: $type-scale * $h5-font-size;
 $h3-font-size: $type-scale * $h4-font-size;

@@ -1,2 +1,6 @@
 @import './misc/module';
-@import './typography/module';
+
+@import '00-settings/module';
+@import '02-generic/module';
+@import '03-elements/module';
+@import '07-utilities/module';
