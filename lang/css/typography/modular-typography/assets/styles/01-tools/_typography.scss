@@ -1,0 +1,25 @@
+@function dm-get-font-sizes(){
+    @return $dm-settings_font-sizes;
+}
+
+@function dm-get-font-size-names(){
+    @return map-keys(dm-get-font-sizes());
+}
+
+@function dm-get-font-size($name){
+    $dm-font-sizes: dm-get-font-sizes();
+    @return map-get($dm-font-sizes, $name); 
+}
+
+@function dm-get-font-line-heights(){
+    @return $dm-settings_font-line-heights;
+}
+
+@function dm-get-font-line-heights-names(){
+    @return map-keys(dm-get-font-line-heights());
+}
+
+@function dm-get-font-line-height($name){
+    $dm-font-line-heights: dm-get-font-line-heights();
+    @return map-get($dm-font-line-heights, $name); 
+}

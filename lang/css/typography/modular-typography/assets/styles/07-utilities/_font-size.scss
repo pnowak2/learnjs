@@ -1,0 +1,6 @@
+@each $name, $size in dm-get-font-sizes() {
+  .dm-u-font-size-#{$name} {
+    font-size: dm-get-font-size($name);
+    line-height: dm-get-font-line-height($name);
+  }
+}

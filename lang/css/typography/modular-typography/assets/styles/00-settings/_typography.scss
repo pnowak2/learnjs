@@ -1,12 +1,55 @@
-$type-scale: 1.250;
-$line-height: 1.5;
+/**
+ * Typography system
+ *
+ * 1. Font sizes
+ * 2. Line heightsheights
+ */
 
-$dm-settings_font-size-base: 1rem;
-$dm-settings_font-size-sm: $dm-settings_font-size-base / $type-scale;
-$dm-settings_font-size-xsm: $dm-settings_font-size-sm / $type-scale;
-$dm-settings_font-size-md: $type-scale * $dm-settings_font-size-base;
-$dm-settings_font-size-lg: $type-scale * $dm-settings_font-size-md;
-$dm-settings_font-size-xl: $type-scale * $dm-settings_font-size-lg;
-$dm-settings_font-size-xxl: $type-scale * $dm-settings_font-size-xl;
-$dm-settings_font-size-xxxl: $type-scale * $dm-settings_font-size-xxl;
+$dm-settings_font-size-base: 1rem !default;
+$dm-settings_font-line-height: 1.5 !default;
+$dm-settings_font-type-scale: 1.250 !default;
 
+/* [1] */
+$dm-settings_font-size-sm: $dm-settings_font-size-base / $dm-settings_font-type-scale !default;
+$dm-settings_font-size-xs: $dm-settings_font-size-sm / $dm-settings_font-type-scale !default;
+$dm-settings_font-size-md: $dm-settings_font-type-scale * $dm-settings_font-size-base !default;
+$dm-settings_font-size-lg: $dm-settings_font-type-scale * $dm-settings_font-size-md !default;
+$dm-settings_font-size-xl: $dm-settings_font-type-scale * $dm-settings_font-size-lg !default;
+$dm-settings_font-size-xxl: $dm-settings_font-type-scale * $dm-settings_font-size-xl !default;
+$dm-settings_font-size-xxxl: $dm-settings_font-type-scale * $dm-settings_font-size-xxl !default;
+$dm-settings_font-size-mega: $dm-settings_font-type-scale * $dm-settings_font-size-xxxl !default;
+
+$dm-settings_font-sizes: (
+    xs: $dm-settings_font-size-xs,
+    sm: $dm-settings_font-size-sm,
+    base: $dm-settings_font-size-base,
+    md: $dm-settings_font-size-md,
+    lg: $dm-settings_font-size-lg,
+    xl: $dm-settings_font-size-xl,
+    xxl: $dm-settings_font-size-xxl,
+    xxxl: $dm-settings_font-size-xxxl,
+    mega: $dm-settings_font-size-mega
+) !default;
+
+/* [2] */
+$dm-settings_font-size-xs-line-height: ceil($dm-settings_font-size-xs / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-xs) !default;
+$dm-settings_font-size-sm-line-height: ceil($dm-settings_font-size-sm / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-sm) !default;
+$dm-settings_font-size-base-line-height: ceil($dm-settings_font-size-base / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-base) !default;
+$dm-settings_font-size-md-line-height: ceil($dm-settings_font-size-md / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-md) !default;
+$dm-settings_font-size-lg-line-height: ceil($dm-settings_font-size-lg / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-lg) !default;
+$dm-settings_font-size-xl-line-height: ceil($dm-settings_font-size-xl / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-xl) !default;
+$dm-settings_font-size-xxl-line-height: ceil($dm-settings_font-size-xxl / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-xxl) !default;
+$dm-settings_font-size-xxxl-line-height: ceil($dm-settings_font-size-xxxl / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-xxxl) !default;
+$dm-settings_font-size-mega-line-height: ceil($dm-settings_font-size-mega / $dm-settings_font-line-height) * ($dm-settings_font-line-height / $dm-settings_font-size-mega) !default;
+
+$dm-settings_font-line-heights: (
+    xs: $dm-settings_font-size-xs-line-height,
+    sm: $dm-settings_font-size-sm-line-height,
+    base: $dm-settings_font-size-base-line-height,
+    md: $dm-settings_font-size-md-line-height,
+    lg: $dm-settings_font-size-lg-line-height,
+    xl: $dm-settings_font-size-xl-line-height,
+    xxl: $dm-settings_font-size-xxl-line-height,
+    xxxl: $dm-settings_font-size-xxxl-line-height,
+    mega: $dm-settings_font-size-mega-line-height
+) !default;
