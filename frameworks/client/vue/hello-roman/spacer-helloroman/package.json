@@ -9,6 +9,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "lodash": "^4.17.10",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
   },
