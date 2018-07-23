@@ -11,6 +11,10 @@
     <div class="results" v-if="results && !loading && step === 1">
       <Item v-for="item in results" :key="item.data[0].nasa_id" :item="item"/>
     </div>
+
+    <div v-if="results && results.length === 0 && step === 1">
+      No results found.
+    </div>
   </div>
 </template>
 
@@ -107,5 +111,12 @@ body {
 .logo {
   position: absolute;
   top: 30px;
+}
+
+.results {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  margin-top: 50px;
 }
 </style>
