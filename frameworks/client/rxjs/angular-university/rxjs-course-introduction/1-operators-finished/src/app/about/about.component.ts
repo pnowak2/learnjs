@@ -12,20 +12,17 @@ import { createHttpObservable } from '../common/util';
 export class AboutComponent implements OnInit {
 
     ngOnInit() {
-        let counter = 0;
+        const interval$ = timer(3000, 1000);
 
-        document.addEventListener('click', evt => {
-            console.log(evt);
-
-            const handlerOut = setTimeout(() => {
-                console.log('finished.');
-
-                const handler = setInterval(() => {
-                    console.log(counter);
-                    counter++;
-                }, 1000);
-            }, 3000);
+        interval$.subscribe(val => {
+            console.log('stream 1 => ' + val);
         });
+        
+        const click$ = fromEvent(document, 'click');
+        click$.subscribe(evt => {
+            console.log('click => ' + evt);
+        });
+        
     }
 }
 
