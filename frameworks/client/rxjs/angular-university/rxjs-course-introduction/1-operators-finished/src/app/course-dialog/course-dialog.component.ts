@@ -15,7 +15,6 @@ import {fromPromise} from 'rxjs/internal-compatibility';
 export class CourseDialogComponent implements OnInit, AfterViewInit {
 
     form: FormGroup;
-
     course:Course;
 
     @ViewChild('saveButton') saveButton: ElementRef;
@@ -40,35 +39,14 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
 
-        this.form.valueChanges
-            .pipe(
-                filter(() => this.form.valid),
-                concatMap(changes => this.saveCourse(changes))
-            )
-            .subscribe();
 
 
     }
 
-
-    saveCourse(changes) {
-        return fromPromise(fetch(`/api/courses/${this.course.id}`,{
-            method: 'PUT',
-            body: JSON.stringify(changes),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }));
-    }
 
 
     ngAfterViewInit() {
 
-        fromEvent(this.saveButton.nativeElement, 'click')
-            .pipe(
-                exhaustMap(() => this.saveCourse(this.form.value))
-            )
-            .subscribe();
 
     }
 
@@ -77,6 +55,5 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
     close() {
         this.dialogRef.close();
     }
-
 
 }
