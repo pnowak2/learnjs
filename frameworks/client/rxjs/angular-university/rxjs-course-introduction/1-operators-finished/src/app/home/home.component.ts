@@ -11,33 +11,35 @@ import { createHttpObservable } from '../common/util';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    beginnerCourses: Course[];
-    advancedCourses: Course[];
+    beginnerCourses$: Observable<Course[]>;
+    advancedCourses$: Observable<Course[]>;
 
     constructor() {
 
     }
 
     ngOnInit() {
-        const http$ = createHttpObservable('/api/courses');
-        const courses$ = http$
+        const http$: Observable<Course[]> = createHttpObservable('/api/courses');
+        const courses$: Observable<Course[]> = http$
             .pipe(
-                map(res => Object.values(res['payload']))
+                tap(() => console.log('http request executed')),
+                map(res => Object.values(res['payload'] as Course)),
+                shareReplay()
             );
 
-        courses$.subscribe(
-            courses => {
-                this.beginnerCourses = courses.filter(course => {
-                    return course.category === 'BEGINNER';
-                });
+            courses$.subscribe();
 
-                this.advancedCourses = courses.filter(course => {
-                    return course.category === 'ADVANCED';
-                });
-            },
-            error => console.log('error occured: ' + error), // noop if don't want to do it here
-            () => console.log('completed')
-        );
+        this.beginnerCourses$ = courses$
+            .pipe(
+                map(courses => courses
+                    .filter(course => course.category === 'BEGINNER'))
+            );
+
+        this.advancedCourses$ = courses$
+            .pipe(
+                map(courses => courses
+                    .filter(course => course.category === 'ADVANCED'))
+            );
     }
 
 }
