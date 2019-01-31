@@ -27,8 +27,6 @@ export class HomeComponent implements OnInit {
                 shareReplay()
             );
 
-            courses$.subscribe();
-
         this.beginnerCourses$ = courses$
             .pipe(
                 map(courses => courses

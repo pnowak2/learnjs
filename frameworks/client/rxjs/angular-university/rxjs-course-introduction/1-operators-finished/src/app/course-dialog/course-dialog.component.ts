@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
             });
     }
 
-    save(changes) {
+    saveCourse(changes) {
         return fromPromise(fetch(`/api/courses/${this.course.id}`, {
             method: 'PUT',
             body: JSON.stringify(changes),
@@ -65,7 +65,7 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         this.saveClick$
             .pipe(
-                exhaustMap(() => this.save(this.form.value)) // http or expensive operation
+                exhaustMap(() => this.saveCourse(this.form.value)) // http or expensive operation
             )
             .subscribe(() => {
                 console.log('while save is in progress, other clicks will be ignored');
