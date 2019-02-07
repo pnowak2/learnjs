@@ -1,0 +1,23 @@
+{
+  "name": "javascript.info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "karmatic watch **/*spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developit/karmatic.git"
+  },
+  "author": "Piotr Nowak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/developit/karmatic/issues"
+  },
+  "homepage": "https://github.com/developit/karmatic#readme",
+  "devDependencies": {
+    "webpack": "^4.26.0",
+    "karmatic": "^1.2.0"
+  }
+}
