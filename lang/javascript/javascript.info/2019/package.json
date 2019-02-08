@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "karmatic watch **/*spec.js"
+    "test": "karmatic watch **/*spec.js",
+    "serve": "live-server ."
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/developit/karmatic#readme",
   "devDependencies": {
-    "webpack": "^4.26.0",
-    "karmatic": "^1.2.0"
+    "karmatic": "^1.2.0",
+    "live-server": "^1.2.1",
+    "webpack": "^4.26.0"
   }
 }
