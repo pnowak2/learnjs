@@ -1,0 +1,1 @@
+alert('Im script 1');

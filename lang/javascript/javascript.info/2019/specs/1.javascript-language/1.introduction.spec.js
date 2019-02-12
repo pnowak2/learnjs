@@ -6,6 +6,6 @@ describe('1. JavaScript Language', () => {
     it('should read the section', () => { });
   });
   describe('1.3 Developer console', () => {
-    xit('should read the section', () => { });
+    it('should read the section', () => { });
   });
 });
