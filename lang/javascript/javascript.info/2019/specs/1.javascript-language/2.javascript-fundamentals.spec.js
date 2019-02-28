@@ -6,4 +6,8 @@ describe('2. JavaScript Fundamentals', () => {
   describe('2.2 Code structure', () => {
     it('should read the section', () => { });
   });
+
+  describe('2.3 Modern mode, "use strict"', () => {
+    xit('should read the section', () => { });
+  });
 });
