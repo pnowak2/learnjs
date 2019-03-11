@@ -20,6 +20,9 @@
   "devDependencies": {
     "karmatic": "^1.2.0",
     "live-server": "^1.2.1",
-    "webpack": "^4.26.0"
+    "webpack": "^4.26.0",
+    "serve": "^10.1.2"
+  },
+  "dependencies": {
   }
 }
