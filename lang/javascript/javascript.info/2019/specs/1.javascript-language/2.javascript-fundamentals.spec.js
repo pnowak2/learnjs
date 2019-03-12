@@ -113,4 +113,100 @@ describe('2. JavaScript Fundamentals', () => {
       });
     });
   });
+
+  describe('2.6 Type conversions', () => {
+    describe('ToString', () => {
+      it('should convert ToString', () => {
+        let value = true;
+        expect(typeof value).toEqual('boolean');
+        expect(String(value)).toEqual('true');
+        expect(String(null)).toEqual('null');
+        expect(String(undefined)).toEqual('undefined');
+      });
+    });
+
+    describe('ToNumber', () => {
+      it('should convert ToNumber using Number()', () => {
+        let str = '123';
+        expect(typeof str).toEqual('string');
+        
+        let num = Number(str);
+        expect(typeof num).toEqual('number');
+      });
+
+      it('should convert ToNumber using math operations', () => {
+        expect(typeof('3' / '6')).toEqual('number');
+      });
+
+      it('should convert to number using "+"', () => {
+        expect(+'5').toBe(5);
+        expect(1 + +'5').toBe(6);
+      });
+
+      it('should use conversion rules', () => {
+        expect(Number(undefined)).toEqual(NaN);
+        expect(Number(null)).toEqual(0);
+        expect(Number(true)).toEqual(1);
+        expect(Number(false)).toEqual(0);
+        expect(Number('')).toEqual(0);
+        expect(Number('     ')).toEqual(0); // whitespaces are removed, looking for empty string
+        expect(Number('-')).toEqual(NaN);
+        expect(Number('2')).toEqual(2);
+      });
+
+      it('should "+" concatenate strings', () => {
+        expect(1 + '6').toBe('16');
+      });
+    });
+
+    describe('ToBoolean', () => {
+      it('should use conversion rules', () => {
+        expect(Boolean(1)).toBe(true);
+        expect(Boolean(0)).toBe(false);
+        expect(Boolean('0')).toBe(true);
+        expect(Boolean('test')).toBe(true);
+        expect(Boolean(undefined)).toBe(false);
+        expect(Boolean(null)).toBe(false);
+      });
+    });
+  });
+
+  describe('2.7 Operators', () => {
+    describe('Terms unary, binary, operand', () => {
+      it('should understand meaning', () => {
+        // operands
+        let x = 1;
+        let y = 2;
+
+        expect(-x).toBe(-1); // unary
+        expect(y - x).toBe(1); // binary
+      });
+    });
+
+    describe('String concatenation, binary +', () => {
+      it('should concatenate strings', () => {
+        expect('hello' + 'world').toBe('helloworld');
+      });
+
+      it('should convert argument to string', () => {
+        expect('hello' + 5).toBe('hello5');
+      });
+
+      it('should evaluate from left to right & convert', () => {
+        expect(1 + 2 + 'hello').toBe('3hello');
+      });
+    });
+
+    describe('Other operators behaviour', () => {
+      it('should convert all operands to numbers first', () => {
+        expect(1 - '3').toBe(-2);
+      });
+    });
+
+    describe('Unary + conversion', () => {
+      it('should ..', () => {
+        
+      });
+    });
+  });
 });
