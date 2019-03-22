@@ -46,11 +46,11 @@ describe('2. JavaScript Fundamentals', () => {
 
     describe('number', () => {
       it('should support Infinity', () => {
-        expect(1/0).toEqual(Infinity);
-      });   
-      
+        expect(1 / 0).toEqual(Infinity);
+      });
+
       it('should support NaN (not a number)', () => {
-        expect(1/'a').toEqual(NaN);
+        expect(1 / 'a').toEqual(NaN);
       });
     });
 
@@ -59,7 +59,7 @@ describe('2. JavaScript Fundamentals', () => {
         expect('test').toEqual(jasmine.any(String));
         expect("test").toEqual(jasmine.any(String));
         expect(`test`).toEqual(jasmine.any(String));
-      });   
+      });
 
       it('should support string interpolation', () => {
         const name = 'world';
@@ -74,7 +74,7 @@ describe('2. JavaScript Fundamentals', () => {
 
         hasDone = false;
         expect(hasDone).toBe(false);
-      });   
+      });
     });
 
     describe('The null value', () => {
@@ -104,7 +104,7 @@ describe('2. JavaScript Fundamentals', () => {
 
     describe('The typeof operator', () => {
       it('should return type of the argument', () => {
-        expect(typeof('test')).toBe('string');
+        expect(typeof ('test')).toBe('string');
         expect(typeof 5).toBe('number');
         expect(typeof true).toBe('boolean');
         expect(typeof Symbol('id')).toBe('symbol');
@@ -129,13 +129,13 @@ describe('2. JavaScript Fundamentals', () => {
       it('should convert ToNumber using Number()', () => {
         let str = '123';
         expect(typeof str).toEqual('string');
-        
+
         let num = Number(str);
         expect(typeof num).toEqual('number');
       });
 
       it('should convert ToNumber using math operations', () => {
-        expect(typeof('3' / '6')).toEqual('number');
+        expect(typeof ('3' / '6')).toEqual('number');
       });
 
       it('should convert to number using "+"', () => {
@@ -204,9 +204,65 @@ describe('2. JavaScript Fundamentals', () => {
     });
 
     describe('Unary + conversion', () => {
-      it('should ..', () => {
-        
+      it('should convert not number to a number', () => {
+        expect('5').not.toEqual(jasmine.any(Number));
+        expect(+'5').toEqual(jasmine.any(Number));
       });
+
+      it('should convert boolean to a number', () => {
+        expect(+true).toEqual(1);
+        expect(+false).toEqual(0);
+      });
+
+      it('should be equivalent of Number()', () => {
+        expect(Number(true)).toEqual(1);
+      });
+
+      it('should sum two no numbers as number', () => {
+        const apples = '2';
+        const oranges = '3';
+        expect(+apples + +oranges).toEqual(5);
+      });
+    });
+
+    describe('Operator precedence', () => {
+      it('should read the section', () => { });
+    });
+
+    describe('Remainder %', () => {
+      it('should should give remainder of integer division', () => {
+        expect(5 % 3).toBe(2);
+        expect(18 % 3).toBe(0);
+        expect(7 % 2).toBe(1);
+      });
+    });
+
+    describe('Exponentiation **', () => {
+      it('should should give remainder of integer division', () => {
+        expect(5 ** 2).toBe(25);
+        expect(2 ** 4).toBe(16);
+      });
+    });
+
+    describe('Bitwise operators', () => {
+      it('should read the section', () => { });
+    });
+
+    describe('Comma operator', () => {
+      it('should return only last item evaluation', () => {
+        let a = (1 + 2, 3 + 4);
+        expect(a).toBe(7);
+       });
+    });
+  });
+
+  describe('2.8 Comparisons', () => {
+    it('should return boolean type result', () => {
+      expect(2 > 3).toBe(false);
+    });
+
+    it('should do string comparison (char by char)', () => {
+      expect('z' > 'a').toBe(true);
     });
   });
 });
