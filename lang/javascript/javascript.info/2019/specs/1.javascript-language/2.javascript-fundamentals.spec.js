@@ -252,7 +252,7 @@ describe('2. JavaScript Fundamentals', () => {
       it('should return only last item evaluation', () => {
         let a = (1 + 2, 3 + 4);
         expect(a).toBe(7);
-       });
+      });
     });
   });
 
@@ -263,6 +263,199 @@ describe('2. JavaScript Fundamentals', () => {
 
     it('should do string comparison (char by char)', () => {
       expect('z' > 'a').toBe(true);
+    });
+
+    it('should do string comparison (char by char) for longer strings', () => {
+      expect('abc' > 'abd').toBe(false);
+    });
+
+    it('should compare with different types, js will convert to numbers', () => {
+      expect('2' > 1).toBe(true);
+      expect('02' == 2).toBe(true);
+    });
+
+    it('should strict equal with ===', () => {
+      expect(0 === false).toBe(false);
+      // but..
+      expect(0 == false).toBe(true);
+    });
+  });
+
+  describe('2.9 Interaction: alert, prompt, confirm', () => {
+    it('should read alert section', () => { });
+    it('should read prompt section', () => { });
+    it('should read confirm section', () => { });
+  });
+
+  describe('2.10 Conditionals, if, teriary ?', () => {
+    describe('The "if" statement', () => {
+      it('should evaluate expression and run body if truthy', () => {
+        const year = 2015;
+
+        if (year === 2015) {
+          expect(year).toBe(2015);
+        } else {
+          throw Error();
+        }
+      });
+
+      it('should evaluate following expressions to boolean false', () => {
+        if (0 || null || undefined || NaN || false || '') {
+          throw Error();
+        }
+      });
+
+      it('should use several else-if clauses', () => {
+        const year = 2019;
+
+        if (year < 2015) {
+
+        } else if (year > 2015) {
+
+        } else if (year === 2015) {
+
+        }
+      });
+    });
+
+    describe('Ternary operator "?"', () => {
+      it('should be shorter form of if-else', () => {
+        const result = (2015 > 0) ? true : false;
+
+        expect(result).toBe(true);
+      });
+    });
+  });
+
+  describe('2.11 Logical Operators', () => {
+    describe('|| (OR)', () => {
+      it('should work with booleans', () => {
+        expect(true || true).toBe(true);
+        expect(false || true).toBe(true);
+        expect(true || false).toBe(true);
+        expect(false || false).toBe(false);
+      });
+
+      it('should work other types, converted implicitly to booleans', () => {
+        expect((1 || 0)).toBe(1);
+      });
+
+      it('should find first truthy value', () => {
+        const v1 = 0;
+        const v2 = null;
+        const v3 = 'hey';
+
+        expect((v1 || v2 || v3)).toBe('hey');
+      });
+
+      it('should be used for short-circuit evaluations', () => {
+        expect(1 || null.test()).toBe(1);
+      });
+    });
+
+    describe('&& (AND)', () => {
+      it('should work with booleans', () => {
+        expect(true && true).toBe(true);
+        expect(false && true).toBe(false);
+        expect(true && false).toBe(false);
+        expect(false && false).toBe(false);
+      });
+
+      it('should find first falsy value', () => {
+        expect(0 && null.test()).toBe(0);
+      });
+    });
+
+    describe('! (NOT)', () => {
+      it('should negate boolean value', () => {
+        expect(!false).toBe(true);
+        expect(!0).toBe(true);
+      });
+
+      it('should convert to boolean with double ! (!!)', () => {
+        expect(!!'a').toEqual(jasmine.any(Boolean));
+        expect(!!'a').toBe(true);
+        expect(!!null).toBe(false);
+      });
+    });
+  });
+
+  describe('2.12 Loops: while and for', () => {
+    describe('The while loop', () => {
+      it('should loop unless condition is not met', () => {
+        let i = 0, result = '';
+
+        while(i < 3) {
+          result += '-';
+          i++;
+        }
+
+        expect(result).toEqual('---');
+      });
+    });
+
+    describe('The do...while loop', () => {
+      it('should loop unless condition is not met, first evaluate body before checking condition', () => {
+        let i = 0, result = '';
+
+        do {
+          result += '-';
+          i++;
+        } while(i < 3)
+
+        expect(result).toEqual('---');
+      });
+    });
+
+    describe('For loop', () => {
+      it('should loop unless condition is not met', () => {
+        result = '';
+
+        for(let i = 0; i < 3; i++) {
+          result += '-';
+        }
+
+        expect(result).toEqual('---');
+      });
+
+      it('should skip part', () => {
+        let i = 0, result = '';
+
+        for(;i < 3;) {
+          result += '-';
+          i++;
+        }
+
+        expect(result).toEqual('---');
+      });
+
+      it('should break the loop', () => {
+        result = '';
+
+        for(let i = 0; i < 3; i++) {
+          if(i===1) break;
+          result += '-';
+        }
+
+        expect(result).toEqual('-');
+      });
+
+      it('should continue to next iteration', () => {
+        result = '';
+
+        for(let i = 0; i < 3; i++) {
+          if(i===1) continue;
+          result += '-';
+        }
+
+        expect(result).toEqual('--');
+      });
+    });
+  });
+
+  describe('2.13 The "switch" statement', () => {
+    it('should behave...', () => {
+      
     });
   });
 });
