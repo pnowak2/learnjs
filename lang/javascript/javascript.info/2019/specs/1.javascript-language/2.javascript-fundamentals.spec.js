@@ -385,7 +385,7 @@ describe('2. JavaScript Fundamentals', () => {
       it('should loop unless condition is not met', () => {
         let i = 0, result = '';
 
-        while(i < 3) {
+        while (i < 3) {
           result += '-';
           i++;
         }
@@ -401,7 +401,7 @@ describe('2. JavaScript Fundamentals', () => {
         do {
           result += '-';
           i++;
-        } while(i < 3)
+        } while (i < 3)
 
         expect(result).toEqual('---');
       });
@@ -411,7 +411,7 @@ describe('2. JavaScript Fundamentals', () => {
       it('should loop unless condition is not met', () => {
         result = '';
 
-        for(let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
           result += '-';
         }
 
@@ -421,7 +421,7 @@ describe('2. JavaScript Fundamentals', () => {
       it('should skip part', () => {
         let i = 0, result = '';
 
-        for(;i < 3;) {
+        for (; i < 3;) {
           result += '-';
           i++;
         }
@@ -432,8 +432,8 @@ describe('2. JavaScript Fundamentals', () => {
       it('should break the loop', () => {
         result = '';
 
-        for(let i = 0; i < 3; i++) {
-          if(i===1) break;
+        for (let i = 0; i < 3; i++) {
+          if (i === 1) break;
           result += '-';
         }
 
@@ -443,8 +443,8 @@ describe('2. JavaScript Fundamentals', () => {
       it('should continue to next iteration', () => {
         result = '';
 
-        for(let i = 0; i < 3; i++) {
-          if(i===1) continue;
+        for (let i = 0; i < 3; i++) {
+          if (i === 1) continue;
           result += '-';
         }
 
@@ -454,8 +454,165 @@ describe('2. JavaScript Fundamentals', () => {
   });
 
   describe('2.13 The "switch" statement', () => {
-    it('should behave...', () => {
-      
+    it('should strict compare and call appropriate case section', () => {
+      let a = 2 + 2;
+      let result;
+
+      switch (a) {
+        case 3:
+          result = 'wrong';
+          break;
+        case 4:
+          result = 'ok';
+          break;
+        default:
+          result = 'wrong';
+      }
+
+      expect(result).toEqual('ok');
     });
+
+    it('should group case statements', () => {
+      let a = 2 + 2;
+      let result;
+
+      switch (a) {
+        case 3:
+        case 4:
+          result = 'ok';
+          break;
+        default:
+          result = 'wrong';
+      }
+
+      expect(result).toEqual('ok');
+    });
+  });
+
+  describe('2.14 Functions', () => {
+    describe('Declaration', () => {
+      it('should use function syntax', () => {
+        function getName() {
+          return 'ptr';
+        }
+
+        expect(getName()).toEqual('ptr');
+      });
+    });
+
+    describe('Local variables', () => {
+      it('should be visible only inside function', () => {
+        function foo() {
+          let msg = 'hello';
+          return msg;
+        }
+
+        expect(function () {
+          msg; // not declared
+        }).toThrow();
+      });
+    });
+
+    describe('Outer variables', () => {
+      it('should be visible inside function', () => {
+        let msg = 'hello';
+
+        function foo() {
+          return msg;
+        }
+
+        expect(foo()).toEqual('hello');
+      });
+
+      it('should obscure outer with inner with same name', () => {
+        let msg = 'hello';
+
+        function foo() {
+          let msg = 'other';
+          return msg;
+        }
+
+        expect(foo()).toEqual('other');
+        expect(msg).toEqual('hello');
+      });
+    });
+
+    describe('Parameters', () => {
+      it('should pass in function declaration', () => {
+        function message(from, to) {
+          return `${from}: ${to}`;
+        }
+
+        expect(message('today', 'tommorow')).toEqual('today: tommorow');
+      });
+
+      it('should support default values', () => {
+        function message(from, to = 'one day') {
+          return `${from}: ${to}`;
+        }
+
+        expect(message('today')).toEqual('today: one day');
+      });
+    });
+
+    describe('Returning a value', () => {
+      it('should return one single value', () => {
+        function getName() {
+          return 'ptr';
+        }
+
+        expect(getName()).toEqual('ptr');
+      });
+
+      it('should return without anything giving undefined', () => {
+        function getName() {
+          return;
+        }
+
+        expect(getName()).toBeUndefined();
+      });
+    });
+  });
+
+  describe('2.15 Function expressions and arrows', () => {
+    it('should declare function expression', () => {
+      let fn = function () {
+        return 'hey';
+      }
+
+      const otherFn = fn;
+
+      expect(fn()).toEqual('hey');
+      expect(fn).toEqual(jasmine.any(Function));
+      expect(otherFn()).toEqual('hey');
+    });
+
+    it('should not be called before declaration', () => {
+      expect(function () {
+        fn();
+      }).toThrow();
+
+      expect(function () {
+        fn2();
+      }).not.toThrow();
+
+      let fn = function () {
+        return 'hey';
+      }
+
+      function fn2() {
+        return 'hey';
+      }
+    });
+
+    it('should use arrow function notation', () => {
+      let fn = (a, b, ...c) => a + b + c;
+
+      expect(fn('what', 'to', 'do')).toEqual('whattodo');
+    });
+  });
+
+  describe('2.16 Javascript specials', () => {
+    it('should read the section', () => { });
   });
 });
