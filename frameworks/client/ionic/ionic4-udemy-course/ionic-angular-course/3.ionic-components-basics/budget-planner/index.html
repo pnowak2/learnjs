@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Budget Planner</title>
+  <script src="https://unpkg.com/@ionic/core@latest/dist/ionic.js"></script>
+  <link href="https://unpkg.com/@ionic/core@latest/css/ionic.bundle.css" rel="stylesheet">
+</head>
+
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Budget Planner</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>New Expense</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-item>
+                  <ion-label position="floating">Expense Reason</ion-label>
+                  <ion-input type="text" id="input-reason"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Expense Amount</ion-label>
+                  <ion-input type="number" id="input-amount"></ion-input>
+                </ion-item>
+                <div margin-vertical text-right>
+                  <ion-button fill="outline" color="danger" id="btn-cancel">
+                    <ion-icon slot="start" name="close"></ion-icon> Clear
+                  </ion-button>
+                  <ion-button id="btn-confirm">
+                    Add Expense <ion-icon slot="start" name="add"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+            <ion-list id="expenses-list"></ion-list>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+            <p margin>Total Expenses: <span id="total-expenses"></span></p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+
+    <ion-alert-controller></ion-alert-controller>
+
+  </ion-app>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

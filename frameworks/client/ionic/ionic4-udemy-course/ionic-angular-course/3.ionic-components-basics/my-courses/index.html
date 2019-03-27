@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/@ionic/core@latest/dist/ionic.js"></script>
+  <link href="https://unpkg.com/@ionic/core@latest/css/ionic.bundle.css" rel="stylesheet">
+</head>
+
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>My Courses</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+            <ion-item>
+              <ion-label position="floating">Course Name</ion-label>
+              <ion-input id="course-name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Course rating (1 - 5)</ion-label>
+              <ion-input type="number" id="course-rating"></ion-input>
+            </ion-item>
+            <div margin-top text-right>
+              <ion-button id="add-button">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="6" offset-md="3">
+            <ion-list id="course-list"></ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col size-md="6" offset-md="3">
+              <p margin>Total Courses: <span id="total-courses"></span></p>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ion-app>
+
+  <ion-alert-controller></ion-alert-controller>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
