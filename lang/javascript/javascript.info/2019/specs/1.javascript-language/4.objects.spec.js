@@ -1,5 +1,151 @@
 describe('4. Objects, the basics', () => {
   describe('4.1 Objects', () => {
-    it('should..', () => { });
+    it('should use two syntaxes', () => {
+      let o = {};
+      let b = new Object();
+
+      expect(o).toEqual(jasmine.any(Object));
+      expect(o).toEqual(jasmine.any(Object));
+    });
+
+    it('should put some props inside', () => {
+      let o = {
+        age: 38
+      };
+
+      expect(o.age).toEqual(38);
+    });
+
+    it('should remove some props inside', () => {
+      let o = {
+        age: 38
+      };
+
+      expect(o.age).toEqual(38);
+
+      delete o.age;
+
+      expect(o.age).toBeUndefined();
+    });
+
+    it('should use multiword keys', () => {
+      let o = {
+        'hello world': 38
+      };
+
+      expect(o['hello world']).toEqual(38);
+    });
+
+    it('should use computed properties', () => {
+      const key = 'hello world';
+      let o = {
+        [key]: 38
+      };
+
+      expect(o[key]).toEqual(38);
+    });
+
+    it('should use property value shorthand', () => {
+      const key = 'hej', value = 'jo';
+      const o = { key, value };
+
+      expect(o.key).toEqual('hej');
+      expect(o.value).toEqual('jo');
+    });
+
+    it('should make existency check', () => {
+      const o = {
+        name: 'peter',
+        age: 38
+      };
+
+      expect('name' in o).toBe(true);
+      expect('gender' in o).toBe(false);
+    });
+
+    it('should use for...in loop', () => {
+      const o = {
+        name: 'peter',
+        age: 38
+      };
+
+      let props = '';
+      let vals = '';
+      for (let key in o) {
+        props += key;
+        vals += o[key];
+      }
+
+      expect(props).toEqual('nameage');
+      expect(vals).toEqual('peter38');
+    });
+
+    it('should compare with ==', () => {
+      let a = {};
+      let b = {};
+
+      expect(a == b).toBe(false);
+      expect(a === b).toBe(false);
+    });
+
+    it('should compare with ===', () => {
+      let a = {};
+      let b = a;
+
+      expect(a === b).toBe(true);
+      expect(a == b).toBe(true);
+    });
+
+    it('should clone using manual method', () => {
+      function clone(obj) {
+        let result = {};
+
+        for (let key in obj) {
+          result[key] = obj[key];
+        }
+
+        return result;
+      }
+
+      const o = {
+        name: 'peter',
+        age: 38
+      };
+
+      const copied = clone(o);
+
+      expect(copied.name).toEqual('peter');
+      expect(copied.age).toEqual(38);
+    });
+
+    it('should clone using Object.assign', () => {
+      const o = {
+        name: 'peter',
+        age: 38
+      };
+
+      const copied = {};
+
+      Object.assign(copied, o);
+
+      o.name = 'another';
+
+      expect(copied.name).toEqual('peter');
+      expect(copied.age).toEqual(38);
+    });
+
+    it('should clone using destructuring', () => {
+      const o = {
+        name: 'peter',
+        age: 38
+      };
+
+      const copied = { ...o };
+
+      o.name = 'another';
+
+      expect(copied.name).toEqual('peter');
+      expect(copied.age).toEqual(38);
+    });
   });
 });
