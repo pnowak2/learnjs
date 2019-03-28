@@ -148,4 +148,10 @@ describe('4. Objects, the basics', () => {
       expect(copied.age).toEqual(38);
     });
   });
+
+  describe('4.2 Garbage collection', () => {
+    it('should behave...', () => {
+      
+    });
+  });
 });
