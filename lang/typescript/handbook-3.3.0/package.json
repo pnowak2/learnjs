@@ -1,0 +1,23 @@
+{
+  "name": "handbook-3.3.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jasmine": "^3.3.12",
+    "jasmine": "^3.3.1",
+    "karma": "^4.0.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.5",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.4000",
+    "webpack": "^4.29.6"
+  }
+}
