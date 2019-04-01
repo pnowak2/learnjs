@@ -150,6 +150,91 @@ describe('4. Objects, the basics', () => {
   });
 
   describe('4.2 Garbage collection', () => {
+    it('should read the section', () => { });
+  });
+
+  describe('4.3 Symbol type', () => {
+    it('should define symbol', () => {
+      let s = Symbol();
+
+      expect(s).toEqual(jasmine.any(Symbol));
+    });
+
+    it('should define symbol with description (for debug etc)', () => {
+      let s = Symbol('mine');
+
+      expect(s).toEqual(jasmine.any(Symbol));
+      expect(s.description).toEqual('mine');
+      expect(s.toString()).toEqual('Symbol(mine)');
+    });
+
+    it('should be unique, always', () => {
+      let s1 = Symbol('id');
+      let s2 = Symbol('id');
+
+      expect(s1 != s2).toBe(true);
+      expect(s1 == s2).toBe(false);
+    });
+
+    it('should create global symbol with Symbol.for(string)', () => {
+      const s1 = Symbol.for('id');
+      const s2 = Symbol.for('id');
+
+      expect(s1 === s2).toBe(true);
+    });
+
+    it('should create hidden properties', () => {
+      let sName = Symbol('name');
+
+      const o = {
+        [sName]: 'hidden'
+      };
+
+      expect(o[sName]).toEqual('hidden');
+      expect(o['name']).toBeUndefined();
+    });
+
+    it('should skip symbols in for...in', () => {
+      const iden = Symbol('id');
+
+      const o = {
+        name: 'obj',
+        [iden]: 'hash'
+      };
+
+      let result = '';
+
+      for (k in o) {
+        result += o[k];
+      }
+
+      expect(result).toEqual('obj');
+    });
+
+    it('should copy also symbols using Object.assign()', () => {
+      const iden = Symbol('id');
+
+      const o = {
+        name: 'obj',
+        [iden]: 'hash'
+      };
+
+      const copy = Object.assign({}, o);
+
+      expect(copy[iden]).toEqual('hash');
+    });
+
+    it('should get key for global symbol', () => {
+      const s1 = Symbol.for('id');
+      const s2 = Symbol('id');
+
+      expect(Symbol.keyFor(s1)).toEqual('id');
+      expect(Symbol.keyFor(s2)).toBeUndefined();
+    });
+
+  });
+
+  describe('4.4 Object methods - this', () => {
     it('should behave...', () => {
       
     });
