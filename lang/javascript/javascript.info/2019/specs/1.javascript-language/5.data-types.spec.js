@@ -559,8 +559,66 @@ describe('5. Data Types', () => {
 
   describe('5.6 Iterables', () => {
     describe('Symbol.iterator', () => {
-      it('should behave...', () => {
-        
+      it('should make any object iterable and capable to for..of', () => {
+        let range = {
+          from: 1,
+          to: 5,
+          // calls it once
+          [Symbol.iterator]: function() {
+            return {
+              current: this.from,
+              last: this.to,
+              // 3. next() is called on each iteration by the for..of loop
+              next() {
+                // 4. it should return the value as an object {done:.., value :...}
+                if (this.current <= this.last) {
+                  return { done: false, value: this.current++ };
+                } else {
+                  return { done: true };
+                }
+              }
+            }
+          }
+        };
+
+        let result = '';
+        for(let item of range) {
+          result += item;
+        }
+
+        expect(result).toEqual('12345');
+      });
+
+      it('should call iterator explicitly', () => {
+        const it = 'abc'[Symbol.iterator]();
+
+        expect(it.next()).toEqual({
+          done: false,
+          value: 'a'
+        });
+        expect(it.next()).toEqual({
+          done: false,
+          value: 'b'
+        });
+        expect(it.next()).toEqual({
+          done: false,
+          value: 'c'
+        });
+        expect(it.next()).toEqual({
+          done: true,
+          value: undefined
+        });
+      });
+
+      it('should convert array like to real array - Array.from', () => {
+        const o = {
+          0: 'a',
+          1: 'b',
+          length: 2
+        }
+
+        const result = Array.from(o);
+        expect(result.pop()).toEqual('b');
       });
     });
   });
