@@ -235,8 +235,70 @@ describe('4. Objects, the basics', () => {
   });
 
   describe('4.4 Object methods - this', () => {
-    it('should behave...', () => {
+    describe('Methods', () => {
+      it('should add method old way', () => {
+        let user = {
+          name: 'Peter'
+        };
 
+        user.sayHi = function() {
+          return `Hi, ${this.name}`;
+        };
+
+        expect(user.sayHi()).toEqual('Hi, Peter');
+      });
+
+      it('should use method shorthand', () => {
+        let user = {
+          name: 'Peter',
+          sayHi() {
+            return `Hi, ${this.name}`;
+          }
+        };
+
+        expect(user.sayHi()).toEqual('Hi, Peter');
+      });
+
+      it('should this point to global object (window) in normal functions', () => {
+        function sayHi() {
+          return this;
+        }
+
+        expect(sayHi()).toBe(window);
+      });
+
+      it('should this point to undefined in strict mode', () => {
+        function sayHi() {
+          'use strict';
+          return this;
+        }
+
+        expect(sayHi()).toBeUndefined();
+      });
+
+      it('should provide alternate this', () => {
+        function sayHi() {
+          return `Hi, ${this.name}`;
+        }
+
+        expect(sayHi.call({ name: 'Peter'})).toEqual('Hi, Peter');
+      });
+
+      describe('Arrow functions', () => {
+        it('should not have own this, takes from outer normal function', () => {
+          let user = {
+            name: 'Peter',
+            sayHi() {
+              const calculate = () => this.name;
+
+              return calculate();
+            }
+          };
+
+          expect(user.sayHi()).toEqual('Peter');
+        });
+
+      });
     });
   });
 
