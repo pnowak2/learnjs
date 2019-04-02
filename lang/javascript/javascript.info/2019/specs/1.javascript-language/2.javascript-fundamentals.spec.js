@@ -401,7 +401,7 @@ describe('2. JavaScript Fundamentals', () => {
         do {
           result += '-';
           i++;
-        } while (i < 3)
+        } while (i < 3);
 
         expect(result).toEqual('---');
       });
@@ -578,7 +578,7 @@ describe('2. JavaScript Fundamentals', () => {
     it('should declare function expression', () => {
       let fn = function () {
         return 'hey';
-      }
+      };
 
       const otherFn = fn;
 
@@ -598,7 +598,7 @@ describe('2. JavaScript Fundamentals', () => {
 
       let fn = function () {
         return 'hey';
-      }
+      };
 
       function fn2() {
         return 'hey';

@@ -236,7 +236,127 @@ describe('4. Objects, the basics', () => {
 
   describe('4.4 Object methods - this', () => {
     it('should behave...', () => {
-      
+
+    });
+  });
+
+  describe('4.5 Object to primitive conversion', () => {
+    it('should use Symbol.toPrimitive', () => {
+      const o = {
+        name: 'Peter',
+        age: 38,
+        [Symbol.toPrimitive]: function (hint) {
+          if (hint === 'number') {
+            return this.age;
+          }
+          if (hint === 'string') {
+            return `${this.name}, ${this.age}`;
+          }
+        }
+      };
+
+      const s = String(o);
+      const n = Number(o);
+      const b = Boolean(o);
+      expect(s).toEqual('Peter, 38');
+      expect(n).toEqual(38);
+      expect(o - o).toEqual(0);
+      expect(b).toEqual(true);
+    });
+
+    it('should use toString/valueOf if no Symbol.toPrimitive present', () => {
+      const o = {
+        name: 'Peter',
+        age: 38,
+        toString() {
+          return `${this.name}, ${this.age}`;
+        },
+        valueOf() {
+          return this.age;
+        }
+      };
+
+      expect(String(o)).toEqual('Peter, 38');
+      expect(Number(o)).toEqual(38);
+    });
+  });
+
+  describe('4.6 Constructor, operator new', () => {
+    describe('Constructor function', () => {
+      it('should start with capital letter', () => {
+        function User(name) {
+          this.name = name;
+        }
+
+        const user = new User('peter');
+
+        expect(user).toEqual(jasmine.any(User));
+        expect(user.name).toEqual('peter');
+      });
+
+      it('should create new empty object called this, can be modified in constructor function, then its returned', () => { });
+    });
+
+    describe('Dual-syntax constructor: new.target', () => {
+      it('should check inside constructor if called with new', () => {
+        function Person(name) {
+          if(!new.target) {
+            return new Person(name);
+          }
+
+          this.name = name;
+        }
+
+        const p1 = Person('john'); // no new keyword
+        const p2 = new Person('peter');
+
+        expect(p1.name).toEqual('john');
+        expect(p2.name).toEqual('peter');
+      });
+    });
+
+    describe('Returning from constructors', () => {
+      it('should return same thing which constructor returns, if not, this is returned', () => {
+        function User(name) {
+          this.name = name;
+
+          return () => {
+            return this.name;
+          };
+        }
+
+        const u = new User('peter');
+
+        expect(u()).toEqual('peter');
+      });
+
+      it('should return this if nothing/primitive is returned', () => {
+        function User(name) {
+          this.name = name;
+
+          return;
+        }
+
+        const u = new User('peter');
+
+        expect(u.name).toEqual('peter');
+      });
+    });
+
+    describe('Methods in constructor', () => {
+      it('should add methods inside', () => {
+        function User(name) {
+          this.name = name;
+
+          this.sayHi = function() {
+            return `Hi, ${this.name}`;
+          };
+        }
+
+        const u = new User('peter');
+
+        expect(u.sayHi()).toEqual('Hi, peter');
+      });
     });
   });
 });
