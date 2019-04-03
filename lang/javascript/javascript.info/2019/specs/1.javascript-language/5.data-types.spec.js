@@ -414,7 +414,7 @@ describe('5. Data Types', () => {
       });
     });
 
-    
+
     describe('Iterating', () => {
       describe('forEach', () => {
         it('should iterate over every array element', () => {
@@ -465,17 +465,17 @@ describe('5. Data Types', () => {
       describe('filter', () => {
         it('should allow to filter items with own predicate', () => {
           const arr = [
-            {id: 1, name: "John"},
-            {id: 2, name: "Pete"},
-            {id: 3, name: "Jon"}
+            { id: 1, name: "John" },
+            { id: 2, name: "Pete" },
+            { id: 3, name: "Jon" }
           ];
           const result = arr.filter(item => {
             return item.name.includes('n');
           });
 
           expect(result).toEqual([
-            {id: 1, name: "John"},
-            {id: 3, name: "Jon"}
+            { id: 1, name: "John" },
+            { id: 3, name: "Jon" }
           ]);
         });
       });
@@ -492,27 +492,27 @@ describe('5. Data Types', () => {
       });
 
       describe('Sort', () => {
-        describe('sort()', () => {         
+        describe('sort()', () => {
           it('should sort array', () => {
             const arr = [1, 2, 15];
             const result = arr.sort();
-  
+
             expect(result).toEqual([1, 15, 2]);
           });
 
           it('should provide custom comparer', () => {
             const arr = [1, 2, 15];
             const result = arr.sort((a, b) => a - b);
-  
+
             expect(result).toEqual([1, 2, 15]);
           });
         });
 
-        describe('reverse()', () => {   
+        describe('reverse()', () => {
           it('should reverse order', () => {
             const arr = [1, 2, 15];
             const result = arr.reverse((a, b) => a - b);
-  
+
             expect(result).toEqual([15, 2, 1]);
           });
         });
@@ -564,7 +564,7 @@ describe('5. Data Types', () => {
           from: 1,
           to: 5,
           // calls it once
-          [Symbol.iterator]: function() {
+          [Symbol.iterator]: function () {
             return {
               current: this.from,
               last: this.to,
@@ -577,12 +577,12 @@ describe('5. Data Types', () => {
                   return { done: true };
                 }
               }
-            }
+            };
           }
         };
 
         let result = '';
-        for(let item of range) {
+        for (let item of range) {
           result += item;
         }
 
@@ -615,10 +615,452 @@ describe('5. Data Types', () => {
           0: 'a',
           1: 'b',
           length: 2
-        }
+        };
 
         const result = Array.from(o);
         expect(result.pop()).toEqual('b');
+      });
+    });
+  });
+
+  describe('5.7 Map, Set, WeakMap, WeakSet', () => {
+    describe('Map, colleciton of key/value entries', () => {
+      it('should create Map', () => {
+        const map = new Map();
+        expect(map).toEqual(jasmine.any(Map));
+      });
+
+      it('should set/get entry', () => {
+        const map = new Map();
+        map.set('key', 'value');
+
+        expect(map.get('key')).toEqual('value');
+      });
+
+      it('should check for entry', () => {
+        const map = new Map();
+        map.set('key', 'value');
+
+        expect(map.has('key')).toEqual(true);
+        expect(map.has('other')).toEqual(false);
+      });
+
+      it('should delete entry', () => {
+        const map = new Map();
+        map.set('key', 'value');
+
+        expect(map.has('key')).toEqual(true);
+
+        map.delete('key');
+
+        expect(map.has('key')).toEqual(false);
+      });
+
+      it('should check size', () => {
+        const map = new Map();
+        map.set('key', 'value');
+
+        expect(map.size).toEqual(1);
+      });
+
+      it('should clear map', () => {
+        const map = new Map();
+        map.set('key', 'value');
+
+        expect(map.size).toEqual(1);
+
+        map.clear();
+
+        expect(map.size).toEqual(0);
+      });
+
+      it('should use any type for key', () => {
+        const map = new Map();
+        const objKey = {};
+        map.set(objKey, 'value');
+
+        expect(map.get(objKey)).toEqual('value');
+      });
+
+      it('should chain map methods', () => {
+        const map = new Map();
+        map.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('baz', 'value3');
+
+        expect(map.get('foo')).toEqual('value1');
+        expect(map.get('bar')).toEqual('value2');
+        expect(map.get('baz')).toEqual('value3');
+      });
+
+      it('should create a map out of array', () => {
+        const entries = [
+          [1, 'val1'],
+          [2, 'val2'],
+        ];
+
+        const map = new Map(entries);
+
+        expect(map.get(1)).toEqual('val1');
+        expect(map.get(2)).toEqual('val2');
+      });
+
+      it('should iterate over map entries', () => {
+        const map = new Map();
+        map.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('baz', 'value3');
+
+        let result = [];
+
+        for (entry of map) {
+          result.push(entry);
+        }
+
+        expect(result[0]).toEqual(['foo', 'value1']);
+        expect(result[1]).toEqual(['bar', 'value2']);
+        expect(result[2]).toEqual(['baz', 'value3']);
+      });
+
+      it('should not allow duplicates', () => {
+        const map = new Map();
+        map.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('foo', 'value2')
+          .set('baz', 'value3');
+
+        expect(map.size).toEqual(3);
+      });
+
+      it('should iterate over map keys', () => {
+        const map = new Map();
+        map.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('baz', 'value3');
+
+        let result = '';
+
+        for (entry of map.keys()) {
+          result += entry;
+        }
+
+        expect(result).toEqual('foobarbaz');
+      });
+
+      it('should iterate over map values', () => {
+        const map = new Map();
+        map.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('baz', 'value3');
+
+        let result = '';
+
+        for (entry of map.values()) {
+          result += entry;
+        }
+
+        expect(result).toEqual('value1value2value3');
+      });
+
+      it('should iterate with foreach', () => {
+        const myMap = new Map();
+        myMap.set('foo', 'value1')
+          .set('bar', 'value2')
+          .set('baz', 'value3');
+
+        let result = '';
+
+        myMap.forEach((value, key, map) => {
+          result += value;
+        });
+
+        expect(result).toEqual('value1value2value3');
+      });
+    });
+
+    describe('Set, collection without duplicates', () => {
+      it('should not allow duplicates', () => {
+        const set = new Set();
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        set.add(2);
+        set.add(1);
+
+        expect(set.size).toEqual(3);
+      });
+    });
+
+    describe('WeakMap, WeakSet', () => {
+      it('should WeakMap have objects as keys. If key exists only as key of WeakMap, then key can be garbage collected, as opposed to normal map/array', () => {
+        const wm = new WeakMap();
+
+        let key = {};
+        wm.set(key, 'val1');
+
+        expect(wm.get(key)).toEqual('val1');
+
+        key = null;
+      });
+
+      it('should not have iteration methods, keys, values, entries', () => {
+        const wm = new WeakMap();
+        // wm.keys(); // not defined
+      });
+    });
+  });
+
+  describe('5.8 Object.keys, values, entries', () => {
+    describe('Object.keys()', () => {
+      it('should return array of keys', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        };
+
+        expect(Object.keys(o)).toEqual(['name', 'age']);
+      });
+    });
+
+    describe('Object.values()', () => {
+      it('should return array of values', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        };
+
+        expect(Object.values(o)).toEqual(['peter', 38]);
+      });
+    });
+
+    describe('Object.entries()', () => {
+      it('should return array of entries (ignoring symbolic entries)', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        };
+
+        expect(Object.entries(o)).toEqual([['name', 'peter'], ['age', 38]]);
+      });
+
+      it('should return array of entries with symbols', () => {
+        const sbl = Symbol();
+        const o = {
+          name: 'peter',
+          age: 38,
+          [sbl]: 'sbl1'
+        };
+
+        expect(Object.entries(o)).toEqual([['name', 'peter'], ['age', 38]]);
+
+        expect(Object.getOwnPropertySymbols(o)[0]).toEqual(sbl);
+        expect(Reflect.ownKeys(o)).toEqual(['name', 'age', sbl]);
+      });
+    });
+  });
+
+  describe('5.9 Destructuring', () => {
+    describe('Array', () => {
+      it('should take first elements', () => {
+        const arr = ['foo', 'bar', 'baz'];
+        const [first, second] = arr;
+
+        expect(first).toEqual('foo');
+        expect(second).toEqual('bar');
+      });
+
+      it('should ignore some elements', () => {
+        const arr = ['foo', 'bar', 'baz'];
+        const [first, , third] = arr;
+
+        expect(first).toEqual('foo');
+        expect(third).toEqual('baz');
+      });
+
+      it('should get string elements', () => {
+        const [f, l] = 'piotr nowak'.split(' ');
+        expect(f).toEqual('piotr');
+        expect(l).toEqual('nowak');
+      });
+
+      it('should work with any iterable', () => {
+        const person = {
+          name: 'peter',
+          age: 38,
+          [Symbol.iterator]: function () {
+            const entries = Object.keys(this);
+            const that = this;
+            let i = 0;
+            return {
+              next() {
+                const done = (i >= entries.length);
+                const value = that[entries[i]];
+                i++;
+                return { done, value };
+              }
+            };
+          }
+        };
+
+        const [name, age] = person;
+
+        expect(name).toEqual('peter');
+        expect(age).toEqual(38);
+      });
+
+      it('should assign to anything left side', () => {
+        const user = {
+          name: '',
+          age: 0
+        };
+
+        [user.name, user.age] = ['peter', 38];
+
+        expect(user.name).toEqual('peter');
+        expect(user.age).toEqual(38);
+      });
+
+      it('should loop with entries', () => {
+        const arr = ['foo', 'bar', 'baz'];
+        let result = '';
+
+        for (let [key, val] of arr.entries()) {
+          result += key + val + '|';
+        }
+
+        expect(result).toEqual('0foo|1bar|2baz|');
+      });
+
+      it('should use rest ... values', () => {
+        const arr = ['foo', 'bar', 'baz'];
+        let [first, ...allRest] = arr;
+
+        expect(first).toEqual('foo');
+        expect(allRest).toEqual(['bar', 'baz']);
+      });
+
+      it('should use default values', () => {
+        const arr = ['foo'];
+        let [first, second = 'default'] = arr;
+
+        expect(first).toEqual('foo');
+        expect(second).toEqual('default');
+      });
+    });
+
+    describe('Object', () => {
+      it('should take selected props', () => {
+        const obj = {
+          name: 'peter',
+          age: 38,
+          role: 'dev'
+        };
+
+        let { name, age } = obj;
+
+        expect(name).toEqual('peter');
+        expect(age).toEqual(38);
+      });
+
+      it('should rename variables', () => {
+        const obj = {
+          name: 'peter',
+          age: 38,
+          role: 'dev'
+        };
+
+        let { name: n, age: a } = obj;
+
+        expect(n).toEqual('peter');
+        expect(a).toEqual(38);
+      });
+
+      it('should rename and give default values for variables', () => {
+        const obj = {
+          age: 38,
+          role: 'dev'
+        };
+
+        let { name: n = 'david', age: a } = obj;
+
+        expect(n).toEqual('david');
+        expect(a).toEqual(38);
+      });
+
+      it('should use the rest ... operator', () => {
+        const obj = {
+          name: 'peter',
+          age: 38,
+          role: 'dev'
+        };
+
+        const { name, ...rest } = obj;
+
+        expect(name).toEqual('peter');
+        expect(rest).toEqual({
+          age: 38,
+          role: 'dev'
+        });
+
+      });
+
+      it('should use existing variables', () => {
+        const obj = {
+          name: 'peter',
+          age: 38,
+          role: 'dev'
+        };
+
+        let name;
+
+        ({ name, ...rest } = obj);
+
+        expect(name).toEqual('peter');
+        expect(rest).toEqual({
+          age: 38,
+          role: 'dev'
+        });
+      });
+
+      it('should use nested destructuring', () => {
+        let options = {
+          size: {
+            width: 100,
+            height: 200
+          },
+          items: ["Cake", "Donut"],
+          extra: true    // something extra that we will not destruct
+        };
+
+        let { size: {
+          width,
+          height
+        } } = options;
+
+        expect(width).toEqual(100);
+        expect(height).toEqual(200);
+      });
+
+      it('should use smart function parameters', () => {
+        function showMenu({title = 'default', width = 100, height = 200} = {}) {
+          return `${title}, ${width}x${height}`;
+        }
+
+        const config = {
+          title: 'form',
+          height: 1000
+        };
+
+        expect(showMenu(config)).toEqual('form, 100x1000');
+        expect(showMenu()).toEqual('default, 100x200');
+      });
+    });
+  });
+
+  describe('6.0 Date and time', () => {
+    describe('Creation', () => {
+      it('should behave...', () => {
+        
       });
     });
   });
