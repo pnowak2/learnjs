@@ -1059,8 +1059,67 @@ describe('5. Data Types', () => {
 
   describe('6.0 Date and time', () => {
     describe('Creation', () => {
-      it('should behave...', () => {
-        
+      it('should create date object with current date/time', () => {
+        const d = new Date();
+        expect(d).toEqual(jasmine.any(Date));
+      });
+
+      it('should create date object with number of ms from beggining of epoch', () => {
+        const d = new Date(0);
+        expect(d.getFullYear()).toEqual(1970);
+        expect(d.getMonth()).toEqual(0);
+        expect(d.getDate()).toEqual(1);
+
+        // one day later..
+        const d2 = new Date(1000 * 3600 * 24);
+        expect(d2.getFullYear()).toEqual(1970);
+        expect(d2.getMonth()).toEqual(0);
+        expect(d2.getDate()).toEqual(2);
+      });
+
+      it('should create with string parsing', () => {
+        const d = new Date('2019-03-01');
+        expect(d.getFullYear()).toEqual(2019);
+        expect(d.getMonth()).toEqual(2);
+        expect(d.getDate()).toEqual(1);
+      });
+
+      it('should create with given components', () => {
+        const d = new Date(2019, 6, 28, 19, 36, 15, 12);
+        expect(d.getFullYear()).toEqual(2019);
+        expect(d.getMonth()).toEqual(6);
+        expect(d.getDate()).toEqual(28);
+
+        expect(d.getDay()).toEqual(0);
+        expect(d.getUTCDay()).toEqual(0);
+
+        expect(d.getHours()).toEqual(19);
+        expect(d.getUTCHours()).toEqual(17);
+
+        expect(d.getMinutes()).toEqual(36);
+        expect(d.getUTCMinutes()).toEqual(36);
+
+        expect(d.getSeconds()).toEqual(15);
+        expect(d.getMilliseconds()).toEqual(12);
+      });
+
+      it('should get timezone offset', () => {
+        const d = new Date(2019, 6, 28, 19, 36, 15, 12);
+        expect(d.getTimezoneOffset()/60).toEqual(-2); // in minutes
+      });
+
+      it('should set date properties', () => {
+        const d = new Date();
+
+        d.setFullYear(2019, 6, 28);
+        d.setHours(19, 36, 15, 12);
+
+        expect(d.getFullYear()).toEqual(2019);
+        expect(d.getMonth()).toEqual(6);
+        expect(d.getDate()).toEqual(28);
+        expect(d.getMinutes()).toEqual(36);
+        expect(d.getSeconds()).toEqual(15);
+        expect(d.getMilliseconds()).toEqual(12);
       });
     });
   });
