@@ -1042,7 +1042,7 @@ describe('5. Data Types', () => {
       });
 
       it('should use smart function parameters', () => {
-        function showMenu({title = 'default', width = 100, height = 200} = {}) {
+        function showMenu({ title = 'default', width = 100, height = 200 } = {}) {
           return `${title}, ${width}x${height}`;
         }
 
@@ -1057,7 +1057,7 @@ describe('5. Data Types', () => {
     });
   });
 
-  describe('6.0 Date and time', () => {
+  describe('5.10 Date and time', () => {
     describe('Creation', () => {
       it('should create date object with current date/time', () => {
         const d = new Date();
@@ -1105,7 +1105,7 @@ describe('5. Data Types', () => {
 
       it('should get timezone offset', () => {
         const d = new Date(2019, 6, 28, 19, 36, 15, 12);
-        expect(d.getTimezoneOffset()/60).toEqual(-2); // in minutes
+        expect(d.getTimezoneOffset() / 60).toEqual(-2); // in minutes
       });
 
       it('should set date properties', () => {
@@ -1120,6 +1120,120 @@ describe('5. Data Types', () => {
         expect(d.getMinutes()).toEqual(36);
         expect(d.getSeconds()).toEqual(15);
         expect(d.getMilliseconds()).toEqual(12);
+      });
+    });
+
+    describe('Date to number, date diff', () => {
+      it('should implement to primitive symbol', () => {
+        const sbl = Date.prototype[Symbol.toPrimitive];
+
+        expect(sbl).toEqual(jasmine.any(Function));
+        const result = Date.prototype[Symbol.toPrimitive].call(new Date(1000 * 3600 * 24), 'number');
+        expect(result).toEqual(1000 * 3600 * 24);
+      });
+
+      it('should make number operations on dates', () => {
+        expect(new Date(10) - new Date(2)).toEqual(8); // milliseconds
+      });
+    });
+
+    describe('Getting current date timestamp', () => {
+      it('should use Date.now()', () => {
+        expect(Date.now()).toEqual(jasmine.any(Number));
+      });
+    });
+
+    describe('Parsing date from string (YYYY-MM-DDTHH:mm:ss.sssZ)', () => {
+      it('should parse with given format', () => {
+        const d = new Date('2019-04-03 19:36');
+
+        expect(d.getFullYear()).toEqual(2019);
+        expect(d.getMonth()).toEqual(3);
+        expect(d.getDate()).toEqual(3);
+        expect(d.getHours()).toEqual(19);
+        expect(d.getMinutes()).toEqual(36);
+      });
+    });
+  });
+
+  describe('5.11 Json methods, toJSON', () => {
+    describe('DIY toJson', () => {
+      it('should make naive implementation', () => {
+        function toJson(o) {
+          const keys = Object.keys(o);
+  
+          return '{' + keys.reduce((arr, key) => {
+            return arr.concat([`"${key}":"${o[key]}"`])
+          }, []).join(',') + '}';
+        }
+  
+        const o = {
+          name: 'peter',
+          age: 38
+        }
+        
+        expect(toJson(o)).toEqual('{"name":"peter","age":"38"}');
+      });
+    });
+
+    describe('JSON.stringify()', () => {
+      it('should convert object to strings', () => {
+        const o = {
+          name: 'peter',
+          age: 38,
+          other: undefined,
+          method() { return 'nothing '}
+        }
+
+        expect(JSON.stringify(o)).toEqual('{"name":"peter","age":38}');
+      });
+
+      it('should use replacer to white list props to serialize as array', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(o, ['name'])).toEqual('{"name":"peter"}');
+
+      });
+
+      it('should use replacer to white list props to serialize as function', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(o, function (key, value) {
+          return key === 'age' ? undefined : value
+        })).toEqual('{"name":"peter"}');
+      });
+
+      it('should convert object to strings using spacer', () => {
+        const o = {
+          name: 'peter',
+          age: 38
+        }
+
+        expect(JSON.stringify(o, null, 0)).toEqual('{"name":"peter","age":38}');
+      });
+    });
+
+    describe('JSON.parse()', () => {
+      it('should behave...', () => {
+        const json = JSON.parse('{"name":"peter","age":38}');
+
+        expect(json.name).toEqual('peter');
+        expect(json.age).toEqual(38);
+      });
+
+      it('should handle custom types from string', () => {
+        const json = JSON.parse('{"name":"peter","born":0}', function(key, value) {
+          return key === 'born' ? new Date(value) : value;
+        });
+        
+        expect(json.name).toEqual('peter');
+        expect(json.born).toEqual(new Date(0));
       });
     });
   });
