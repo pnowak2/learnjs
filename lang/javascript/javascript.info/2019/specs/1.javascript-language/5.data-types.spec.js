@@ -1161,17 +1161,17 @@ describe('5. Data Types', () => {
       it('should make naive implementation', () => {
         function toJson(o) {
           const keys = Object.keys(o);
-  
+
           return '{' + keys.reduce((arr, key) => {
             return arr.concat([`"${key}":"${o[key]}"`])
           }, []).join(',') + '}';
         }
-  
+
         const o = {
           name: 'peter',
           age: 38
         }
-        
+
         expect(toJson(o)).toEqual('{"name":"peter","age":"38"}');
       });
     });
@@ -1182,7 +1182,7 @@ describe('5. Data Types', () => {
           name: 'peter',
           age: 38,
           other: undefined,
-          method() { return 'nothing '}
+          method() { return 'nothing ' }
         }
 
         expect(JSON.stringify(o)).toEqual('{"name":"peter","age":38}');
@@ -1228,10 +1228,10 @@ describe('5. Data Types', () => {
       });
 
       it('should handle custom types from string', () => {
-        const json = JSON.parse('{"name":"peter","born":0}', function(key, value) {
+        const json = JSON.parse('{"name":"peter","born":0}', function (key, value) {
           return key === 'born' ? new Date(value) : value;
         });
-        
+
         expect(json.name).toEqual('peter');
         expect(json.born).toEqual(new Date(0));
       });
