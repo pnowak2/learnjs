@@ -355,13 +355,13 @@ describe('6 Advanced working with functions', () => {
   
         spyOn(obj, 'sum').and.callThrough();
   
-        const notSoExpensive = memoized(obj.sum);
+        const notSoExpensiveSum = memoized(obj.sum);
   
-        expect(notSoExpensive(2, 3)).toEqual(5);
-        expect(notSoExpensive(3, 3)).toEqual(6);
-        expect(notSoExpensive(2, 3)).toEqual(5);
-        expect(notSoExpensive(2, 3)).toEqual(5);
-        expect(notSoExpensive(3, 3)).toEqual(6);
+        expect(notSoExpensiveSum(2, 3)).toEqual(5);
+        expect(notSoExpensiveSum(3, 3)).toEqual(6);
+        expect(notSoExpensiveSum(2, 3)).toEqual(5);
+        expect(notSoExpensiveSum(2, 3)).toEqual(5);
+        expect(notSoExpensiveSum(3, 3)).toEqual(6);
   
         expect(obj.sum).toHaveBeenCalledTimes(2);
       });
