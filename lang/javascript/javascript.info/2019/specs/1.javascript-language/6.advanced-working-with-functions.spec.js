@@ -244,8 +244,8 @@ describe('6 Advanced working with functions', () => {
       it('should define delayed execution', (done) => {
         let counter = 0;
         setInterval((arg1, arg2) => {
-          counter ++;
-          if(counter === 3) {
+          counter++;
+          if (counter === 3) {
             done();
           }
         }, 0, 'a', 'b');
@@ -274,18 +274,18 @@ describe('6 Advanced working with functions', () => {
             return `${salutation}, ${this.name}`;
           }
         };
-  
+
         expect(o.greet('hi')).toEqual('hi, peter');
-  
+
         expect(o.greet.call({ name: 'john' }, 'welcome')).toEqual('welcome, john');
       });
-  
+
       it('should cache transparently', () => {
         function memoized(fn) {
           const cache = new Map();
-  
-          return function(c) {
-            if(cache.has(c)) {
+
+          return function (c) {
+            if (cache.has(c)) {
               return cache.get(c);
             } else {
               const result = fn.call(this, c);
@@ -294,24 +294,24 @@ describe('6 Advanced working with functions', () => {
             }
           };
         }
-  
+
         const obj = {
           expensive(c) {
             return c.repeat(10);
           }
         };
-  
+
         spyOn(obj, 'expensive').and.callThrough();
-  
+
         const notSoExpensive = memoized(obj.expensive);
-  
+
         expect(notSoExpensive('-')).toEqual('----------');
         expect(notSoExpensive('.')).toEqual('..........');
         expect(notSoExpensive('-')).toEqual('----------');
         expect(notSoExpensive('-')).toEqual('----------');
         expect(notSoExpensive('-')).toEqual('----------');
         expect(notSoExpensive('-')).toEqual('----------');
-  
+
         expect(obj.expensive).toHaveBeenCalledTimes(2);
       });
     });
@@ -324,20 +324,20 @@ describe('6 Advanced working with functions', () => {
             return `${salutation}, ${this.name}`;
           }
         };
-  
+
         expect(o.greet('hi')).toEqual('hi, peter');
-  
+
         expect(o.greet.apply({ name: 'john' }, ['welcome'])).toEqual('welcome, john');
       });
-  
+
       it('should cache transparently with any number of arguments', () => {
         function memoized(fn) {
           const cache = new Map();
-  
-          return function(...args) {
+
+          return function (...args) {
             const cacheKey = JSON.stringify(args);
 
-            if(cache.has(cacheKey)) {
+            if (cache.has(cacheKey)) {
               return cache.get(cacheKey);
             } else {
               const result = fn.apply(this, args);
@@ -346,23 +346,23 @@ describe('6 Advanced working with functions', () => {
             }
           };
         }
-  
+
         const obj = {
           sum(a, b) {
             return a + b;
           }
         };
-  
+
         spyOn(obj, 'sum').and.callThrough();
-  
+
         const notSoExpensiveSum = memoized(obj.sum);
-  
+
         expect(notSoExpensiveSum(2, 3)).toEqual(5);
         expect(notSoExpensiveSum(3, 3)).toEqual(6);
         expect(notSoExpensiveSum(2, 3)).toEqual(5);
         expect(notSoExpensiveSum(2, 3)).toEqual(5);
         expect(notSoExpensiveSum(3, 3)).toEqual(6);
-  
+
         expect(obj.sum).toHaveBeenCalledTimes(2);
       });
     });
@@ -375,8 +375,88 @@ describe('6 Advanced working with functions', () => {
   });
 
   describe('6.10 Function binding', () => {
-    it('should behave...', () => {
-      
+    it('should lose this using setTimeout', (done) => {
+      let user = {
+        age: 38,
+        hi() {
+          expect(this.age).toBeUndefined();
+          done();
+        }
+      };
+
+      setTimeout(user.hi, 0);
     });
+
+    it('should keep this using function.bind()', (done) => {
+      let user = {
+        age: 38,
+        hi() {
+          expect(this.age).toEqual(38);
+          done();
+        }
+      };
+
+      setTimeout(user.hi.bind(user), 0);
+    });
+  });
+
+  describe('6.11 Currying and partials', () => {
+    describe('Partial application', () => {
+      it('should write simplified bind with partial application', () => {
+        function curry(fn, ...args) {
+          return function (...restArgs) {
+            return fn.call(this, ...args, ...restArgs);
+          };
+        }
+
+        function sum(a, b, c) {
+          return a + b + c;
+        }
+
+        const add5 = curry(sum, 5);
+        expect(add5(2, 3)).toEqual(10);
+      });
+
+      it('should bind accept function args', () => {
+        function sum(a, b, c) {
+          return a + b + c;
+        }
+
+        const curriedSum = sum.bind(null, 5);
+        expect(curriedSum(2, 3)).toEqual(10);
+      });
+    });
+
+    describe('Currying', () => {
+      it('should implement own currying', () => {
+        function curry(fn) {
+          return function curried(...args) {
+            if (args.length === fn.length) {
+              return fn.call(this, ...args);
+            } else {
+              return function (...args2) {
+                return curried.call(this, ...args, ...args2);
+              };
+            }
+          };
+        }
+
+        function sum(a, b, c) {
+          return a + b + c;
+        }
+
+        const curried = curry(sum);
+
+        expect(curried(1, 2, 3)).toEqual(6);
+        expect(curried(1, 2)(3)).toEqual(6);
+        expect(curried(1)(2)(3)).toEqual(6);
+      });
+    });
+  });
+
+  describe('6.12 Arrow functions revisited', () => {
+    it('should not have own this, using this from outer context', () => { });
+    it('should not run with new keywoard => error', () => { });
+    it('should not have arguments variable', () => { });
   });
 });
