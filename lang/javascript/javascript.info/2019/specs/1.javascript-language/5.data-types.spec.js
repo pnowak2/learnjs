@@ -414,7 +414,6 @@ describe('5. Data Types', () => {
       });
     });
 
-
     describe('Iterating', () => {
       describe('forEach', () => {
         it('should iterate over every array element', () => {
@@ -1163,14 +1162,14 @@ describe('5. Data Types', () => {
           const keys = Object.keys(o);
 
           return '{' + keys.reduce((arr, key) => {
-            return arr.concat([`"${key}":"${o[key]}"`])
+            return arr.concat([`"${key}":"${o[key]}"`]);
           }, []).join(',') + '}';
         }
 
         const o = {
           name: 'peter',
           age: 38
-        }
+        };
 
         expect(toJson(o)).toEqual('{"name":"peter","age":"38"}');
       });
@@ -1182,8 +1181,8 @@ describe('5. Data Types', () => {
           name: 'peter',
           age: 38,
           other: undefined,
-          method() { return 'nothing ' }
-        }
+          method() { return 'nothing '; }
+        };
 
         expect(JSON.stringify(o)).toEqual('{"name":"peter","age":38}');
       });
@@ -1192,7 +1191,7 @@ describe('5. Data Types', () => {
         const o = {
           name: 'peter',
           age: 38
-        }
+        };
 
         expect(JSON.stringify(o, ['name'])).toEqual('{"name":"peter"}');
 
@@ -1202,10 +1201,10 @@ describe('5. Data Types', () => {
         const o = {
           name: 'peter',
           age: 38
-        }
+        };
 
         expect(JSON.stringify(o, function (key, value) {
-          return key === 'age' ? undefined : value
+          return key === 'age' ? undefined : value;
         })).toEqual('{"name":"peter"}');
       });
 
@@ -1213,7 +1212,7 @@ describe('5. Data Types', () => {
         const o = {
           name: 'peter',
           age: 38
-        }
+        };
 
         expect(JSON.stringify(o, null, 0)).toEqual('{"name":"peter","age":38}');
       });
