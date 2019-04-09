@@ -414,7 +414,9 @@ describe('6 Advanced working with functions', () => {
         }
 
         const add5 = curry(sum, 5);
+        const add9 = curry(sum, 4, 5);
         expect(add5(2, 3)).toEqual(10);
+        expect(add9(1)).toEqual(10);
       });
 
       it('should bind accept function args', () => {
