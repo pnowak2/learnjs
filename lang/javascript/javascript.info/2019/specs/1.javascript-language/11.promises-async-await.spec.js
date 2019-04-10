@@ -182,11 +182,10 @@ describe('11 Promises, Async/Await', () => {
 
         new Promise((resolve, reject) => {
           resolve(new Thenable(25));
-        })
-          .then(value => {
-            expect(value).toEqual(50);
-            done();
-          });
+        }).then(value => {
+          expect(value).toEqual(50);
+          done();
+        });
       });
     });
   });
@@ -428,10 +427,10 @@ describe('11 Promises, Async/Await', () => {
         async function fn() {
           return 1;
         }
-  
-        (async function() {
+
+        (async function () {
           const result = await fn();
-  
+
           expect(result).toEqual(1);
         })();
       });
@@ -452,7 +451,7 @@ describe('11 Promises, Async/Await', () => {
         expect(result).toEqual(2);
       });
     });
-    
+
     describe('Error handling', () => {
       it('should catch with try..catch syntax', async (done) => {
         async function fn() {
