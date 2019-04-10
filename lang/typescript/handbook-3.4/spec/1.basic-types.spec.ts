@@ -23,7 +23,26 @@ describe('Basic Types', () => {
   describe('String', () => {
     it('should declare it', () => {
       let color: string = "blue";
-      color = 'red';
+      let anotherColor = 'red';
+      let msg = `color is ${color}`;
+
+      expect(msg).toEqual('color is blue');
+    });
+  });
+
+  describe('Array', () => {
+    it('should declare with []', () => {
+      const list: number[] = [1, 2, 3];
+    });
+
+    it('should declare with generics notation', () => {
+      const list: Array<number> = [1, 2, 3];
+    });
+  });
+
+  describe('Tuple', () => {
+    it('should behave...', () => {
+      
     });
   });
 });
