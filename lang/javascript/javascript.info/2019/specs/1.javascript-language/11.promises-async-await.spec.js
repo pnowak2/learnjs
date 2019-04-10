@@ -1,5 +1,3 @@
-import { selectAll } from "css-select";
-
 describe('11 Promises, Async/Await', () => {
   describe('11.1 Introduction: callbacks', () => {
     it('should read the section', () => { });
