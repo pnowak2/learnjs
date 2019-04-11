@@ -1,4 +1,4 @@
-describe('Basic Types', () => {
+describe('1 Basic Types', () => {
   describe('Boolean', () => {
     it('should declare it', () => {
       let isDone: boolean = true;
@@ -119,6 +119,24 @@ describe('Basic Types', () => {
       let x: object = {};
       let y: object = [];
       // let z: object = 5; // primitive, gives error
+    });
+  });
+
+  describe('Type assertions', () => {
+    it('should use <> syntax', () => {
+      let someValue: any = 'string';
+      let strLength: number = (<string>someValue).length;
+
+      expect(strLength).toEqual(6);
+      expect(strLength).toEqual(jasmine.any(Number));
+    });
+
+    it('should use as syntax', () => {
+      let someValue: any = 'string';
+      let strLength: number = (someValue as string).length;
+
+      expect(strLength).toEqual(6);
+      expect(strLength).toEqual(jasmine.any(Number));
     });
   });
 });
