@@ -19,5 +19,8 @@
     "ts-loader": "^5.3.3",
     "typescript": "^3.4.3",
     "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "karma-mocha-reporter": "^2.2.5"
   }
 }
