@@ -341,4 +341,12 @@ describe('1 Document', () => {
       });
     });
   });
+
+  describe('1.5 Node properties: type, tag and contents', () => {
+    describe('DOM node classes', () => {
+      it('should behave...', () => {
+        
+      });
+    });
+  });
 });
