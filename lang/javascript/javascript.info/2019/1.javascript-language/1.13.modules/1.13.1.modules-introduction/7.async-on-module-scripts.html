@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- called when dom is loaded, deferred -->
+  <script async type="module">
+    console.log('module script', typeof button)
+  </script>
+
+  <script>
+    console.log('regular script', typeof button)
+  </script>
+
+  <button id="button"> button </button>
+</body>
+
+</html>

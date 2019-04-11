@@ -421,7 +421,7 @@ describe('11 Promises, Async/Await', () => {
     });
 
     describe('Making it work in top level code', () => {
-      it('should behave...', () => {
+      it('should wrap with async function', () => {
         async function fn() {
           return 1;
         }
