@@ -83,7 +83,7 @@ describe('13 Modules', () => {
   });
 
   describe('13.3 Dynamic imports', () => {
-    it('should behave...', async () => {
+    it('should perform dynamic import', async () => {
       const { months } = await import('./13.modules/1.export-before-declarations');
       expect(months).toEqual(['Jan', 'Feb', 'Mar','Apr', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
     });

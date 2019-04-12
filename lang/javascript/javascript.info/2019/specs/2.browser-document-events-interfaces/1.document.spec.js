@@ -17,6 +17,7 @@ describe('1 Document', () => {
     describe('Root/Global/Window object', () => {
       it('should represent browser window and root/global', () => {
         expect(window).toEqual(jasmine.any(Object));
+        expect(window).toEqual(global);
       });
 
       it('should check window height i.e.', () => {
@@ -158,7 +159,7 @@ describe('1 Document', () => {
 
         beforeEach(() => {
           container = document.createElement('div');
-          container.innerHTML = `<div>begin</div>test<ul><li><b> info </b></li></ul>`;
+          container.innerHTML = `<div>begin</div>test<ul><li><b> info </b></li></ul><!-- comment -->`;
           [div, text, ul] = container.childNodes;
 
         });
@@ -344,8 +345,637 @@ describe('1 Document', () => {
 
   describe('1.5 Node properties: type, tag and contents', () => {
     describe('DOM node classes', () => {
-      it('should behave...', () => {
-        
+      it('should each DOM element belong to specific class with own properties (input, anchor, etc)', () => { });
+
+      describe('EventTarget', () => {
+        it('should be root of all DOM hierarchy elements', () => {
+          const div = document.createElement('div');
+          expect(div).toEqual(jasmine.any(EventTarget));
+        });
+
+        it('should provide events support', () => {
+          expect(EventTarget.prototype.addEventListener).toEqual(jasmine.any(Function));
+          expect(EventTarget.prototype.dispatchEvent).toEqual(jasmine.any(Function));
+          expect(EventTarget.prototype.removeEventListener).toEqual(jasmine.any(Function));
+        });
+      });
+
+      describe('Node', () => {
+        it('should be abstract class, root of all DOM hierarchy elements', () => {
+          const node = document.createTextNode('test');
+          expect(node).toEqual(jasmine.any(EventTarget));
+          expect(Node.__proto__).toEqual(EventTarget);
+          expect(Node.prototype.__proto__).toEqual(EventTarget.prototype);
+        });
+
+        it('should provide node traversal methods', () => {
+          // commented, its interface, thus illegal in js
+          // expect(Node.prototype.childNodes)
+          // expect(Node.prototype.parentNode)
+          // expect(Node.prototype.nextSibling)
+        });
+      });
+
+      describe('Text', () => {
+        it('should be base class for all text nodes', () => {
+          const text = document.createTextNode('test');
+          expect(text).toEqual(jasmine.any(EventTarget));
+          expect(Text.__proto__).toEqual(CharacterData);
+          expect(Text.prototype.__proto__).toEqual(CharacterData.prototype);
+
+          expect(CharacterData.__proto__).toEqual(Node);
+        });
+
+        it('should provide specific api', () => {
+          // expect(Text.prototype.wholeText);
+        });
+      });
+
+      describe('Comment', () => {
+        it('should be base class for all comment nodes', () => {
+          const comment = document.createComment('cmt');
+          expect(comment).toEqual(jasmine.any(EventTarget));
+          expect(Comment.__proto__).toEqual(CharacterData);
+          expect(Comment.prototype.__proto__).toEqual(CharacterData.prototype);
+
+          expect(CharacterData.__proto__).toEqual(Node);
+        });
+      });
+
+      describe('Element', () => {
+        it('should be base class for all elements', () => {
+          const element = document.createElement('test');
+          expect(element).toEqual(jasmine.any(EventTarget));
+          expect(Element.__proto__).toEqual(Node);
+          expect(Element.prototype.__proto__).toEqual(Node.prototype);
+        });
+
+        it('should provide specific api', () => {
+          expect(Element.prototype.getElementsByTagName);
+          expect(Element.prototype.querySelector);
+        });
+      });
+
+      describe('HTMLElement', () => {
+        it('should be base class for all elements', () => {
+          const element = document.createElement('div');
+          expect(element).toEqual(jasmine.any(EventTarget));
+          expect(HTMLElement.__proto__).toEqual(Element);
+          expect(HTMLElement.prototype.__proto__).toEqual(Element.prototype);
+        });
+
+        it('should provide specific api', () => {
+          // expect(HTMLElement.prototype.hidden);
+          // expect(HTMLElement.prototype.accessKey);
+        });
+      });
+
+      describe('HTMLInputElement', () => {
+        it('should be base class for all elements', () => {
+          const element = document.createElement('input');
+          expect(element).toEqual(jasmine.any(EventTarget));
+          expect(HTMLInputElement.__proto__).toEqual(HTMLElement);
+          expect(HTMLInputElement.prototype.__proto__).toEqual(HTMLElement.prototype);
+        });
+
+        it('should provide specific api', () => {
+          // expect(HTMLInputElement.prototype.required);
+          // expect(HTMLInputElement.prototype.value);
+        });
+      });
+    });
+
+    describe('The nodeType property', () => {
+      it('should text node contain proper value', () => {
+        const text = document.createTextNode('text');
+
+        expect(text.nodeType).toEqual(3);
+        expect(text instanceof Text).toBe(true)
+      });
+
+      it('should element node contain proper value', () => {
+        const div = document.createElement('div');
+
+        expect(div.nodeType).toEqual(1);
+        expect(div instanceof HTMLElement).toBe(true)
+      });
+
+      it('should document node contain proper value', () => {
+        expect(document.nodeType).toEqual(9);
+        expect(document instanceof Document).toBe(true)
+      });
+    });
+
+    describe('nodeName', () => {
+      it('should give name of the node, not neccessarily an element', () => {
+        const text = document.createTextNode('text');
+        const div = document.createElement('div');
+
+        expect(text.nodeName).toEqual('#text');
+        expect(div.nodeName).toEqual('DIV');
+      });
+    });
+
+    describe('tagName', () => {
+      it('should give name of the element, not for node', () => {
+        const text = document.createTextNode('text');
+        const div = document.createElement('div');
+
+        expect(text.tagName).toBeUndefined();
+        expect(div.tagName).toEqual('DIV');
+      });
+    });
+
+    describe('innerHTML: the contents for elements', () => {
+      it('should get inner html contents as string', () => {
+        const div = document.createElement('div');
+        const p = document.createElement('p');
+        p.textContent = 'hello';
+        div.appendChild(p);
+
+        expect(div.innerHTML).toEqual('<p>hello</p>');
+      });
+
+      it('should set inner html contents as string', () => {
+        const div = document.createElement('div');
+        div.innerHTML = '<p><a id="lnk">link</a></p>'
+
+        expect(div.querySelector('#lnk')).toEqual(jasmine.any(HTMLElement));
+      });
+    });
+
+    describe('outerHTML: The full HTML of the element. A write operation into elem.outerHTML does not touch elem itself. Instead it gets replaced with the new HTML in the outer context.', () => {
+      it('should get inner html contents as string', () => {
+        const div = document.createElement('div');
+        const p = document.createElement('p');
+        p.textContent = 'hello';
+        div.appendChild(p);
+
+        expect(div.outerHTML).toEqual('<div><p>hello</p></div>');
+      });
+
+      it('should set outer html contents as string, does not change element!, replaces it as whole, leaving old one still detached and with old content', () => {
+        const container = document.createElement('div');
+        const div = document.createElement('div');
+        container.appendChild(div);
+
+        div.outerHTML = '<p><b>hi</b></p>'
+
+        expect(div.outerHTML).toEqual('<div></div>');
+        expect(div.innerHTML).toEqual('');
+      });
+    });
+
+    describe('nodeValue, data', () => {
+      it('should read contents of non-element nodes like text, comments', () => {
+        const container = document.createElement('div');
+        container.innerHTML = 'text <p> par    </p><!-- comment -->';
+
+        expect(container.firstChild.nodeValue).toEqual('text ');
+        expect(container.childNodes[1].nodeValue).toBeNull();
+        expect(container.lastChild.nodeValue).toEqual(' comment ');
+
+        expect(container.firstChild.data).toEqual('text ');
+        expect(container.childNodes[1].data).toBeUndefined(); // small difference
+        expect(container.lastChild.data).toEqual(' comment ');
+      });
+    });
+
+    describe('textContent', () => {
+      it('should provide access to text without any tags', () => {
+        const container = document.createElement('div');
+        container.innerHTML = 'text <p> par    b</p><!-- comment -->';
+
+        expect(container.textContent).toEqual('text  par    b');
+      });
+
+      it('should provide safe way of injecting text', () => {
+        const container = document.createElement('div');
+        container.innerHTML = 'text <p id="p"> par    b</p><!-- comment -->';
+        const p = container.querySelector('#p');
+
+        p.textContent = 'siema bolek';
+
+        expect(container.textContent).toEqual('text siema bolek');
+      });
+    });
+
+    describe('The "hidden" property', () => {
+      it('should specify whether element is visible or not', () => {
+        const container = document.createElement('div');
+        const div = document.createElement('div');
+
+        container.appendChild(div);
+        div.hidden = true;
+
+        expect(container.querySelector("[hidden]")).not.toBeNull();
+      });
+    });
+  });
+
+  describe('1.6 Attributes and properties', () => {
+    describe('DOM properties / attributes', () => {
+      it('should keep in sync some markup attributes with DOM object properties', () => { });
+    });
+
+    describe('Attributes manipulation', () => {
+      describe('elem.hasAttribute(name)', () => {
+        it('should check if attribute is set on element', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<input id="el" type="text" value="test" />';
+          const el = container.querySelector('#el');
+
+          expect(el.hasAttribute('type')).toBe(true);
+        });
+      });
+
+      describe('elem.getAttribute(name)', () => {
+        it('should return attribute on element', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<input id="el" type="text" value="test" />';
+          const el = container.querySelector('#el');
+
+          expect(el.getAttribute('type')).toEqual('text');
+        });
+      });
+
+      describe('elem.setAttribute(name)', () => {
+        it('should set attribute on element', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<input id="el" type="text" value="test" />';
+          const el = container.querySelector('#el');
+
+          el.setAttribute('title', 'hello');
+
+          expect(el.getAttribute('title')).toEqual('hello');
+          expect(container.innerHTML).toEqual('<input id="el" type="text" value="test" title="hello">');
+        });
+      });
+
+      describe('elem.removeAttribute(name)', () => {
+        it('should remove attribute on element', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<input id="el" type="text" value="test" />';
+          const el = container.querySelector('#el');
+
+          expect(el.getAttribute('type')).toEqual('text');
+
+          el.removeAttribute('type');
+
+          expect(el.getAttribute('type')).toBeNull();
+          expect(container.innerHTML).toEqual('<input id="el" value="test">');
+
+        });
+      });
+
+      describe('elem.attributes', () => {
+        it('should get iterable with attributes of element', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<input id="el" type="text" value="test" />';
+          const el = container.querySelector('#el');
+
+          expect(el.attributes.length).toEqual(3);
+          expect([...el.attributes].map(node => node.name)).toEqual(['id', 'type', 'value']);
+        });
+      });
+    });
+
+    describe('Non-standard attributes, dataset', () => {
+      it('should add non standard attribute and then access it with dom api', () => {
+        const container = document.createElement('div');
+        const div = document.createElement('div');
+        div.setAttribute('show-info', 'name');
+        container.append(div);
+
+
+        const infos = container.querySelectorAll('[show-info]');
+        const result = [...infos].map(a => a.getAttribute('show-info'));
+
+        expect(result).toEqual(['name'])
+      });
+
+      it('should read data- attributes', () => {
+        const container = document.createElement('div');
+        container.innerHTML = '<div id="dif" data-show-info="hi"></div>';
+        const info = container.querySelector('#dif');
+
+        expect(info.dataset.showInfo).toEqual('hi');
+      });
+
+      it('should write data- attributes', () => {
+        const container = document.createElement('div');
+        container.innerHTML = '<div id="dif"></div>';
+        const info = container.querySelector('#dif');
+
+        expect(info.dataset.showInfo).toBeUndefined();
+
+        info.dataset.showInfo = 'boo!';
+
+        expect(container.innerHTML).toEqual('<div id="dif" data-show-info="boo!"></div>');
+      });
+    });
+  });
+
+  describe('1.7 Modifying the document', () => {
+    describe('Creating an element', () => {
+      describe('document.createElement(tag)', () => {
+        it('should create element with given tag name', () => {
+          const div = document.createElement('div');
+          expect(div.tagName).toEqual('DIV');
+        });
+      });
+
+      describe('document.createTextNode(tag)', () => {
+        it('should create text node with given text', () => {
+          const text = document.createTextNode('here i am');
+          expect(text.nodeType).toEqual(3);
+        });
+      });
+    });
+
+    describe('Insertion methods', () => {
+      describe('el.appendChild(node)', () => {
+        it('should append node as last child', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          const ul = container.firstElementChild;
+
+          const child = document.createElement('li');
+          child.textContent = 3;
+
+          ul.appendChild(child)
+
+          expect(container.innerHTML).toEqual('<ul><li>1</li><li>2</li><li>3</li></ul>');
+        });
+      });
+
+      describe('el.insertBefore(node, nextSibling)', () => {
+        it('should insert node before given child', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          const ul = container.firstElementChild;
+
+          const child = document.createElement('li');
+          child.textContent = 3;
+
+          ul.insertBefore(child, ul.firstElementChild);
+
+          expect(container.innerHTML).toEqual('<ul><li>3</li><li>1</li><li>2</li></ul>');
+        });
+      });
+
+      describe('el.replaceChild(node, oldChild)', () => {
+        it('should replace child with another node', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          const ul = container.firstElementChild;
+
+          const child = document.createElement('li');
+          child.textContent = 3;
+
+          ul.replaceChild(child, ul.firstElementChild);
+
+          expect(container.innerHTML).toEqual('<ul><li>3</li><li>2</li></ul>');
+        });
+      });
+
+      describe('node.append(...nodes or strings)', () => {
+        it('should append node at the end', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<span>a</span>';
+          const child = document.createElement('p');
+          child.textContent = 3;
+
+          container.append(child)
+
+          expect(container.innerHTML).toEqual('<span>a</span><p>3</p>');
+        });
+
+        it('should append string at the end', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<span>a</span>';
+
+          container.append('hejo')
+
+          expect(container.innerHTML).toEqual('<span>a</span>hejo');
+        });
+      });
+
+      describe('node.prepend(...nodes or strings)', () => {
+        it('should prepend node at the end', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<span>a</span>';
+          const child = document.createElement('p');
+          child.textContent = 3;
+
+          container.prepend(child)
+
+          expect(container.innerHTML).toEqual('<p>3</p><span>a</span>');
+        });
+
+        it('should prepend string at the end', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<span>a</span>';
+
+          container.prepend('hejo')
+
+          expect(container.innerHTML).toEqual('hejo<span>a</span>');
+        });
+      });
+
+      describe('node.before(...nodes or strings)', () => {
+        it('should add before node another node', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          const child = document.createElement('p');
+          child.textContent = 3;
+
+          a.before(child)
+
+          expect(container.innerHTML).toEqual('<p>3</p><a>link</a>');
+        });
+
+        it('should add before node a string', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          a.before('test')
+
+          expect(container.innerHTML).toEqual('test<a>link</a>');
+        });
+      });
+
+      describe('node.after(...nodes or strings)', () => {
+        it('should add after node another node', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          const child = document.createElement('p');
+          child.textContent = 3;
+
+          a.after(child)
+
+          expect(container.innerHTML).toEqual('<a>link</a><p>3</p>');
+        });
+
+        it('should add after node a string', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          a.after('test')
+
+          expect(container.innerHTML).toEqual('<a>link</a>test');
+        });
+      });
+
+      describe('node.replaceWith(...nodes or strings)', () => {
+        it('should replace node with another node', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          const child = document.createElement('p');
+          child.textContent = 3;
+
+          a.replaceWith(child)
+
+          expect(container.innerHTML).toEqual('<p>3</p>');
+        });
+
+        it('should replace node with string', () => {
+          const container = document.createElement('div');
+          container.innerHTML = '<a>link</a>';
+          const a = container.querySelector('a');
+
+          a.replaceWith('test')
+
+          expect(container.outerHTML).toEqual('<div>test</div>');
+        });
+      });
+
+      describe('elem.insertAdjacentHTML / Text / Element', () => {
+        it('should insert "beforebegin"', () => {
+          const container = document.createElement('div');
+          container.innerHTML = "<a>link</a>"
+          const a = container.querySelector('a');
+
+          a.insertAdjacentHTML("beforebegin", '<p>test</p>');
+
+          expect(container.innerHTML).toEqual('<p>test</p><a>link</a>');
+        });
+
+        it('should insert "afterbegin"', () => {
+          const container = document.createElement('div');
+          container.innerHTML = "<a>link</a>"
+          const a = container.querySelector('a');
+
+          a.insertAdjacentHTML("afterbegin", '<p>test</p>');
+
+          expect(container.innerHTML).toEqual('<a><p>test</p>link</a>');
+        });
+
+        it('should insert "beforeend"', () => {
+          const container = document.createElement('div');
+          container.innerHTML = "<a>link</a>"
+          const a = container.querySelector('a');
+
+          a.insertAdjacentHTML("beforeend", '<p>test</p>');
+
+          expect(container.innerHTML).toEqual('<a>link<p>test</p></a>');
+        });
+
+        it('should insert "afterend"', () => {
+          const container = document.createElement('div');
+          container.innerHTML = "<a>link</a>"
+          const a = container.querySelector('a');
+
+          a.insertAdjacentHTML("afterend", '<p>test</p>');
+
+          expect(container.innerHTML).toEqual('<a>link</a><p>test</p>');
+        });
+      });
+
+      describe('Moving to another place does not require removing element', () => {
+        it('should prove with example', () => {
+          const container = document.createElement('div');
+          container.insertAdjacentHTML('afterbegin', '<p id="one">1</p><p id="two">2</p>')
+          const one = container.querySelector('#one');
+          const two = container.querySelector('#two');
+
+          // one.appendChild(two); // works too
+          // one.append(container.removeChild(two)); // works too
+          one.append(two)
+
+          expect(container.innerHTML).toEqual('<p id="one">1<p id="two">2</p></p>')
+        });
+      });
+    });
+
+    describe('Cloning nodes: cloneNode', () => {
+      it('should make shallow clone', () => {
+        const container = document.createElement('div');
+        container.innerHTML = '<p>test</p>';
+
+        const clone = container.cloneNode(false);
+
+        expect(clone.outerHTML).toEqual('<div></div>');
+      });
+
+      it('should make deep clone', () => {
+        const container = document.createElement('div');
+        container.innerHTML = '<p>test</p>';
+
+        const clone = container.cloneNode(true);
+
+        expect(clone.outerHTML).toEqual('<div><p>test</p></div>');
+      });
+    });
+
+    describe('DocumentFragment special Node', () => {
+      it('should serve as wrapper to pass group of nodes', () => {
+        const fragment = new DocumentFragment();
+        fragment.append(document.createElement('div'));
+        fragment.append(document.createElement('a'));
+
+        const span = document.createElement('span');
+        span.appendChild(fragment);
+
+        expect(span.outerHTML).toEqual('<span><div></div><a></a></span>');
+      });
+    });
+
+    describe('Removal methods', () => {
+      describe('elem.removeChild(node)', () => {
+        it('should remove child from parent', () => {
+          const container = document.createElement('div');
+          container.insertAdjacentHTML('afterbegin', '<p>test</p>')
+          const p = container.querySelector('p');
+
+          expect(container.innerHTML).toEqual('<p>test</p>');
+          
+          container.removeChild(p);
+
+          expect(container.innerHTML).toEqual('');
+        });
+      });
+
+      describe('elem.remove()', () => {
+        it('should remove self from tree', () => {
+          const container = document.createElement('div');
+          container.insertAdjacentHTML('afterbegin', '<p>test</p>')
+          const p = container.querySelector('p');
+
+          expect(container.innerHTML).toEqual('<p>test</p>');
+          
+          p.remove();
+
+          expect(container.innerHTML).toEqual('');
+        });
       });
     });
   });
