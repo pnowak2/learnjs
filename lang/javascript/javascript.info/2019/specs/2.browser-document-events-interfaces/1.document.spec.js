@@ -450,19 +450,19 @@ describe('1 Document', () => {
         const text = document.createTextNode('text');
 
         expect(text.nodeType).toEqual(3);
-        expect(text instanceof Text).toBe(true)
+        expect(text instanceof Text).toBe(true);
       });
 
       it('should element node contain proper value', () => {
         const div = document.createElement('div');
 
         expect(div.nodeType).toEqual(1);
-        expect(div instanceof HTMLElement).toBe(true)
+        expect(div instanceof HTMLElement).toBe(true);
       });
 
       it('should document node contain proper value', () => {
         expect(document.nodeType).toEqual(9);
-        expect(document instanceof Document).toBe(true)
+        expect(document instanceof Document).toBe(true);
       });
     });
 
@@ -498,7 +498,7 @@ describe('1 Document', () => {
 
       it('should set inner html contents as string', () => {
         const div = document.createElement('div');
-        div.innerHTML = '<p><a id="lnk">link</a></p>'
+        div.innerHTML = '<p><a id="lnk">link</a></p>';
 
         expect(div.querySelector('#lnk')).toEqual(jasmine.any(HTMLElement));
       });
@@ -519,7 +519,7 @@ describe('1 Document', () => {
         const div = document.createElement('div');
         container.appendChild(div);
 
-        div.outerHTML = '<p><b>hi</b></p>'
+        div.outerHTML = '<p><b>hi</b></p>';
 
         expect(div.outerHTML).toEqual('<div></div>');
         expect(div.innerHTML).toEqual('');
@@ -651,7 +651,7 @@ describe('1 Document', () => {
         const infos = container.querySelectorAll('[show-info]');
         const result = [...infos].map(a => a.getAttribute('show-info'));
 
-        expect(result).toEqual(['name'])
+        expect(result).toEqual(['name']);
       });
 
       it('should read data- attributes', () => {
@@ -697,13 +697,13 @@ describe('1 Document', () => {
       describe('el.appendChild(node)', () => {
         it('should append node as last child', () => {
           const container = document.createElement('div');
-          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>';
           const ul = container.firstElementChild;
 
           const child = document.createElement('li');
           child.textContent = 3;
 
-          ul.appendChild(child)
+          ul.appendChild(child);
 
           expect(container.innerHTML).toEqual('<ul><li>1</li><li>2</li><li>3</li></ul>');
         });
@@ -712,7 +712,7 @@ describe('1 Document', () => {
       describe('el.insertBefore(node, nextSibling)', () => {
         it('should insert node before given child', () => {
           const container = document.createElement('div');
-          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>';
           const ul = container.firstElementChild;
 
           const child = document.createElement('li');
@@ -727,7 +727,7 @@ describe('1 Document', () => {
       describe('el.replaceChild(node, oldChild)', () => {
         it('should replace child with another node', () => {
           const container = document.createElement('div');
-          container.innerHTML = '<ul><li>1</li><li>2</li></ul>'
+          container.innerHTML = '<ul><li>1</li><li>2</li></ul>';
           const ul = container.firstElementChild;
 
           const child = document.createElement('li');
@@ -746,7 +746,7 @@ describe('1 Document', () => {
           const child = document.createElement('p');
           child.textContent = 3;
 
-          container.append(child)
+          container.append(child);
 
           expect(container.innerHTML).toEqual('<span>a</span><p>3</p>');
         });
@@ -755,7 +755,7 @@ describe('1 Document', () => {
           const container = document.createElement('div');
           container.innerHTML = '<span>a</span>';
 
-          container.append('hejo')
+          container.append('hejo');
 
           expect(container.innerHTML).toEqual('<span>a</span>hejo');
         });
@@ -792,7 +792,7 @@ describe('1 Document', () => {
           const child = document.createElement('p');
           child.textContent = 3;
 
-          a.before(child)
+          a.before(child);
 
           expect(container.innerHTML).toEqual('<p>3</p><a>link</a>');
         });
@@ -827,7 +827,7 @@ describe('1 Document', () => {
           container.innerHTML = '<a>link</a>';
           const a = container.querySelector('a');
 
-          a.after('test')
+          a.after('test');
 
           expect(container.innerHTML).toEqual('<a>link</a>test');
         });
@@ -842,7 +842,7 @@ describe('1 Document', () => {
           const child = document.createElement('p');
           child.textContent = 3;
 
-          a.replaceWith(child)
+          a.replaceWith(child);
 
           expect(container.innerHTML).toEqual('<p>3</p>');
         });
@@ -909,7 +909,7 @@ describe('1 Document', () => {
 
           // one.appendChild(two); // works too
           // one.append(container.removeChild(two)); // works too
-          one.append(two)
+          one.append(two);
 
           expect(container.innerHTML).toEqual('<p id="one">1<p id="two">2</p></p>')
         });
@@ -957,7 +957,7 @@ describe('1 Document', () => {
           const p = container.querySelector('p');
 
           expect(container.innerHTML).toEqual('<p>test</p>');
-          
+
           container.removeChild(p);
 
           expect(container.innerHTML).toEqual('');
@@ -971,10 +971,292 @@ describe('1 Document', () => {
           const p = container.querySelector('p');
 
           expect(container.innerHTML).toEqual('<p>test</p>');
-          
+
           p.remove();
 
           expect(container.innerHTML).toEqual('');
+        });
+      });
+    });
+  });
+
+  describe('1.8 Styles and Classes', () => {
+    describe('className', () => {
+      it('should access/modify class attribute/property, wiping out previous value', () => {
+        const div = document.createElement('div');
+        div.className = 'my-class';
+
+        expect(div.outerHTML).toEqual('<div class="my-class"></div>');
+      });
+    });
+
+    describe('classList', () => {
+      it('should allow to get list of classes', () => {
+        const div = document.createElement('div');
+        div.className = 'one two three';
+
+        expect(div.classList.length).toEqual(3);
+        expect(div.classList[0]).toEqual('one');
+        expect(div.classList[1]).toEqual('two');
+        expect(div.classList[2]).toEqual('three');
+      });
+
+      it('should allow to add new class', () => {
+        const div = document.createElement('div');
+        div.className = 'one';
+
+        expect(div.classList.length).toEqual(1);
+
+        div.classList.add('two');
+
+        expect(div.classList.length).toEqual(2);
+      });
+
+      it('should allow to remove class', () => {
+        const div = document.createElement('div');
+        div.className = 'one two';
+
+        expect(div.classList.length).toEqual(2);
+
+        div.classList.remove('two');
+
+        expect(div.classList.length).toEqual(1);
+      });
+
+      it('should allow to toggle class', () => {
+        const div = document.createElement('div');
+        div.className = 'one';
+
+        expect(div.classList.length).toEqual(1);
+
+        div.classList.toggle('two');
+        expect(div.classList.length).toEqual(2);
+
+        div.classList.toggle('two');
+        expect(div.classList.length).toEqual(1);
+      });
+    });
+
+    describe('Element style', () => {
+      it('should access any entry in style="" statement', () => {
+        const container = document.createElement('div');
+        container.insertAdjacentHTML('afterbegin', '<div id="child" style="color: red; width: 100px">test</div>');
+        const child = container.querySelector('#child');
+
+        expect(child.style.color).toEqual('red');
+        expect(child.style.width).toEqual('100px');
+      });
+
+      it('should modify/addany style on dom element', () => {
+        const div = document.createElement('div');
+        div.style.color = 'blue';
+
+        expect(div.outerHTML).toEqual('<div style="color: blue;"></div>');
+      });
+    });
+
+    describe('Resetting the style property', () => {
+      it('should remove property do default state by setting empty string', () => {
+        const div = document.createElement('div');
+        div.style.display = 'none';
+
+        expect(div.outerHTML).toEqual('<div style="display: none;"></div>');
+
+        div.style.display = '';
+
+        expect(div.outerHTML).toEqual('<div style=""></div>');
+      });
+    });
+
+    describe('Apply css styles with style.cssText', () => {
+      it('should apply several rules at once, wipes out all existing styles', () => {
+        const div = document.createElement('div');
+        div.style.cssText = `
+          display: none;
+          float: left;
+        `;
+
+        expect(div.outerHTML).toEqual('<div style="display: none; float: left;"></div>');
+
+      });
+    });
+
+    describe('Mind the units', () => {
+      it('should provide units to style properties', () => {
+        const div = document.createElement('div');
+        div.style.height = '10px';
+
+        expect(div.outerHTML).toEqual('<div style="height: 10px;"></div>');
+      });
+    });
+
+    describe('Computed styles: getComputedStyle()', () => {
+      let style;
+      let div;
+
+      beforeEach(() => {
+        style = document.createElement('style');
+        style.textContent = '#myDiv { width: auto; font-size: 2rem; } #myDiv::before { padding-left: 8px; }';
+        div = document.createElement('div');
+        div.id = 'myDiv';
+
+
+        document.body.appendChild(style);
+        document.body.appendChild(div);
+      });
+
+      afterEach(() => {
+        document.body.removeChild(style);
+        document.body.removeChild(div);
+      });
+
+      it('should not depend on style property of element, it depends on style attribute only', () => {
+        expect(div.style.width).toEqual('');
+        expect(div.style.fontSize).toEqual('');
+      });
+
+      it('should get computed (all css rules, inheritance applied) value, resolved to fixed units', () => {
+        expect(getComputedStyle(div).width).toEqual('767px');
+        expect(getComputedStyle(div).fontSize).toEqual('32px');
+      });
+
+      it('should access pseudo element', () => {
+        expect(getComputedStyle(div, "::before").paddingLeft).toEqual('8px');
+
+      });
+    });
+  });
+
+  describe('1.9 Element size and scrolling', () => {
+    let container, box, style;
+
+    beforeEach(() => {
+      // box with width, height, content and scroll
+      container = document.createElement('div');
+      container.style.position = 'relative';
+
+      box = document.createElement('div');
+      box.id = 'example';
+      box.textContent = `
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam exercitationem iure aliquid rerum doloribus, deleniti maxime aspernatur quidem adipisci facilis pariatur dicta! Possimus illum autem odio commodi recusandae doloremque minus.
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam exercitationem iure aliquid rerum doloribus, deleniti maxime aspernatur quidem adipisci facilis pariatur dicta! Possimus illum autem odio commodi recusandae doloremque minus.
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam exercitationem iure aliquid rerum doloribus, deleniti maxime aspernatur quidem adipisci facilis pariatur dicta! Possimus illum autem odio commodi recusandae doloremque minus.
+      `;
+
+      style = document.createElement('style');
+      style.textContent = `
+        #example {
+          position: absolute;
+          top: 80px;
+          left: 20px;
+
+          width: 300px;
+          height: 200px;
+          border: 25px solid #E8C48F;
+          padding: 20px;
+          overflow: auto;
+        }
+      `;
+
+      document.body.appendChild(style);
+      container.append(box);
+      document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(style);
+      container.removeChild(box);
+      document.body.removeChild(container);
+    });
+
+    describe('Geometry', () => {
+      describe('offsetParent', () => {
+        it('should return closest parent which is css-positioned (position absolute, relative, fixed or sticky)', () => {
+          expect(box.offsetParent).toBe(container);
+        });
+
+        it('should return null for hidden', () => {
+          box.hidden = true;
+          expect(box.offsetParent).toBeNull();
+        });
+
+        it('should return null for position fixed', () => {
+          box.style.position = 'fixed';
+          expect(box.offsetParent).toBeNull();
+        });
+
+        it('should return null in case of body', () => {
+          expect(document.body.offsetParent).toBeNull();
+        });
+      });
+
+      describe('offsetLeft', () => {
+        it('should return x/y coordinates relative to its offset parent upper left corner', () => {
+          expect(box.offsetLeft).toEqual(20);
+        });
+
+        it('should return zero for hidden', () => {
+          box.hidden = true;
+          expect(box.offsetLeft).toEqual(0);
+        });
+      });
+
+      describe('offsetTop', () => {
+        it('should return x/y coordinates relative to its offset parent upper top corner', () => {
+          expect(box.offsetTop).toEqual(80);
+        });
+
+        it('should return zero for hidden', () => {
+          box.hidden = true;
+          expect(box.offsetTop).toEqual(0);
+        });
+      });
+
+      describe('offsetWidth', () => {
+        it('should return the outer width (content, padding, border, scrolls) with default box sizing', () => {
+          expect(box.offsetWidth).toEqual(390);
+          // for default box sizing, only contents is 300px, padding and border add on top of it making it bigger
+          // width (300) + padding left (20) + padding right (20) + border left (25) + border right (25)
+        });
+
+        it('should return the outer width (content, padding, border, scrolls) with border-box sizing', () => {
+          box.style.boxSizing = 'border-box';
+          expect(box.offsetWidth).toEqual(300);
+          // for border-box sizing, the total width has to be 300 as given in css (contents is then smaller, cause paddings and margins take some place taking from contents)
+          // width (300)
+        });
+
+        it('should compare to computed style with default box sizing (scroll takes some width, but not in Firefox)', () => {
+          expect(getComputedStyle(box).width).toEqual('283px');
+        });
+
+        it('should compare to computed style with border box sizing', () => {
+          box.style.boxSizing = 'border-box';
+          expect(getComputedStyle(box).width).toEqual('300px');
+        });
+      });
+
+      describe('offsetHeight', () => {
+        it('should return the outer height (content, padding, border, scrolls) with default box sizing', () => {
+          expect(box.offsetHeight).toEqual(290);
+          // for default box sizing, only contents is 300px, padding and border add on top of it making it bigger
+          // height (200) + padding top (20) + padding bottom (20) + border top (25) + border bottom (25)
+        });
+
+        it('should return the outer height (content, padding, border, scrolls) with border-box sizing', () => {
+          box.style.boxSizing = 'border-box';
+          expect(box.offsetHeight).toEqual(200);
+          // for border-box sizing, the total height has to be 200 as given in css (contents is then smaller, cause paddings and margins take some place taking from contents)
+          // height (200)
+        });
+
+        it('should compare to computed style with default box sizing (scroll takes some width, but not in Firefox)', () => {
+          expect(getComputedStyle(box).height).toEqual('200px');
+        });
+
+        it('should compare to computed style with border box sizing', () => {
+          box.style.boxSizing = 'border-box';
+          expect(getComputedStyle(box).height).toEqual('200px');
         });
       });
     });
