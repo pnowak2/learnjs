@@ -1259,6 +1259,282 @@ describe('1 Document', () => {
           expect(getComputedStyle(box).height).toEqual('200px');
         });
       });
+
+      describe('clientTop', () => {
+        it('should return relative top outerside - innerside, mostly for calculating top border width', () => {
+          expect(box.clientTop).toEqual(25);
+        });
+      });
+
+      describe('clientLeft', () => {
+        it('should return relative left outerside - innerside, mostly for calculating left border width', () => {
+          expect(box.clientLeft).toEqual(25);
+        });
+
+        it('should include also scrollbar if its on the left', () => {
+          box.style.direction = 'rtl';
+          expect(box.clientLeft).toEqual(25 + 17); // includes 17px of scrollbar
+
+        });
+      });
+
+      describe('clientWidth', () => {
+        it('should return content inside borders, excluding scrollbar', () => {
+          expect(box.clientWidth).toEqual(323); // 300 (width) + 20 (padding) + 20 (padding) - 17 (scroll)
+        });
+
+        it('should return content inside borders, if no scrollbar', () => {
+          box.style.overflow = 'hidden';
+          expect(box.clientWidth).toEqual(340); // 300 (width) + 20 (padding) + 20 (padding) -
+        });
+      });
+
+      describe('clientHeight', () => {
+        it('should return content inside borders, excluding scrollbar', () => {
+          expect(box.clientHeight).toEqual(240); // 200 (height) + 20 (padding) + 20 (padding)
+        });
+      });
+
+      describe('scrollWidth', () => {
+        it('should provide client width including content scrolled out (hidden parts)', () => {
+          expect(box.scrollWidth).toEqual(box.clientWidth); // no horizontal scroll, so it matches
+        });
+      });
+
+      describe('scrollHeight', () => {
+        it('should provide client height including content scrolled out (hidden parts)', () => {
+          expect(box.scrollHeight).toEqual(364);
+        });
+      });
+
+      describe('scrollLeft', () => {
+        it('should provide amount of pixels scrolled', () => {
+          expect(box.scrollLeft).toEqual(0);
+        });
+      });
+
+      describe('scrollTop', () => {
+        it('should provide amount of pixels scrolled', () => {
+          expect(box.scrollTop).toEqual(0);
+        });
+
+        it('should provide amount of pixels scrolled', () => {
+          box.scrollTop = 15;
+          expect(box.scrollTop).toEqual(15);
+        });
+      });
+    });
+  });
+
+  describe('1.10 Window sizes and scrolling', () => {
+    describe('Window width/height', () => {
+      describe('documentElement.clientHeight', () => {
+        it('should return height of the window', () => {
+          expect(document.documentElement.clientHeight).toEqual(600);
+        });
+      });
+
+      describe('window.innerHeight', () => {
+        it('should return height of the window (might include scrollbar width)', () => {
+          expect(window.innerHeight).toEqual(600);
+        });
+      });
+
+      describe('documentElement.clientWidth', () => {
+        it('should return width of the window', () => {
+          expect(document.documentElement.clientWidth).toEqual(783);
+        });
+      });
+
+      describe('window.innerWidth', () => {
+        it('should return width of the window (might include scrollbar width)', () => {
+          expect(window.innerWidth).toEqual(783);
+        });
+      });
+    });
+
+    describe('Document width/height (content with scroll if scrollable)', () => {
+      it('should get document height reliably', () => {
+        const height = Math.max(
+          document.documentElement.scrollHeight, document.body.scrollHeight,
+          document.documentElement.offsetHeight, document.body.offsetHeight,
+          document.documentElement.clientHeight, document.body.clientHeight,
+        );
+
+        expect(height).toEqual(600);
+      });
+
+      it('should get document width reliably', () => {
+        const width = Math.max(
+          document.documentElement.scrollWidth, document.body.scrollWidth,
+          document.documentElement.offsetWidth, document.body.offsetWidth,
+          document.documentElement.clientWidth, document.body.clientWidth,
+        );
+
+        expect(width).toEqual(783);
+      });
+    });
+
+    describe('Getting the current scroll', () => {
+      describe('window.pageYOffset', () => {
+        it('should get window vertical scroll amount', () => {
+          expect(window.pageYOffset).toEqual(0);
+          expect(document.body.scrollTop).toEqual(0);
+        });
+      });
+
+      describe('window.pageXOffset', () => {
+        it('should get window horizontal scroll amount', () => {
+          expect(window.pageXOffset).toEqual(0);
+          expect(document.body.scrollLeft).toEqual(0);
+        });
+      });
+    });
+
+    describe('Scrolling window', () => {
+      describe('window.scrollBy', () => {
+        it('should scroll by relative amount in x/y', () => {
+          const div = document.createElement('div');
+          div.innerHTML = 'a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>'
+          document.body.appendChild(div);
+
+          window.scrollBy(0, 10);
+          window.scrollBy(0, 30);
+          expect(window.pageYOffset).toEqual(40);
+
+          document.body.removeChild(div);
+        });
+      });
+
+      describe('window.scrollTo', () => {
+        it('should scroll by absolute amount in x/y', () => {
+          const div = document.createElement('div');
+          div.innerHTML = 'a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>'
+          document.body.appendChild(div);
+
+          window.scrollTo(0, 10);
+          window.scrollTo(0, 30);
+          expect(window.pageYOffset).toEqual(30);
+
+          document.body.removeChild(div);
+        });
+      });
+
+      describe('window.scrollIntoView', () => {
+        it('should scroll by absolute amount in x/y', () => {
+          const div = document.createElement('div');
+          const child = document.createElement('div');
+          div.innerHTML = 'a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>a<br>'
+          div.appendChild(child);
+          document.body.appendChild(div);
+
+          // child on top
+          child.scrollIntoView(true);
+          expect(window.pageYOffset).toEqual(622);
+
+          // child on bottom
+          child.scrollIntoView(false);
+          expect(window.pageYOffset).toEqual(615);
+
+          document.body.removeChild(div);
+        });
+      });
+    });
+  });
+
+  describe('1.11 Coordinates', () => {
+    describe('Window coordinates: getBoundingClientRect()', () => {
+      it('should retrieve window/screen coordinates of element', () => {
+        const div = document.createElement('div');
+        div.textContent = 'test';
+        div.style.cssText = `
+          position: absolute;
+          width: 100px;
+          height: 60px;
+          top: 25px;
+          left: 100px;
+          padding: 0;
+          margin: 0;
+          border: 0;
+        `;
+
+        document.body.appendChild(div);
+
+        const rect = div.getBoundingClientRect();
+        expect(rect.left).toEqual(100);
+        expect(rect.top).toEqual(25);
+        expect(rect.right).toEqual(200);
+        expect(rect.bottom).toEqual(85);
+
+        expect(rect.width).toEqual(100);
+        expect(rect.height).toEqual(60);
+
+        document.body.removeChild(div);
+      });
+    });
+
+    describe('document coordinates: getBoundingClientRect() + pageX/Y/Offset', () => {
+      it('should retrieve window/screen coordinates of element', () => {
+        const div = document.createElement('div');
+        div.textContent = 'test';
+        div.style.cssText = `
+          position: absolute;
+          width: 100px;
+          height: 60px;
+          top: 25px;
+          left: 100px;
+          padding: 0;
+          margin: 0;
+          border: 0;
+        `;
+
+        document.body.appendChild(div);
+        
+        div.scrollIntoView(false);
+
+        const rect = div.getBoundingClientRect();
+        expect(rect.left + pageXOffset).toEqual(100);
+        expect(rect.top + pageYOffset).toEqual(25);
+
+
+        document.body.removeChild(div);
+      });
+    });
+
+    describe('document.elementFromPoint(x, y)', () => {
+      it('should get top, most nested element and window coordinates', () => {
+        const div = document.createElement('div');
+        div.textContent = 'test';
+        div.style.cssText = `
+          position: absolute;
+          width: 100px;
+          height: 60px;
+          top: 25px;
+          left: 100px;
+          padding: 0;
+          margin: 0;
+          border: 0;
+        `;
+
+        document.body.appendChild(div);
+
+        const el = document.elementFromPoint(105, 65);
+        expect(el).toBe(div);
+
+        document.body.removeChild(div);
+      });
+
+      it('should return null for out of window coords', () => {
+        expect(document.elementFromPoint(
+          document.documentElement.scrollWidth, document.documentElement.scrollHeight
+        )).toBeNull();
+      });
+
+      it('should return not-null for inside window coords', () => {
+        expect(document.elementFromPoint(
+          document.documentElement.scrollWidth - 1, document.documentElement.scrollHeight - 1
+        )).not.toBeNull();
+      });
     });
   });
 });

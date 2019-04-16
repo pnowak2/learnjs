@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    html {
+      height: 100vh;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .field {
+      cursor: pointer;
+      position: relative;
+      width: 600px;
+      height: 400px;
+      background: greenyellow;
+      align-self: center;
+      outline: 15px solid beige;
+    }
+
+    .ball {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: red;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: all 1s;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="field" class="field">
+    <div id="ball" class="ball"></div>
+  </div>
+
+  <script>
+    field.addEventListener('click', function (e) {
+      ball.style.opacity = 100;
+
+      const x = e.pageX - field.getBoundingClientRect().left;
+      const y = e.pageY - field.getBoundingClientRect().top;
+
+      ball.style.left = x + 'px';
+      ball.style.top = y + 'px';
+
+      setTimeout(() => {
+        ball.style.opacity = 0.3;
+      }, 1000);
+    });
+
+    ball.addEventListener('click', function (e) {
+      const x = (field.getBoundingClientRect().width) / 2;
+      const y = (field.getBoundingClientRect().height) / 2;
+
+      ball.style.left = x + 'px';
+      ball.style.top = y + 'px';
+
+      e.stopPropagation();
+    });
+  </script>
+
+</body>
+
+</html>
