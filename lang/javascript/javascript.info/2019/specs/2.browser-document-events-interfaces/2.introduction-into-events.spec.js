@@ -304,7 +304,7 @@ describe('2 Events', () => {
 
   describe('2.5 Dispatching Custom Events', () => {
     describe('Event Constructor', () => {
-      it('should behave...', () => {
+      it('should behave..', () => {
         
       });
     });
