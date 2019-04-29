@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    #container {
+      margin: 0 auto;
+      border: 1px solid grey;
+      width: 500px;
+      height: 400px;
+    }
+
+    #ball {
+      background: red;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="ball"></div>
+  </div>
+</body>
+
+<script>
+
+  ball.addEventListener('mousedown', function (evt) {
+    ball.style.position = 'absolute';
+    ball.style.cursor = 'pointer';
+
+    let shiftX = event.clientX - ball.getBoundingClientRect().left;
+    let shiftY = event.clientY - ball.getBoundingClientRect().top;
+
+    ball.style.left = evt.pageX - shiftX + 'px';
+    ball.style.top = evt.pageY - shiftY + 'px';
+
+    function onMove(e) {
+      ball.style.left = e.pageX - shiftX + 'px';
+      ball.style.top = e.pageY - shiftY + 'px';
+    }
+
+    ball.addEventListener('mousemove', onMove);
+
+    ball.addEventListener('mouseup', function (e) {
+      ball.removeEventListener('mousemove', onMove);
+    });
+
+
+  });
+
+</script>
+
+</html>

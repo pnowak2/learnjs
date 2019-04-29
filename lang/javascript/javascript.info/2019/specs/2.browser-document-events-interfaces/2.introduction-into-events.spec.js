@@ -291,11 +291,11 @@ describe('2 Events', () => {
         };
 
         document.addEventListener('click', function (e) {
-          // expect(e.defaultPrevented).toBe(true); // should work i guess, but it's not..
+          expect(e.defaultPrevented).toBe(true); 
           done();
         });
 
-        anchor.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); // cancellable is very important here
 
         document.body.removeChild(anchor);
       });
@@ -303,9 +303,92 @@ describe('2 Events', () => {
   });
 
   describe('2.5 Dispatching Custom Events', () => {
-    describe('Event Constructor', () => {
-      it('should behave..', () => {
-        
+    describe('Event Constructor, new Event(event type[, options]);', () => {
+      it('should use bubbles', () => {
+        const div = document.createElement('div');
+        let event = new Event('click', { bubbles: true });
+
+        div.dispatchEvent(event);
+      });
+
+      it('should be cancellable, thus might be prevented', () => {
+        const div = document.createElement('div');
+        let event = new Event('click', { cancelable: true });
+
+        div.dispatchEvent(event);
+      });
+    });
+
+    describe('dispatchEvent', () => {
+      it('should dispatch on element', () => {
+        const div = document.createElement('div');
+        let event = new Event('click');
+
+        div.dispatchEvent(event);
+      });
+
+      it('should check if event is trusted, thus triggered by user interaction, not by code', (done) => {
+        const div = document.createElement('div');
+        let event = new Event('click');
+
+        div.addEventListener('click', function(evt) {
+          expect(evt.isTrusted).toBe(false);
+          done();
+        });
+
+        div.dispatchEvent(event);
+      });
+    });
+
+    describe('MouseEvent, KeyboardEvent and others', () => {
+      it('should use proper constructors for certain event type', () => {
+        let evt = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 50,
+          clientY: 6
+        });
+
+        expect(evt.clientX).toEqual(50);
+        expect(evt.clientY).toEqual(6);
+      });
+    });
+
+    describe('Custom events', () => {
+      it('should use CustomEvent constructor with detail property (to avoid conflicts on evt object itself)', () => {
+        let evt = new CustomEvent('menu:opened', {
+          detail: {
+            menuId: 'main'
+          }
+        });
+
+        expect(evt.detail.menuId).toEqual('main');
+      });
+    });
+
+    describe('event.preventDefault()', () => {
+      it('should dispatchEvent return false if event was default prevented', (done) => {
+        let container = document.createElement('div');
+        let evt  = new CustomEvent('menu:close', { cancelable: true, bubbles: true });
+
+        container.addEventListener('menu:close', function(evt) {
+          evt.preventDefault();
+          done();
+        });
+
+        expect(container.dispatchEvent(evt)).toBe(false);
+      });
+
+      it('should dispatchEvent return true if event was NOT default prevented', (done) => {
+        let container = document.createElement('div');
+        let evt  = new CustomEvent('menu:close', { cancelable: true, bubbles: true });
+
+        container.addEventListener('menu:close', function(evt) {
+          // evt.preventDefault();
+          done();
+        });
+
+        expect(container.dispatchEvent(evt)).toBe(true);
       });
     });
   });
