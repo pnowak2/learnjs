@@ -21,7 +21,7 @@ describe('8 Type Inference', () => {
     });
   });
 
-  describe('Dontextual Typing', () => {
+  describe('Contextual Typing', () => {
     it('should get type from context, here event type is known', () => {
       window.onmousedown = function (evt /* MouseEvent known by compiler here */) {
         evt.button;

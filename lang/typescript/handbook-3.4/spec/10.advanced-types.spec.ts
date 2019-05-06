@@ -298,13 +298,12 @@ describe('10 Advanced Types', () => {
 
     it('should make compiler check props passed to constructor, allowing only those which exist', () => {
       type Props<T> = { [K in keyof T]?: T[K] } | { [k: string]: any };
-      type UxLinkProps = Props<UxLink>;
       
       class UxLink {
         href: string = '';
         title: string = '';
 
-        constructor(props: UxLinkProps) {
+        constructor(props: Props<UxLink>) {
           Object.assign(this, props);
         }
       }
@@ -316,7 +315,8 @@ describe('10 Advanced Types', () => {
 
       new UxLink({
         title: 'test',
-        blabla: 'other'
+        blabla: 'other', 
+        href: 'http://'
       });
     });
   });
@@ -357,11 +357,11 @@ describe('10 Advanced Types', () => {
     });
 
     it('should make interface nullable', () => {
-      type Partial<T> = {
+      type Nullable<T> = {
         [K in keyof T]: T[K] | null;
       } | null
 
-      type PersonNullable = Partial<Person>;
+      type PersonNullable = Nullable<Person>;
 
       let p: PersonNullable = {
         name: 'ec',

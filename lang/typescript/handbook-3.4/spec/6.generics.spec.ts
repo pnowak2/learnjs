@@ -120,7 +120,7 @@ describe('6 Generics', () => {
         return new c();
       }
 
-      expect(create(BeeKeeper).hasMask).toBe(true);
+      expect(create<BeeKeeper>(BeeKeeper).hasMask).toBe(true);
     });
   });
 });

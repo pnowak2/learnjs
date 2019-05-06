@@ -39,12 +39,14 @@ describe('9 Type Compatibility', () => {
   describe('Classes', () => {
     it('should check instance variables only, private/protected matters, statics are ignored', () => {
       class Animal {
+        // private boo: number;
         static origin: string;
         feet: number;
         constructor(name: string, numFeet: number) { }
       }
   
       class Size {
+        // private boo: number;
         feet: number;
         constructor(numFeet: number) { }
       }
