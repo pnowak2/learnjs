@@ -1,4 +1,4 @@
-// generated with tsc --module amd 1.export-statements.ts
+// generated with tsc --module amd
 
 define(["require", "exports"], function (require, exports) {
     "use strict";
