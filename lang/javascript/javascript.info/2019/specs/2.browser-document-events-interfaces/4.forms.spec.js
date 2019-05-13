@@ -222,4 +222,11 @@ describe('4 Forms', () => {
       });
     });
   });
+  
+  describe('4.4 Form submission', () => {
+   it('should submit form using submit method', () => {
+     const form = document.createElement('form');
+     form.submit();
+   }); 
+  });
 });
