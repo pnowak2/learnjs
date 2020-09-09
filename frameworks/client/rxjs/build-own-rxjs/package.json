@@ -1,0 +1,39 @@
+{
+  "name": "own-rxjs",
+  "version": "0.0.1",
+  "description": "learning rxjs",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "test:watch": "jest --watchAll --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "start": "npm run build && node lib/app/main.app"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Piotr Nowak",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.16",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.3"
+  }
+}
