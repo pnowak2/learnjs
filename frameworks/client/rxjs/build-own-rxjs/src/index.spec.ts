@@ -1,7 +1,7 @@
-import { Observable, of, Subscription } from './rxjs/index';
+import { from, Observable, of, Subscription, fromEvent } from './rxjs/index';
 
-describe('', () => {
-    it('should build observable simple interface', (done) => {
+describe('Build Own Observable', () => {
+    it('should create simple observable', (done) => {
         const teardownMock = jest.fn();
 
         const obs = new Observable<number>((observer) => {
@@ -15,9 +15,16 @@ describe('', () => {
             expect(value).toBe(5);
             done();
         });
+
+        sub.unsubscribe();
+
+        expect(teardownMock).toHaveBeenCalled();
     });
 
-    it('should build of() observer factory', (done) => {
+});
+
+describe('of() Factory Observable', () => {
+    it('should create observable from series of values', (done) => {
         const obs = of<number>(2, 3, 4);
         const fn = jest.fn();
 
@@ -27,7 +34,52 @@ describe('', () => {
             expect(fn.mock.calls[0][0]).toBe(2);
             expect(fn.mock.calls[1][0]).toBe(3);
             expect(fn.mock.calls[2][0]).toBe(4);
+
             done();
         })
+    });
+});
+
+describe('from() Factory Observable', () => {
+    it('should build Observable from array of values', (done) => {
+        const obs = from<number>([4, 5, 6]);
+        const fn = jest.fn();
+
+        obs.subscribe(fn, null, () => {
+            expect(fn.mock.calls[0][0]).toBe(4);
+            expect(fn.mock.calls[1][0]).toBe(5);
+            expect(fn.mock.calls[2][0]).toBe(6);
+
+            done();
+        })
+    });
+
+    it('should build Observable from Promise', (done) => {
+        const obs = from<number>(new Promise(resolve => {
+            setTimeout(() => {
+                resolve(24);
+            }, 50);
+        }));
+
+        const fn = jest.fn();
+
+        obs.subscribe(fn, null, () => {
+            expect(fn).toHaveBeenCalledWith(24);
+            done();
+        })
+    });
+});
+
+describe('fromEvent() Factory Observable', () => {
+    it('should build Observable from event listener', (done) => {
+        const el: HTMLElement = document.createElement('div');
+        const obs = fromEvent<MouseEvent>(el, 'click');
+
+        obs.subscribe(evt => {
+            expect(evt.type).toEqual('click');
+            done();
+        });
+
+        el.dispatchEvent(new MouseEvent('click'));
     });
 });

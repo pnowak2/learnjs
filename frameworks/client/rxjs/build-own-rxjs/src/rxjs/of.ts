@@ -6,5 +6,5 @@ export function of<T>(...values: T[]): Observable<T> {
             observer.next(v);
         })
         observer.complete();
-    }))
+    }));
 }
