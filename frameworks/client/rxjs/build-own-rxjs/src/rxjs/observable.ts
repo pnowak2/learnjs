@@ -25,7 +25,7 @@ export class Observable<T> {
 
         return {
             unsubscribe() {
-                if(teardown) { teardown() }
+                if (teardown) { teardown() }
             }
         };
     }
