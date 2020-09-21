@@ -1,4 +1,4 @@
-import { from, Observable, of, Subscription, fromEvent } from './rxjs/index';
+import { from, fromEvent, map, Observable, of, Subscription } from './rxjs/index';
 
 describe('Build Own Observable', () => {
     it('should create simple observable', (done) => {
@@ -20,7 +20,6 @@ describe('Build Own Observable', () => {
 
         expect(teardownMock).toHaveBeenCalled();
     });
-
 });
 
 describe('of() Factory Observable', () => {
@@ -81,5 +80,24 @@ describe('fromEvent() Factory Observable', () => {
         });
 
         el.dispatchEvent(new MouseEvent('click'));
+    });
+});
+
+describe('map() operator', () => {
+    it('should map each value with index', (done) => {
+        const obs = of<number>(2, 3, 4);
+        const fn = jest.fn();
+
+        obs.pipe(
+            map((value, index) => value * value * index)
+        ).subscribe(fn, null, () => {
+            expect(fn).toHaveBeenCalledTimes(3);
+
+            expect(fn.mock.calls[0][0]).toBe(0);
+            expect(fn.mock.calls[1][0]).toBe(9);
+            expect(fn.mock.calls[2][0]).toBe(32);
+
+            done();
+        })
     });
 });
