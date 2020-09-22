@@ -1,4 +1,4 @@
-import { from, fromEvent, map, Observable, of, Subscription } from './rxjs/index';
+import { from, fromEvent, map, Observable, of, Subscription, reduce } from './rxjs/index';
 
 describe('Build Own Observable', () => {
     it('should create simple observable', (done) => {
@@ -92,10 +92,27 @@ describe('map() operator', () => {
             map((value, index) => value * value * index)
         ).subscribe(fn, null, () => {
             expect(fn).toHaveBeenCalledTimes(3);
-
             expect(fn.mock.calls[0][0]).toBe(0);
             expect(fn.mock.calls[1][0]).toBe(9);
             expect(fn.mock.calls[2][0]).toBe(32);
+
+            done();
+        })
+    });
+});
+
+describe('reduce() operator', () => {
+    it('should reduce to one value and emit', (done) => {
+        const obs = of<number>(2, 3, 4);
+        const fn = jest.fn();
+
+        obs.pipe(
+            reduce((acc, val, index) => {
+                return acc + val + index;
+            }, 0)
+        ).subscribe(fn, null, () => {
+            expect(fn).toHaveBeenCalledTimes(1);
+            expect(fn.mock.calls[0][0]).toBe(12);
 
             done();
         })
