@@ -1,4 +1,4 @@
-import { from, fromEvent, map, Observable, of, Subscription, reduce } from './rxjs/index';
+import { from, fromEvent, map, Observable, of, Subscription, reduce, filter, tap } from './rxjs/index';
 
 describe('Build Own Observable', () => {
     it('should create simple observable', (done) => {
@@ -114,6 +114,51 @@ describe('reduce() operator', () => {
             expect(fn).toHaveBeenCalledTimes(1);
             expect(fn.mock.calls[0][0]).toBe(12);
 
+            done();
+        })
+    });
+});
+
+
+
+describe('filter() operator', () => {
+    it('should filter only qualified values', (done) => {
+        const obs = of<number>(2, 3, 4, 5, 6);
+        const fn = jest.fn();
+
+        obs.pipe(
+            filter(val => val % 2 === 0),
+        ).subscribe(fn, null, () => {
+            expect(fn).toHaveBeenCalledTimes(3);
+            expect(fn.mock.calls[0][0]).toBe(2);
+            expect(fn.mock.calls[1][0]).toBe(4);
+            expect(fn.mock.calls[2][0]).toBe(6);
+
+            done();
+        })
+    });
+});
+
+
+
+describe('tap() operator', () => {
+    it('should call side effect code', (done) => {
+        const obs = of<number>(2, 3, 4);
+        const fn = jest.fn();
+        const tapFn = jest.fn();
+
+        obs.pipe(
+            tap(tapFn),
+        ).subscribe(fn, null, () => {
+            expect(fn).toHaveBeenCalledTimes(3);
+            expect(fn.mock.calls[0][0]).toBe(2);
+            expect(fn.mock.calls[1][0]).toBe(3);
+            expect(fn.mock.calls[2][0]).toBe(4);
+
+            expect(tapFn).toHaveBeenCalledTimes(3);
+            expect(tapFn.mock.calls[0][0]).toBe(2);
+            expect(tapFn.mock.calls[1][0]).toBe(3);
+            expect(tapFn.mock.calls[2][0]).toBe(4);
             done();
         })
     });

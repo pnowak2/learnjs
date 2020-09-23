@@ -8,3 +8,5 @@ export * from './from-event';
 
 export * from './map';
 export * from './reduce';
+export * from './filter';
+export * from './tap';
