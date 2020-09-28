@@ -1,5 +1,5 @@
-import { Observable, OperatorFunction } from './observable';
-import { Observer } from './observer';
+import { Observable, OperatorFunction } from '../core/observable';
+import { Observer } from '../core/observer';
 
 export function reduce<A, B>(
     accumulate: (acc: A | B, value: A, index: number) => A | B,

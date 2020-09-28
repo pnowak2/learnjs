@@ -1,5 +1,5 @@
-import { Observable, OperatorFunction } from './observable';
-import { Observer } from './observer';
+import { Observable, OperatorFunction } from '../core/observable';
+import { Observer } from '../core/observer';
 
 export function filter<A>(fltr: (value: A) => boolean): OperatorFunction<A, A> {
     return source => {

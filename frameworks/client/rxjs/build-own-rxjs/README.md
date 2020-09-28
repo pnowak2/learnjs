@@ -8,3 +8,6 @@ https://indepth.dev/build-your-own-observable-part-1-arrays/
 
 Ben lesh talk, creator on doing own observable
 https://www.youtube.com/watch?v=m40cF91F8_A&
+
+Docs
+https://rxjs.dev/

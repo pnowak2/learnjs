@@ -1,4 +1,4 @@
-import { Observable } from './observable';
+import { Observable } from '../core/observable';
 
 export function from<T>(convertible: Promise<T> | ArrayLike<T>): Observable<T> {
     if (Array.isArray(convertible)) {

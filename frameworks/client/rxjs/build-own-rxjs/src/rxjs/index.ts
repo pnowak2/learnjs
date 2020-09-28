@@ -1,12 +1,2 @@
-export * from './observable';
-export * from './observer';
-export * from './subscription';
-
-export * from './of';
-export * from './from';
-export * from './from-event';
-
-export * from './map';
-export * from './reduce';
-export * from './filter';
-export * from './tap';
+export * from './core';
+export * from './factories';

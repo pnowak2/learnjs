@@ -1,5 +1,5 @@
-import { Observable, OperatorFunction } from './observable';
-import { Observer } from './observer';
+import { Observable, OperatorFunction } from '../core/observable';
+import { Observer } from '../core/observer';
 
 export function map<A, B>(transform: (valueA: A, index: number) => B): OperatorFunction<A, B> {
     let currentIndex = 0;
