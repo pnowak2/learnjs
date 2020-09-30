@@ -1,7 +1,7 @@
 import { Observer } from './observer';
+import { OperatorFunction } from './operator-function';
 import { Subscription } from './subscription';
 
-export type OperatorFunction<A, B> = (source: Observable<A>) => Observable<B>;
 export class Observable<T> {
     constructor(private observe: (observer: Observer<T>) => (() => void) | void) { }
 

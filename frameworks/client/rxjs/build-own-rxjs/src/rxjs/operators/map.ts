@@ -1,4 +1,5 @@
-import { Observable, OperatorFunction } from '../core/observable';
+import { Observable } from '../core/observable';
+import { OperatorFunction } from "../core/operator-function";
 import { Observer } from '../core/observer';
 
 export function map<A, B>(transform: (valueA: A, index: number) => B): OperatorFunction<A, B> {
