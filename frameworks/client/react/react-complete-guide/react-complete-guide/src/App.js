@@ -5,36 +5,91 @@ import './App.css';
 const app = props => {
   const [personsState, setPersonsState] = useState({
     persons: [
-      { name: 'Piotr', age: 40 },
-      { name: 'Chris', age: 2 },
-      { name: 'Alicja', age: 6 },
+      { id: 'pn', name: 'Piotr', age: 40 },
+      { id: 'fd', name: 'Chris', age: 2 },
+      { id: 'ed', name: 'Alicja', age: 6 },
     ],
+    showPersons: false
   })
 
-  const [otherState, setOtherState] = useState('some other value');
+  // const [otherState, setOtherState] = useState('some other value');
 
-  const switchNameHandler = () => {
+  const deletePersonHandler = (personIndex) => {
+    // const persons = personsState.persons.slice();
+    const persons = [...personsState.persons];
+    persons.splice(personIndex, 1);
+
     setPersonsState({
-      persons: [
-        { name: 'Piotrek', age: 41 },
-        { name: 'Krzys', age: 3 },
-        { name: 'Alicja', age: 7 },
-      ],
+      persons: persons,
+      showPersons: true
     });
   }
+
+  const nameChangedHandler = (event, id) => {
+    const personIndex = personsState.persons.findIndex(p => {
+      return id === p.id
+    });
+
+    const person = {
+      ...personsState.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...personsState.persons];
+    persons[personIndex] = person;
+
+    setPersonsState({
+      persons: persons,
+      showPersons: true
+    });
+  }
+
+  const getPersons = () => {
+    if (personsState.showPersons) {
+      return (
+        <div>
+          {personsState.persons.map((person, index) => (
+            <Person
+              key={person.id}
+              click={() => deletePersonHandler(index)}
+              changed={(event) => nameChangedHandler(event, person.id)}
+              name={person.name}
+              age={person.age} />
+          ))}
+        </div>
+      )
+    }
+  }
+
+  const togglePersonsHandler = () => {
+    const doesShow = personsState.showPersons;
+
+    setPersonsState({
+      ...personsState,
+      showPersons: !doesShow
+    })
+  }
+
+  const style = {
+    backgroundColor: 'white',
+    font: 'inherit',
+    border: '1px solid blue',
+    padding: '8px',
+    cursor: 'pointer'
+  }
+
+  const persons = getPersons();
 
   return (
     <div className="App" >
       <h1>Hi, I'm a react App</h1>
       <p>This is really working!</p>
 
-      <button onClick={switchNameHandler}>Switch Name</button>
-
-      <Person onSwitch={switchNameHandler} name={personsState.persons[0].name} age={personsState.persons[0].age} />
-      <Person name={personsState.persons[1].name} age={personsState.persons[1].age}>
-        My Hobbies: Autka
-        </Person>
-      <Person name={personsState.persons[2].name} age={personsState.persons[2].age} />
+      <button
+        style={style}
+        onClick={togglePersonsHandler}>Switch Name</button>
+      {persons}
     </div >
   );
 }
