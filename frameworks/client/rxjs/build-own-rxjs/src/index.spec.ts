@@ -1,5 +1,5 @@
 import { from, fromEvent, Observable, of, Subscription } from './rxjs';
-import { catchError, filter, map, reduce, tap } from './rxjs/operators';
+import { catchError, filter, map, reduce, tap, mergeMap } from './rxjs/operators';
 
 describe('Core', () => {
     it('should create simple observable', (done) => {
@@ -193,8 +193,25 @@ describe('Operators', () => {
     });
 
     describe('mergeMap()', () => {
-       it('should ..', () => {
-           
-       }); 
+        it('should ..', (done) => {
+            const outer = of<number>(2, 3, 4);
+            const createInner = (input: number): Observable<string> => {
+                return new Observable(obs => {
+                    obs.next('http://' + input)
+                    obs.complete();
+                });
+            };
+            const fn = jest.fn();
+
+            outer.pipe(
+                mergeMap(value => createInner(value))
+            ).subscribe(fn, null, () => {
+                expect(fn).toHaveBeenCalledTimes(3);
+                expect(fn.mock.calls[0][0]).toBe('http://2');
+                expect(fn.mock.calls[1][0]).toBe('http://3');
+                expect(fn.mock.calls[2][0]).toBe('http://4');
+                done();
+            })
+        });
     });
 });
