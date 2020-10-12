@@ -1,5 +1,5 @@
-import { OperatorFunction } from "../core/operator-function";
-import { Observable, Observer, Subscription } from '../core';
+import { Observable, Subscription } from '../core';
+import { OperatorFunction } from '../core/operator-function';
 
 export function mergeMap<A, B>(
     project: (val: A, index: number) => Observable<B>

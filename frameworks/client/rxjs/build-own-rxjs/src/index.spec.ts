@@ -1,5 +1,5 @@
 import { from, fromEvent, Observable, of, Subscription } from './rxjs';
-import { catchError, filter, map, reduce, tap, mergeMap } from './rxjs/operators';
+import { catchError, filter, map, reduce, tap, mergeMap, concatMap } from './rxjs/operators';
 
 describe('Core', () => {
     it('should create simple observable', (done) => {
@@ -193,7 +193,7 @@ describe('Operators', () => {
     });
 
     describe('mergeMap()', () => {
-        it('should ..', (done) => {
+        it('should map outer observable to inner one', (done) => {
             const outer = of<number>(2, 3, 4);
             const createInner = (input: number): Observable<string> => {
                 return new Observable(obs => {
@@ -210,6 +210,27 @@ describe('Operators', () => {
                 expect(fn.mock.calls[0][0]).toBe('http://2');
                 expect(fn.mock.calls[1][0]).toBe('http://3');
                 expect(fn.mock.calls[2][0]).toBe('http://4');
+                done();
+            })
+        });
+    });
+
+    describe('concatMap()', () => {
+        it('should map outer observable to inner one and emit only after outer completes. inner subscribes to next outer after first outer completed', (done) => {
+            const outer = of<number>(2, 3, 4);
+            const createInner = (input: number): Observable<string> => {
+                return new Observable(obs => {
+                    obs.next('http://' + input)
+                    obs.complete();
+                });
+            };
+            const fn = jest.fn();
+
+            outer.pipe(
+                concatMap(value => createInner(value))
+            ).subscribe(fn, null, () => {
+                expect(fn).toHaveBeenCalledTimes(1);
+                expect(fn.mock.calls[0][0]).toBe('http://2');
                 done();
             })
         });
