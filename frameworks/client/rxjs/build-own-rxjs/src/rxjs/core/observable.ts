@@ -1,9 +1,13 @@
 import { Observer } from './observer';
 import { OperatorFunction } from './operator-function';
+import { Scheduler, syncScheduler } from './scheduler';
 import { Subscription } from './subscription';
 
 export class Observable<T> {
-    constructor(private observe: (observer: Observer<T>) => (() => void) | void) { }
+    constructor(
+        private observe: (observer: Observer<T>) => (() => void) | void,
+        private scheduler: Scheduler = syncScheduler
+    ) { }
 
     pipe(): Observable<T>;
     pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
@@ -38,15 +42,17 @@ export class Observable<T> {
         error?: (error: any) => void,
         complete?: () => void,
     ): Subscription {
+        const that = this;
+
         const observer: Observer<T> = {
             next(value: T): void {
-                if (next) { next(value); }
+                if (next) { that.scheduler.schedule(() => next(value)) }
             },
             error(err: any): void {
-                if (error) { error(err); }
+                if (error) { that.scheduler.schedule(() => error(err)) }
             },
             complete(): void {
-                if (complete) { complete(); }
+                if (complete) { that.scheduler.schedule(() => complete()) }
             }
         }
 
