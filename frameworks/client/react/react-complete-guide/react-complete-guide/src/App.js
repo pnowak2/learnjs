@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Person from './Person/Person';
-import Radium from 'radium';
 import './App.css';
 
 const app = props => {
@@ -115,4 +114,4 @@ const app = props => {
   );
 }
 
-export default Radium(app);
+export default app;
