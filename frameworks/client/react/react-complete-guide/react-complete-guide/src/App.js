@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Person from './Person/Person';
-import './App.css';
+import classes from './App.css';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 const app = props => {
   const [personsState, setPersonsState] = useState({
@@ -46,6 +47,7 @@ const app = props => {
   }
 
   const getPersons = () => {
+
     if (personsState.showPersons) {
       style.backgroundColor = 'red';
       style[':hover'] = {
@@ -56,12 +58,13 @@ const app = props => {
       return (
         <div>
           {personsState.persons.map((person, index) => (
-            <Person
-              key={person.id}
-              click={() => deletePersonHandler(index)}
-              changed={(event) => nameChangedHandler(event, person.id)}
-              name={person.name}
-              age={person.age} />
+            <ErrorBoundary key={person.id}>
+              <Person
+                click={() => deletePersonHandler(index)}
+                changed={(event) => nameChangedHandler(event, person.id)}
+                name={person.name}
+                age={person.age} />
+            </ErrorBoundary>
           ))}
         </div>
       )
@@ -76,6 +79,8 @@ const app = props => {
       showPersons: !doesShow
     })
   }
+
+  let btnClass = [classes.Button];
 
   const style = {
     backgroundColor: 'green',
@@ -92,21 +97,21 @@ const app = props => {
 
   const persons = getPersons();
 
-  const classes = [];
+  const assignedClasses = [];
   if (personsState.persons.length <= 2) {
-    classes.push('red');
+    assignedClasses.push(classes.red);
   }
 
   if (personsState.persons.length <= 1) {
-    classes.push('bold');
+    assignedClasses.push(classes.bold);
   }
 
   return (
-    <div className="App" >
+    <div className={classes.App}>
       <h1>Hi, I'm a react App</h1>
-      <p className={classes.join(' ')}>This is really working!</p>
+      <p className={assignedClasses.join(' ')}>This is really working!</p>
 
-      <button className="button"
+      <button className={btnClass.join(' ')}
         alt={personsState.showPersons}
         onClick={togglePersonsHandler}>Switch Name
       </button>
