@@ -81,8 +81,6 @@ describe('Blockchain', () => {
                 newChain.addBlock({ data: 'Bears' });
                 newChain.addBlock({ data: 'Beets' });
                 newChain.addBlock({ data: 'Battlestar Galactica' });
-
-                blockchain.replaceChain(newChain.chain);
             });
 
             describe('and the chain is invalid', () => {
