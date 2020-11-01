@@ -46,7 +46,7 @@ describe('Block', () => {
         });
 
         it('sets a `timestamp`', () => {
-            expect(minedBlock.timestamp).toBeDefined();
+            expect(minedBlock.timestamp).toEqual(jasmine.any(Number));
         });
 
         it('creates a SHA-256 `hash` based on the proper inputs', () => {
