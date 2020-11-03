@@ -20,7 +20,14 @@ class PubSub {
         );
     }
 
-    handleMessage(channel, message) {
+    broadcastChain() {
+        this.publish({
+            channel: CHANNELS.BLOCKCHAIN,
+            message: JSON.stringify(this.blockchain.chain)
+        })
+    }
+
+    /* private */ handleMessage(channel, message) {
         console.log(`Message received. Channel: ${channel}, Message: ${message}`);
 
         const parsedMessage = JSON.parse(message);
@@ -30,20 +37,13 @@ class PubSub {
         }
     }
 
-    subscribeToChannels() {
+    /* private */ subscribeToChannels() {
         Object.values(CHANNELS).forEach(channel => {
             this.subscriber.subscribe(channel);
         });
     }
 
-    broadcastChain() {
-        this.publish({
-            channel: CHANNELS.BLOCKCHAIN,
-            message: JSON.stringify(this.blockchain.chain)
-        })
-    }
-
-    publish({ channel, message }) {
+    /* private */ publish({ channel, message }) {
         this.subscriber.unsubscribe(channel, () => {
             this.publisher.publish(channel, message, () => {
                 this.subscriber.subscribe(channel);
