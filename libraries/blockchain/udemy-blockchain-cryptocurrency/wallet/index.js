@@ -1,4 +1,5 @@
 module.exports = {
     Wallet: require('./wallet'),
-    Transaction: require('./transaction')
+    Transaction: require('./transaction'),
+    TransactionPool: require('./transaction-pool')
 }

@@ -27,7 +27,8 @@ class PubSub {
         })
     }
 
-    /* private */ handleMessage(channel, message) {
+    /* private */ 
+    handleMessage(channel, message) {
         console.log(`Message received. Channel: ${channel}, Message: ${message}`);
 
         const parsedMessage = JSON.parse(message);
@@ -37,13 +38,15 @@ class PubSub {
         }
     }
 
-    /* private */ subscribeToChannels() {
+    /* private */ 
+    subscribeToChannels() {
         Object.values(CHANNELS).forEach(channel => {
             this.subscriber.subscribe(channel);
         });
     }
 
-    /* private */ publish({ channel, message }) {
+    /* private */ 
+    publish({ channel, message }) {
         this.subscriber.unsubscribe(channel, () => {
             this.publisher.publish(channel, message, () => {
                 this.subscriber.subscribe(channel);
