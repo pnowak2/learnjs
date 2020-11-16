@@ -14,10 +14,10 @@ class App extends Component {
     showPersons: false
   }
 
-  nameChangedHandler = ( event, id ) => {
-    const personIndex = this.state.persons.findIndex( p => {
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
       return p.id === id;
-    } );
+    });
 
     const person = {
       ...this.state.persons[personIndex]
@@ -30,41 +30,39 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState( { persons: persons } );
+    this.setState({ persons: persons });
   }
 
-  deletePersonHandler = ( personIndex ) => {
-    // const persons = this.state.persons.slice();
+  deletePersonHandler = (personIndex) => {
     const persons = [...this.state.persons];
-    persons.splice( personIndex, 1 );
-    this.setState( { persons: persons } );
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
   }
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState( { showPersons: !doesShow } );
+    this.setState({ showPersons: !doesShow });
   }
 
-  render () {
+  render() {
     let persons = null;
 
-    if ( this.state.showPersons ) {
-      persons = <Persons 
-            persons={this.state.persons}
-            clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler}/>
+    if (this.state.showPersons) {
+      persons = <Persons
+        persons={this.state.persons}
+        clicked={this.deletePersonHandler}
+        changed={this.nameChangedHandler} />
     }
 
     return (
       <div className={classes.App}>
-        <Cockpit 
-          persons={this.state.persons} 
+        <Cockpit
+          persons={this.state.persons}
           showPersons={this.state.showPersons}
           clicked={this.togglePersonsHandler} />
         {persons}
       </div>
     );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
