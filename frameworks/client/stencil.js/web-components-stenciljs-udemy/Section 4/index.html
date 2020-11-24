@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <script src="tooltip.js"></script>
+    <script src="confirm-link.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: lightblue; 
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        <uc-tooltip class="important" text="Web Components is a set of standards.">
+            <span class="highlight">Web Components</span>
+        </uc-tooltip>
+        are awesome!
+    </p>
+
+    <uc-tooltip></uc-tooltip>
+
+    <a is="uc-link" href="https://www.google.com">Google</a>
+</body>
+
+</html>

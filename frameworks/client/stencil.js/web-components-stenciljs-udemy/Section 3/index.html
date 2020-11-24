@@ -6,11 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Components</title>
     <script src="tooltip.js"></script>
+    <script src="confirm-link.js"></script>
+    <script src="info-toggle.js"></script>
+    <style>
+        div {
+            border: 2px solid orange;
+        }
+    </style>
 </head>
 
 <body>
     <p><uc-tooltip text="Web Components is a set of standards.">Web Components</uc-tooltip> are awesome!</p>
-    <uc-tooltip>Hello</uc-tooltip>
+    <uc-tooltip></uc-tooltip>
+
+    <div>This does not get the web component styles</div>
+
+    <a is="uc-link" href="https://www.google.com">Google</a>
+
+    <br/>
+
+    <info-toggle is-visible="true">Text content</info-toggle>
+    <info-toggle is-visible="false">Text content 2</info-toggle>
 </body>
 
 </html>
