@@ -9,6 +9,10 @@ class Tooltip extends HTMLElement {
 
         this.shadowRoot.innerHTML = `
             <style>
+                :host {
+                    position: relative;
+                }
+
                 :host(.important) {
                     background-color: var(--color-primary, #ccc);
                     padding: 0.5rem;
