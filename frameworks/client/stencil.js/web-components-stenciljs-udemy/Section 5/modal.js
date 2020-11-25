@@ -73,7 +73,7 @@ class Modal extends HTMLElement {
             </style>
 
             <div id="backdrop"></div>
-            <div id="modal">
+            <div id="modal" tabindex="-1">
                 <header>
                     <slot name="title"><h1>Please Confirm Payment</h1></slot>
                 </header>
@@ -91,6 +91,7 @@ class Modal extends HTMLElement {
             console.dir(slots[1].assignedNodes());
         });
 
+        const modal = this.shadowRoot.querySelector('#modal');
         const backdrop = this.shadowRoot.querySelector('#backdrop');
         const cancelButton = this.shadowRoot.querySelector('#cancel-btn');
         const confirmButton = this.shadowRoot.querySelector('#confirm-btn');
