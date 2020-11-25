@@ -1,0 +1,28 @@
+:host {
+  position: relative;
+}
+
+.tooltip {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  left: 0;
+  top: 1.2rem;
+  position: absolute;
+  width: 10rem;
+  padding: 0.5rem;
+}
+
+#trigger {
+  display: inline-block;
+  text-align: center;
+  line-height: 1.5rem;
+  vertical-align: middle;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: black;
+  color: white;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}

@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
 
-    <script type="module" src="/build/web-components-stencil.esm.js"></script>
-    <script nomodule src="/build/web-components-stencil.js"></script>
-  </head>
-  <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Stencil Component Starter</title>
+
+  <script type="module" src="/build/web-components-stencil.esm.js"></script>
+  <script nomodule src="/build/web-components-stencil.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .side-nav ul {
+      list-style: none;
+    }
+
+    .side-nav li {
+      margin: 1rem 0;
+    }
+
+    .side-nav a {
+      text-decoration: none;
+      color: black
+    }
+
+  </style>
+</head>
+
+<body>
+  <button id="side-drawer-btn">Open side menu</button>
+
+  <uc-side-drawer title="Main Menu">
+    <nav class="side-nav">
+      <ul>
+        <li><a href="/">A Link</a></li>
+        <li><a href="/">Another Link</a></li>
+        <li><a href="/">Yet Another Link</a></li>
+      </ul>
+    </nav>
+  </uc-side-drawer>
+
+  <hr>
+
+  This is a text <uc-tooltip tooltip="lorem ipsum dolor sit amet">which explains</uc-tooltip> how this works.
+
+  <script>
+    const sideDrawer = document.querySelector('uc-side-drawer');
+    const sideDrawerButton = document.querySelector('#side-drawer-btn');
+
+    sideDrawerButton.addEventListener('click', () => {
+      if(!sideDrawer.opened) {
+        console.log('Openin side drawer..');
+        // sideDrawer.open = true;
+        sideDrawer.open();
+      }
+    })
+  </script>
+</body>
+
 </html>
