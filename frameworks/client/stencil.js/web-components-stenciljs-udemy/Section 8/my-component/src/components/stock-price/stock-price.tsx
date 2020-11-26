@@ -109,11 +109,11 @@ export class StockPrice {
       });
   }
 
-  hostData() {
-    return {
-      class: this.error ? 'error hydrated' : 'hydrated',
-    }
-  }
+  // hostData() {
+  //   return {
+  //     class: this.error ? 'error hydrated' : 'hydrated',
+  //   }
+  // }
 
   render() {
     let dataContent = <p>Please enter a symbol</p>;
@@ -131,7 +131,7 @@ export class StockPrice {
     }
 
     return (
-      <div>
+      <Host class={this.error ? 'error' : ''}>
         <form onSubmit={this.onFetchStockPrice}>
           <input
             autocomplete="off"
@@ -142,7 +142,7 @@ export class StockPrice {
           <button disabled={!this.stockInputValid || this.loading} type="submit">Fetch</button>
         </form>
         <div> {dataContent} </div>
-      </div>
+      </Host>
     )
   }
 }
