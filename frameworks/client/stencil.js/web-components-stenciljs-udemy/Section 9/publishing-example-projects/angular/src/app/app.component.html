@@ -1,2 +1,4 @@
 <uc-stock-price stock-symbol="AAPL"></uc-stock-price>
-<uc-stock-finder></uc-stock-finder>
+<uc-stock-finder *ngIf="hasFinder"></uc-stock-finder>
+
+<button (click)="onLoadFinder()">Load finder</button>
