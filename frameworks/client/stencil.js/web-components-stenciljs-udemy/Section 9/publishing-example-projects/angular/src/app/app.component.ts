@@ -6,9 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  stockSymbol = 'IBM';
   hasFinder = false;
 
   onLoadFinder() {
-    this.hasFinder = true;
+    this.hasFinder = !this.hasFinder;
+  }
+
+  onSymbolSelected(evt: CustomEvent) {
+    console.log('symbol selected', evt.detail);
   }
 }
