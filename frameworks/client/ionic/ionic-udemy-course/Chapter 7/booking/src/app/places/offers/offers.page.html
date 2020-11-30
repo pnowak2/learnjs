@@ -17,15 +17,27 @@
     <ion-row>
       <ion-col size="12" size-md="8" offset-md="2">
         <ion-list>
-          <ion-item 
-            *ngFor="let offer of offers" 
-            [routerLink]="['/', 'places', 'tabs', 'offers', offer.id]"
-            detail>
-            <ion-thumbnail slot="start">
-              <ion-img [src]="offer.imageUrl"></ion-img>
-            </ion-thumbnail>
-            <ion-label><h1>{{ offer.title }}</h1></ion-label>
-          </ion-item>
+
+          <ion-item-sliding *ngFor="let offer of offers" #slidingItem>
+            <ion-item 
+              [routerLink]="['/', 'places', 'tabs', 'offers', offer.id]"
+              detail>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="offer.imageUrl"></ion-img>
+              </ion-thumbnail>
+              <ion-label><h2>{{ offer.title }}</h2></ion-label>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option 
+                (click)="onEdit(offer.id, slidingItem)"
+                color="secondary" 
+                [routerLink]="['/', 'places', 'tabs', 'offers', 'edit', offer.id]">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+            
+          </ion-item-sliding>
+          
         </ion-list>
       </ion-col>
     </ion-row>
