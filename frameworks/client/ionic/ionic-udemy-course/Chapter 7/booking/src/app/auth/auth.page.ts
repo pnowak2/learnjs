@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from './auth.service';
@@ -9,12 +10,25 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
+  isLogin = true;
+
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private router: Router) { }
 
   ngOnInit() {
+  }
+
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      return false;
+    }
+    console.log(form);
+  }
+
+  onSwitchAuthModel() {
+    this.isLogin = !this.isLogin;
   }
 
   onLogin() {
