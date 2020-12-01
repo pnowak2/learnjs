@@ -3,6 +3,8 @@
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-toolbar-background: var(--ion-color-primary, #000);
+  --ion-toolbar-color: var(--ion-color-primary-contrast, #fff);
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -229,4 +231,8 @@
 
     --ion-card-background: #1e1e1e;
   }
+}
+
+ion-button {
+  // --box-shadow: 5px 5px 20px rgba(0,0,0,0.6);
 }
