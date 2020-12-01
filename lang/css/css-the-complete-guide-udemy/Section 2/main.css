@@ -1,0 +1,21 @@
+body {
+    font-family: 'Allan';
+}
+
+#product-overview {
+    background: #ff1b68;
+}
+
+.section-title {
+    color: #2ddf5c;
+    font-family: inherit;
+}
+
+#product-overview h1 {
+    color: white;
+    font-family: 'Nerko One';
+}
+
+h1 {
+    font-family: sans-serif;
+}
