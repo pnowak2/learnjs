@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   private _userIsAuthenticated = true;
+  private _userId = 'abc';
 
   constructor() { }
 
@@ -14,6 +15,10 @@ export class AuthService {
 
   login() {
     this._userIsAuthenticated = true;
+  }
+
+  get userId() {
+    return this._userId;
   }
 
   logout() {
