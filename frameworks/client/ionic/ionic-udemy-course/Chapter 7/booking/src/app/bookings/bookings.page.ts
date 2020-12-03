@@ -13,7 +13,10 @@ export class BookingsPage implements OnInit, OnDestroy {
   loadedBookings: Booking[];
   private sub: Subscription;
 
-  constructor(private bookingsService: BookingService, private loadingCtrl: LoadingController) { }
+  constructor(
+    private bookingsService: BookingService,
+    private loadingCtrl: LoadingController
+  ) { }
 
   ngOnInit() {
     this.sub = this.bookingsService.bookings.subscribe(bookings => {
