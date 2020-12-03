@@ -48,19 +48,18 @@ export class NewOfferPage implements OnInit {
       message: 'Creating place..'
     }).then(loadingEl => {
       loadingEl.present();
-    });
 
-    this.placeService.addPlace(
-      this.form.value.title,
-      this.form.value.description,
-      +this.form.value.price,
-      new Date(this.form.value.dateFrom),
-      new Date(this.form.value.dateTo),
-    ).subscribe(() => {
-      this.loadingCtrl.dismiss();
-      this.form.reset();
-      this.router.navigate(['/', 'places', 'tabs', 'offers']);
+      this.placeService.addPlace(
+        this.form.value.title,
+        this.form.value.description,
+        +this.form.value.price,
+        new Date(this.form.value.dateFrom),
+        new Date(this.form.value.dateTo),
+      ).subscribe(() => {
+        this.loadingCtrl.dismiss();
+        this.form.reset();
+        this.router.navigate(['/', 'places', 'tabs', 'offers']);
+      });
     });
-
   }
 }

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -15,7 +16,10 @@ export class PlacesService {
     new Place('p3', 'The Foggy Palace', 'Not your average city trip', 'https://picsum.photos/302/200', 99.99, new Date('2019-01-01'), new Date('2019-12-31'), 'abc'),
   ]);
 
-  constructor(private authService: AuthService, private loadingCtrl: LoadingController) { }
+  constructor(
+    private authService: AuthService,
+    private loadingCtrl: LoadingController,
+    private http: HttpClient) { }
 
   get places() {
     return this.places$.asObservable();
@@ -46,9 +50,16 @@ export class PlacesService {
       this.authService.userId
     );
 
-    return this.places.pipe(take(1), delay(1500), tap((places => {
-      this.places$.next([...places, newPlace]);
-    })));
+    return this.http.post(
+      'https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/offered-places.json',
+      { ...newPlace, id: null })
+      .pipe(tap(res => {
+        console.log(res);
+      }));
+
+    // return this.places.pipe(take(1), delay(1500), tap((places => {
+    //   this.places$.next([...places, newPlace]);
+    // })));
   }
 
   updatePlace(
