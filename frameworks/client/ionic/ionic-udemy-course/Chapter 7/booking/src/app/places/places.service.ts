@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { find, map, take } from 'rxjs/operators';
+import { delay, map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Place } from './place.model';
 
@@ -14,7 +15,7 @@ export class PlacesService {
     new Place('p3', 'The Foggy Palace', 'Not your average city trip', 'https://picsum.photos/302/200', 99.99, new Date('2019-01-01'), new Date('2019-12-31'), 'abc'),
   ]);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private loadingCtrl: LoadingController) { }
 
   get places() {
     return this.places$.asObservable();
@@ -45,8 +46,36 @@ export class PlacesService {
       this.authService.userId
     );
 
-    this.places.pipe(take(1)).subscribe(places => {
+    return this.places.pipe(take(1), delay(1500), tap((places => {
       this.places$.next([...places, newPlace]);
-    });
+    })));
+  }
+
+  updatePlace(
+    placeId: string,
+    title: string,
+    description: string,
+  ) {
+    return this.places.pipe(
+      take(1),
+      delay(1500),
+      tap(places => {
+        const updatedPlaceIndex = places.findIndex(p => p.id === placeId);
+        const updatedPlaces = [...places];
+        const old = updatedPlaces[updatedPlaceIndex];
+
+        updatedPlaces[updatedPlaceIndex] = new Place(
+          old.id,
+          title,
+          description,
+          old.imageUrl,
+          old.price,
+          old.availableFrom,
+          old.availableTo,
+          old.userId
+        );
+
+        this.places$.next(updatedPlaces);
+      }));
   }
 }
