@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { delay, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Place } from './place.model';
@@ -76,10 +76,6 @@ export class PlacesService {
         );
       })
     );
-    // return this.places.pipe(
-    //   take(1),
-    //   map(places => ({ ...places.find(p => p.id === id) }))
-    // );
   }
 
   addPlace(
@@ -94,7 +90,7 @@ export class PlacesService {
       Math.random().toString(),
       title,
       description,
-      'https://picsum.photos/302/200',
+      'https://picsum.photos/seed/picsum/302/200',
       price,
       availableFrom,
       availableTo,
@@ -130,6 +126,13 @@ export class PlacesService {
 
     return this.places.pipe(
       take(1),
+      switchMap(places => {
+        if (!places || places.length <= 0) {
+          return this.fetchPlaces();
+        } else {
+          return of(places);
+        }
+      }),
       switchMap(places => {
         const updatedPlaceIndex = places.findIndex(p => p.id === placeId);
         updatedPlaces = [...places];
