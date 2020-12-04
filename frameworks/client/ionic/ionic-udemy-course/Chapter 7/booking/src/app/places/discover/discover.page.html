@@ -15,7 +15,15 @@
     <ion-segment-button value="bookable">Bookable Places</ion-segment-button>
   </ion-segment>
 
-  <ion-grid *ngIf="relevantPlaces?.length === 0">
+  <ion-grid class="ion-padding" *ngIf="isLoading">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-spinner color="primary"></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="relevantPlaces?.length === 0 && !isLoading">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <p>There are no bookable places right now, please come back later</p>
@@ -23,7 +31,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid *ngIf="relevantPlaces.length > 0" class="ion-no-padding">
+  <ion-grid *ngIf="relevantPlaces.length > 0 && !isLoading" class="ion-no-padding">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-card>
