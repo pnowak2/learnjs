@@ -63,6 +63,7 @@ export class PlacesService {
     return this.http.get<PlaceData>(
       `https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/offered-places/${id}.json`
     ).pipe(
+      delay(1500),
       map(placeData => {
         return new Place(
           id,
