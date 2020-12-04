@@ -1,28 +1,71 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { delay, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { delay, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Booking } from './booking.model';
+
+interface BookingData {
+    bookedFrom: string;
+    bookedTo: string;
+    guestNumber: number;
+    firstName: string;
+    lastName: string;
+    placeId: string;
+    placeImage: string;
+    placeTitle: string;
+    userId: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private http: HttpClient) { }
 
-    private _bookings: Subject<Booking[]> = new BehaviorSubject<Booking[]>([]);
+    private bookings$: Subject<Booking[]> = new BehaviorSubject<Booking[]>([]);
 
     get bookings() {
-        return this._bookings.asObservable();
+        return this.bookings$.asObservable();
+    }
+
+    fetchBookings(): Observable<Booking[]> {
+        return this.http
+            .get<{ [key: string]: BookingData }>(`https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="userId"&equalTo="${this.authService.userId}"`)
+            .pipe(
+                delay(1500),
+                map(bookingData => {
+                    return Object.keys(bookingData).map(key => {
+                        const booking = bookingData[key];
+                        return new Booking(
+                            key,
+                            booking.placeImage,
+                            booking.userId,
+                            booking.placeTitle,
+                            booking.placeImage,
+                            booking.firstName,
+                            booking.lastName,
+                            +booking.guestNumber,
+                            new Date(booking.bookedFrom),
+                            new Date(booking.bookedTo)
+                        );
+                    });
+                }),
+                tap(bookings => {
+                    this.bookings$.next(bookings);
+                })
+            );
     }
 
     addBooking(placeId: string,
-               placeTitle: string,
-               placeImage: string,
-               firstName: string,
-               lastName: string,
-               guestNumber: number,
-               dateFrom: Date,
-               dateTo: Date): Observable<Booking[]> {
+        placeTitle: string,
+        placeImage: string,
+        firstName: string,
+        lastName: string,
+        guestNumber: number,
+        dateFrom: Date,
+        dateTo: Date): Observable<Booking[]> {
+
+        let generatedId: string;
         const newBooking = new Booking(
             Math.random().toString(),
             placeId,
@@ -36,20 +79,32 @@ export class BookingService {
             dateTo
         );
 
-        return this._bookings.pipe(
+        return this.http.post<{ name: string }>(
+            'https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/bookings.json',
+            { ...newBooking, id: null }
+        ).pipe(
+            switchMap((resData) => {
+                generatedId = resData.name;
+                return this.bookings;
+            }),
             take(1),
-            delay(1500),
             tap(bookings => {
-            this._bookings.next([...bookings, newBooking]);
-        }));
+                newBooking.id = generatedId;
+                this.bookings$.next([...bookings, newBooking]);
+            })
+        );
     }
 
     cancelBooking(bookingId: string) {
-        return this._bookings.pipe(
+        return this.http.delete(`https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/bookings/${bookingId}.json`)
+        .pipe(
+            switchMap(() => {
+                return this.bookings$;
+            }),
             take(1),
-            delay(1500),
             tap(bookings => {
-                this._bookings.next(bookings.filter(booking => booking.id !== bookingId));
-        }));
+                this.bookings$.next(bookings.filter(booking => booking.id !== bookingId));
+            })
+        );
     }
 }

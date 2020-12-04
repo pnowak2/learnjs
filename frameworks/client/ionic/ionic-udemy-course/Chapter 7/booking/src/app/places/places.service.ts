@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { delay, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
@@ -28,7 +27,6 @@ export class PlacesService {
 
   constructor(
     private authService: AuthService,
-    private loadingCtrl: LoadingController,
     private http: HttpClient) { }
 
   get places(): Observable<Place[]> {
