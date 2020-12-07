@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 
@@ -7,18 +7,26 @@ import { environment } from '../../../environments/environment';
   templateUrl: './map-modal.component.html',
   styleUrls: ['./map-modal.component.scss'],
 })
-export class MapModalComponent implements OnInit, AfterViewInit {
+export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() center = { lat: 40.730610, lng: -73.935242 };
+  @Input() selectable = true;
+  @Input() closeButtonText = 'Cancel';
+  @Input() title = 'Pick location';
+
   @ViewChild('map') mapElementRef: ElementRef;
   constructor(private modalCtrl: ModalController, private renderer: Renderer2) { }
+  clickListener: any;
+  googleMaps: any;
 
   ngOnInit() { }
 
   ngAfterViewInit() {
     this.getGoogleMaps()
       .then(googleMaps => {
+        this.googleMaps = googleMaps;
         const mapEl = this.mapElementRef.nativeElement;
         const map = new googleMaps.Map(mapEl, {
-          center: { lat: 40.730610, lng: -73.935242 },
+          center: this.center,
           zoom: 12
         });
 
@@ -26,14 +34,24 @@ export class MapModalComponent implements OnInit, AfterViewInit {
           this.renderer.addClass(mapEl, 'visible');
         });
 
-        map.addListener('click', event => {
-          const selectedCoords = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng()
-          };
+        if (this.selectable) {
+          this.clickListener = map.addListener('click', event => {
+            const selectedCoords = {
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            };
 
-          this.modalCtrl.dismiss(selectedCoords);
-        });
+            this.modalCtrl.dismiss(selectedCoords);
+          });
+        } else {
+          const marker = new googleMaps.Marker({
+            position: this.center,
+            map,
+            title: 'Picked Location'
+          });
+
+          marker.setMap(map);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -67,5 +85,11 @@ export class MapModalComponent implements OnInit, AfterViewInit {
         }
       };
     });
+  }
+
+  ngOnDestroy() {
+    if (this.clickListener) {
+      this.googleMaps.event.removeListener(this.clickListener);
+    }
   }
 }

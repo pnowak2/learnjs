@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { delay, map, switchMap, take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { PlaceLocation } from './location.model';
 import { Place } from './place.model';
 
 // new Place('p1', 'Manhattan Mansion', 'In the heart of NYC', 'https://picsum.photos/300/200', 149.99, new Date('2019-01-01'), new Date('2019-12-31'), 'abc'),
@@ -17,6 +18,7 @@ interface PlaceData {
   price: string;
   title: string;
   userId: string;
+  location: PlaceLocation;
 }
 
 @Injectable({
@@ -48,7 +50,8 @@ export class PlacesService {
               +place.price,
               new Date(place.availableFrom),
               new Date(place.availableFrom),
-              place.userId);
+              place.userId,
+              place.location);
           });
         }),
         tap(places => {
@@ -71,7 +74,8 @@ export class PlacesService {
           +placeData.price,
           new Date(placeData.availableFrom),
           new Date(placeData.availableTo),
-          placeData.userId
+          placeData.userId,
+          placeData.location
         );
       })
     );
@@ -83,6 +87,7 @@ export class PlacesService {
     price: number,
     availableFrom: Date,
     availableTo: Date,
+    location: PlaceLocation
   ) {
     let generatedId: string;
     const newPlace = new Place(
@@ -93,7 +98,8 @@ export class PlacesService {
       price,
       availableFrom,
       availableTo,
-      this.authService.userId
+      this.authService.userId,
+      location
     );
 
     return this.http.post<{ name: string }>(
@@ -145,7 +151,8 @@ export class PlacesService {
           old.price,
           old.availableFrom,
           old.availableTo,
-          old.userId
+          old.userId,
+          old.location
         );
 
         return this.http.put(
