@@ -38,7 +38,6 @@ export class PlacesService {
   fetchPlaces() {
     return this.http.get<{ [key: string]: PlaceData }>('https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/offered-places.json')
       .pipe(
-        delay(1500),
         map(res => {
           return Object.keys(res).map(key => {
             const place = res[key];
@@ -64,7 +63,6 @@ export class PlacesService {
     return this.http.get<PlaceData>(
       `https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/offered-places/${id}.json`
     ).pipe(
-      delay(1500),
       map(placeData => {
         return new Place(
           id,

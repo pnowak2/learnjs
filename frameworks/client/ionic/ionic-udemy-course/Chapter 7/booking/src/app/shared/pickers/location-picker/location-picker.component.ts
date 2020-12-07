@@ -61,7 +61,6 @@ export class LocationPickerComponent implements OnInit {
     return this.http
       .get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${environment.googleMapsAPIKey}`)
       .pipe(
-        delay(1500),
         map((geoData: any) => {
           if (!geoData || !geoData.results || geoData.results.length <= 0) {
             return null;

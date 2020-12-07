@@ -32,7 +32,6 @@ export class BookingService {
         return this.http
             .get<{ [key: string]: BookingData }>(`https://ionic-angular-course-6c9cd-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="userId"&equalTo="${this.authService.userId}"`)
             .pipe(
-                delay(1500),
                 map(bookingData => {
                     return Object.keys(bookingData).map(key => {
                         const booking = bookingData[key];
