@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <Session Name="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Section5.workspace">
   <int Value="3" Name="m_selectedTab"/>
   <wxString Value="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Section5.workspace" Name="m_workspaceName"/>
@@ -7,17 +8,34 @@
       <wxString Value="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces/main.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
       <int Value="9" Name="CurrentLine"/>
+=======
+<Session Name="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Section5.workspace">
+  <int Value="2" Name="m_selectedTab"/>
+  <wxString Value="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Section5.workspace" Name="m_workspaceName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/ModifiedProgram/main.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+>>>>>>> f6b88c5210c97482e911008cbc3122ed08db7fc8
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
+<<<<<<< HEAD
       <wxString Value="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/ModifiedProgram/main.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
       <int Value="9" Name="CurrentLine"/>
+=======
+      <wxString Value="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Comments/main.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="4" Name="CurrentLine"/>
+>>>>>>> f6b88c5210c97482e911008cbc3122ed08db7fc8
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
+<<<<<<< HEAD
       <wxString Value="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/BasicIO/main.cpp" Name="FileName"/>
       <int Value="13" Name="FirstVisibleLine"/>
       <int Value="35" Name="CurrentLine"/>
@@ -28,6 +46,11 @@
       <wxString Value="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Excercise1/main.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
       <int Value="7" Name="CurrentLine"/>
+=======
+      <wxString Value="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces/main.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="9" Name="CurrentLine"/>
+>>>>>>> f6b88c5210c97482e911008cbc3122ed08db7fc8
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
