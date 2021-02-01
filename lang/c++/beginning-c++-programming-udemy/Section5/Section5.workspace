@@ -3,7 +3,9 @@
   <Project Name="ModifiedProgram" Path="ModifiedProgram/ModifiedProgram.project" Active="No"/>
   <Project Name="Comments" Path="Comments/Comments.project" Active="No"/>
   <Project Name="MainFunction" Path="MainFunction/MainFunction.project" Active="No"/>
-  <Project Name="Namespaces" Path="Namespaces/Namespaces.project" Active="Yes"/>
+  <Project Name="Namespaces" Path="Namespaces/Namespaces.project" Active="No"/>
+  <Project Name="BasicIO" Path="BasicIO/BasicIO.project" Active="No"/>
+  <Project Name="Excercise1" Path="Excercise1/Excercise1.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -11,6 +13,8 @@
       <Project Name="Comments" ConfigName="Debug"/>
       <Project Name="MainFunction" ConfigName="Debug"/>
       <Project Name="Namespaces" ConfigName="Debug"/>
+      <Project Name="BasicIO" ConfigName="Debug"/>
+      <Project Name="Excercise1" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -18,6 +22,8 @@
       <Project Name="Comments" ConfigName="Release"/>
       <Project Name="MainFunction" ConfigName="Release"/>
       <Project Name="Namespaces" ConfigName="Release"/>
+      <Project Name="BasicIO" ConfigName="Release"/>
+      <Project Name="Excercise1" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

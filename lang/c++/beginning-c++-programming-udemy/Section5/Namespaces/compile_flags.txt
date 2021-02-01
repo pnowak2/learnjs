@@ -4,4 +4,5 @@
 -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
 -I/Library/Developer/CommandLineTools/usr/include
 -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
--I/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces
+-I/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces
+-std=c++17

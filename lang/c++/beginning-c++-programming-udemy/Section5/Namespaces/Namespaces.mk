@@ -5,15 +5,15 @@
 ## Debug
 ProjectName            :=Namespaces
 ConfigurationName      :=Debug
-WorkspacePath          :=/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5
-ProjectPath            :=/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces
+WorkspacePath          :=/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5
+ProjectPath            :=/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces
 IntermediateDirectory  :=$(ConfigurationName)
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Piotr Nowak
-Date                   :=27/01/2021
+Date                   :=28/01/2021
 CodeLitePath           :="/Users/pnowak/Library/Application Support/CodeLite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -dynamiclib -fPIC
@@ -50,8 +50,8 @@ LibPath                := $(LibraryPathSwitch).
 AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++
 CC       := /usr/bin/gcc
-CXXFLAGS :=  -g -O0 -std=c++17 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
+CXXFLAGS := -std=c++17 -Wall -g -O0 -std=c++17 -Wall $(Preprocessors)
+CFLAGS   := -std=c++17 -Wall -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := /usr/bin/as
 
@@ -93,7 +93,7 @@ PreBuild:
 ##
 $(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section5/Namespaces/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
 
