@@ -5,15 +5,15 @@
 ## Debug
 ProjectName            :=Vectors
 ConfigurationName      :=Debug
-WorkspacePath          :="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7"
-ProjectPath            :="/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors"
+WorkspacePath          :="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7"
+ProjectPath            :="/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors"
 IntermediateDirectory  :=$(ConfigurationName)
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Piotr Nowak
-Date                   :=01/02/2021
+Date                   :=02/02/2021
 CodeLitePath           :="/Users/pnowak/Library/Application Support/CodeLite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -dynamiclib -fPIC
@@ -93,7 +93,7 @@ PreBuild:
 ##
 $(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
 

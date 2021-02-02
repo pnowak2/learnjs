@@ -4,5 +4,4 @@
 -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
 -I/Library/Developer/CommandLineTools/usr/include
 -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
--I/Users/pnowak/Documents/Workspace/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors
--std=c++17
+-I"/Users/pnowak/Documents/Workspace/js/learnjs/lang/c++/beginning-c++-programming-udemy/Section 7/Vectors"
