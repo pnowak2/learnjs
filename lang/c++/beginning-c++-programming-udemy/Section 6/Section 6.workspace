@@ -3,7 +3,8 @@
   <Project Name="InitializingVariables" Path="InitializingVariables/InitializingVariables.project" Active="No"/>
   <Project Name="GlobalVariables" Path="GlobalVariables/GlobalVariables.project" Active="No"/>
   <Project Name="PrimitiveTypes" Path="PrimitiveTypes/PrimitiveTypes.project" Active="No"/>
-  <Project Name="SizeOfOperator" Path="SizeOfOperator/SizeOfOperator.project" Active="Yes"/>
+  <Project Name="SizeOfOperator" Path="SizeOfOperator/SizeOfOperator.project" Active="No"/>
+  <Project Name="Constants" Path="Constants/Constants.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -11,6 +12,7 @@
       <Project Name="GlobalVariables" ConfigName="Debug"/>
       <Project Name="PrimitiveTypes" ConfigName="Debug"/>
       <Project Name="SizeOfOperator" ConfigName="Debug"/>
+      <Project Name="Constants" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
@@ -18,6 +20,7 @@
       <Project Name="GlobalVariables" ConfigName="Release"/>
       <Project Name="PrimitiveTypes" ConfigName="Release"/>
       <Project Name="SizeOfOperator" ConfigName="Release"/>
+      <Project Name="Constants" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
