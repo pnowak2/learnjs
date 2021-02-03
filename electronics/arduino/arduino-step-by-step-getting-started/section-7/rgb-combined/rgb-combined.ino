@@ -12,20 +12,6 @@ void setup() {
 
 void loop() {
   analogWrite(RED_PIN, 1);
-  analogWrite(GREEN_PIN, 0);
-  analogWrite(BLUE_PIN, 0);
-
-  delay(1000);
-
-  analogWrite(RED_PIN, 0);
   analogWrite(GREEN_PIN, 1);
-  analogWrite(BLUE_PIN, 0);  
-
-  delay(1000);
-
-  analogWrite(RED_PIN, 0);
-  analogWrite(GREEN_PIN, 0);
   analogWrite(BLUE_PIN, 1);
-
-   delay(1000);
 }
