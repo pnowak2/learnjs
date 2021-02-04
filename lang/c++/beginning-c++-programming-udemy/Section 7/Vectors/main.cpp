@@ -10,7 +10,7 @@ int main()
 
     cout << vowels[0] << endl;
     cout << vowels[1] << endl;
-    
+
 //    vector<int> test_scores(3);
 //    vector<int> test_scores(3, 100);
     vector<int> test_scores {100, 200, 300};
