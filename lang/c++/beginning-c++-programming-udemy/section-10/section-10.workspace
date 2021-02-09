@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="section-10" Database="" Version="10000">
+  <Project Name="CStyleStrings" Path="CStyleStrings/CStyleStrings.project" Active="Yes"/>
+  <Project Name="CPPStrings" Path="CPPStrings/CPPStrings.project"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="CStyleStrings" ConfigName="Debug"/>
+      <Project Name="CPPStrings" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="CStyleStrings" ConfigName="Release"/>
+      <Project Name="CPPStrings" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
