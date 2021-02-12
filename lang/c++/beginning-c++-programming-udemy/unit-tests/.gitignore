@@ -1,3 +1,4 @@
+.vscode
 /bazel-Bazel_with_GTest
 /bazel-bin
 /bazel-genfiles
