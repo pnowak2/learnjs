@@ -6,6 +6,7 @@
 TEST(ExceptionTest, BasicTest) {
   // Arrange
   ASSERT_EQ(true, true);
+
   // Act
 
   // Assert
