@@ -1,8 +1,6 @@
 #include <iostream>
-#include "src/lib/cpplib.h"
+#include "src/lib/mylib.h"
 
 int main() {
-    std::cout << greet("Piotr");
-
     return 0;
 }
