@@ -23,7 +23,6 @@
  */
  
 #include "thermistor.h"
-#include "HardwareSerial.h"
 
 
 // Analog pin used to read the NTC
@@ -33,7 +32,7 @@
 THERMISTOR thermistor(NTC_PIN,        // Analog pin
                       10000,          // Nominal resistance at 25 ºC
                       3950,           // thermistor's beta coefficient
-                      10000);         // Value of the series resistor
+                      9910);         // Value of the series resistor
 
 // Global temperature reading
 uint16_t temp;
