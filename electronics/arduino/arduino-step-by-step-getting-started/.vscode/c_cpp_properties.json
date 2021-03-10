@@ -3,7 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/Users/pnowak/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/pnowak/.platformio/packages/toolchain-atmelavr/avr/include"
             ],
             "defines": [],
             "macFrameworkPath": [
