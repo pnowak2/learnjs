@@ -1,0 +1,1 @@
+run="pytest -s testrunner.py "
