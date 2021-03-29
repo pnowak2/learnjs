@@ -17,13 +17,13 @@ int greenValue;
 int blueValue;
 
 void loop() {
-  #define delayTime 10
+  #define delayTime 100
 
-  redValue = 255;
+  redValue = 24;
   greenValue = 0;
   blueValue = 0;
 
-  for(int i = 0; i < 255; i++) {
+  for(int i = 0; i < 24; i++) {
     redValue -=1;
     greenValue +=1;
 
@@ -33,10 +33,10 @@ void loop() {
   }
 
   redValue = 0;
-  greenValue = 255;
+  greenValue = 24;
   blueValue = 0;
 
-  for(int i = 0; i < 255; i++) {
+  for(int i = 0; i < 24; i++) {
     greenValue -=1;
     blueValue +=1;
 
@@ -47,9 +47,9 @@ void loop() {
 
   redValue = 0;
   greenValue = 0;
-  blueValue = 255;
+  blueValue = 24;
 
-  for(int i = 0; i < 255; i++) {
+  for(int i = 0; i < 24; i++) {
     blueValue -=1;
     redValue +=1;
 
