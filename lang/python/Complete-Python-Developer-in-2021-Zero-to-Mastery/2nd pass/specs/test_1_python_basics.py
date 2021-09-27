@@ -224,9 +224,6 @@ class TestDeveloperFundamentals_1:
             assert greet == 'hi 41, you are Piotr years old'
 
         def test_python2_format_with_tuple_named_vars(self):
-            name = 'Piotr'
-            age = 41
-
             greet ='hi {name}, you are {age} years old'.format(name='pi', age=2)
             assert greet == 'hi pi, you are 2 years old'
 
@@ -257,3 +254,150 @@ class TestDeveloperFundamentals_1:
             # selfish[0] = '8' # illegal
             # cannot reassign part of string, rather create new string
             selfish += '8'
+
+    class TestBuiltInFunctionsAndMethods:
+        def test_len(self):
+            assert len('hey') == 3
+            assert len('hey'[2:]) == 1
+        
+        def test_methods(self):
+            quote = 'to be'
+            assert quote.upper() == 'TO BE'
+            assert quote.capitalize() == 'To be'
+            assert quote.find('be') == 3
+            assert quote.replace('be', 'me') == 'to me'
+
+    class TestBooleans:
+        def test(self):
+            bool('1'), True, False
+
+            name = 'Piotr'
+            is_cool = False
+            assert is_cool == False
+            is_cool = True
+            assert is_cool == True
+
+            assert bool(0) == False
+            assert bool(1) == True
+            assert bool('Yes') == True
+            assert bool('True') == True
+            assert bool('False') == True
+
+    class TestTypeConversions:
+        def test(self):
+            name = 'piotr'
+            age = 41
+            status = 'single'
+
+            status = 'it\s complicated'
+
+        def test_guess_age(self):
+            year = '1980'
+            age = f'your age is {2021 - int(year)}'
+            
+            assert age == 'your age is 41'
+
+class TestDeveloperFundamentals_2:
+    class TestComments:
+        def test(self):
+            name = 'piotr' # comment
+
+    class TestPasswordChecker:
+        def test(self):
+            username = 'pnowak'
+            password = 'secret'
+
+            password_hashed = '*' * len(password)
+
+            result = f'Hey {username}, your password {password_hashed} is {len(password)} letters long'
+
+            assert result == 'Hey pnowak, your password ****** is 6 letters long'
+
+    class TestLists:
+        def test(self):
+            list = [1, 2, 3, 4, 5]
+            list2 = ['a', 'b', 'c']
+            list3 = [1, 'b', False]
+
+        def test_data_structure(self):
+            cart = ['books', 'pis']
+            assert cart[0] == 'books'
+            assert cart[1] == 'pis'
+            assert len(cart) == 2
+
+        def test_list_slicing(self):
+            cart = ['a', 'b', 'c', 'd']
+            assert cart[1:3] == ['b', 'c']
+            assert cart[1::2] == ['b', 'd']
+
+        def test_lists_are_mutable(self):
+            cart = ['a', 'b', 'c', 'd']
+            cart[0] = 'boo'
+            assert cart == ['boo', 'b', 'c', 'd']
+
+        def test_list_slicing_makes_new_list(self):
+            cart = ['a', 'b', 'c', 'd']
+            new_cart = cart[1:3]
+            assert cart == ['a', 'b', 'c', 'd']
+            assert new_cart == ['b', 'c']
+
+        def test_list_copying(self):
+            cart = ['a', 'b', 'c', 'd']
+            new_cart = cart[:]
+            assert cart == ['a', 'b', 'c', 'd']
+            assert new_cart == ['a', 'b', 'c', 'd']
+            assert cart is not new_cart
+
+        def test_matrix(self):
+            matrix = [
+                [1,2,3],
+                [4,5,6],
+                [7,8,9],
+            ]
+
+            assert matrix[0] == [1,2,3]
+            assert matrix[1][1] == 5
+
+        class TestListMethods:
+            def test_len(self):
+                cart = ['a', 'b', 'c', 'd']
+                assert len(cart) == 4
+
+            def test_append(self):
+                cart = ['a', 'b', 'c', 'd']
+                cart.append('e') # mutable
+
+                assert cart == ['a', 'b', 'c', 'd', 'e']
+
+            def test_insert(self):
+                cart = ['a', 'b', 'c']
+                cart.insert(1, 'boo') # mutable
+
+                assert cart == ['a', 'boo', 'b', 'c']
+
+            def test_extend(self):
+                cart = ['a', 'b', 'c']
+                cart.extend([1, 2]) # mutable
+
+                assert cart == ['a', 'b', 'c', 1, 2]
+
+            def test_pop(self):
+                cart = ['a', 'b', 'c']
+
+                itemPopped = cart.pop()
+                assert cart == ['a', 'b'] # mutable
+                assert itemPopped == 'c'
+
+                cart = ['a', 'b', 'c']
+                itemPopped = cart.pop(0)
+                assert cart == ['b', 'c']
+
+            def test_remove(self):
+                cart = ['a', 'b', 'c']
+                cart.remove('b') # mutable
+                assert cart == ['a', 'c']
+
+            def test_clear(self):
+                cart = ['a', 'b', 'c']
+                cart.clear() # mutable
+                assert cart == []
