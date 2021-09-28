@@ -8,7 +8,7 @@ class TestDataTypes:
         tuple()
         set()
         dict()
-    
+
     def test_custom_types(self):
         class SuperCar:
             pass
@@ -18,7 +18,8 @@ class TestDataTypes:
         pass
 
     def test_none_type(self):
-        None # Nothing, idea of zero in math, absence of value
+        None  # Nothing, idea of zero in math, absence of value
+
 
 class TestNumbers:
     def test_type_fn(self):
@@ -56,6 +57,7 @@ class TestNumbers:
         assert (20 % 4) == 0
         assert (6 % 4) == 2
 
+
 class TestMathFunctions:
     def test_round(self):
         assert round(3.1) == 3
@@ -65,13 +67,14 @@ class TestMathFunctions:
     def test_abs(self):
         assert abs(-20) == 20
 
+
 class TestDeveloperFundamentals_1:
 
     class TestOperatorPrecedence:
         def test_operator_precedence(self):
             assert (20 + 3 * 4) == 32
-            assert (20 - 3 * 4) == 8 
-            assert ((20 - 3) + 2**2) == 21 
+            assert (20 - 3 * 4) == 8
+            assert ((20 - 3) + 2**2) == 21
 
             # 1. ()
             # 2. **
@@ -81,10 +84,10 @@ class TestDeveloperFundamentals_1:
     class TestBinAndComplex:
         def test_complex(self):
             complex
-            c = complex(2, 3) # (2 + 3i)
+            c = complex(2, 3)  # (2 + 3i)
             assert c.real == 2
             assert c.imag == 3
-        
+
         def test_bin(self):
             assert bin(5) == '0b101'
             assert bin(7) == '0b111'
@@ -96,15 +99,15 @@ class TestDeveloperFundamentals_1:
         def test_convert_number_types_to_other_types(self):
             assert int('0b101', 2) == 5
             assert int('0b111', 2) == 7
-            assert int('0xf', 16) == 15 
+            assert int('0xf', 16) == 15
 
     class TestVariables:
         def test_vars(self):
             iq = 190
-            user_id = 10 # snake case
-            _private_var = 5 # private var (convention only)
-            user_ID = 8 # case sensitive
-            PI = 3.14 # constant, only convention
+            user_id = 10  # snake case
+            _private_var = 5  # private var (convention only)
+            user_ID = 8  # case sensitive
+            PI = 3.14  # constant, only convention
 
             # int, if, for, print, etc - reserved words, not for variables
 
@@ -117,7 +120,7 @@ class TestDeveloperFundamentals_1:
             assert age == 25
 
         def test_dunder(self):
-            __vari = 'test' # dont use for variables
+            __vari = 'test'  # dont use for variables
 
         def test_multiple_assign(self):
             a, b, c = 1, 2, 3
@@ -127,8 +130,8 @@ class TestDeveloperFundamentals_1:
 
     class TestExpressionsVsStatements:
         def test_expression(self):
-            iq = 100 # statement
-            iq = (iq / 5) # statement + expression in ()
+            iq = 100  # statement
+            iq = (iq / 5)  # statement + expression in ()
 
     class TestAugmentedAssignOperator:
         def test(self):
@@ -199,32 +202,34 @@ class TestDeveloperFundamentals_1:
             name = 'Piotr'
             age = 41
 
-            greet = 'hi ' + name + ' You are ' + str(age) + ' old';
+            greet = 'hi ' + name + ' You are ' + str(age) + ' old'
             assert greet == 'hi Piotr You are 41 old'
 
         def test_f_string_format(self):
             name = 'Piotr'
             age = 41
 
-            greet = f'hi {name}, you are {age} years old' # no conversions to str needed
+            # no conversions to str needed
+            greet = f'hi {name}, you are {age} years old'
             assert greet == 'hi Piotr, you are 41 years old'
 
         def test_python2_format(self):
             name = 'Piotr'
             age = 41
 
-            greet ='hi {}, you are {} years old'.format(name, age)
+            greet = 'hi {}, you are {} years old'.format(name, age)
             assert greet == 'hi Piotr, you are 41 years old'
 
         def test_python2_format_arg_order(self):
             name = 'Piotr'
             age = 41
 
-            greet ='hi {1}, you are {0} years old'.format(name, age)
+            greet = 'hi {1}, you are {0} years old'.format(name, age)
             assert greet == 'hi 41, you are Piotr years old'
 
         def test_python2_format_with_tuple_named_vars(self):
-            greet ='hi {name}, you are {age} years old'.format(name='pi', age=2)
+            greet = 'hi {name}, you are {age} years old'.format(
+                name='pi', age=2)
             assert greet == 'hi pi, you are 2 years old'
 
     class TestStringIndexes:
@@ -259,7 +264,7 @@ class TestDeveloperFundamentals_1:
         def test_len(self):
             assert len('hey') == 3
             assert len('hey'[2:]) == 1
-        
+
         def test_methods(self):
             quote = 'to be'
             assert quote.upper() == 'TO BE'
@@ -280,6 +285,7 @@ class TestDeveloperFundamentals_1:
             assert bool(0) == False
             assert bool(1) == True
             assert bool('Yes') == True
+            assert bool('No') == True
             assert bool('True') == True
             assert bool('False') == True
 
@@ -294,13 +300,14 @@ class TestDeveloperFundamentals_1:
         def test_guess_age(self):
             year = '1980'
             age = f'your age is {2021 - int(year)}'
-            
+
             assert age == 'your age is 41'
+
 
 class TestDeveloperFundamentals_2:
     class TestComments:
         def test(self):
-            name = 'piotr' # comment
+            name = 'piotr'  # comment
 
     class TestPasswordChecker:
         def test(self):
@@ -350,12 +357,12 @@ class TestDeveloperFundamentals_2:
 
         def test_matrix(self):
             matrix = [
-                [1,2,3],
-                [4,5,6],
-                [7,8,9],
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
             ]
 
-            assert matrix[0] == [1,2,3]
+            assert matrix[0] == [1, 2, 3]
             assert matrix[1][1] == 5
 
         class TestListMethods:
@@ -365,19 +372,19 @@ class TestDeveloperFundamentals_2:
 
             def test_append(self):
                 cart = ['a', 'b', 'c', 'd']
-                cart.append('e') # mutable
+                cart.append('e')  # mutable
 
                 assert cart == ['a', 'b', 'c', 'd', 'e']
 
             def test_insert(self):
                 cart = ['a', 'b', 'c']
-                cart.insert(1, 'boo') # mutable
+                cart.insert(1, 'boo')  # mutable
 
                 assert cart == ['a', 'boo', 'b', 'c']
 
             def test_extend(self):
                 cart = ['a', 'b', 'c']
-                cart.extend([1, 2]) # mutable
+                cart.extend([1, 2])  # mutable
 
                 assert cart == ['a', 'b', 'c', 1, 2]
 
@@ -385,7 +392,7 @@ class TestDeveloperFundamentals_2:
                 cart = ['a', 'b', 'c']
 
                 itemPopped = cart.pop()
-                assert cart == ['a', 'b'] # mutable
+                assert cart == ['a', 'b']  # mutable
                 assert itemPopped == 'c'
 
                 cart = ['a', 'b', 'c']
@@ -394,10 +401,186 @@ class TestDeveloperFundamentals_2:
 
             def test_remove(self):
                 cart = ['a', 'b', 'c']
-                cart.remove('b') # mutable
+                cart.remove('b')  # mutable
                 assert cart == ['a', 'c']
 
             def test_clear(self):
                 cart = ['a', 'b', 'c']
-                cart.clear() # mutable
+                cart.clear()  # mutable
                 assert cart == []
+
+            def test_index(self):
+                cart = ['a', 'b', 'c']
+                assert cart.index('b') == 1
+                assert cart.index('c') == 2
+                assert cart.index('b', 1, 2) == 1
+
+            def test_in(self):
+                cart = ['a', 'b', 'c']
+                assert ('a' in cart) == True
+                assert ('x' in cart) == False
+                assert ('i' in 'hi there') == True
+
+            def test_count(self):
+                cart = ['a', 'b', 'c', 'b', 'd', 'b']
+                assert cart.count('b') == 3
+                assert cart.count('d') == 1
+
+            def test_sort(self):
+                cart = ['c', 'b', 'a']
+                assert cart == ['c', 'b', 'a']
+                cart.sort()  # mutable
+                assert cart == ['a', 'b', 'c']
+
+            def test_copy(self):
+                cart = ['a', 'b', 'c']
+                new_cart = cart.copy()
+                assert cart == ['a', 'b', 'c']
+                assert new_cart == ['a', 'b', 'c']
+                assert cart is not new_cart
+
+            def test_reverse(self):
+                cart = ['a', 'b', 'c']
+                assert cart == ['a', 'b', 'c']
+                cart.reverse()
+                assert cart == ['c', 'b', 'a']
+
+            def test_sorted(self):
+                cart = ['c', 'b', 'a']
+                assert cart == ['c', 'b', 'a']
+
+                cart_sorted = sorted(cart)  # makes sorted copy of list
+
+                assert cart == ['c', 'b', 'a']
+                assert cart_sorted == ['a', 'b', 'c']
+
+        class TestCommonListPatterns:
+            def test_reverse_with_index(self):
+                cart = ['a', 'b', 'c']
+                reversed = cart[::-1]  # makes a copy of the list
+                assert reversed == ['c', 'b', 'a']
+
+            def test_range(self):
+                assert list(range(3)) == [0, 1, 2]
+                assert list(range(1, 3)) == [1, 2]
+                assert list(range(0, 3)) == [0, 1, 2]
+                assert list(range(33, 37)) == [33, 34, 35, 36]
+
+            def test_join(self):
+                sentence = ' '
+
+                joined = sentence.join(['hi', 'my name', 'is piotr'])
+                assert joined == 'hi my name is piotr'
+
+        class TestListUnpacking:
+            def test_simple_unpack(self):
+                a, b, c = [1, 2, 3]
+                assert a == 1
+                assert b == 2
+                assert c == 3
+
+            def test_unpack_with_rest(self):
+                a, b, c, *rest = [1, 2, 3, 4, 5, 6]
+                assert a == 1
+                assert b == 2
+                assert c == 3
+                assert rest == [4, 5, 6]
+
+            def test_unpack_with_rest_and_more(self):
+                a, b, c, *rest, d = [1, 2, 3, 4, 5, 6]
+                assert a == 1
+                assert b == 2
+                assert c == 3
+                assert rest == [4, 5]
+                assert d == 6
+
+        class TestNone:
+            def test_none(self):
+                None  # special datatype, like null
+                weapons = None
+                assert weapons == None
+
+    class TestDictionaries:
+        def test_dict(self):
+            dictionary = {
+                'a': 1,
+                'b': 2,
+                'c': 3,
+            }
+
+            assert dictionary['b'] == 2
+
+        def test_dict_any_values(self):
+            dictionary = {
+                'a': [1, 2],
+                'b': 'piotr',
+                'c': 3,
+            }
+
+            assert dictionary['a'] == [1, 2]
+            assert dictionary['b'] == 'piotr'
+            assert dictionary['c'] == 3
+
+        def test_list_with_dict_any_values(self):
+            lst = [{'a': 1, 'b': 2}, 'foo']
+
+            assert lst[0] == {'a': 1, 'b': 2}
+            assert lst[0]['b'] == 2
+            assert lst[1] == 'foo'
+
+
+class TestDeveloperFundamentals_3:
+    class TestDictionaryKeys:
+        def test_keys_have_to_be_unmutable(self):
+            dictionary = {
+                123: 1,
+                True: 2,
+                # [1, 2]: 3, # unhashable key, list can change!
+            }
+
+            assert dictionary[123] == 1
+            assert dictionary[True] == 2
+
+        def test(self):
+            dictionary = {
+                123: 1,
+                123: 2,  # last one wins, overrides the previous one with same key
+            }
+
+            assert dictionary[123] == 2
+
+    class TestDictionaryMethods:
+        def test_get(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            # dic['baz'] # undefined key error!
+
+            assert dic.get('baz') == None
+            # provide default value
+            assert dic.get('baz', 'default') == 'default'
+
+        def test_get(self):
+            usr = dict(name='piotr', age=41)
+
+            assert usr['name'] == 'piotr'
+            assert usr['age'] == 41
+
+        def test_in(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            assert ('foo' in dic) == True
+            assert ('baz' in dic) == False
+
+        def test_keys(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            assert ('foo' in dic.keys()) == True
