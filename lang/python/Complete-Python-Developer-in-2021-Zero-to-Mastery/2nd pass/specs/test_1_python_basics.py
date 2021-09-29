@@ -583,4 +583,162 @@ class TestDeveloperFundamentals_3:
                 'bar': 'hello'
             }
 
-            assert ('foo' in dic.keys()) == True
+            assert ('foo' in dic.keys()) == True  # dictionary view object
+            assert list(dic.keys()) == ['foo', 'bar']
+
+        def test_values(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            assert ([1, 2, 3] in dic.values()) == True
+            assert list(dic.values()) == [[1, 2, 3], 'hello']
+
+        def test_items(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            # assert dic.items() == [('foo', [1, 2, 3]), ('bar', 'hello')]
+
+        def test_clear(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            dic.clear()
+            assert dic == {}
+
+        def test_copy(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            copied = dic.copy()
+            dic.clear()
+
+            assert dic == {}
+            assert copied == {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+        def test_pop(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            item = dic.pop('bar')
+
+            assert item == 'hello'
+            assert dic == {
+                'foo': [1, 2, 3]
+            }
+
+        def test_popitem(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            item = dic.popitem()
+
+            assert item == ('bar', 'hello')
+            assert dic == {
+                'foo': [1, 2, 3]
+            }
+
+        def test_update(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            dic.update({
+                'foo': 'boo'
+            })
+
+            assert dic == {
+                'foo': 'boo',
+                'bar': 'hello'
+            }
+
+    class TestTuples:
+        def test_tuple(self):
+            # immutable list
+            tpl = (1, 2, 3)
+            assert tpl[0] == 1
+            # tpl[0] = 'boo' # can't change it!
+
+        def test_tuple_as_valid_dict_key(self):
+            dic = {
+                (1, 2): 'boo' # tuple is immutable, so can be a key, list is not though.
+            }
+
+            assert dic[(1, 2)] == 'boo'
+
+        def test_slice_tuple(self):
+            tpl = (1, 2, 3, 4, 5)
+            assert tpl[2:4] == (3, 4)
+
+        def test_destructure_tuple(self):
+            tpl = (1, 2, 3, 4, 5)
+            x, y, *z = tpl
+
+            assert x == 1
+            assert y == 2
+            assert z == [3, 4, 5]
+
+        def test_tuple_count(self):
+            tpl = (1, 2, 2, 2, 5)
+            assert tpl.count(2) == 3
+            
+        def test_tuple_index(self):
+            tpl = (1, 2, 3, 4, 5)
+            assert tpl.index(3) == 2
+
+        def test_tuple_len(self):
+            tpl = (1, 2, 3, 4, 5)
+            assert len(tpl) == 5
+
+    class TestSets: # unordered collections of unique items
+        def test(self):
+            my_set = { 1, 2, 2, 3, 4 ,5, 5}
+            assert type(my_set) == set
+            assert my_set == { 1, 2, 3, 4 ,5}
+
+        def test_add(self):
+            my_set = { 1, 2, 3, 4 ,5}
+            my_set.add(6)
+
+            assert my_set == { 1, 2, 3, 4 ,5, 6}
+
+        def test_convert_dup_list_to_set(self):
+            lst = { 1, 2, 2, 3, 3, 4 ,5}
+            st = set(lst)
+            assert st == { 1, 2, 3, 4 ,5}
+
+        def test_in_set(self):
+            my_set = { 1, 2, 3, 4 ,5}
+            assert (2 in my_set) == True
+
+        def test_len_set(self):
+            my_set = { 1, 2, 3, 4 ,5}
+            assert len(my_set) == 5
+
+        def test_set_to_list(self):
+            my_set = { 1, 2, 3, 4 ,5}
+            lst = list(my_set)
+            assert lst == [1, 2, 3, 4 ,5]
+
+        def test_set_copy(self):
+            my_set = { 1, 2, 3, 4 ,5}
+            copied = my_set.copy()
+            my_set.clear()
+
+            assert copied == { 1, 2, 3, 4 ,5 }
