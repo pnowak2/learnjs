@@ -1,19 +1,20 @@
 #include <Arduino.h>
 
-struct Player {
-  const char *name;
-};
-
 void setup() {
   Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(A2, INPUT);
+  pinMode(7, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  Serial.println("Writing to led HIGH");
-  delay(100);
-  Serial.println("Writing to led LOW");
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(100);
+  int level = analogRead(A2);
+  // Serial.println(level);
+  // delay(500);
+
+  if(level < 400) {
+    digitalWrite(7, HIGH);
+  } else {
+    digitalWrite(7, LOW);
+  }
+  
 }
