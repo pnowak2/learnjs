@@ -541,7 +541,7 @@ class TestDeveloperFundamentals_3:
             assert dictionary[123] == 1
             assert dictionary[True] == 2
 
-        def test(self):
+        def test_override_dict_value(self):
             dictionary = {
                 123: 1,
                 123: 2,  # last one wins, overrides the previous one with same key
@@ -562,7 +562,7 @@ class TestDeveloperFundamentals_3:
             # provide default value
             assert dic.get('baz', 'default') == 'default'
 
-        def test_get(self):
+        def test_create_using_dict(self):
             usr = dict(name='piotr', age=41)
 
             assert usr['name'] == 'piotr'
@@ -668,6 +668,18 @@ class TestDeveloperFundamentals_3:
                 'bar': 'hello'
             }
 
+        def test_add_item(self):
+            dic = {
+                'foo': [1, 2, 3],
+                'bar': 'hello'
+            }
+
+            dic['baz'] = 'boo'
+
+            assert dic['foo'] == [1, 2, 3]
+            assert dic['bar'] == 'hello'
+            assert dic['baz'] == 'boo'
+
     class TestTuples:
         def test_tuple(self):
             # immutable list
@@ -677,7 +689,8 @@ class TestDeveloperFundamentals_3:
 
         def test_tuple_as_valid_dict_key(self):
             dic = {
-                (1, 2): 'boo' # tuple is immutable, so can be a key, list is not though.
+                # tuple is immutable, so can be a key, list is not though.
+                (1, 2): 'boo'
             }
 
             assert dic[(1, 2)] == 'boo'
@@ -697,7 +710,7 @@ class TestDeveloperFundamentals_3:
         def test_tuple_count(self):
             tpl = (1, 2, 2, 2, 5)
             assert tpl.count(2) == 3
-            
+
         def test_tuple_index(self):
             tpl = (1, 2, 3, 4, 5)
             assert tpl.index(3) == 2
@@ -706,39 +719,95 @@ class TestDeveloperFundamentals_3:
             tpl = (1, 2, 3, 4, 5)
             assert len(tpl) == 5
 
-    class TestSets: # unordered collections of unique items
+    class TestSets:  # unordered collections of unique items
         def test(self):
-            my_set = { 1, 2, 2, 3, 4 ,5, 5}
+            my_set = {1, 2, 2, 3, 4, 5, 5}
             assert type(my_set) == set
-            assert my_set == { 1, 2, 3, 4 ,5}
+            assert my_set == {1, 2, 3, 4, 5}
 
         def test_add(self):
-            my_set = { 1, 2, 3, 4 ,5}
+            my_set = {1, 2, 3, 4, 5}
             my_set.add(6)
 
-            assert my_set == { 1, 2, 3, 4 ,5, 6}
+            assert my_set == {1, 2, 3, 4, 5, 6}
 
         def test_convert_dup_list_to_set(self):
-            lst = { 1, 2, 2, 3, 3, 4 ,5}
+            lst = [1, 2, 2, 3, 3, 4, 5]
             st = set(lst)
-            assert st == { 1, 2, 3, 4 ,5}
+            assert st == {1, 2, 3, 4, 5}
 
         def test_in_set(self):
-            my_set = { 1, 2, 3, 4 ,5}
+            my_set = {1, 2, 3, 4, 5}
             assert (2 in my_set) == True
 
         def test_len_set(self):
-            my_set = { 1, 2, 3, 4 ,5}
+            my_set = {1, 2, 3, 4, 5}
             assert len(my_set) == 5
 
         def test_set_to_list(self):
-            my_set = { 1, 2, 3, 4 ,5}
+            my_set = {1, 2, 3, 4, 5}
             lst = list(my_set)
-            assert lst == [1, 2, 3, 4 ,5]
+            assert lst == [1, 2, 3, 4, 5]
 
         def test_set_copy(self):
-            my_set = { 1, 2, 3, 4 ,5}
+            my_set = {1, 2, 3, 4, 5}
             copied = my_set.copy()
             my_set.clear()
 
-            assert copied == { 1, 2, 3, 4 ,5 }
+            assert copied == {1, 2, 3, 4, 5}
+
+        def test_difference(self):
+            a = {1, 2, 3, 4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            assert a.difference(b) == {1, 2, 3}
+
+        def test_discard(self):
+            a = {1, 2, 3, 4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            a.discard(4)  # mutable
+
+            assert a == {1, 2, 3, 5}
+
+        def test_update(self):
+            a = {1, 2, 3, 4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            a.update(b)  # mutable
+
+            assert a == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+        def test_intersection(self):
+            a = {1, 2, 3, 4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            assert a.intersection(b) == {4, 5}  # mutable
+            assert a & b == {4, 5}
+
+        def test_is_disjoint(self):
+            a = {1, 2, 3, 4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            assert a.isdisjoint(b) == False  # do they have nothing in common
+            # do they have nothing in common
+            assert a.isdisjoint({11, 12}) == True
+
+        def test_is_subset(self):
+            a = {4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            assert a.issubset(b) == True
+
+        def test_is_superset(self):
+            a = {4, 5}
+            b = {4, 5, 6, 7, 8, 9, 10}
+
+            assert a.issubset(b) == True
+
+        def test_union(self):
+            a = {4, 5}
+            b = {6, 7}
+
+            assert a.union(b) == {4, 5, 6, 7}
+            assert a | b == {4, 5, 6, 7}
