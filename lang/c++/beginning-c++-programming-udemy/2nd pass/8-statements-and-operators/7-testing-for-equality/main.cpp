@@ -6,7 +6,7 @@ int main() {
     bool equal_result {false};
     bool not_equal_result {false};
 
-    int num1{}, num2{};
+    int num1{0}, num2{0};
 
     cout << "Enter two ints: ";
     cin >> num1 >> num2;

@@ -220,5 +220,84 @@ class TestRange:
         assert counter == '10987654321'
 
 class TestEnumerate:
+    def test_enumarate_provides_index_and_item(self):
+        result = []
+        res = {}
+        for i, char in enumerate('Hi'):
+            result.append(f'{i}. {char}')
+            res[i] = char
+
+        assert result == ['0. H', '1. i']
+        assert res == {
+            0: 'H',
+            1: 'i'
+        }
+    
     def test(self):
-        pass
+        index_of_four = None
+        for i, char in enumerate(list(range(5))):
+            if char == 4:
+                index_of_four = i
+
+        assert index_of_four == 4
+
+        
+class TestWhileLoops:
+    def test(self):
+        i = 0
+        result = ''
+
+        while i < 3:
+            result += '.'
+            i = i + 1
+
+        assert result == '...'
+
+    def test_break(self):
+        i = 0
+        while i < 50:
+            break
+
+    def test_while_else_when_all_loops_done_run_else(self):
+        i = 3
+        result = ''
+        while i > 0:
+            result += str(i)
+            i = i - 1
+        else:
+            result += 'done'
+
+        assert result == '321done'
+
+    def test_while_else_runs_only_if_no_break_in_loop(self):
+        i = 3
+        result = ''
+        while i > 0:
+            i = i - 1
+            break
+        else:
+            result += 'done'
+
+        assert 'done' not in result
+
+    def test_flexible_while_more_powerful_vs_for_more_simple(self):
+        i = 0
+        while i < len([1, 2, 3]):
+            i += 1
+            # simple loops: for
+            # more sophisticated/dynamic: while
+
+    def test_while_true(self):
+        while True:
+            # if sth:
+            break
+
+    def test_break_continue_pass(self):
+        for item in [1, 2, 3]:
+            continue # stop executing next lines, perform another loop cycle
+            assert False # never runs
+
+class TestDeveloperFundamentals_4:
+    class Test:
+        def test(self):
+            pass
