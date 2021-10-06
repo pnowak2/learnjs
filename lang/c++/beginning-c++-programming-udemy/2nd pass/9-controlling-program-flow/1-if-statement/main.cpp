@@ -2,7 +2,15 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
+    if(true) {
+
+    } else if (true) {
+
+    } else {
+
+    }
 
     return 0;
 }
