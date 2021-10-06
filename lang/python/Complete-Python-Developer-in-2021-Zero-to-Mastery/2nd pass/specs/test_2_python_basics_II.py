@@ -1,3 +1,4 @@
+total = 1
 class TestConditionalLogic:
     def test_if_else(self):
         is_old = True
@@ -351,6 +352,7 @@ class TestDeveloperFundamentals_4:
                 'n': 2,
             }
 
+
 class TestFunctions:
     class TestDefinition:
         def test(self):
@@ -386,7 +388,8 @@ class TestFunctions:
             def hello(name, emoji):
                 f'hello, {name}, {emoji}'
 
-            assert hello('piotr', ':)') == None # withour return keyword, always returns None
+            # withour return keyword, always returns None
+            assert hello('piotr', ':)') == None
 
     class TestHigherOrderFunctions:
         def test(self):
@@ -402,7 +405,6 @@ class TestFunctions:
             'hello'.count('l')
             'hello'.capitalize()
 
-    
     class TestDocStrings:
         def test(self):
 
@@ -410,33 +412,39 @@ class TestFunctions:
                 '''
                 Info: this function does this and that
                 '''
-                return a;
+                return a
 
             assert help(fn) == None
             assert 'this function does this and that' in fn.__doc__
 
     class TestArgsAndKwargs:
         def test_args(self):
-            def fn(*args): # receive args as a tuple
+            def fn(*args):  # receive args as a tuple
                 assert type(args) == tuple
                 return sum(args)
 
             assert fn(1, 2, 3) == 6
 
         def test_kwargs(self):
-            def fn(*args, **kwargs): # receive kwargs as keyword arguments
+            def fn(*args, **kwargs):  # receive kwargs as keyword arguments
                 assert type(args) == tuple
                 assert type(kwargs) == dict
 
                 return f'{sum(args)} - {"".join(kwargs.keys())}'
 
-            assert fn(1, 2, 3, foo='bar', baz='boo') == '6 - foobaz' 
+            assert fn(1, 2, 3, foo='bar', baz='boo') == '6 - foobaz'
 
         def test_all_together(self):
-            def fn(param1, param2, *args, **kwargs): # receive kwargs as keyword arguments
+            # receive kwargs as keyword arguments
+            def fn(param1, param2, *args, default1="hey", default2="ho", **kwargs):
                 assert type(param1) == str
                 assert type(param2) == int
+
+                assert type(default1) == str
+                assert type(default2) == str
+
                 assert type(args) == tuple
+
                 assert type(kwargs) == dict
 
                 assert param1 == 'hello'
@@ -450,3 +458,74 @@ class TestFunctions:
                 return f'{sum(args)} - {"".join(kwargs.keys())}'
 
             fn('hello', 1, 30, 50, foo='bar', baz='boo')
+
+    class TestExcerciseFunctions:
+        def test(self):
+
+            def highest_even(li):
+                evens = []
+                for item in li:
+                    if item % 2 == 0:
+                        evens.append(item)
+
+                return max(evens)
+
+            assert highest_even([2, 10, 2, 12, 3, 4, 8, 11]) == 12
+
+
+class TestWalrusOperator:
+    def test_without_walrus(self):
+        def fn(text):
+            if(len(text) > 10):
+                return f'too long, {len(text)} elements'
+
+        assert fn('helloooooooooo') == 'too long, 14 elements'
+
+    def test_with_walrus(self):
+        def fn(text):
+            if((n := len(text)) > 10):
+                return f'too long, {n} elements'
+
+        assert fn('helloooooooooo') == 'too long, 14 elements'
+
+    def test_with_while_walrus(self):
+        text = 'abc'
+
+        while ((n := len(text)) > 1):
+            text = text[:-1]
+            assert n > 0
+
+
+class TestScope:
+    def test(self):
+        def fn():
+            total = 100
+
+        # assert total == None # not defined here
+
+    def test_globals_not_overriden_by_locals(self):
+        total = 1
+        def fn():
+            total = 100
+
+        fn()
+        assert total == 1
+
+    def test_non_local(self):
+        total = 1
+        def fn():
+            nonlocal total # gets nearest variable of this name up the stack
+            total = 100
+
+        fn()
+        assert total == 100
+
+
+    def test_global(self):
+        def fn():
+            global total
+            total = 100
+
+        assert total == 1
+        fn()
+        assert total == 100
