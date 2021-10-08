@@ -11,7 +11,7 @@ int rightSensorValue = 0;
 int sensorDifference = 0;
 
 int closeness = 50;
-int threshold;
+int threshold = 0;
 
 void setup()
 {
@@ -50,8 +50,8 @@ void loop()
   Serial.print(", Move: ");
 
   if (leftSensorValue <= threshold &&
-      rightSensorValue <= threshold &&
       leftSensorValue >= threshold / 2 &&
+      rightSensorValue <= threshold &&
       rightSensorValue >= threshold / 2 &&
       sensorDifference <= closeness)
   {
@@ -68,7 +68,7 @@ void loop()
     digitalWrite(leftLedPin, LOW);
     digitalWrite(rightLedPin, LOW);
     delay(10);
-  } else if (leftSensorValue < rightSensorValue &&
+  } else if (rightSensorValue > leftSensorValue &&
            leftSensorValue >= threshold/2)
   {
     Serial.print("RIGHT");
