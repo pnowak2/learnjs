@@ -216,6 +216,23 @@ class TestDeveloperFundamentals_5:
             assert type(w) != User
             assert isinstance(w, User) == True
 
+        def test_issubclass(self):
+            class User:
+                def signin(self):
+                    return 'logged in'
+
+            class Wizard(User):
+                def __init__(self, name, power):
+                    self.name = name
+                    self.power = power
+
+                def attack(self):
+                    return f'attacking with power of {self.power}'
+
+            w = Wizard('rince', 10)
+            assert issubclass(Wizard, User) == True
+            assert issubclass(Wizard, object) == True
+
         def test_all_inherit_from_object(self):
             class User:
                 def signin(self):
@@ -327,3 +344,113 @@ class TestDeveloperFundamentals_5:
             assert 'signin' in dir(w)
             assert 'attack' in dir(w)
             assert '__init__' in dir(w)
+
+    class TestDunderMethods:
+        def test_default_str(self):
+            class Toy():
+                def __init__(self, color, age):
+                    self.color = color
+                    self.age = age
+
+            figure = Toy('red', 0)
+            assert '<test' in figure.__str__()
+
+        def test_own_dunder_methods(self):
+            class Toy():
+                def __init__(self, color, age):
+                    self.color = color
+                    self.age = age
+
+                def __str__(self):
+                    return f'{self.color} - {self.age}'
+
+                def __len__(self):
+                    return self.age
+
+                def __del__(self):
+                    print('deleted!')
+
+                def __call__(self):
+                    return f'called me {self.color} ?'
+
+                def __getitem__(self, i):
+                    return self.color[i]
+
+            figure = Toy('red', 0)
+            assert figure.__str__() == 'red - 0'
+            assert len(figure) == 0
+            assert figure() == 'called me red ?'
+            assert figure[2] == 'd'
+
+            del(figure)
+
+        def test_excercise_superlist(self):
+            class SuperList(list):
+                def __len__(self):
+                    return 1000
+
+            lst = SuperList()
+            lst.append(1)
+            lst.append(2)
+            lst.append(3)
+            lst.append(10)
+
+            assert lst[2] == 3
+            assert lst[3] == 10 
+            assert len(lst) == 1000
+            
+    class TestMultipleInheritance:
+        def test(self):
+            class User:
+                def signin(self):
+                    return 'logged in'
+
+                def attack(self):
+                    return 'do nothing'
+
+            class Wizard(User):
+                def __init__(self, name, power):
+                    self.name = name
+                    self.power = power
+
+                def attack(self):
+                    return f'attacking with power of {self.power}'
+
+            class Archer(User):
+                def __init__(self, name, arrows):
+                    self.name = name
+                    self.arrows = arrows
+
+                def attack(self):
+                    return f'attacking with arrows, left {self.arrows}'
+
+                def run(self):
+                    return 'runs really fast'
+
+                def check_arrows(self):
+                    return self.arrows
+
+            class HybridBorg(Wizard, Archer):
+                def __init__(self, name, power, arrows):
+                    Wizard.__init__(self, name, power)
+                    Archer.__init__(self, name, arrows)
+
+            hb = HybridBorg('borgie', 50, 21)
+
+            assert hb.run() == 'runs really fast'
+            assert hb.check_arrows() == 21
+            assert hb.signin() == 'logged in' 
+
+    class TestMethodResolutionOrder_MRO:
+        def test(self):
+            class A:
+                num = 10
+            class B(A):
+                pass
+            class C(A):
+                num = 1
+            class D(B, C):
+                pass
+
+            assert D.num == 1
+            D.mro()
