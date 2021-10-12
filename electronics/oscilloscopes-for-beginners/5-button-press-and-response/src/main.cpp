@@ -1,17 +1,20 @@
 #include <Arduino.h>
 
+const unsigned short buttonPin = A3;
+const unsigned short ledPin = A7;
+
 void setup() {
-  pinMode(A7, OUTPUT);
-  pinMode(A3, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
   digitalWrite(A7, LOW);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  const PinStatus status = digitalRead(A3);
+  const PinStatus status = digitalRead(buttonPin);
+
   if(status == LOW) {
-    digitalWrite(A7, HIGH);
+    digitalWrite(ledPin, HIGH);
   } else {
-    digitalWrite(A7, LOW);
+    digitalWrite(ledPin, LOW);
   }
 }
