@@ -6,7 +6,14 @@
 	],
 	"settings": {
 		"files.associations": {
-			"iomanip": "cpp"
+			"iomanip": "cpp",
+			"cstring": "cpp",
+			"cctype": "cpp",
+			"*.tcc": "cpp",
+			"deque": "cpp",
+			"string": "cpp",
+			"unordered_map": "cpp",
+			"vector": "cpp"
 		}
 	}
 }

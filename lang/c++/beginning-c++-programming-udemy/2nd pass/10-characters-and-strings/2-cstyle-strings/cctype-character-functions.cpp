@@ -16,7 +16,7 @@ int main()
     cout << "is white space: " << isspace(' ') << endl;
 
     cout << "to lower: " << (char)tolower('A') << endl;
-    cout << "to lower: " << (char)toupper('b') << endl;
+    cout << "to upper: " << static_cast<char>(toupper('b')) << endl;
 
     return 0;
 }
