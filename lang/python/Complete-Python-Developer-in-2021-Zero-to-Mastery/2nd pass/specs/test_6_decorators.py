@@ -111,7 +111,14 @@ class TestDecorators:
         def greet(name, age):
             return f'hello {name}, {age}'
 
+        @my_decorator_factory({
+            'isYoung': False
+        })
+        def salut(name, age):
+            return f'hello {name}, {age}'
+
         assert greet(name='piotr', age=42) == '*** hello piotr, 42 ***'
+        assert salut(name='piotr', age=42) == 'hello piotr, 42'
 
     def test_performance_decorator(self):
         def performance(fn):
