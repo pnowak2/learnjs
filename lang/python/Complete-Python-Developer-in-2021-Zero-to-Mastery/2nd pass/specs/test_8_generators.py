@@ -89,6 +89,8 @@ class TestGenerators:
 
         gen = MyGen(0, 3)
 
+        assert iter(gen) == gen
+
         assert next(gen) == 0
         assert next(gen) == 1
         assert next(gen) == 2
