@@ -7,6 +7,10 @@ from modules import utility
 from modules.utility import divide, multiply, max as my_max
 
 import random
+from random import shuffle as shuf
+import sys
+
+# import pyjokes
 
 class TestModules:
     def test_utility_contents(self):
@@ -60,4 +64,20 @@ class TestModules:
 
     class TestBuiltInModules:
         def test_random(self):
-            random
+            assert random.random() < 1
+            assert random.randint(1, 10) in list(range(10))
+            assert random.choice([1, 3, 5]) in list([1, 3, 5])
+            # alias to random.shuffle
+            shuf([1, 2, 3]) # shuffles the list, mutable operation
+
+        def test_sys(self):
+            sys.argv # brings params passed to py file
+
+        def test_python_package_index(self):
+            '''pip install pyjokes'''
+            '''pip list'''
+            pass
+
+        def test_pyjokes(self):
+            # assert len(pyjokes.get_joke(category='chuck')) > 0
+            pass
