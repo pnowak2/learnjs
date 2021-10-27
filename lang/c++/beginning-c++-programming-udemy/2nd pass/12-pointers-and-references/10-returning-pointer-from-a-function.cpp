@@ -35,11 +35,11 @@ void display(const int *const arr) {
 
 int main()
 {
-    int num1 {10}, num2 {20};
-    int *result = largest_int(&num1, &num2);
+    auto num1 {10}, num2 {20};
+    auto *result = largest_int(&num1, &num2);
     cout << *result << endl;
 
-    int *arr = make_array(10, 2);
+    auto *arr = make_array(10, 2);
     display(arr);
 
     delete [] arr;
