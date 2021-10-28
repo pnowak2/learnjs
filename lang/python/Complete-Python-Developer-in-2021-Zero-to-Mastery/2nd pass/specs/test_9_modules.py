@@ -81,3 +81,6 @@ class TestModules:
         def test_pyjokes(self):
             # assert len(pyjokes.get_joke(category='chuck')) > 0
             pass
+
+        def test_virtual_environments(self):
+            pass
