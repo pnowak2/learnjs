@@ -11,6 +11,8 @@ from random import shuffle as shuf
 import sys
 
 from collections import Counter, OrderedDict, defaultdict
+import datetime
+from array import array
 # import pyjokes
 
 class TestModules:
@@ -124,7 +126,12 @@ class TestModules:
             d2['b'] = 2
             d2['a'] = 1
 
-            assert d != d2 # that would be equal for regular dictionary
+            assert d != d2 # that would be equal for regular dictionary. as of 3.7 dicts are by default ordered
 
-        def test_ordered_dict(self):
-            d = OrderedDict()
+        def test_date_time(self):
+            assert str(datetime.time(9, 14, 2 )) == '09:14:02'
+            assert str(datetime.date.fromisoformat('2021-02-03')) == '2021-02-03'
+
+        def test_array_module(self):
+           arr = array('i', [1, 2, 3]) # more performant than list
+           assert arr[1] == 2
