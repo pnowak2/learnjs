@@ -10,6 +10,7 @@ import random
 from random import shuffle as shuf
 import sys
 
+from collections import Counter, OrderedDict, defaultdict
 # import pyjokes
 
 class TestModules:
@@ -83,4 +84,47 @@ class TestModules:
             pass
 
         def test_virtual_environments(self):
+            # pip install virtualenv
+            # $ python3 -m venv env
+            # run activate script from scripts or bin
+            # pip install dependency, it will be put in venv lib/site-packages folder
             pass
+
+    class TestUsefulModules:
+        def test_counter(self):
+            li = [1, 1, 2, 2, 2, 3]
+
+            assert Counter(li) == {
+                1: 2,
+                2: 3,
+                3: 1
+            }
+
+        def test_defaultdict(self):
+            d = {'a': 1, 'b': 2}
+            assert d['a'] == 1
+
+            try:
+                d['c']
+            except:
+                assert True
+            else:
+                assert False
+
+            assert defaultdict(int, d)['c'] == 0 # will call int() for items which do not exist on dictionary
+            assert defaultdict(lambda: 'does not exist', d)['c'] == 'does not exist'
+            assert defaultdict(int, d)['a'] == 1
+
+        def test_ordered_dict(self):
+            d = OrderedDict()
+            d['a'] = 1
+            d['b'] = 2
+
+            d2 = OrderedDict()
+            d2['b'] = 2
+            d2['a'] = 1
+
+            assert d != d2 # that would be equal for regular dictionary
+
+        def test_ordered_dict(self):
+            d = OrderedDict()
