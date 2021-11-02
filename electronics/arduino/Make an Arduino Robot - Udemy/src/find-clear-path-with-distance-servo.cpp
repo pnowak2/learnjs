@@ -49,15 +49,15 @@ void loop() {
       delay(250);
   } else {
       panMotor.write(0);
-      delay(500);
+      delay(200);
       leftDistance = ultrasonic.read();
-      delay(500);
+      delay(200);
       panMotor.write(180);
-      delay(700);
+      delay(300);
       rightDistance = ultrasonic.read();
-      delay(500);
+      delay(200);
       panMotor.write(90);
-      delay(100);
+      delay(200);
       compareDistance();
   }
   
