@@ -1,4 +1,4 @@
-def calc_dividend(monthlyAmount, profitRatio = 0.5):
+def calc_dividend(monthlyAmount, profitRatio = 0.5, years = 1):
     ''' 
         monthly amount: how much monthly in eur to put on profit
         profitRation: rate how much of profit goes to dividend each 3 months
@@ -8,7 +8,7 @@ def calc_dividend(monthlyAmount, profitRatio = 0.5):
     totalProfit = 0
     totalDividend = 0
 
-    for _ in range(4):
+    for _ in range(years * 4):
         profit = profit + (3 * monthlyAmount)
         dividend = profitRatio * profit
         profit = profit - dividend
@@ -20,7 +20,7 @@ def calc_dividend(monthlyAmount, profitRatio = 0.5):
         'dividend': totalDividend
     }
 
-result = calc_dividend(650, 0.5)
+result = calc_dividend(650)
 
 print(f'Annuald dividend: {result.get("dividend")}')
 print(f'Profit left on company: {result.get("profit")}')
