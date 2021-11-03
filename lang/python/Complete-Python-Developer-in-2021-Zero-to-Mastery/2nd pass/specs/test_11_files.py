@@ -6,6 +6,8 @@ class TestFiles:
         my_file = open('excercises/13-file-io/test.txt')
         assert my_file.read() == 'hello world!'
 
+        my_file.close()
+
     def test_cursor(self):
         my_file = open('excercises/13-file-io/test.txt')
         assert my_file.read() == 'hello world!'
@@ -15,12 +17,16 @@ class TestFiles:
 
         assert my_file.read() == 'hello world!'
 
+        my_file.close()
+
     def test_readline(self):
         my_file = open('excercises/13-file-io/multiline.txt')
         assert my_file.readline() == 'first line\n'
         assert my_file.readline() == 'second line\n'
         assert my_file.readline() == 'third line'
         assert my_file.readline() == ''
+
+        my_file.close()
 
     def test_readlines(self):
         my_file = open('excercises/13-file-io/multiline.txt')
@@ -29,3 +35,5 @@ class TestFiles:
             'second line\n',
             'third line'
         ]
+
+        my_file.close()
