@@ -1,4 +1,5 @@
 from typing import TextIO
+import pathlib
 
 
 class TestFiles:
@@ -72,3 +73,31 @@ class TestFiles:
             '''will create new file even if it didnt exist before'''
             with open('excercises/13-file-io/doesnotexist.txt', mode='w') as file:
                 file.write('now you do!')
+
+    class TestFilePaths:
+        def test_with_paths(self):
+            path = pathlib.Path('excercises\\13-file-io\\test.txt')
+            posix_path = path.as_posix()
+            assert posix_path == 'excercises/13-file-io/test.txt'
+
+            with open(posix_path, mode='r') as file:
+                assert file.read() == 'hello world!'
+
+    class TestFileIOErrors:
+        def test_filenotfound(self):
+            try:
+                with open('excercises/13-file-io/null', mode='r') as file:
+                    pass
+            except FileNotFoundError as err:
+                assert err.filename == 'excercises/13-file-io/null'
+            else:
+                assert False
+
+        def test_ioerror(self):
+            try:
+                with open('excercises/13-file-io/null', mode='r') as file:
+                    pass
+            except IOError as err:
+                assert True
+            else:
+                assert False
