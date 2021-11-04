@@ -17,4 +17,5 @@ with open(path.as_posix(), mode='r') as file:
     for lang in langs:
         translation = translator.translate(src, dest=lang)
         with codecs.open(f'translations/{lang}.json', mode='w', encoding='utf-8') as file:
+            print(f'Writing {lang} json translation..')
             file.write(translation.text)
