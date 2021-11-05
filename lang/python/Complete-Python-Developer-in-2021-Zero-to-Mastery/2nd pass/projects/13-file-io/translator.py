@@ -17,14 +17,16 @@ with open(path.as_posix(), mode='r') as file:
     src_lines = file.readlines()
     regex = r'(^\".*:).*(\".*\")'
     pattern = re.compile(regex)
-    src_match = pattern.search('"ecl.app-shell.ECL-APP-SHELL": "ECL Application Shell",')
 
-    src_key, src_value = (src_match.group(1), src_match.group(2))
+    for src_line in src_lines:
+        line = src_line.strip()
+        src_match = pattern.search(line)
+        if src_match:
+            src_key, src_value = (src_match.group(1), src_match.group(2))
+            print(f'key: {src_key}, value: {src_value}')
 
-    # print(f'key: {src_key}, value: {src_value}')
-
-    s = re.sub(regex, r"\1" + ' buba', '"ecl.app-shell.ECL-APP-SHELL": "ECL Application Shell",')
-    print(s)
+    # s = re.sub(regex, r"\1" + ' buba', '"ecl.app-shell.ECL-APP-SHELL": "ECL Application Shell",')
+    # print(s)
 
     # for lang in langs:
         # translation = translator.translate(src, dest=lang)
