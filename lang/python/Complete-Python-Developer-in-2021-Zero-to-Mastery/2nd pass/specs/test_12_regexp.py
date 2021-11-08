@@ -40,3 +40,12 @@ class TestRegularExpressions:
         assert a.group() == 'sea'
         assert a.group(1) == 's'
         assert a.group(2) == 'a'
+
+    def test_email_validator(self):
+        pattern = re.compile(r'\b([A-Za-z0-9._%+-]+)@([A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b')
+        assert pattern.fullmatch('p.nowak2@gmail.com') is not None
+        assert pattern.fullmatch('p.nowak2gmail.com') is None
+
+        assert pattern.fullmatch('andy@ms.com') is not None
+        assert pattern.search('andy@ms.com').group(1) == 'andy'
+        assert pattern.search('andy@ms.com').group(2) == 'ms.com'
