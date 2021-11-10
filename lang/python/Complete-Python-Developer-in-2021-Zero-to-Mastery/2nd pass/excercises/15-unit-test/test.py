@@ -2,6 +2,13 @@ import unittest
 import main
 
 class TestMain(unittest.TestCase):
+
+    def setUp(self):
+        print('about to run test')
+
+    def tearDown(self) -> None:
+        print('teardown')
+
     def test_do_stuff(self):
         num = 10
         result = main.do_stuff(num)
