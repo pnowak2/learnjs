@@ -13,8 +13,8 @@ private:
     double balance;
 
 public:
-    void set_balance(double b) { balance = b; }
-    double get_balance() { return balance; }
+    void set_balance(double b) { this->balance = b; }
+    double get_balance() { return this->balance; }
 
     void set_name(string n);
     string get_name();
@@ -25,12 +25,12 @@ public:
     int compare_balance(const Account &other);
 };
 
-void Account::set_name(string n) {
-    name = n;
+void Account::set_name(string name) {
+    this->name = name;
 }
 
 string Account::get_name() {
-    return name;
+    return this->name;
 }
 
 bool Account::deposit(double amount) {
