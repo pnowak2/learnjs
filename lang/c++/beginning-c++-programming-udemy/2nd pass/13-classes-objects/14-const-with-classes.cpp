@@ -7,53 +7,52 @@
 
 using namespace std;
 
-class Account {
+class Player
+{
 private:
-    string name;
-    double balance;
+    std::string name{""};
+    int health{0};
+    int xp{3};
 
 public:
-    void set_balance(double b) { balance = b; }
-    double get_balance() { return balance; }
+    Player(std::string n = "None", int h = 0, int x = 0): name(n) { };
 
-    void set_name(string n);
-    string get_name();
+    Player(const Player &player): name(player.name) {};
 
-    bool deposit(double amount);
-    bool withdraw(double amount);
+    ~Player()
+    {
+        cout << "Desctructor called for " << name << endl;
+    }
 
-    int compare_balance(const Account &other);
+    string get_name() const
+    {
+        // health = 5; // not allowed, this method is const, cannot change its members
+        // xp = 6;
+        return name;
+    }
+
+    int get_health()
+    {
+        return health;
+    }
+
+    int get_xp()
+    {
+        return xp;
+    }
 };
 
-void Account::set_name(string n) {
-    name = n;
-}
-
-string Account::get_name() {
-    return name;
-}
-
-bool Account::deposit(double amount) {
-    this->balance += amount;
-    return true;
-}
-
-bool Account::withdraw(double amount) {
-    if(amount <= this->balance) {
-        this->balance -= amount;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-int Account::compare_balance(const Account &other) {
-    if(this == &other) {
-        cout << "same objects" << endl;
-    }
+void display_name(const Player &p)
+{
+    cout << "name is " << p.get_name() << endl;
 }
 
 int main()
 {
+    const Player p {"Piotr"};
+    display_name (p);
+    p.get_name(); // possible because method declaration has const keyword next to it
+    // p.get_health(); // not declared as const, cannot call it here, as player is declared as const
+
     return 0;
 }
