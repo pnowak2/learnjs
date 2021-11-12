@@ -30,4 +30,5 @@ cropped.save('out/cropped.png', 'png')
 
 img.thumbnail((100, 146)) # keeps aspect ratio
 img.save('out/thumbnail.png', 'png')
+
 print(img.size)
