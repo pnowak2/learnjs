@@ -55,5 +55,7 @@ int Account::compare_balance(const Account &other) {
 
 int main()
 {
+    Account *acc = new Account();
+
     return 0;
 }
