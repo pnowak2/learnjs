@@ -454,3 +454,30 @@ class TestDeveloperFundamentals_5:
 
             assert D.num == 1
             D.mro()
+
+    class TestWithStatement:
+        def test(self):
+            class Person(object):
+                def __init__(self, n):
+                    self.name = n
+                    pass
+
+                def get_name(self):
+                    return self.name
+
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, type, exception_value, traceback):
+                    self.name += '-closed'
+
+            p = Person('Piotr')
+
+            assert p.get_name() == 'Piotr'
+
+            with p as prn:
+                assert prn.get_name() == 'Piotr'
+
+            assert prn.get_name() == 'Piotr-closed'
+
+            
