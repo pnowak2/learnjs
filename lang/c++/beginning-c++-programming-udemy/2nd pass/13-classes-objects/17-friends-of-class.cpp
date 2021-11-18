@@ -12,7 +12,7 @@ using namespace std;
 class Person {
 
 friend class Intruder;
-friend void display_person_name(Person &p);
+friend void display_person_name(const Person &p);
 
 private:
     std::string name {""};
@@ -33,7 +33,7 @@ class Intruder {
     }
 };
 
-void display_person_name(Person &p) {
+void display_person_name(const Person &p) {
     cout << p.name << endl;
 }
 
