@@ -16,6 +16,44 @@ public:
     void display() const;
     int get_length() const;
     const char *get_str() const;
+
+    MyString &operator=(const MyString &src) {
+        cout << "operator=" << endl;
+
+        if(this == &src) {
+            return *this;
+        }
+
+        delete [] str;
+
+        str = new char[strlen(src.str + 1)];
+        strcpy(str, src.str);
+
+        return *this;
+    }
+
+    MyString &operator=(MyString &&rhs) { // not const as we will modify it, && means right hand side, temporary object
+        if(this == &rhs) {
+            return *this;
+        }
+
+        delete [] str;
+
+        str = rhs.str;
+        rhs.str = nullptr;
+
+        return *this;
+    }
+
+    MyString &operator=(const char* src) {
+        delete [] str;
+
+        str = new char[strlen(src + 1)];
+        strcpy(str, src);
+
+        return *this;
+    }
+
 };
 
 MyString::MyString(): str {nullptr} {

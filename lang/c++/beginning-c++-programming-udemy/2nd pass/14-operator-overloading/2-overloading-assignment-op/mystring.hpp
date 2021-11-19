@@ -16,6 +16,31 @@ public:
     void display() const;
     int get_length() const;
     const char *get_str() const;
+
+    MyString &operator=(const MyString &src) {
+        cout << "operator=" << endl;
+
+        if(this == &src) {
+            return *this;
+        }
+
+        delete [] str;
+
+        str = new char[strlen(src.str + 1)];
+        strcpy(str, src.str);
+
+        return *this;
+    }
+
+    MyString &operator=(const char* src) {
+        delete [] str;
+
+        str = new char[strlen(src + 1)];
+        strcpy(str, src);
+
+        return *this;
+    }
+
 };
 
 MyString::MyString(): str {nullptr} {

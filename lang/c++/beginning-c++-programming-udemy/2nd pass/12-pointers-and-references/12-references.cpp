@@ -15,10 +15,10 @@ void simpleReferenceDeclaration() {
     num = 17;
 
     cout << ref << endl;
+    cout << &ref << endl;
     cout << &ptr << endl;
     cout << ptr << endl;
     cout << *ptr << endl;
-    // cout << *ptr << endl;
 }
 
 void regularCopy() {
@@ -36,7 +36,7 @@ void aliasReference() {
     // alias for variable
     vector<string> stooges {"Larry", "Moe", "Curly"};
     for(auto &item : stooges) { // &item2 -> reference, not a copy, VERY EFFICIENT, PERFORMANT!
-        item = "boo"; // changes the copy only
+        item = "boo"; // changes originals
     }
 
     for(auto item2 : stooges) {
