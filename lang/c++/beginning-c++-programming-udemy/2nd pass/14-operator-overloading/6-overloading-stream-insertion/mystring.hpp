@@ -8,8 +8,6 @@ class MyString {
 friend MyString operator-(const MyString &obj);
 friend bool operator==(const MyString &lhs, const MyString &rhs); 
 friend MyString operator+(const MyString &lhs, const MyString &rhs); 
-friend std::ostream &operator<<(std::ostream &os, const MyString &obj);
-friend std::istream &operator>>(std::istream &is, MyString &obj);
 
 private:
     char *str;
@@ -111,21 +109,6 @@ MyString operator+(const MyString &lhs, const MyString &rhs) {
     delete [] buff;
 
     return temp;
-}
-
-std::ostream &operator<<(std::ostream &os, const MyString &obj) {
-    os << obj.str;
-    return os;
-}
-
-std::istream &operator>>(std::istream &is, MyString &obj) {
-    char *buff = new char[1000];
-    is >> buff;
-    obj = MyString {buff};
-
-    delete [] buff;
-
-    return is;
 }
 
 void MyString::display() const {
