@@ -9,8 +9,6 @@ def request_api_data(query_char):
     
     return res
 
-    
-
 def pwned_api_check(password):
     shapass = hashlib.sha1( password.encode('utf-8') ).hexdigest().upper()
     return shapass
