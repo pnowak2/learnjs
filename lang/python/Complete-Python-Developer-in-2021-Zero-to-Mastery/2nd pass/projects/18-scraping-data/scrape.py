@@ -23,4 +23,8 @@ def create_custom_hn(links, subtext, rank=100):
         reverse=True
     )
 
-pprint.pprint(create_custom_hn(links, subtext, 200))
+results = create_custom_hn(links, subtext, 200)
+with open('results.txt', 'w') as file:
+    file.write(str(results))
+
+pprint.pprint(results)
