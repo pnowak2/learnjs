@@ -10,8 +10,8 @@ private:
     int c {0};
 };
 
-class Derived : public Base {
-  // a is public
+class Derived : protected Base {
+  // a is protectede
   // b is protected
   // c is inaccessible
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     base.display();
 
     Derived d;
-    d.a = 100;
+    // d.a = 100;
     // d.b = 200;
     // d.c = 300;
 
