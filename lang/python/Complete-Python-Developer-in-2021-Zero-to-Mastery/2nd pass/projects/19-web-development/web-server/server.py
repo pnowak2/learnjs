@@ -8,6 +8,7 @@ def hello_world():
     <code>
       <pre>
       setup venv to web folder
+      set FLASK_ENV=development
       set FLASK_APP=server.py
       flask run
       </pre>
