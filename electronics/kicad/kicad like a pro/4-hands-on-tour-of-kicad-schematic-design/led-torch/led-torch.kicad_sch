@@ -1,5 +1,21 @@
-(kicad_sch (version 20210621) (generator eeschema)
+(kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid cde83d84-fda5-4e66-b462-cf90664266f2)
+
   (paper "A4")
-  (lib_symbols)
-  (symbol_instances)
+
+  (title_block
+    (title "LED Torch")
+    (date "2021-11-28")
+    (company "Digit Lab")
+    (comment 1 "Piotr Nowak")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
 )
