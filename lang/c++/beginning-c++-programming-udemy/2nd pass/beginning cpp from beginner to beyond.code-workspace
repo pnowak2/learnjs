@@ -15,7 +15,9 @@
 			"unordered_map": "cpp",
 			"vector": "cpp",
 			"ostream": "cpp",
-			"sstream": "cpp"
+			"sstream": "cpp",
+			"array": "cpp",
+			"tuple": "cpp"
 		}
 	}
 }
