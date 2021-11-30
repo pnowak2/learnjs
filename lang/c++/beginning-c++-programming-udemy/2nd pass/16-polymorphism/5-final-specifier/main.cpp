@@ -11,12 +11,14 @@ public:
     }
 };
 
-class Derived: public Base {
+class Derived final: public Base {
 public:
-    virtual void hello() const override {
+    virtual void hello() const override final {
         cout << "Hello, Derived" << endl;
     }
 };
+
+// class Gamma : public Derived { }; // error, cannot inherit from final class
 
 int main(int argc, char *argv[]) {
     Base *p1 = new Base();

@@ -6,34 +6,17 @@ app = Flask(__name__)
 def home():
     return render_template('./index.html')
 
-@app.route('/index')
-def home_index():
-    return render_template('./index.html')
+@app.route('/<string:page_name>')
+def page(page_name):
+    return render_template(f'./{page_name}.html')
+
+@app.route('/submit-form', methods=['POST', 'GET'])
+def submit_form():
+    return 'form submitted'
 
 @app.route('/<username>/<int:id>')
 def user(username=None, id=None):
     return render_template('./index.html', name=username, id=id)
-
-@app.route('/about')
-def about():
-    return render_template('./about.html')
-
-@app.route('/contact')
-def contact():
-    return render_template('./contact.html')
-
-@app.route('/services')
-def services():
-    return render_template('./services.html')
-
-@app.route('/components')
-def components():
-    return render_template('./components.html')
-
-@app.route('/project')
-def project():
-    return render_template('./project.html')
-
 
 @app.route('/env')
 def environment():
@@ -46,12 +29,6 @@ def environment():
       flask run
       </pre>
     </code>
-    '''
-
-@app.route('/blog')
-def blog():
-    return '''
-    Blog
     '''
 
 @app.route('/blog/2020/dogs')
