@@ -325,7 +325,7 @@
     (uuid c2a1ad29-a82f-40a6-b999-3394087b6db7)
   )
 
-  (label "bat_pos" (at 127 115.57 270)
+  (label "bat_pos" (at 107.95 112.395 270)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 2c84319b-e173-4cbe-b120-51d168f5725d)
   )
@@ -333,7 +333,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 7026c898-ec44-49d9-ab25-5ac827738017)
   )
-  (label "LED_anode" (at 107.95 106.68 180)
+  (label "LED_anode" (at 107.95 101.6 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 7da6ff99-ab32-4513-b7a1-ea2e1b1e63a0)
   )
