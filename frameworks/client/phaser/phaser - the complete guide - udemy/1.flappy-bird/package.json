@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "phaser": "^3.24.1",
+    "phaser": "3.24.1",
     "webpack-merge": "^5.1.4"
   },
   "devDependencies": {
