@@ -24,7 +24,7 @@ let pipes = null;
 let pipeHorizontalDistance = 0;
 
 const pipeVerticalDistanceRange = [150, 250];
-const pipeHorizontalDistanceRange = [500, 600];
+const pipeHorizontalDistanceRange = [400, 500];
 
 const initialBirdPosition = {
   x: config.width / 10,
