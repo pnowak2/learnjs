@@ -24,6 +24,7 @@ class PlayScene extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('bird', 'assets/bird.png');
         this.load.image('pipe', 'assets/pipe.png');
+        this.load.svg('logo', 'assets/eui-logo.svg', { scale: 1.5 });
     }
 
     create() {
@@ -42,6 +43,8 @@ class PlayScene extends Phaser.Scene {
 
     createBg() {
         this.add.image(0, 0, 'sky').setOrigin(0);
+        const logo = this.physics.add.sprite(400, 300, 'logo').setOrigin(0.5, 0.5);
+        logo.body.velocity.x = -60;
     }
 
     createBird() {
@@ -148,8 +151,8 @@ class PlayScene extends Phaser.Scene {
     createScore() {
         this.score = 0;
         const bestScore = localStorage.getItem('bestScore') || 0;
-        this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, { fontSize: '32px', fill: '#000' });
-        this.add.text(16, 48, `Best score: ${bestScore}`, { fontSize: '16px', fill: '#000' });
+        this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, { fontSize: '32px', fill: '#fff' });
+        this.add.text(16, 48, `Best score: ${bestScore}`, { fontSize: '16px', fill: '#fff' });
     }
 
     saveBestScore() {
