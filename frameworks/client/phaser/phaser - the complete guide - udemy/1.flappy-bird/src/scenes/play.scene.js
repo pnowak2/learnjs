@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-class PlayScene extends Phaser.Scene {
+export default class PlayScene extends Phaser.Scene {
     constructor(config) {
         super('PlayScene');
 
@@ -180,5 +180,3 @@ class PlayScene extends Phaser.Scene {
     }
 
 }
-
-export default PlayScene;
