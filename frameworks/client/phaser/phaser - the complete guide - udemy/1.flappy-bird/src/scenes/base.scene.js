@@ -11,7 +11,8 @@ export default class BaseScene extends Phaser.Scene {
 
         this.fontOptions = {
             fontSize: `${this.fontSize}px`,
-            fill: '#cd00ff',
+            fill: '#fff',
+            fontFamily: 'Arial',
         }
     }
 
@@ -19,14 +20,19 @@ export default class BaseScene extends Phaser.Scene {
         this.add.image(0, 0, 'sky').setOrigin(0);
     }
 
-    createMenu(menu) {
+    createMenu(menu, setupMenuEvents) {
         let lastMenuPositionY = 0;
 
         menu.forEach(item => {
             const menuPosition = [this.screenCenter[0], this.screenCenter[1] + lastMenuPositionY];
-            this.add.text(...menuPosition, item.text, this.fontOptions).setOrigin(0.5, 1);
+            item.textGO = this.add
+                .text(...menuPosition, item.text, this.fontOptions)
+                .setInteractive()
+                .setOrigin(0.5, 1);
 
             lastMenuPositionY += this.lineHeight;
+
+            setupMenuEvents(item);
         });
     }
 }
