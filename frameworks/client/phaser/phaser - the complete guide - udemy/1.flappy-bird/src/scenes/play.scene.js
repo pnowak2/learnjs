@@ -1,10 +1,9 @@
-import Phaser from 'phaser';
+import BaseScene from "./base.scene";
 
-export default class PlayScene extends Phaser.Scene {
+export default class PlayScene extends BaseScene {
     constructor(config) {
-        super('PlayScene');
+        super('PlayScene', config);
 
-        this.config = config;
         this.bird = null;
         this.pipes = null;
 
@@ -27,7 +26,8 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     create() {
-        this.createBg();
+        super.create();
+
         this.createBird();
         this.createPipes();
         this.createColliders();
