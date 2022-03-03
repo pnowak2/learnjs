@@ -2,7 +2,7 @@ import BaseScene from "./base.scene";
 
 export default class PlayScene extends BaseScene {
     constructor(config) {
-        super('PlayScene', config);
+        super('PlayScene', {...config, canGoBack: true });
 
         this.bird = null;
         this.pipes = null;

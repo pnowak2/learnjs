@@ -10,6 +10,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image('bird', 'assets/bird.png');
         this.load.image('pipe', 'assets/pipe.png');
         this.load.image('pause', 'assets/pause.png');
+        this.load.image('back', 'assets/back.png')
     }
 
     create() {

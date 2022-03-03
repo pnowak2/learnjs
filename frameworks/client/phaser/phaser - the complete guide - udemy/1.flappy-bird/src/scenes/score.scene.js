@@ -2,7 +2,7 @@ import BaseScene from './base.scene';
 
 export default class ScoreScene extends BaseScene {
     constructor(config) {
-        super('ScoreScene', config);
+        super('ScoreScene', {...config, canGoBack: true });
     }
 
     create() {
@@ -11,7 +11,11 @@ export default class ScoreScene extends BaseScene {
         const bestScore = localStorage.getItem('bestScore');
 
         this.add
-            .text(this.config.width / 2, this.config.height / 2, `Best score: ${bestScore}`, { fontSize: 32 })
+            .text(
+                ...this.screenCenter,
+                `Best score: ${bestScore}`,
+                this.fontOptions
+            )
             .setOrigin(0.5, 0.5);
     }
 }
