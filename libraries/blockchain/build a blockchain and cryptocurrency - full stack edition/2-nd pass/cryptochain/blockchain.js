@@ -13,6 +13,15 @@ class Blockchain {
         this.chain.push(newBlock);
     }
 
+    replaceChain(newChain) {
+        const isNewChainValid = Blockchain.isValidChain(newChain);
+        const isNewChainLonger = newChain.length > this.chain.length;
+
+        if (isNewChainLonger && isNewChainValid) {
+            this.chain = newChain;
+        }
+    }
+
     static isValidChain(chain) {
         if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis())) {
             return false;
