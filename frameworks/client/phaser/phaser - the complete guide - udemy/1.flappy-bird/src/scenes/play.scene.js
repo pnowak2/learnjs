@@ -34,6 +34,7 @@ export default class PlayScene extends BaseScene {
         this.createScore();
         this.createPause();
         this.handleInputs();
+        this.listenToEvents();
     }
 
     update() {
@@ -96,12 +97,21 @@ export default class PlayScene extends BaseScene {
         pauseButton.on('pointerdown', () => {
             this.physics.pause();
             this.scene.pause();
+
+            this.scene.launch('PauseScene');
         });
     }
 
     handleInputs() {
         this.input.on('pointerdown', this.flap, this);
         this.input.keyboard.on('keydown-SPACE', this.flap, this);
+    }
+
+    listenToEvents() {
+        this.events.on('resume', () => {
+            this.scene.resume();
+            this.physics.resume();
+        });
     }
 
     placePipe(uPipe, lPipe) {
