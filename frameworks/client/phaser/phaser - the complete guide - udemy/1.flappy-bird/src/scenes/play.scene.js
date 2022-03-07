@@ -2,10 +2,11 @@ import BaseScene from "./base.scene";
 
 export default class PlayScene extends BaseScene {
     constructor(config) {
-        super('PlayScene', {...config, canGoBack: true });
+        super('PlayScene', { ...config, canGoBack: true });
 
         this.bird = null;
         this.pipes = null;
+        this.isPaused = false;
 
         this.pipeHorizontalDistance = 0;
         this.pipeVerticalDistanceRange = [150, 250];
@@ -88,6 +89,7 @@ export default class PlayScene extends BaseScene {
     }
 
     createPause() {
+        this.isPaused = false;
         const pauseButton = this.add
             .image(this.config.width - 10, this.config.height - 10, 'pause')
             .setInteractive()
@@ -95,6 +97,7 @@ export default class PlayScene extends BaseScene {
             .setOrigin(1);
 
         pauseButton.on('pointerdown', () => {
+            this.isPaused = true;
             this.physics.pause();
             this.scene.pause();
 
@@ -108,17 +111,33 @@ export default class PlayScene extends BaseScene {
     }
 
     listenToEvents() {
-        this.events.on('resume', () => {
+        if (this.pauseEvent) { return; }
+
+        this.pauseEvent = this.events.on('resume', () => {
             this.initialTime = 3;
             this.countDownText = this.add.text(...this.screenCenter, 'Fly in: ' + this.initialTime, this.fontOptions).setOrigin(0.5);
 
             this.timedEvent = this.time.addEvent({
                 delay: 1000,
-                callback: () => { console.log(this.initialTime-- )},
+                callback: this.countDown,
                 callbackScope: this,
                 loop: true
             })
         });
+    }
+
+    countDown() {
+        this.initialTime--;
+        this.countDownText.setText('Fly in: ' + this.initialTime);
+
+        if (this.initialTime <= 0) {
+            this.isPaused = false;
+            this.countDownText.setText('');
+            this.physics.resume();
+            this.scene.resume();
+
+            this.timedEvent.remove();
+        }
     }
 
     placePipe(uPipe, lPipe) {
@@ -157,6 +176,8 @@ export default class PlayScene extends BaseScene {
     }
 
     flap() {
+        if (this.isPaused) { return; }
+
         this.bird.body.velocity.y -= this.flapVelocity;
     }
 
