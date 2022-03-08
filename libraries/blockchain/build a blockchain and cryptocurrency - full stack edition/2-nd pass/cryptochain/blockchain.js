@@ -17,9 +17,19 @@ class Blockchain {
         const isNewChainValid = Blockchain.isValidChain(newChain);
         const isNewChainLonger = newChain.length > this.chain.length;
 
-        if (isNewChainLonger && isNewChainValid) {
-            this.chain = newChain;
+        if (!isNewChainLonger) {
+            console.error('New chain has to be longer than the current one');
+            return;
         }
+
+        if (!isNewChainValid) {
+            console.error('New chain is invalid');
+            return;
+        }
+
+        this.chain = newChain;
+
+        console.log('The chain has been replaced')
     }
 
     static isValidChain(chain) {
