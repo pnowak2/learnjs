@@ -53,6 +53,15 @@ export default class PlayScene extends BaseScene {
         this.createPause();
         this.handleInputs();
         this.listenToEvents();
+
+        this.anims.create({
+            key: 'fly',
+            frames: this.anims.generateFrameNumbers('bird', { start: 9, end: 15 }),
+            frameRate: 24,
+            repeat: -1
+        });
+
+        this.bird.play('fly');
     }
 
     update() {
@@ -69,7 +78,10 @@ export default class PlayScene extends BaseScene {
             this.config.startPosition.x,
             this.config.startPosition.y,
             'bird'
-        ).setOrigin(0);
+        )
+            .setFlipX(true)
+            .setScale(2)
+            .setOrigin(0);
 
         this.bird.body.gravity.y = 600;
         this.bird.setCollideWorldBounds(true);
@@ -195,11 +207,11 @@ export default class PlayScene extends BaseScene {
     }
 
     increaseDifficulty() {
-        if(this.score === 1) {
+        if (this.score === 1) {
             this.currentDifficulty = 'normal';
         }
 
-        if(this.score === 3) {
+        if (this.score === 3) {
             this.currentDifficulty = 'hard';
         }
     }
