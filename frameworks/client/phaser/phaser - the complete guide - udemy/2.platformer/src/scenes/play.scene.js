@@ -2,6 +2,10 @@ import Phaser from 'phaser'
 
 export default class PlayScene extends Phaser.Scene {
 
+    constructor() {
+        super('PlayScene');
+    }
+
     preload() {
         this.load.image('sky', 'assets/sky.png');
     }
