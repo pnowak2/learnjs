@@ -1,5 +1,21 @@
 (kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid 5713d49a-076e-40f2-b213-c06edac7ac1a)
+
   (paper "A4")
-  (lib_symbols)
-  (symbol_instances)
+
+  (title_block
+    (date "2022-09-20")
+    (rev "LED Torch")
+    (comment 1 "Projectr 1 of Kical Like a Pro 3e")
+    (comment 2 "Piotr Nowak")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
 )
