@@ -99,7 +99,7 @@
         "max_error": 0.005,
         "min_clearance": 0.0,
         "min_copper_edge_clearance": 0.0,
-        "min_hole_clearance": 0.0,
+        "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
         "min_microvia_diameter": 0.19999999999999998,
         "min_microvia_drill": 0.09999999999999999,
@@ -333,7 +333,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "led-torch2.kicad_pro",
+    "filename": "LED torch.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -412,7 +412,7 @@
   },
   "sheets": [
     [
-      "7dc880bc-e7eb-4cce-8d8c-0b65a9dd788e",
+      "5713d49a-076e-40f2-b213-c06edac7ac1a",
       ""
     ]
   ],
