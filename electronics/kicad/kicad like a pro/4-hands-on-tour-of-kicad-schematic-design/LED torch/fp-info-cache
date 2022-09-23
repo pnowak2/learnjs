@@ -1,4 +1,4 @@
-20314873301157352
+20323433135982445
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -7986,6 +7986,13 @@ connector barrel jack
 0
 3
 3
+Connector_Card
+CF-Card_3M_N7E50-7516PK-20-WF
+Compact Flash Card connector (https://multimedia.3m.com/mws/media/22365O/3mtm-cf-card-header-compactflashtm-type-i-sm-ts0662.pdf)
+connector cf
+0
+54
+50
 Connector_Card
 CF-Card_3M_N7E50-A516xx-30
 Compact Flash Card connector, polarization inverse (https://multimedia.3m.com/mws/media/22424O/3mtm-cf-card-header-type-i-low-profile-surface-mount-ts0747.pdf)
@@ -50421,6 +50428,20 @@ Diode SOD923
 2
 2
 Diode_SMD
+D_SOT-23_ANK
+SOT-23, Single Diode
+SOT-23
+0
+3
+2
+Diode_SMD
+D_SOT-23_NKA
+SOT-23, Single Diode
+SOT-23
+0
+3
+2
+Diode_SMD
 D_TUMD2
 ROHM - TUMD2
 TUMD2
@@ -52802,6 +52823,13 @@ heatsink
 2
 Heatsink
 Heatsink_AAVID_TV5G_TO220_Horizontal
+Heatsink TV5G TO-220 Horizontal, https://www.shopaavid.com/Product/TV-5G
+Heatsink TV5G TO-220 Horizontal 
+0
+0
+0
+Heatsink
+Heatsink_Aavid-TV5G_TO220_Horizontal
 Heatsink TV5G TO-220 Horizontal, https://www.shopaavid.com/Product/TV-5G
 Heatsink TV5G TO-220 Horizontal 
 0
@@ -72639,6 +72667,20 @@ SOT-143 Reverse Handsoldering
 4
 4
 Package_TO_SOT_SMD
+SOT-143R_Reverse
+SOT-143R Reverse
+SOT-143R Reverse
+0
+4
+4
+Package_TO_SOT_SMD
+SOT-143R_Reverse_Handsoldering
+SOT-143R Reverse Handsoldering
+SOT-143 Reverse Handsoldering
+0
+4
+4
+Package_TO_SOT_SMD
 SOT-143_Handsoldering
 SOT-143 Handsoldering https://www.nxp.com/docs/en/package-information/SOT143B.pdf
 SOT-143 Handsoldering
@@ -76258,7 +76300,7 @@ Bluetooth Module
 30
 30
 RF_Module
-BM78SPPS5xC2
+BM78SPPS5XC2
 Bluetooth Dual-mode module with integral chip antenna (http://ww1.microchip.com/downloads/en/DeviceDoc/60001380C.pdf)
 Bluetooth BR/EDR BLE
 0
