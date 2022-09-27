@@ -1,0 +1,7 @@
+https://kicad.github.io/
+ultralibrarian.com
+https://octopart.com/
+
+whole bulk of library symbols
+https://github.com/Digi-Key/digikey-kicad-library
+https://github.com/sparkfun/SparkFun-KiCad-Libraries

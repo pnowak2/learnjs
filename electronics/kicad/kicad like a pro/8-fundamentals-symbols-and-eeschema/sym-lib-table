@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name "Amplifier_Buffer")(type "Legacy")(uri "${KIPRJMOD}/Libraries/Amplifier_Buffer/Amplifier_Buffer.lib")(options "")(descr ""))
+  (lib (name "dk_Humidity-Moisture-Sensors")(type "Legacy")(uri "${KIPRJMOD}/Libraries/digikey-kicad-library-master/digikey-symbols/dk_Humidity-Moisture-Sensors.lib")(options "")(descr ""))
+  (lib (name "Peters_Library")(type "KiCad")(uri "${KIPRJMOD}/Libraries/peters_library/Peters_Library.kicad_sym")(options "")(descr ""))
+)
