@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "Build with g++",
+			"label": "Build with GCC",
 			"command": "/usr/local/bin/g++-12",
 			"args": [
 				"-g",
