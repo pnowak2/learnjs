@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>D:\Users\nowapio\Documents\Workspace\other\learnjs\electronics\kicad\kicad like a pro\8-fundamentals-symbols-and-eeschema\8-fundamentals-symbols-and-eeschema.kicad_sch</source>
+    <date>9/27/2022 10:52:32 AM</date>
+    <tool>Eeschema (6.0.7)</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>8-fundamentals-symbols-and-eeschema.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="J1">
+      <value>6P6C_Shielded</value>
+      <footprint>Connector_Audio:Jack_XLR-6.35mm_Neutrik_NCJ6FI-H-0_Horizontal</footprint>
+      <fields>
+        <field name="Custom Field">frergeger</field>
+      </fields>
+      <libsource lib="Connector" part="6P6C_Shielded" description="RJ connector, 6P6C (6 positions 6 connected), RJ12/RJ18/RJ25, Shielded"/>
+      <property name="Custom Field" value="frergeger"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="8-fundamentals-symbols-and-eeschema.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cce4fcb6-5758-488f-94a4-ac5a136900a9</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>ATmega328PB-A</value>
+      <footprint>Package_QFP:TQFP-32_7x7mm_P0.8mm</footprint>
+      <datasheet>http://ww1.microchip.com/downloads/en/DeviceDoc/40001906C.pdf</datasheet>
+      <libsource lib="MCU_Microchip_ATmega" part="ATmega328PB-A" description="20MHz, 32kB Flash, 2kB SRAM, 1kB EEPROM, TQFP-32"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="8-fundamentals-symbols-and-eeschema.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f30071c0-1232-482f-8694-7ee43e366144</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="6P6C_Shielded">
+      <description>RJ connector, 6P6C (6 positions 6 connected), RJ12/RJ18/RJ25, Shielded</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>6P6C*</fp>
+        <fp>RJ12*</fp>
+        <fp>RJ18*</fp>
+        <fp>RJ25*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">6P6C_Shielded</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+        <pin num="3" name="" type="passive"/>
+        <pin num="4" name="" type="passive"/>
+        <pin num="5" name="" type="passive"/>
+        <pin num="6" name="" type="passive"/>
+        <pin num="SH" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MCU_Microchip_ATmega" part="ATmega328PB-A">
+      <description>20MHz, 32kB Flash, 2kB SRAM, 1kB EEPROM, TQFP-32</description>
+      <docs>http://ww1.microchip.com/downloads/en/DeviceDoc/40001906C.pdf</docs>
+      <footprints>
+        <fp>TQFP*7x7mm*P0.8mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ATmega328PB-A</field>
+        <field name="Footprint">Package_QFP:TQFP-32_7x7mm_P0.8mm</field>
+        <field name="Datasheet">http://ww1.microchip.com/downloads/en/DeviceDoc/40001906C.pdf</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PD3" type="bidirectional"/>
+        <pin num="2" name="PD4" type="bidirectional"/>
+        <pin num="3" name="PE0" type="bidirectional"/>
+        <pin num="4" name="VCC" type="power_in"/>
+        <pin num="5" name="GND" type="power_in"/>
+        <pin num="6" name="PE1" type="bidirectional"/>
+        <pin num="7" name="XTAL1/PB6" type="bidirectional"/>
+        <pin num="8" name="XTAL2/PB7" type="bidirectional"/>
+        <pin num="9" name="PD5" type="bidirectional"/>
+        <pin num="10" name="PD6" type="bidirectional"/>
+        <pin num="11" name="PD7" type="bidirectional"/>
+        <pin num="12" name="PB0" type="bidirectional"/>
+        <pin num="13" name="PB1" type="bidirectional"/>
+        <pin num="14" name="PB2" type="bidirectional"/>
+        <pin num="15" name="PB3" type="bidirectional"/>
+        <pin num="16" name="PB4" type="bidirectional"/>
+        <pin num="17" name="PB5" type="bidirectional"/>
+        <pin num="18" name="AVCC" type="power_in"/>
+        <pin num="19" name="PE2" type="bidirectional"/>
+        <pin num="20" name="AREF" type="passive"/>
+        <pin num="21" name="GND" type="passive"/>
+        <pin num="22" name="PE3" type="bidirectional"/>
+        <pin num="23" name="PC0" type="bidirectional"/>
+        <pin num="24" name="PC1" type="bidirectional"/>
+        <pin num="25" name="PC2" type="bidirectional"/>
+        <pin num="26" name="PC3" type="bidirectional"/>
+        <pin num="27" name="PC4" type="bidirectional"/>
+        <pin num="28" name="PC5" type="bidirectional"/>
+        <pin num="29" name="~{RESET}/PC6" type="bidirectional"/>
+        <pin num="30" name="PD0" type="bidirectional"/>
+        <pin num="31" name="PD1" type="bidirectional"/>
+        <pin num="32" name="PD2" type="bidirectional"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>C:\Program Files\KiCad\6.0\share\kicad\symbols\/Connector.kicad_sym</uri>
+    </library>
+    <library logical="MCU_Microchip_ATmega">
+      <uri>C:\Program Files\KiCad\6.0\share\kicad\symbols\/MCU_Microchip_ATmega.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(U1-Pad21)">
+      <node ref="U1" pin="21" pinfunction="GND" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="2" name="unconnected-(J1-Pad1)">
+      <node ref="J1" pin="1" pintype="passive"/>
+    </net>
+    <net code="3" name="unconnected-(J1-Pad2)">
+      <node ref="J1" pin="2" pintype="passive"/>
+    </net>
+    <net code="4" name="unconnected-(J1-Pad3)">
+      <node ref="J1" pin="3" pintype="passive"/>
+    </net>
+    <net code="5" name="unconnected-(J1-Pad4)">
+      <node ref="J1" pin="4" pintype="passive"/>
+    </net>
+    <net code="6" name="unconnected-(J1-Pad5)">
+      <node ref="J1" pin="5" pintype="passive"/>
+    </net>
+    <net code="7" name="unconnected-(J1-Pad6)">
+      <node ref="J1" pin="6" pintype="passive"/>
+    </net>
+    <net code="8" name="unconnected-(J1-PadSH)">
+      <node ref="J1" pin="SH" pintype="passive"/>
+    </net>
+    <net code="9" name="unconnected-(U1-Pad1)">
+      <node ref="U1" pin="1" pinfunction="PD3" pintype="bidirectional"/>
+    </net>
+    <net code="10" name="unconnected-(U1-Pad2)">
+      <node ref="U1" pin="2" pinfunction="PD4" pintype="bidirectional"/>
+    </net>
+    <net code="11" name="unconnected-(U1-Pad3)">
+      <node ref="U1" pin="3" pinfunction="PE0" pintype="bidirectional"/>
+    </net>
+    <net code="12" name="unconnected-(U1-Pad4)">
+      <node ref="U1" pin="4" pinfunction="VCC" pintype="power_in"/>
+    </net>
+    <net code="13" name="unconnected-(U1-Pad6)">
+      <node ref="U1" pin="6" pinfunction="PE1" pintype="bidirectional"/>
+    </net>
+    <net code="14" name="unconnected-(U1-Pad7)">
+      <node ref="U1" pin="7" pinfunction="XTAL1/PB6" pintype="bidirectional"/>
+    </net>
+    <net code="15" name="unconnected-(U1-Pad8)">
+      <node ref="U1" pin="8" pinfunction="XTAL2/PB7" pintype="bidirectional"/>
+    </net>
+    <net code="16" name="unconnected-(U1-Pad9)">
+      <node ref="U1" pin="9" pinfunction="PD5" pintype="bidirectional"/>
+    </net>
+    <net code="17" name="unconnected-(U1-Pad10)">
+      <node ref="U1" pin="10" pinfunction="PD6" pintype="bidirectional"/>
+    </net>
+    <net code="18" name="unconnected-(U1-Pad11)">
+      <node ref="U1" pin="11" pinfunction="PD7" pintype="bidirectional"/>
+    </net>
+    <net code="19" name="unconnected-(U1-Pad12)">
+      <node ref="U1" pin="12" pinfunction="PB0" pintype="bidirectional"/>
+    </net>
+    <net code="20" name="unconnected-(U1-Pad13)">
+      <node ref="U1" pin="13" pinfunction="PB1" pintype="bidirectional"/>
+    </net>
+    <net code="21" name="unconnected-(U1-Pad14)">
+      <node ref="U1" pin="14" pinfunction="PB2" pintype="bidirectional"/>
+    </net>
+    <net code="22" name="unconnected-(U1-Pad15)">
+      <node ref="U1" pin="15" pinfunction="PB3" pintype="bidirectional"/>
+    </net>
+    <net code="23" name="unconnected-(U1-Pad16)">
+      <node ref="U1" pin="16" pinfunction="PB4" pintype="bidirectional"/>
+    </net>
+    <net code="24" name="unconnected-(U1-Pad17)">
+      <node ref="U1" pin="17" pinfunction="PB5" pintype="bidirectional"/>
+    </net>
+    <net code="25" name="unconnected-(U1-Pad18)">
+      <node ref="U1" pin="18" pinfunction="AVCC" pintype="power_in"/>
+    </net>
+    <net code="26" name="unconnected-(U1-Pad19)">
+      <node ref="U1" pin="19" pinfunction="PE2" pintype="bidirectional"/>
+    </net>
+    <net code="27" name="unconnected-(U1-Pad20)">
+      <node ref="U1" pin="20" pinfunction="AREF" pintype="passive"/>
+    </net>
+    <net code="28" name="unconnected-(U1-Pad22)">
+      <node ref="U1" pin="22" pinfunction="PE3" pintype="bidirectional"/>
+    </net>
+    <net code="29" name="unconnected-(U1-Pad23)">
+      <node ref="U1" pin="23" pinfunction="PC0" pintype="bidirectional"/>
+    </net>
+    <net code="30" name="unconnected-(U1-Pad24)">
+      <node ref="U1" pin="24" pinfunction="PC1" pintype="bidirectional"/>
+    </net>
+    <net code="31" name="unconnected-(U1-Pad25)">
+      <node ref="U1" pin="25" pinfunction="PC2" pintype="bidirectional"/>
+    </net>
+    <net code="32" name="unconnected-(U1-Pad26)">
+      <node ref="U1" pin="26" pinfunction="PC3" pintype="bidirectional"/>
+    </net>
+    <net code="33" name="unconnected-(U1-Pad27)">
+      <node ref="U1" pin="27" pinfunction="PC4" pintype="bidirectional"/>
+    </net>
+    <net code="34" name="unconnected-(U1-Pad28)">
+      <node ref="U1" pin="28" pinfunction="PC5" pintype="bidirectional"/>
+    </net>
+    <net code="35" name="unconnected-(U1-Pad29)">
+      <node ref="U1" pin="29" pinfunction="~{RESET}/PC6" pintype="bidirectional"/>
+    </net>
+    <net code="36" name="unconnected-(U1-Pad30)">
+      <node ref="U1" pin="30" pinfunction="PD0" pintype="bidirectional"/>
+    </net>
+    <net code="37" name="unconnected-(U1-Pad31)">
+      <node ref="U1" pin="31" pinfunction="PD1" pintype="bidirectional"/>
+    </net>
+    <net code="38" name="unconnected-(U1-Pad32)">
+      <node ref="U1" pin="32" pinfunction="PD2" pintype="bidirectional"/>
+    </net>
+  </nets>
+</export>

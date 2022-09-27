@@ -1,0 +1,8 @@
+"Source:","D:\Users\nowapio\Documents\Workspace\other\learnjs\electronics\kicad\kicad like a pro\8-fundamentals-symbols-and-eeschema\8-fundamentals-symbols-and-eeschema.kicad_sch"
+"Date:","9/27/2022 10:52:32 AM"
+"Tool:","Eeschema (6.0.7)"
+"Generator:","C:\Program Files\KiCad\6.0\bin\scripting\plugins/bom_csv_grouped_by_value_with_fp.py"
+"Component Count:","2"
+"Ref","Qnty","Value","Cmp name","Footprint","Description","Vendor"
+"J1, ","1","6P6C_Shielded","6P6C_Shielded","Connector_Audio:Jack_XLR-6.35mm_Neutrik_NCJ6FI-H-0_Horizontal","RJ connector, 6P6C (6 positions 6 connected), RJ12/RJ18/RJ25, Shielded",""
+"U1, ","1","ATmega328PB-A","ATmega328PB-A","Package_QFP:TQFP-32_7x7mm_P0.8mm","20MHz, 32kB Flash, 2kB SRAM, 1kB EEPROM, TQFP-32",""
