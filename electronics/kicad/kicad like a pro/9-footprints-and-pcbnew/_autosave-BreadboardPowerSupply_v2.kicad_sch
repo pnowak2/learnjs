@@ -1384,7 +1384,7 @@
     (property "Reference" "C1" (id 0) (at 116.0272 89.0016 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "CP" (id 1) (at 116.0272 91.313 0)
+    (property "Value" "CP." (id 1) (at 116.0272 91.313 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" (id 2) (at 113.9952 93.98 0)
@@ -1428,7 +1428,7 @@
       (reference "#FLG0102") (unit 1) (value "PWR_FLAG") (footprint "")
     )
     (path "/00000000-0000-0000-0000-00005b9f5330"
-      (reference "C1") (unit 1) (value "CP") (footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm")
+      (reference "C1") (unit 1) (value "CP.") (footprint "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm")
     )
     (path "/00000000-0000-0000-0000-00005b9f55af"
       (reference "C2") (unit 1) (value "CP") (footprint "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm")
