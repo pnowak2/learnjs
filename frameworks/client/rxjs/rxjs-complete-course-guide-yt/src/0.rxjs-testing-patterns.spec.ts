@@ -1,8 +1,8 @@
 import { from, of, lastValueFrom } from 'rxjs';
 import { map, toArray } from 'rxjs/operators';
 
-describe('Name of the group', () => {
-  it('should behave...', async () => {
+describe('ECL looks for rxjs testing patterns', () => {
+  it('should assert last emitted value', async () => {
     const stream$ = from([1, 2, 3]).pipe(
       map((n) => n * 2)
     );
@@ -11,7 +11,17 @@ describe('Name of the group', () => {
       .resolves.toEqual(6);
   });
 
-  it('should behave...', (done) => {
+  it('should assert all emitted values', () => {
+    const stream$ = from([1, 2, 3]).pipe(
+      map((n) => n * 2)
+    );
+
+    stream$.pipe(toArray()).subscribe(result => {
+      expect(result).toEqual([2, 4, 6 ]);
+    });
+  });
+
+  it('should use classic jest done async pattern', (done) => {
     const stream$ = of(6).pipe(
       map((n) => n * 2)
     );
@@ -24,13 +34,4 @@ describe('Name of the group', () => {
     });
   });
 
-  it('should behave...', () => {
-    const stream$ = from([1, 2, 3]).pipe(
-      map((n) => n * 2)
-    );
-
-    stream$.pipe(toArray()).subscribe(result => {
-      expect(result).toEqual([2, 4, 6 ]);
-    });
-  });
 });
