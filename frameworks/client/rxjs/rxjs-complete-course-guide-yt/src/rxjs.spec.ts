@@ -1,5 +1,5 @@
 import { from, of, lastValueFrom } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, toArray } from 'rxjs/operators';
 
 describe('Name of the group', () => {
   it('should behave...', async () => {
@@ -21,6 +21,16 @@ describe('Name of the group', () => {
         expect(val).toEqual(12);
       },
       complete: done
+    });
+  });
+
+  it('should behave...', () => {
+    const stream$ = from([1, 2, 3]).pipe(
+      map((n) => n * 2)
+    );
+
+    stream$.pipe(toArray()).subscribe(result => {
+      expect(result).toEqual([2, 4, 6 ]);
     });
   });
 });
