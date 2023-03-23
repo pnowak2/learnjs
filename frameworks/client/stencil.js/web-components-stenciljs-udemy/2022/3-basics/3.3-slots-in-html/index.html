@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <script src="tooltip.js"></script>
+    <style>
+        div {
+            border: 2px solid orange;
+        }
+    </style>
+</head>
+<body>
+    <template id="tooltip-template">
+        <slot>Default slot content</slot><span> (?)</span>
+    </template>
+
+    <p><eui-tooltip text="Web components is w3c standard">Web Components</eui-tooltip>are cool!</p>
+    <p><eui-tooltip>No text defined</eui-tooltip>tooltip</p>
+    <p><eui-tooltip></eui-tooltip>Empty tooltip body</p>
+</body>
+</html>
