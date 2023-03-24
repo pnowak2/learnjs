@@ -30,8 +30,6 @@ class EuiTooltip extends HTMLElement {
         tooltipIcon.addEventListener('mouseenter', this._showTooltip.bind(this));
         tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this));
 
-        this.shadowRoot.appendChild(tooltipIcon);
-
         this.style.position = 'relative';
     }
 
