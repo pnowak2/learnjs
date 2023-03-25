@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <script src="tooltip.js"></script>
+    <style>
+        div {
+            border: 2px solid orange;
+        }
+
+        .highlight {
+            background-color: rgb(255, 208, 0);
+            /* border-bottom: 2px solid red; */
+        }
+
+        /* eui-tooltip {
+            border: 1px solid blue;
+            padding: 0.15rem;
+        } */
+    </style>
+</head>
+
+<body>
+    <p>
+        <eui-tooltip class="important" text="Web components is w3c standard">
+            <span class="highlight">Web Components</span>
+        </eui-tooltip>
+        are cool!
+    </p>
+    <p>
+        <eui-tooltip important>No text defined</eui-tooltip>tooltip
+    </p>
+    <p>
+        <eui-tooltip></eui-tooltip>Empty tooltip body
+    </p>
+</body>
+
+</html>
