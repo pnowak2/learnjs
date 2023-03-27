@@ -2,13 +2,13 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./2nd pass",
+        "./3rd pass",
         "-p",
-        "test_*.py"
+        "*test.py"
     ],
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
     "python.testing.pytestArgs": [
-        "2nd pass"
+        "3rd pass"
     ]
 }
