@@ -23,11 +23,31 @@
 
 <body>
     <eui-modal>
+        <h1 slot="title">Custom header</h1>
         <p>Just sample content..</p>
     </eui-modal>
 
     <p>some text</p>
     <button>Confirm</button>
 </body>
+
+<script>
+    const modal = document.querySelector('eui-modal');
+
+    modal.addEventListener('confirm', () => {
+        console.log('confirmed');
+    });
+
+    modal.addEventListener('cancel', () => {
+        console.log('cancelled');
+    });
+
+    const confirmBtn = document.querySelector('button');
+    confirmBtn.addEventListener('click', () => {
+        if(!modal.isOpen) {
+            modal.open();
+        }
+    })
+</script>
 
 </html>
