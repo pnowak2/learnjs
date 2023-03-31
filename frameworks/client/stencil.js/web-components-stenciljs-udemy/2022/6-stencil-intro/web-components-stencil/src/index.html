@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
+<html dir="ltr"
+      lang="en">
 
-    <script type="module" src="/build/web-components-stencil.esm.js"></script>
-    <script nomodule src="/build/web-components-stencil.js"></script>
-  </head>
-  <body>
-    <ecl-site-drawer title="Main Menu">
-      contents
-    </ecl-site-drawer>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Stencil Component Starter</title>
+
+  <script type="module"
+          src="/build/web-components-stencil.esm.js"></script>
+  <script nomodule
+          src="/build/web-components-stencil.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .side-nav ul {
+      list-style: none;
+    }
+
+    .side-nav li {
+      margin: 1rem 0;
+    }
+
+    .side-nav a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <ecl-site-drawer title="Main Menu">
+    <nav class="side-nav">
+      <ul>
+        <li><a href="/">A link</a></li>
+        <li><a href="/">A link</a></li>
+        <li><a href="/">A link</a></li>
+      </ul>
+    </nav>
+  </ecl-site-drawer>
+</body>
+
 </html>

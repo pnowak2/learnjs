@@ -8,12 +8,6 @@ import { Component, Prop, h } from "@stencil/core";
 export class SideDrawer {
     @Prop({ reflect: true }) title: string;
 
-    constructor() {
-        setTimeout(() => {
-           this.title = 'buba';
-        }, 3000);
-    }
-
     render() {
         return (
             <aside>
