@@ -1,4 +1,6 @@
+const { genesis } = require('./block');
 const Block = require('./block');
+const { GENESIS_DATA } = require('./config');
 
 describe('Block', () => {
     const timestamp = 'a-date';
@@ -20,11 +22,15 @@ describe('Block', () => {
     });
 });
 
-// const block1 = new Block({
-//     data: 'foo-data',
-//     lastHash: 'foo-lastHash',
-//     hash: 'foo-hash',
-//     timestamp: '01/01/01',
-// });
+describe('genesis()', () => {
+    const genesisBlock = Block.genesis();
 
-// console.log('block1', block1);
+    it('returns a Block instance', () => {
+        expect(genesisBlock instanceof Block).toBe(true);
+    });
+
+    it('returns appropriate genesis properties', () => {
+        expect(genesisBlock).toEqual(GENESIS_DATA);
+    });
+    
+});
