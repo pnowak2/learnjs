@@ -32,11 +32,11 @@ function create() {
   bird = this.physics.add.sprite(config.width * 0.1, config.height / 2, 'bird').setOrigin(0);
 
   this.input.on('pointerdown', flap);
-  this.input.keyboard.on('keydown_SPACE', flap);
+  this.input.keyboard.on('keydown-SPACE', flap);
 }
 
 function update(time, delta) {
-  if(bird.y > config.height) {
+  if((bird.y + bird.height) > config.height || bird.y <= 0) {
     bird.y = config.height / 2;
     bird.body.velocity.y = 0;
   }
