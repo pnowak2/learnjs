@@ -8,7 +8,7 @@ const config = {
     default: 'arcade',
     arcade: {
       debug: true,
-      gravity: { y: 200 }
+      gravity: { y: 400 }
     }
   },
   scene: {
@@ -19,6 +19,7 @@ const config = {
 };
 
 const VELOCITY = 200;
+let flapVelocity = 300;
 let bird = null;
 
 function preload() {
@@ -42,7 +43,7 @@ function update(time, delta) {
 }
 
 function flap() {
-  bird.body.velocity.y -= VELOCITY;
+  bird.body.velocity.y -= flapVelocity;
 }
 
 new Phaser.Game(config);
