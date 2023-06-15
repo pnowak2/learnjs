@@ -36,7 +36,7 @@ function create() {
 }
 
 function update(time, delta) {
-  if((bird.y + bird.height) > config.height || bird.y <= 0) {
+  if(bird.y > config.height || (bird.y + bird.width) <= 0) {
     bird.y = config.height / 2;
     bird.body.velocity.y = 0;
   }
