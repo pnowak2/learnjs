@@ -15,6 +15,7 @@ class PlayScene extends Phaser.Scene {
     this.pipes = null;
     this.score = 0;
     this.scoreText = '';
+    this.bestScoreText = '';
   }
 
   preload() {
@@ -62,9 +63,9 @@ class PlayScene extends Phaser.Scene {
         .setOrigin(0, 1);
 
       const lowerPipe = this.pipes
-      .create(0, 0, 'pipe')
-      .setImmovable(true)
-      .setOrigin(0, 0);
+        .create(0, 0, 'pipe')
+        .setImmovable(true)
+        .setOrigin(0, 0);
 
       this.placePipe(upperPipe, lowerPipe);
     }
@@ -102,9 +103,16 @@ class PlayScene extends Phaser.Scene {
 
   createScore() {
     this.score = 0;
-    this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, { 
+    const bestScore = localStorage.getItem('bestScore');
+
+    this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontFamily: 'sans-serif',
       fontSize: '32px',
+      fill: '#000'
+    });
+    this.bestScoreText = this.add.text(16, 52, `Best score: ${bestScore || 0}`, {
+      fontFamily: 'sans-serif',
+      fontSize: '20px',
       fill: '#000'
     });
   }
@@ -124,6 +132,7 @@ class PlayScene extends Phaser.Scene {
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
           this.increaseScore();
+
           return;
         }
       }
@@ -134,9 +143,21 @@ class PlayScene extends Phaser.Scene {
     this.bird.body.velocity.y -= FLAP_VELOCITY;
   }
 
+  saveBestScore() {
+    const bestScoreString = localStorage.getItem('bestScore');
+    const bestScore = bestScoreString && parseInt(bestScoreString, 10);
+
+    if (!bestScore || this.score > bestScore) {
+      localStorage.setItem('bestScore', this.score);
+    }
+
+  }
+
   gameOver() {
     this.physics.pause();
     this.bird.setTint(0xff0000);
+
+    this.saveBestScore();
 
     this.time.addEvent({
       delay: 1000,
@@ -155,6 +176,8 @@ class PlayScene extends Phaser.Scene {
 
   increaseScore() {
     this.score++;
+    this.bestScore = this.score;
+
     this.scoreText.setText(`Score: ${this.score}`);
   }
 }
