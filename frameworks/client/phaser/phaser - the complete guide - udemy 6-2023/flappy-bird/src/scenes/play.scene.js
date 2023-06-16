@@ -150,7 +150,6 @@ class PlayScene extends Phaser.Scene {
     if (!bestScore || this.score > bestScore) {
       localStorage.setItem('bestScore', this.score);
     }
-
   }
 
   gameOver() {
