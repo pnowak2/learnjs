@@ -69,15 +69,6 @@ class PlayScene extends Phaser.Scene {
     this.pipes.setVelocityX(-VELOCITY);
   }
 
-  createColliders() {
-    this.physics.add.collider(this.bird, this.pipes, this.gameOver, null, this);
-  }
-
-  handleInputs() {
-    this.input.on('pointerdown', this.flap, this);
-    this.input.keyboard.on('keydown-SPACE', this.flap, this);
-  }
-
   placePipe(uPipe, lPipe) {
     const rightMostX = this.getRightMostPipe();
 
@@ -100,6 +91,15 @@ class PlayScene extends Phaser.Scene {
     });
 
     return rightMostX;
+  }
+
+  createColliders() {
+    this.physics.add.collider(this.bird, this.pipes, this.gameOver, null, this);
+  }
+
+  handleInputs() {
+    this.input.on('pointerdown', this.flap, this);
+    this.input.keyboard.on('keydown-SPACE', this.flap, this);
   }
 
   recyclePipes() {
