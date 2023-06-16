@@ -1,4 +1,4 @@
-import Phaser, { UP } from 'phaser';
+import Phaser from 'phaser';
 import PlayScene from './scenes/play.scene';
 
 const WIDTH = 800;
