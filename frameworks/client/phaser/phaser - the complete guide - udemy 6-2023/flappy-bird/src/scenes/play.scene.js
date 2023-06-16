@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 const VELOCITY = 200;
-const FLAP_VELOCITY = 300;
+const FLAP_VELOCITY = 380;
 const PIPES_TO_RENDER = 4;
 const PIPE_VERTICAL_DISTANCE_RANGE = [100, 250];
 const PIPE_HORIZONTAL_DISTANCE_RANGE = [350, 500];
@@ -45,7 +45,7 @@ class PlayScene extends Phaser.Scene {
       'bird'
     ).setOrigin(0);
 
-    this.bird.body.gravity.y = 400;
+    this.bird.body.gravity.y = 600;
     this.bird.setCollideWorldBounds(true);
   }
 
