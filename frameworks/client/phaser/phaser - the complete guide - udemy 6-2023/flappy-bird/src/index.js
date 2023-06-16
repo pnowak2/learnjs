@@ -23,13 +23,4 @@ const config = {
   scene: [new PlayScene(SHARED_CONFIG)]
 };
 
-function preload() {
-}
-
-function create() {
-}
-
-function update(time, delta) {
-}
-
 new Phaser.Game(config);
