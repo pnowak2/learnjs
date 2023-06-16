@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import PlayScene from './scenes/play.scene';
 import MenuScene from './scenes/menu.scene';
+import PreloadScene from './scenes/preload.scene';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -22,8 +23,9 @@ const config = {
     }
   },
   scene: [
-    new MenuScene(SHARED_CONFIG),
+    PreloadScene,
     new PlayScene(SHARED_CONFIG),
+    new MenuScene(SHARED_CONFIG),
   ]
 };
 
