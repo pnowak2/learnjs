@@ -1,4 +1,5 @@
 import Phaser, { UP } from 'phaser';
+import PlayScene from './scenes/play.scene';
 
 const config = {
   type: Phaser.AUTO,
@@ -11,11 +12,7 @@ const config = {
       // gravity: { y: 400 }
     }
   },
-  scene: {
-    preload,
-    create,
-    update,
-  }
+  scene: [PlayScene]
 };
 
 const VELOCITY = 200;
@@ -29,17 +26,10 @@ let bird = null;
 let pipes = null;
 
 function preload() {
-  this.load.image('sky', 'assets/sky.png');
-  this.load.image('bird', 'assets/bird.png');
   this.load.image('pipe', 'assets/pipe.png');
 }
 
 function create() {
-  this.add.image(0, 0, 'sky').setOrigin(0, 0);
-
-  bird = this.physics.add.sprite(INITIAL_BIRD_POSITION.x, INITIAL_BIRD_POSITION.y, 'bird').setOrigin(0);
-  bird.body.gravity.y = 400;
-
   pipes = this.physics.add.group();
 
   for (let i = 0; i < PIPES_TO_RENDER; i++) {
