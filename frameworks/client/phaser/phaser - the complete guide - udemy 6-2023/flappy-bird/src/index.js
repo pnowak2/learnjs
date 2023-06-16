@@ -26,7 +26,6 @@ const PIPE_VERTICAL_DISTANCE_RANGE = [100, 250];
 const PIPE_HORIZONTAL_DISTANCE_RANGE = [350, 500];
 
 let bird = null;
-let pipeHorizontalDistance = 0;
 let pipes = null;
 
 function preload() {
@@ -60,6 +59,8 @@ function update(time, delta) {
   if (bird.y > config.height || (bird.y + bird.height) <= 0) {
     restartPlayerPosition();
   }
+
+  recyclePipes();
 }
 
 function placePipe(uPipe, lPipe) {
@@ -84,6 +85,21 @@ function getRightMostPipe() {
   });
 
   return rightMostX;
+}
+
+function recyclePipes() {
+  const tempPipes = [];
+
+  pipes.getChildren().forEach((pipe) => {
+    if(pipe.getBounds().right <= 0) {
+      tempPipes.push(pipe);
+
+      if(tempPipes.length === 2) {
+        placePipe(...tempPipes);
+        return;
+      }
+    }
+  });
 }
 
 function flap() {
