@@ -1,4 +1,3 @@
-
 import BaseScene from './base.scene';
 
 class PreloadScene extends BaseScene {
