@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import BaseScene from './base.scene';
 
 const VELOCITY = 200;
 const FLAP_VELOCITY = 380;
@@ -6,10 +7,9 @@ const PIPES_TO_RENDER = 4;
 const PIPE_VERTICAL_DISTANCE_RANGE = [100, 250];
 const PIPE_HORIZONTAL_DISTANCE_RANGE = [350, 500];
 
-class PlayScene extends Phaser.Scene {
+class PlayScene extends BaseScene {
   constructor(config) {
-    super('PlayScene');
-    this.config = config;
+    super('PlayScene', config);
 
     this.bird = null;
     this.pipes = null;
@@ -19,7 +19,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.createBG();
+    super.create();
+
     this.createBird();
     this.createPipes();
     this.createColliders();
