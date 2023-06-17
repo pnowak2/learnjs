@@ -6,20 +6,40 @@ class PlayScene extends BaseScene {
     super('PlayScene', config);
 
     this.velocity = 200;
-    this.flapVelocity = 380;
-    this.pipesToRender = 4;
     this.pipeVerticalDistanceRange = [100, 250];
     this.pipeHorizontalDistanceRange = [350, 500];
+
+    this.flapVelocity = 380;
+    this.pipesToRender = 4;
 
     this.bird = null;
     this.pipes = null;
     this.score = 0;
     this.scoreText = '';
+    this.difficutlyText = '';
     this.bestScoreText = '';
     this.isPaused = false;
+
+    this.currentDifficulty = 'easy';
+    this.difficulties = {
+      easy: {
+        pipeHorizontalDistanceRange: [450, 550],
+        pipeVerticalDistanceRange: [200, 250]
+      },
+      normal: {
+        pipeHorizontalDistanceRange: [350, 450],
+        pipeVerticalDistanceRange: [170, 220]
+      },
+      hard: {
+        pipeHorizontalDistanceRange: [250, 350],
+        pipeVerticalDistanceRange: [140, 190]
+      }
+    }
   }
 
   create() {
+    this.currentDifficulty = 'easy';
+
     super.create();
 
     this.createBird();
@@ -72,11 +92,12 @@ class PlayScene extends BaseScene {
   }
 
   placePipe(uPipe, lPipe) {
+    const difficulty = this.difficulties[this.currentDifficulty];
     const rightMostX = this.getRightMostPipe();
 
-    const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
+    const pipeVerticalDistance = Phaser.Math.Between(...difficulty.pipeVerticalDistanceRange);
     const pipeVerticalPosition = Phaser.Math.Between(20, this.config.height - 20 - pipeVerticalDistance);
-    const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
+    const pipeHorizontalDistance = Phaser.Math.Between(...difficulty.pipeHorizontalDistanceRange);
 
     uPipe.x = rightMostX + pipeHorizontalDistance;
     uPipe.y = pipeVerticalPosition;
@@ -109,6 +130,11 @@ class PlayScene extends BaseScene {
       fill: '#000'
     });
     this.bestScoreText = this.add.text(16, 52, `Best score: ${bestScore || 0}`, {
+      fontFamily: 'sans-serif',
+      fontSize: '20px',
+      fill: '#000'
+    });
+    this.difficutlyText = this.add.text(16, 78, `Difficulty: ${this.currentDifficulty}`, {
       fontFamily: 'sans-serif',
       fontSize: '20px',
       fill: '#000'
@@ -149,6 +175,7 @@ class PlayScene extends BaseScene {
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
           this.increaseScore();
+          this.increaseDifficulty();
 
           return;
         }
@@ -199,6 +226,17 @@ class PlayScene extends BaseScene {
     this.scoreText.setText(`Score: ${this.score}`);
   }
 
+  increaseDifficulty() {
+    if(this.score === 5) {
+      this.currentDifficulty = 'normal'
+    } 
+    
+    if(this.score === 10) {
+      this.currentDifficulty = 'hard'
+    }
+
+    this.difficutlyText.setText(`Difficulty: ${this.currentDifficulty}`);
+  }
   listenToEvents() {
     if (this.pauseEvent) { return }
 

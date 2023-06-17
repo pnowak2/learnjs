@@ -10,8 +10,8 @@ const HEIGHT = 600;
 const BIRD_POSITION = { x: WIDTH * 0.1, y: HEIGHT / 2 };
 
 const SHARED_CONFIG = {
-  width: 800,
-  height: 600,
+  width: WIDTH,
+  height: HEIGHT,
   startPosition: BIRD_POSITION
 };
 
