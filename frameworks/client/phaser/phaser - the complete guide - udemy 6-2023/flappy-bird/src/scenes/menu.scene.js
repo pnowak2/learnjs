@@ -16,6 +16,9 @@ class MenuScene extends BaseScene {
       {
         scene: null, text: 'Exit', action: () => {
           this.game.destroy(true);
+          document.dispatchEvent(
+            new CustomEvent('gameOver', { bubbles: true })
+          );
         }
       },
     ]
