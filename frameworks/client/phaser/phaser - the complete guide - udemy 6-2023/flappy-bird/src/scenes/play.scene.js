@@ -228,7 +228,8 @@ console.log('pipe' + i + 1)
   }
 
   increaseDifficulty() {
-    if (this.score === 5) {
+    if (this.score === 3) {
+      this.bird.setTexture('bird2XL');
       this.currentDifficulty = 'normal'
     }
 

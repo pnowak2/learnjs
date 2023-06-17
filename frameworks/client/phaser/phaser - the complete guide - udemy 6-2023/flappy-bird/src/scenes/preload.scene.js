@@ -15,6 +15,7 @@ class PreloadScene extends BaseScene {
     this.load.image('pipe6', 'assets/green.png');
     this.load.image('pipe7', 'assets/red.png');
     this.load.image('bird', 'assets/XL.png');
+    this.load.image('bird2XL', 'assets/2XL.png');
     this.load.image('pause', 'assets/pause.png');
     this.load.image('back', 'assets/back.png');
   }
