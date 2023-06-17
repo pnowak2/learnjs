@@ -23,12 +23,24 @@ class BaseScene extends Phaser.Scene {
 
     menu.forEach(menuItem => {
       const menuPosition = [this.screenCenter[0], this.screenCenter[1] + lastMenuPositionY];
-      menuItem.textGO = this.add.text(...menuPosition, menuItem.text, this.fontOptions)
+      const textGO = this.add.text(...menuPosition, menuItem.text, this.fontOptions)
         .setInteractive()
         .setOrigin(0.5, 1);
 
+      textGO.on('pointerover', () => {
+        textGO.setStyle({ fill: '#ff0' })
+      });
+
+      textGO.on('pointerout', () => {
+        textGO.setStyle({ fill: '#fff' })
+      });
+
+      textGO.on('pointerup', () => {
+        menuItem.action && menuItem.action();
+        menuItem.scene && this.scene.start(menuItem.scene);
+      });
+
       lastMenuPositionY += this.lineHeight;
-      setupMenuEvents(menuItem);
     });
   }
 }
