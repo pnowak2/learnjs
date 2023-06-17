@@ -1,15 +1,15 @@
 import Phaser from 'phaser';
 import BaseScene from './base.scene';
 
-const VELOCITY = 200;
-const FLAP_VELOCITY = 380;
-const PIPES_TO_RENDER = 4;
-const PIPE_VERTICAL_DISTANCE_RANGE = [100, 250];
-const PIPE_HORIZONTAL_DISTANCE_RANGE = [350, 500];
-
 class PlayScene extends BaseScene {
   constructor(config) {
     super('PlayScene', config);
+
+    this.velocity = 200;
+    this.flapVelocity = 380;
+    this.pipesToRender = 4;
+    this.pipeVerticalDistanceRange = [100, 250];
+    this.pipeHorizontalDistanceRange = [350, 500];
 
     this.bird = null;
     this.pipes = null;
@@ -54,7 +54,7 @@ class PlayScene extends BaseScene {
   createPipes() {
     this.pipes = this.physics.add.group();
 
-    for (let i = 0; i < PIPES_TO_RENDER; i++) {
+    for (let i = 0; i < this.pipesToRender; i++) {
       const upperPipe = this.pipes
         .create(0, 0, 'pipe')
         .setImmovable(true)
@@ -68,15 +68,15 @@ class PlayScene extends BaseScene {
       this.placePipe(upperPipe, lowerPipe);
     }
 
-    this.pipes.setVelocityX(-VELOCITY);
+    this.pipes.setVelocityX(-this.velocity);
   }
 
   placePipe(uPipe, lPipe) {
     const rightMostX = this.getRightMostPipe();
 
-    const pipeVerticalDistance = Phaser.Math.Between(...PIPE_VERTICAL_DISTANCE_RANGE);
+    const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
     const pipeVerticalPosition = Phaser.Math.Between(20, this.config.height - 20 - pipeVerticalDistance);
-    const pipeHorizontalDistance = Phaser.Math.Between(...PIPE_HORIZONTAL_DISTANCE_RANGE);
+    const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
 
     uPipe.x = rightMostX + pipeHorizontalDistance;
     uPipe.y = pipeVerticalPosition;
@@ -159,7 +159,7 @@ class PlayScene extends BaseScene {
   flap() {
     if (this.isPaused)  { return; }
 
-    this.bird.body.velocity.y -= FLAP_VELOCITY;
+    this.bird.body.velocity.y -= this.flapVelocity;
   }
 
   saveBestScore() {
