@@ -27,6 +27,7 @@ class PlayScene extends BaseScene {
     this.createScore();
     this.createPause();
     this.handleInputs();
+    this.listenToEvents();
   }
 
   update() {
@@ -191,6 +192,10 @@ class PlayScene extends BaseScene {
     this.bestScore = this.score;
 
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  listenToEvents() {
+    
   }
 }
 
