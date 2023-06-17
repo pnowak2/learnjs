@@ -9,6 +9,7 @@ class PauseScene extends BaseScene {
         scene: null, text: 'Continue', action: () => {
           this.scene.stop();
           this.scene.resume('PlayScene');
+          this.events.emit('resume');
         }
       },
       {

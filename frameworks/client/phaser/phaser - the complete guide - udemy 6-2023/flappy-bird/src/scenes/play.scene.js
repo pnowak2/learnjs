@@ -116,18 +116,18 @@ class PlayScene extends BaseScene {
 
   createPause() {
     const pauseBtn = this.add.image(
-      this.config.width - 10, 
+      this.config.width - 10,
       this.config.height - 10,
       'pause')
       .setInteractive()
       .setScale(2)
       .setOrigin(1, 1);
 
-      pauseBtn.on('pointerdown', () => {
-        this.physics.pause();
-        this.scene.pause();
-        this.scene.launch('PauseScene');
-      })
+    pauseBtn.on('pointerdown', () => {
+      this.physics.pause();
+      this.scene.pause();
+      this.scene.launch('PauseScene');
+    })
 
   }
 
@@ -195,7 +195,14 @@ class PlayScene extends BaseScene {
   }
 
   listenToEvents() {
-    
+    this.events.on('resume', () => {
+      this.initialTime = 3;
+      this.countDownText = this.add.text(
+        ...this.screenCenter,
+        'Fly in ' + this.initialTime,
+        this.fontOptions
+      ).setOrigin(0.5);
+    });
   }
 }
 
