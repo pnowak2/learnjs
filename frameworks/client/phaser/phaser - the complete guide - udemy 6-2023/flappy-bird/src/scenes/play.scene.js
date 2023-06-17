@@ -10,7 +10,7 @@ class PlayScene extends BaseScene {
     this.pipeHorizontalDistanceRange = [350, 500];
 
     this.flapVelocity = 380;
-    this.pipesToRender = 4;
+    this.pipesToRender = 7;
 
     this.bird = null;
     this.pipes = null;
@@ -75,19 +75,14 @@ class PlayScene extends BaseScene {
     this.pipes = this.physics.add.group();
 
     for (let i = 0; i < this.pipesToRender; i++) {
-
-      const randomDecimal = Math.random();
-
-      // Scale the random decimal to the desired range
-      const randomNumber = Math.floor(randomDecimal * (5 - 1 + 1)) + 1;
-
+console.log('pipe' + i + 1)
       const upperPipe = this.pipes
-        .create(0, 0, 'pipe' + randomNumber)
+        .create(0, 0, 'pipe' + (i + 1))
         .setImmovable(true)
         .setOrigin(0, 1);
 
       const lowerPipe = this.pipes
-        .create(0, 0, 'pipe' + randomNumber)
+        .create(0, 0, 'pipe' + (i + 1))
         .setImmovable(true)
         .setOrigin(0, 0);
 
