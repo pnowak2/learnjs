@@ -75,13 +75,19 @@ class PlayScene extends BaseScene {
     this.pipes = this.physics.add.group();
 
     for (let i = 0; i < this.pipesToRender; i++) {
+
+      const randomDecimal = Math.random();
+
+      // Scale the random decimal to the desired range
+      const randomNumber = Math.floor(randomDecimal * (5 - 1 + 1)) + 1;
+
       const upperPipe = this.pipes
-        .create(0, 0, 'pipe')
+        .create(0, 0, 'pipe' + randomNumber)
         .setImmovable(true)
         .setOrigin(0, 1);
 
       const lowerPipe = this.pipes
-        .create(0, 0, 'pipe')
+        .create(0, 0, 'pipe' + randomNumber)
         .setImmovable(true)
         .setOrigin(0, 0);
 
@@ -184,7 +190,7 @@ class PlayScene extends BaseScene {
   }
 
   flap() {
-    if (this.isPaused)  { return; }
+    if (this.isPaused) { return; }
 
     this.bird.body.velocity.y -= this.flapVelocity;
   }
@@ -227,11 +233,11 @@ class PlayScene extends BaseScene {
   }
 
   increaseDifficulty() {
-    if(this.score === 5) {
+    if (this.score === 5) {
       this.currentDifficulty = 'normal'
-    } 
-    
-    if(this.score === 10) {
+    }
+
+    if (this.score === 10) {
       this.currentDifficulty = 'hard'
     }
 
