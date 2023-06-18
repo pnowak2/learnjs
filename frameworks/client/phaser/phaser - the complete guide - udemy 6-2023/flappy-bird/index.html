@@ -17,6 +17,26 @@
   document.addEventListener('gameOver', function (event) {
     console.log('The game is over!');
   });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.altKey) {
+      if (event.code === 'KeyE') {
+        sequence += 'E';
+      } else if (event.code === 'KeyU') {
+        sequence += 'U';
+      } else if (event.code === 'KeyI') {
+        sequence += 'I';
+      } else {
+        sequence = '';
+      }
+
+      if (sequence === 'EUI') {
+        console.log('Alt + E, Alt + U, Alt + I sequence detected');
+        // Perform your desired action here
+        sequence = ''; // Reset the sequence
+      }
+    }
+  });
 </script>
 
 </html>
