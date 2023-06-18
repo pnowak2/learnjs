@@ -49,6 +49,17 @@ class PlayScene extends BaseScene {
     this.createPause();
     this.handleInputs();
     this.listenToEvents();
+
+    this.anims.create({
+      key: 'fly',
+      frames: this.anims.generateFrameNumbers('bird', {
+        start: 8, 
+        end: 15,
+      }),
+      frameRate: 16,
+      repeat: -1
+    });
+    this.bird.play('fly');
   }
 
   update() {
