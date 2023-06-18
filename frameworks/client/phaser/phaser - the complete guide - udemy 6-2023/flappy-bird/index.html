@@ -18,8 +18,10 @@
     console.log('The game is over!');
   });
 
+  let sequence = '';
+
   document.addEventListener('keydown', function (event) {
-    if (event.altKey) {
+    if (event.shiftKey) {
       if (event.code === 'KeyE') {
         sequence += 'E';
       } else if (event.code === 'KeyU') {
@@ -31,9 +33,8 @@
       }
 
       if (sequence === 'EUI') {
-        console.log('Alt + E, Alt + U, Alt + I sequence detected');
-        // Perform your desired action here
-        sequence = ''; // Reset the sequence
+        console.log('Lanuch the game!');
+        sequence = '';
       }
     }
   });
