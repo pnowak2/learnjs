@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
+import { SpriteWithDynamicBody } from '../types';
 
 export class PlayScene extends Phaser.Scene {
-  player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  player: SpriteWithDynamicBody;
 
   constructor() {
     super('PlayScene');
@@ -20,6 +21,9 @@ export class PlayScene extends Phaser.Scene {
   createPlayer() {
     this.player = this.physics.add
       .sprite(0, this.gameHeight, 'dino-idle')
+      .setGravityY(5000)
+      .setCollideWorldBounds(true, 0)
+      .setBodySize(44, 92)
       .setOrigin(0, 1);
   }
 
