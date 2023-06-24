@@ -4,6 +4,7 @@ import { Player } from '../entities/player'
 
 export class PlayScene extends Phaser.Scene {
   player: Player;
+  ground: Phaser.GameObjects.TileSprite;
   startTrigger: SpriteWithDynamicBody;
 
   constructor() {
@@ -12,6 +13,10 @@ export class PlayScene extends Phaser.Scene {
 
   get gameHeight(): number {
     return this.game.config.height as number;
+  }
+
+  get gameWidth(): number {
+    return this.game.config.width as number;
   }
 
   create() {
@@ -30,6 +35,16 @@ export class PlayScene extends Phaser.Scene {
       }
 
       this.startTrigger.body.reset(9999, 9999);
+
+      this.time.addEvent({
+        delay: 1000 / 60,
+        loop: true,
+        callback: () => {
+          if (this.ground.width <= this.gameWidth) {
+            this.ground.width += (17 * 2);
+          }
+        }
+      })
     });
   }
 
@@ -40,9 +55,9 @@ export class PlayScene extends Phaser.Scene {
   createEnvironment() {
     const groundHeight = this.textures.get('ground').getSourceImage().height;
 
-    this.add
+    this.ground = this.add
       .tileSprite(0, this.gameHeight, 88, groundHeight, 'ground')
-      .setOrigin(0, 1)
+      .setOrigin(0, 1);
   }
 
   update(time: number, delta: number): void {
