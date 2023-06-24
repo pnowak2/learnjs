@@ -3,7 +3,7 @@ import { SpriteWithDynamicBody } from '../types';
 import { Player } from '../entities/player'
 
 export class PlayScene extends Phaser.Scene {
-  player: Phaser.Physics.Arcade.Sprite;
+  player: Player;
   startTrigger: SpriteWithDynamicBody;
 
   constructor() {
@@ -31,7 +31,7 @@ export class PlayScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    this.player = new Player(this, 0, 0);
+    this.player = new Player(this, 0, this.gameHeight);
   }
 
   createEnvironment() {
