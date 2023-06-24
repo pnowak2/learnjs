@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import { SpriteWithDynamicBody } from '../types';
+import { Player } from '../entities/player'
 
 export class PlayScene extends Phaser.Scene {
-  player: SpriteWithDynamicBody;
+  player: Phaser.Physics.Arcade.Sprite;
+  startTrigger: SpriteWithDynamicBody;
 
   constructor() {
     super('PlayScene');
@@ -15,16 +17,21 @@ export class PlayScene extends Phaser.Scene {
   create() {
     this.createEnvironment();
     this.createPlayer();
+
+    this.startTrigger = this.physics.add
+      .sprite(0, 10, null)
+      .setAlpha(0)
+      .setOrigin(0, 1);
+
     this.registerPlayerControl();
+
+    this.physics.add.overlap(this.player, this.startTrigger, () => {
+      console.log('collision');
+    });
   }
 
   createPlayer() {
-    this.player = this.physics.add
-      .sprite(0, this.gameHeight, 'dino-idle')
-      .setGravityY(5000)
-      .setCollideWorldBounds(true, 0)
-      .setBodySize(44, 92)
-      .setOrigin(0, 1);
+    this.player = new Player(this, 0, 0);
   }
 
   createEnvironment() {
@@ -37,6 +44,7 @@ export class PlayScene extends Phaser.Scene {
 
   registerPlayerControl() {
     const spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
     spaceBar.on('down', () => {
       this.player.setVelocityY(-1600);
     });
