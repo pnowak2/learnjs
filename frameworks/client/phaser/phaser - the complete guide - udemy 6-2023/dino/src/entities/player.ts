@@ -21,11 +21,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(): void {
-    const { space } =this.cursors;
+    const { space } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space)
     const isOnFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
 
-    if(isSpaceJustDown && isOnFloor) {
+    if (isSpaceJustDown && isOnFloor) {
       this.setVelocityY(-1600);
     }
   }
