@@ -12,12 +12,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
+    this.cursors = this.scene.input.keyboard.createCursorKeys();
+
     this.setOrigin(0, 1);
     this.setGravityY(5000);
     this.setCollideWorldBounds(true, 0);
     this.setBodySize(44, 92);
-
-    this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.registerAnimations();
   }
 
   update(): void {
@@ -28,5 +29,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (isSpaceJustDown && isOnFloor) {
       this.setVelocityY(-1600);
     }
+  }
+
+  playRunAnimation() {
+    this.play('dino-run', true);
+  }
+
+  registerAnimations() {
+    this.anims.create({
+      key: 'dino-run',
+      frames: this.anims.generateFrameNumbers('dino-run', {
+        start: 2,
+        end: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
   }
 }
