@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <style>
-      body {
-        /* padding: 200px; */
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      /* padding: 200px; */
+    }
+  </style>
+</head>
+
+<body>
+</body>
+
+<script>
+  document.addEventListener('gameOver', function (event) {
+    console.log('The game is over!');
+  });
+
+  let sequence = '';
+
+  document.addEventListener('keydown', function (event) {
+    if (event.shiftKey) {
+      if (event.code === 'KeyE') {
+        sequence += 'E';
+      } else if (event.code === 'KeyU') {
+        sequence += 'U';
+      } else if (event.code === 'KeyI') {
+        sequence += 'I';
+      } else {
+        sequence = '';
       }
-    </style>
-  </head>
-  <body>
-  </body>
+
+      if (sequence === 'EUI') {
+        console.log('Lanuch the game!');
+        sequence = '';
+      }
+    }
+  });
+</script>
+
 </html>
