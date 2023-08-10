@@ -32,6 +32,7 @@ class EuiTooltip extends HTMLElement {
                 }
 
                 :host {
+                    position: relative;
                     border: 1px dotted red;
                     color: var(--color-primary, blue);
                 }
@@ -58,7 +59,6 @@ class EuiTooltip extends HTMLElement {
         tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this));
 
         this.shadowRoot.appendChild(tooltipIcon);
-        this.style.position = 'relative';
 
         this._render();
     }
