@@ -10,6 +10,11 @@ class EuiModal extends HTMLElement {
                     pointer-events: all;
                 }
 
+                :host([opened]) #modal {
+                    top: 15vh;
+                    pointer-events: all;
+                }
+
                 #backdrop {
                     position: fixed;
                     top: 0;
@@ -27,7 +32,7 @@ class EuiModal extends HTMLElement {
                     flex-direction: column;
                     justify-content: space-between;
                     position: fixed;
-                    top: 15vh;
+                    top: 10vh;
                     left: 25%;
                     width: 50%;
                     z-index: 100;
@@ -36,11 +41,12 @@ class EuiModal extends HTMLElement {
                     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
                     opacity: 0;
                     pointer-events: none;
+                    transition: all 0.3s ease-out;
                 }
 
                 header {
                     padding: 1rem;
-
+                    border-bottom: 1px solid #ccc;
                 }
 
                 ::slotted(h1),
@@ -90,6 +96,11 @@ class EuiModal extends HTMLElement {
 
         const cancelBtn = this.shadowRoot.querySelector('#cancel');
         const confirmBtn = this.shadowRoot.querySelector('#confirm');
+        const backdrop = this.shadowRoot.querySelector('#backdrop');
+
+        backdrop.addEventListener('click', () => {
+            this.close();
+        })
 
         cancelBtn.addEventListener('click', () => {
             this.close();
@@ -98,11 +109,11 @@ class EuiModal extends HTMLElement {
             this.dispatchEvent(evt);
         });
 
-        confirmBtn.addEventListener('click', () => {
+        confirmBtn.addEventListener('click', (evt) => {
             this.close();
 
-            const evt = new Event('confirm', { composed: true })
-            this.dispatchEvent(evt);
+            const e = new Event('confirm', { composed: true, bubbles: true })
+            evt.target.dispatchEvent(e);
         });
 
     }
