@@ -4,6 +4,12 @@ class EuiModal extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `
             <style>
+                :host([opened]) #backdrop,
+                :host([opened]) #modal {
+                    opacity: 1;
+                    pointer-events: all;
+                }
+
                 #backdrop {
                     position: fixed;
                     top: 0;
@@ -12,6 +18,8 @@ class EuiModal extends HTMLElement {
                     height: 100vh;
                     background: rgba(0,0,0, 0.75);
                     z-index: 10;
+                    opacity: 0;
+                    pointer-events: none;
                 }
 
                 #modal {
@@ -26,6 +34,8 @@ class EuiModal extends HTMLElement {
                     background: white;
                     border-radius: 3px;
                     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+                    opacity: 0;
+                    pointer-events: none;
                 }
 
                 header {
@@ -33,6 +43,7 @@ class EuiModal extends HTMLElement {
 
                 }
 
+                ::slotted(h1),
                 header h1 {
                     font-size: 1.25rem;
                     margin: 0;
@@ -58,21 +69,50 @@ class EuiModal extends HTMLElement {
 
             <div id="modal">
                 <header>
-                    <h1>Confirm</h1>
+                    <slot name="title"><h1>Default title</h1></slot>
                 </header>
                 <section id="main">
                     <slot></slot>
                 </section>
                 <section id="actions">
-                    <button>Cancel</button>
-                    <button>Confirm</button>
+                    <button id="cancel">Cancel</button>
+                    <button id="confirm">Confirm</button>
                 </section>
             </div>
         `;
+
+        const slots = this.shadowRoot.querySelectorAll('slot');
+        slots.forEach(slot => {
+            slot.addEventListener('slotchange', evt => {
+                console.dir(slot.assignedElements(), slots.assignedSlot);
+            });
+        })
+
+        const cancelBtn = this.shadowRoot.querySelector('#cancel');
+        const confirmBtn = this.shadowRoot.querySelector('#confirm');
+
+        cancelBtn.addEventListener('click', () => {
+            this.close();
+
+            const evt = new Event('cancel', { composed: true })
+            this.dispatchEvent(evt);
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            this.close();
+
+            const evt = new Event('confirm', { composed: true })
+            this.dispatchEvent(evt);
+        });
+
     }
 
-    render() {
+    open() {
+        this.setAttribute('opened', '');
+    }
 
+    close() {
+        this.removeAttribute('opened');
     }
 }
 
