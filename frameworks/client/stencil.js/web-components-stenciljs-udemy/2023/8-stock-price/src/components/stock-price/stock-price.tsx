@@ -1,4 +1,4 @@
-import { Component, Element, State, h } from "@stencil/core"
+import { Component, Element, State, h, Prop, Watch } from "@stencil/core"
 import { AV_API_KEY } from "../../utils/utils";
 
 @Component({
@@ -8,17 +8,26 @@ import { AV_API_KEY } from "../../utils/utils";
 })
 export class EuiStockPrice {
   stockInput: HTMLInputElement;
+  // initialStockSymbol: string;
+
+  @Prop({ mutable: true, reflect: true}) stockSymbol: string;
 
   @State() fetchedPrice: number;
   @State() stockUserInput: string;
   @State() error: string;
   @State() stockInputValid: boolean = false;
 
+  @Watch('stockSymbol')
+  stockSymbolChanged(newValue: string, oldValue: string) {
+    this.stockUserInput = newValue;
+    this.fetchStockPrice(newValue);
+  }
+
   @Element() el: Element;
 
   onUserInput(evt: Event) {
     this.stockUserInput = (evt.target as HTMLInputElement).value;
-    if(this.stockUserInput.trim() !== '') {
+    if (this.stockUserInput.trim() !== '') {
       this.stockInputValid = true;
     } else {
       this.stockInputValid = false;
@@ -28,16 +37,51 @@ export class EuiStockPrice {
   onFetchStockPrice(evt: Event) {
     evt.preventDefault();
 
+    this.stockSymbol = this.stockUserInput
+  }
+
+  componentWillLoad() {
+    console.log('will load, can still change @state property, render will use it');
+    console.log(this.stockSymbol);
+  }
+
+  componentDidLoad() {
+    if (this.stockSymbol) {
+      // this.initialStockSymbol = this.stockSymbol;
+      this.stockUserInput = this.stockSymbol;
+      this.stockInputValid = true;
+      this.fetchStockPrice(this.stockSymbol);
+    }
+    console.log('did load');
+    console.log('changing @state property will call render again, performance note');
+  }
+
+  componentWillUpdate() {
+    console.log('will update, property changed');
+  }
+  
+  componentDidUpdate() {
+    console.log('did update, property changed');
+    // if(this.stockSymbol !== this.initialStockSymbol) {
+    //   this.fetchStockPrice(this.stockSymbol);
+    //   this.initialStockSymbol = this.stockSymbol;
+    // }
+  }
+
+  disconnectedCallback() {
+    console.log('did unload');
+  }
+
+  fetchStockPrice(stockSymbol: string) {
     // const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
     // const stockSymbol = this.stockInput.value;
-    const stockSymbol = this.stockUserInput;
 
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`)
       .then(res => {
         return res.json();
       })
       .then(json => {
-        if(!json['Global Quote']['05. price']) {
+        if (!json['Global Quote']['05. price']) {
           throw new Error('Invalid symbol');
         }
         this.error = null;
@@ -51,18 +95,18 @@ export class EuiStockPrice {
 
   render() {
     let dataContent = <p>Please enter a symbol</p>;
-    if(this.error) {
+    if (this.error) {
       dataContent = <p>{this.error}</p>
-    } else if(this.fetchedPrice) {
+    } else if (this.fetchedPrice) {
       dataContent = <p>Price: ${this.fetchedPrice || '--'}</p>
     }
 
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
-        <input id="stock-symbol" 
-          ref={ el => this.stockInput = el } 
-          value={this.stockUserInput} 
-          onInput={this.onUserInput.bind(this)}/>
+        <input id="stock-symbol"
+          ref={el => this.stockInput = el}
+          value={this.stockUserInput}
+          onInput={this.onUserInput.bind(this)} />
         <button type="submit" disabled={!this.stockInputValid}>Fetch</button>
       </form>,
 
