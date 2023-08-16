@@ -33,3 +33,10 @@ form button:active,
 form button:hover {
   background-color: blueviolet;
 }
+
+form button:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  color: white;
+  cursor: not-allowed;
+}
