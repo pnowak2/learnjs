@@ -6,6 +6,8 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface EuiSpinner {
+    }
     interface EuiStockFinder {
     }
     interface EuiStockPrice {
@@ -17,6 +19,12 @@ export interface EuiStockFinderCustomEvent<T> extends CustomEvent<T> {
     target: HTMLEuiStockFinderElement;
 }
 declare global {
+    interface HTMLEuiSpinnerElement extends Components.EuiSpinner, HTMLStencilElement {
+    }
+    var HTMLEuiSpinnerElement: {
+        prototype: HTMLEuiSpinnerElement;
+        new (): HTMLEuiSpinnerElement;
+    };
     interface HTMLEuiStockFinderElement extends Components.EuiStockFinder, HTMLStencilElement {
     }
     var HTMLEuiStockFinderElement: {
@@ -30,11 +38,14 @@ declare global {
         new (): HTMLEuiStockPriceElement;
     };
     interface HTMLElementTagNameMap {
+        "eui-spinner": HTMLEuiSpinnerElement;
         "eui-stock-finder": HTMLEuiStockFinderElement;
         "eui-stock-price": HTMLEuiStockPriceElement;
     }
 }
 declare namespace LocalJSX {
+    interface EuiSpinner {
+    }
     interface EuiStockFinder {
         "onEuiSymbolSelected"?: (event: EuiStockFinderCustomEvent<string>) => void;
     }
@@ -42,6 +53,7 @@ declare namespace LocalJSX {
         "stockSymbol"?: string;
     }
     interface IntrinsicElements {
+        "eui-spinner": EuiSpinner;
         "eui-stock-finder": EuiStockFinder;
         "eui-stock-price": EuiStockPrice;
     }
@@ -50,6 +62,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "eui-spinner": LocalJSX.EuiSpinner & JSXBase.HTMLAttributes<HTMLEuiSpinnerElement>;
             "eui-stock-finder": LocalJSX.EuiStockFinder & JSXBase.HTMLAttributes<HTMLEuiStockFinderElement>;
             "eui-stock-price": LocalJSX.EuiStockPrice & JSXBase.HTMLAttributes<HTMLEuiStockPriceElement>;
         }

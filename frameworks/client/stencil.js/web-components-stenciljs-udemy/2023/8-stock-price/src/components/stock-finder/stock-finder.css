@@ -1,7 +1,7 @@
 :host {
   display: block;
-	font-family: sans-serif;
-  border: 2px solid purple;
+  font-family: sans-serif;
+  border: 2px solid var(--color-primary);
   margin: 2rem;
   padding: 1rem;
   width: 20rem;

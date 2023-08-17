@@ -12,6 +12,7 @@ export class EuiStockPrice {
 
   @Prop({ mutable: true, reflect: true}) stockSymbol: string;
 
+  @State() loading: boolean = false;
   @State() fetchedPrice: number;
   @State() stockUserInput: string;
   @State() error: string;
@@ -80,6 +81,7 @@ export class EuiStockPrice {
   fetchStockPrice(stockSymbol: string) {
     // const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
     // const stockSymbol = this.stockInput.value;
+    this.loading = true;
 
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`)
       .then(res => {
@@ -92,9 +94,11 @@ export class EuiStockPrice {
         this.error = null;
 
         this.fetchedPrice = +json['Global Quote']['05. price'];
+        this.loading = false;
       })
       .catch(err => {
         this.error = err.message;
+        this.loading = false;
       })
   }
 
@@ -110,6 +114,8 @@ export class EuiStockPrice {
       dataContent = <p>{this.error}</p>
     } else if (this.fetchedPrice) {
       dataContent = <p>Price: ${this.fetchedPrice || '--'}</p>
+    } else if (this.loading) {
+      dataContent = <eui-spinner></eui-spinner>
     }
 
     return [
@@ -118,7 +124,7 @@ export class EuiStockPrice {
           ref={el => this.stockInput = el}
           value={this.stockUserInput}
           onInput={this.onUserInput.bind(this)} />
-        <button type="submit" disabled={!this.stockInputValid}>Fetch</button>
+        <button type="submit" disabled={!this.stockInputValid || this.loading}>Fetch</button>
       </form>,
 
       <div>
