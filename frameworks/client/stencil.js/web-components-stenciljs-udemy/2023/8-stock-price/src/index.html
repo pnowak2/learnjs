@@ -12,4 +12,12 @@
     <eui-stock-price stock-symbol="AAPL"></eui-stock-price>
     <eui-stock-finder></eui-stock-finder>
   </body>
+
+  <script>
+    const stockFinderEl = document.querySelector('eui-stock-finder');
+
+    stockFinderEl.addEventListener('euiSymbolSelected', (evt) => {
+      console.log(evt);
+    });
+  </script>
 </html>

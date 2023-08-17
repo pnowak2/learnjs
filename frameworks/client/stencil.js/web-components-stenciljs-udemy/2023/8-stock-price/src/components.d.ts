@@ -12,6 +12,10 @@ export namespace Components {
         "stockSymbol": string;
     }
 }
+export interface EuiStockFinderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEuiStockFinderElement;
+}
 declare global {
     interface HTMLEuiStockFinderElement extends Components.EuiStockFinder, HTMLStencilElement {
     }
@@ -32,6 +36,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface EuiStockFinder {
+        "onEuiSymbolSelected"?: (event: EuiStockFinderCustomEvent<string>) => void;
     }
     interface EuiStockPrice {
         "stockSymbol"?: string;

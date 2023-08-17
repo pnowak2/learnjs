@@ -1,4 +1,4 @@
-import { Component, Element, State, h, Prop, Watch } from "@stencil/core"
+import { Component, Element, State, h, Prop, Watch, Listen } from "@stencil/core"
 import { AV_API_KEY } from "../../utils/utils";
 
 @Component({
@@ -16,6 +16,15 @@ export class EuiStockPrice {
   @State() stockUserInput: string;
   @State() error: string;
   @State() stockInputValid: boolean = false;
+
+  @Listen('euiSymbolSelected', { target: 'body' })
+  onSymbolSelected(evt: CustomEvent) {
+    console.log('evt', evt.detail);
+    if(evt.detail) {
+      this.fetchStockPrice(evt.detail);
+      this.stockUserInput = evt.detail;
+    }
+  }
 
   @Watch('stockSymbol')
   stockSymbolChanged(newValue: string, oldValue: string) {
@@ -62,10 +71,6 @@ export class EuiStockPrice {
   
   componentDidUpdate() {
     console.log('did update, property changed');
-    // if(this.stockSymbol !== this.initialStockSymbol) {
-    //   this.fetchStockPrice(this.stockSymbol);
-    //   this.initialStockSymbol = this.stockSymbol;
-    // }
   }
 
   disconnectedCallback() {
@@ -91,6 +96,12 @@ export class EuiStockPrice {
       .catch(err => {
         this.error = err.message;
       })
+  }
+
+  hostData() {
+    return {
+      class: this.error ? 'error' : ''
+    }
   }
 
   render() {
