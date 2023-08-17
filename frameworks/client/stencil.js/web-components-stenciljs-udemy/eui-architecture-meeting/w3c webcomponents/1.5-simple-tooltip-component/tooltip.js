@@ -23,6 +23,7 @@ class EuiTooltip extends HTMLElement {
         if (this.hasAttribute('text')) {
             this._tooltipText = this.getAttribute('text');
         }
+
         const tooltipIcon = this.shadowRoot.querySelector('span');
         tooltipIcon.addEventListener('mouseenter', this._showTooltip.bind(this));
         tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this));
