@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <script src="tooltip.js"></script>
+
+    <style>
+        div {
+            border: 2px solid orange;
+        }
+
+        .highlight {
+            background: yellow;
+            /* stronger than ::slotted() */
+            /* color: blue; */
+        }
+
+        eui-tooltip {
+            border-bottom: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <eui-tooltip text="some help">
+        default
+    </eui-tooltip>
+
+    <eui-tooltip class="eui-important" text="some help">
+        <span class="highlight">eui-important class on host</span>
+    </eui-tooltip>
+
+    <p>
+        <eui-tooltip text="some help">
+            host-context
+        </eui-tooltip>
+    </p>
+</body>
+</html>
