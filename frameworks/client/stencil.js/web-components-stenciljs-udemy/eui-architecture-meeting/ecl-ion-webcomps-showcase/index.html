@@ -1,0 +1,1060 @@
+<html>
+
+<head>
+    <script type="module" src="./node_modules/@ecl/ecl-webcomponents/dist/ecl-webcomponents/ecl-webcomponents.esm.js"></script>
+    <meta data-ecl-asset-path="./node_modules/@ecl/ecl-webcomponents/dist/ecl-webcomponents" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic.js"></script>
+</head>
+
+<body>
+    <h1>ECL Webcomponents</h1>
+    <ecl-site-header ecl-script
+                     theme="ec"
+                     login-block
+                     language-block
+                     search-block
+                     search-text="search"
+                     search-placeholder="Placeholder text"
+                     language="English"
+                     lang-code="en"
+                     login-text="Log in"
+                     eu-label="Official EU languages:"
+                     non-eu-label="Other languages:"
+                     language-title="Choose your language"
+                     login-link="/example.html#kbb8v"
+                     language-id="language-switcher"
+                     logo-alt="European Commission"
+                     logo-title="European commission"
+                     language-aria-label="Choose language"
+                     site-name="Site name">
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#0qufj"
+                           lang-code="bg"
+                           language="български"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#2owpc"
+                           lang-code="es"
+                           language="español"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#1yzps"
+                           lang-code="cs"
+                           language="čeština"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#auwy2"
+                           lang-code="da"
+                           language="dansk"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#oxfp7"
+                           lang-code="de"
+                           language="Deutsch"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#st1dw"
+                           lang-code="et"
+                           language="eesti"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#wnm1c"
+                           lang-code="el"
+                           language="ελληνικά"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#shzdo"
+                           lang-code="en"
+                           language="English"
+                           active></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#oj4m0"
+                           lang-code="fr"
+                           language="français"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           path="/example.html#nqms0"
+                           lang-code="ga"
+                           language="Gaeilge"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#wn1zl"
+                           lang-code="hr"
+                           language="hrvatski"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="eu-category"
+                           path="/example.html#t3dx3"
+                           lang-code="it"
+                           language="italiano"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="non-eu-category"
+                           path="/example.html#y0c57"
+                           l"
+                           lang-code="zh"
+                           language="中文"></ecl-language-item>
+        <ecl-language-item theme="ec"
+                           slot="non-eu-category"
+                           path="/example.html#kn5im"
+                           lang-code="tr"
+                           language="Türk"></ecl-language-item>
+        <ecl-menu slot="menu"
+                  theme="ec"
+                  close-label="Close"
+                  back-label="Back"
+                  menu-link="/example.html#u4uti"
+                  ecl-script
+                  menu-title="Menu">
+            <ecl-menu-item link="/example.html#ibi7z"
+                           theme="ec">
+                Home
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           link="/example.html#pkpn7"
+                           has-children
+                           trigger-aria-label="Access item's children"
+                           current>
+                Item 2 label
+                <ecl-menu-item theme="ec"
+                               link="/example.html#jaz10"
+                               child
+                               slot="sublist">
+                    Item 2.1
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#kepuw"
+                               child
+                               slot="sublist">
+                    Item 2.2
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#0g5e1"
+                               child
+                               current
+                               slot="sublist">
+                    Item 2.3
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#hgusj"
+                               child
+                               slot="sublist"
+                               external>
+                    Item 2.4
+                </ecl-menu-item>
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           has-children
+                           trigger-aria-label="Access item's children"
+                           link="/example.html#o56ra">
+                Item 3 with a very long label
+                <ecl-menu-item theme="ec"
+                               child
+                               link="/example.html#inci6"
+                               slot="sublist">
+                    Item 3.1
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               child
+                               link="/example.html#790i5"
+                               slot="sublist">
+                    Item 3.2
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               child
+                               link="/example.html#153im"
+                               slot="sublist">
+                    Item 3.3
+                </ecl-menu-item>
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           link="/example.html#8za45">
+                Item 4 label
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           link="/example.html#8mpnl"
+                           has-children
+                           trigger-aria-label="Access item's children">
+                Item 5 label
+                <ecl-menu-item theme="ec"
+                               link="/example.html#5ynde"
+                               child
+                               slot="sublist">
+                    Item 5.1
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#c0wj1"
+                               child
+                               slot="sublist">
+                    Item 5.2
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#sanhx"
+                               child
+                               slot="sublist">
+                    Item 5.3
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#uvz22"
+                               child
+                               slot="sublist">
+                    Item 5.4
+                </ecl-menu-item>
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           link="/example.html#mqy2m"
+                           has-children
+                           trigger-aria-label="Access item's children">
+                Item 6
+                <ecl-menu-item theme="ec"
+                               link="/example.html#7ocds"
+                               child
+                               slot="sublist">
+                    Item 6.1
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#5fag7"
+                               child
+                               slot="sublist">
+                    Item 6.2
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#uuor2"
+                               child
+                               slot="sublist">
+                    Item 6.3
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#eiizb"
+                               child
+                               slot="sublist">
+                    Item 6.4
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#ik94n"
+                               child
+                               slot="sublist">
+                    Item 6.5
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#hhrig"
+                               child
+                               slot="sublist">
+                    Item 6.6
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#2dr7j"
+                               child
+                               slot="sublist">
+                    Item 6.7
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#gt0jz"
+                               child
+                               slot="sublist">
+                    Item 6.8
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#wzgsn"
+                               child
+                               slot="sublist">
+                    Item 6.9 with a very long label
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#l92fq"
+                               child
+                               slot="sublist">
+                    Item 6.10
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#9pru4"
+                               child
+                               slot="sublist">
+                    Item 6.11
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#n2rtg"
+                               child
+                               slot="sublist">
+                    Item 6.12
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#98510""
+            child
+            slot="
+                               sublist">
+                    Item 6.13
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#6cwdq"
+                               child
+                               slot="sublist">
+                    Item 6.14
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#5py4w"
+                               child
+                               slot="sublist">
+                    Item 6.15
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#ky1wx""
+            child
+            slot="
+                               sublist">
+                    Item 6.16
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#2gcjv"
+                               child
+                               slot="sublist">
+                    Item 6.17
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#w4ozg"
+                               child
+                               slot="sublist">
+                    Item 6.18
+                </ecl-menu-item>
+            </ecl-menu-item>
+            <ecl-menu-item theme="ec"
+                           has-children
+                           link="/example.html#ugflx"
+                           trigger-aria-label="Access item's children">
+                Item 7 label
+                <ecl-menu-item theme="ec"
+                               link="/example.html#gkkz3"
+                               child
+                               slot="sublist">
+                    Item 7.1
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#d4nia"
+                               child
+                               slot="sublist">
+                    Item 7.2
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#9kpy6"
+                               child
+                               slot="sublist">
+                    Item 7.3
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#nt3i6"
+                               child
+                               slot="sublist">
+                    Item 7.4
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#vmdtt"
+                               child
+                               slot="sublist">
+                    Item 7.5
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#6q5rg"
+                               child
+                               slot="sublist">
+                    Item 7.6
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#7j7of"
+                               child
+                               slot="sublist">
+                    Item 7.7
+                </ecl-menu-item>
+                <ecl-menu-item theme="ec"
+                               link="/example.html#y5adg"
+                               child
+                               slot="sublist">
+                    Item 7.8
+                </ecl-menu-item>
+            </ecl-menu-item>
+        </ecl-menu>
+    </ecl-site-header>
+
+    <ecl-page-header variant="undefined"
+                     theme="ec"
+                     header-title="Page title"
+                     image=""
+                     thumbnail="https://inno-ecl.s3.amazonaws.com/media/examples/example-image2.jpg"
+                     thumbnail-alt="undefined"
+                     meta="Meta info | DD Month YYYY"
+                     image-alt="undefined">
+        <ecl-breadcrumb slot="breadcrumb"
+                        variant="default"
+                        theme="ec"
+                        ecl-script>
+            <ecl-breadcrumb-item path="/example.html#ckubu"
+                                 theme="ec">
+                Home
+            </ecl-breadcrumb-item>
+            <ecl-breadcrumb-item theme="ec"
+                                 ellipsis
+                                 button-aria-label="Click to expand">
+            </ecl-breadcrumb-item>
+            <ecl-breadcrumb-item path="/example.html#4jb5l"
+                                 theme="ec">
+                About the European Commission
+            </ecl-breadcrumb-item>
+            <ecl-breadcrumb-item path="/example.html#oz9k8"
+                                 theme="ec">
+                Organisational structure
+            </ecl-breadcrumb-item>
+            <ecl-breadcrumb-item path="/example.html#d40bi"
+                                 theme="ec">
+                How the Commission is organised
+            </ecl-breadcrumb-item>
+            <ecl-breadcrumb-item current-page
+                                 theme="ec">
+                News
+            </ecl-breadcrumb-item>
+        </ecl-breadcrumb>
+        Lorem ipsum dolor sit amet, <ecl-link path="/example.html#qnma7">consectetur adipiscing elit</ecl-link>.
+        Quisque nec ullamcorper mi. Morbi interdum fermentum tempus. Nam nec rhoncus risus,
+        <ecl-link path="/example.html#20s97">eget dictum elit</ecl-link>. Vestibulum gravida tincidunt venenatis.
+    </ecl-page-header>
+
+   <div class="ecl-container">
+
+    <h2>Carousel</h2>
+
+    <ecl-carousel
+        carousel-id="ecl-carousel-demo"
+        ecl-script
+        slides-number=3
+        theme="ec"
+    >
+        <ecl-carousel-item
+        banner-variant="text-box"
+        theme="ec"
+        cta-link="/example.html#25sa8"
+        cta-label="Subscribe"
+        size="m"
+        image="https://inno-ecl.s3.amazonaws.com/media/examples/example-image.jpg"
+        banner-title="Duis vitae pulvinar turpis"
+        >
+        Integer quis lorem tellus. Nullam sollicitudin suscipit diam, ac blandit ipsum tempor consectetur
+        </ecl-carousel-item>
+        <ecl-carousel-item
+        banner-variant="text-highlight"
+        theme="ec"
+        cta-link="/example.html#pmuul"
+        cta-label="Subscribe"
+        size="m"
+        image="https://inno-ecl.s3.amazonaws.com/media/examples/example-image2.jpg"
+        banner-title="Duis vitae pulvinar turpis"
+        >
+        Integer quis lorem tellus. Nullam sollicitudin suscipit diam, ac blandit ipsum tempor consectetur
+        </ecl-carousel-item>
+        <ecl-carousel-item
+        banner-variant="image-overlay"
+        theme="ec"
+        cta-link="/example.html#pg07h"
+        size="m"
+        cta-label="Subscribe"
+        image="https://inno-ecl.s3.amazonaws.com/media/examples/example-image3.jpg"
+        banner-title="Duis vitae pulvinar turpis"
+        >
+        Integer quis lorem tellus. Nullam sollicitudin suscipit diam, ac blandit ipsum tempor consectetur
+        </ecl-carousel-item>
+    </ecl-carousel>
+
+    <h2>Gallery</h2>
+    <ecl-gallery
+        theme="ec"
+        ecl-script
+        counter-label="Media files in this gallery"
+        view-all-label="See all"
+        view-all-expanded-label="Back"
+        counter-separator="of"
+        next-label="Next"
+        prev-label="Previous"
+        close-label="Close"
+        full-screen-label="View original"
+        share-label="Share"
+        visible-items=8
+        footer-link-path="/example.html#x5830"
+        footer-link-label="further media items"
+        expandable
+        >
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 1"
+            media-share-path="/example.html#89uty"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image.jpg"
+            image-alt="Image 1"
+        >    
+            The EU in brief, institutions and bodies, countries, symbols, history, facts and figures
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            type="video"
+            meta="Copyright, Author, Licence for embedded media"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-external-video.jpg"
+            image-alt="New digital strategy"
+            media-iframe-href="https://www.youtube.com/embed/fgi-GSCB6ho"
+        >
+            New digital strategy
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 2"
+            media-share-path="/example.html#kjwrp"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image2.jpg"
+            image-alt="Image 2"
+        >
+            Information on agriculture, business, culture, health, etc.
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 3"
+            media-share-path="/example.html#jvqcq"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image3.jpg"
+            image-alt="Image 3"
+        >
+            Living, working, travelling in the EU
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 4"
+            media-share-path="/example.html#bgyul"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image4.jpg"
+            image-alt="Image 3"
+        >
+            Information on taxes, customs, importing and exporting goods, financial support for businesses
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            media-share-path="/example.html#201hq"
+            meta="Copyright, Author, Licence for video"
+            type="html-video"
+        >
+            EU law
+            <video
+            slot="video"
+            class="ecl-gallery__image sc-ecl-gallery-ec"
+            poster="https://inno-ecl.s3.amazonaws.com/media/examples/example-image5.jpg"
+            >
+            <source
+                src="https://inno-ecl.s3.amazonaws.com/media/videos/big_buck_bunny.mp4"
+                type="video/mp4"
+            />
+            <source
+                src="https://inno-ecl.s3.amazonaws.com/media/videos/big_buck_bunny.webm"
+                type="video/webm"
+            />
+            <track
+                kind="captions"
+                label="English"
+                src="/captions/bunny-en.vtt"
+                srclang="en"
+            />
+            <track
+                kind="captions"
+                label="français"
+                src="/captions/bunny-fr.vtt"
+                srclang="fr"
+            />
+            </video>
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 6"
+            media-share-path="/example.html#ejwl8"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image6.jpg"
+            image-alt="Image 6"
+        >
+            Find official documents, publications, statistics, open data and more resources
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 7"
+            media-share-path="/example.html#hiuxi"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image7.jpg"
+            image-alt="Image 7"
+        >
+            Teaching material about the EU, including books and maps
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 8"
+            media-share-path="/example.html#4p8lz"
+            media-iframe-href="https://audiovisual.ec.europa.eu/embed/index.html?ref=I-223223&lg=EN"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image8.jpg"
+            image-alt="Image 8"
+        >
+            Teaching material about the EU, including books and maps
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 9"
+            media-share-path="/example.html#gk5bl"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image9.jpg"
+            image-alt="Image 9"
+        >
+            About the EU
+        </ecl-gallery-item>
+        <ecl-gallery-item
+            theme="ec"
+            meta="Copyright, Author, Licence for image 10"
+            media-share-path="/example.html#frag6"
+            media-href="https://inno-ecl.s3.amazonaws.com/media/examples/example-image10.jpg"
+            image-alt="Image 10"
+        >
+            EU by topic
+        </ecl-gallery-item>
+        </ecl-gallery>
+   </div> 
+    
+    <ecl-footer
+        theme="eu"
+        logo-alt="European Union"
+        logo-title="European Union"
+        logo-lang-code="en"
+        site-name="Site name"
+        description="This site is managed by the Directorate-General for Communication"
+        variant="harmonised"
+        logo-link="/example.html#mtbhx"
+    >
+        <ecl-footer-item
+        theme="eu"
+        slot="description"
+        link="/example.html#zpihz"
+        >
+        <span slot="ecl-footer-item-desc">Discover more on</span>
+        europa.eu
+        </ecl-footer-item>
+        <ecl-text
+        level="1"
+        tag="h2"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        slot="ecl-footer-list-top-middle"
+        >
+        Contact site name
+        </ecl-text>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#p97i7"
+        slot="ecl-footer-list-top-middle"
+        >
+        Link
+        </ecl-footer-item>
+        <ecl-text
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        slot="ecl-footer-list-top-middle-bottom"
+        level="1"
+        tag="h2"
+        >
+        Follow us
+        </ecl-text>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#b0i5k"
+        slot="ecl-footer-list-top-middle-bottom"
+        >
+        Social 1
+        </ecl-footer-item>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#hzsy0"
+        slot="ecl-footer-list-top-middle-bottom"
+        >
+        Social 2
+        </ecl-footer-item>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#glkqc"
+        slot="ecl-footer-list-top-middle-bottom"
+        >
+        Social 3
+        </ecl-footer-item>
+        <ecl-text
+        level="1"
+        tag="h2"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        slot="ecl-footer-list-top-right"
+        >
+        Optional links
+        </ecl-text>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#kvg4x"
+        slot="ecl-footer-list-top-right"
+        >
+        Link 1
+        </ecl-footer-item>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#tgnmt"
+        slot="ecl-footer-list-top-right"
+        >
+        Link 2
+        </ecl-footer-item>
+        <ecl-footer-item
+        theme="eu"
+        link="/example.html#tu49l"
+        slot="ecl-footer-list-top-right"
+        >
+        Link 3
+        </ecl-footer-item>
+        <ecl-text
+        tag="h2"
+        level="1"
+        slot="ecl-footer-list-main"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        >
+        Contact the EU
+        </ecl-text>
+        <ecl-footer-item
+        theme="eu"
+        link="tel:0080067891011"
+        slot="ecl-footer-list-main"
+        >
+        <span slot="ecl-footer-item-desc">Call us</span>
+        00 800 6 7 8 9 10 11
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/contact-eu/call-us_en"
+        theme="eu"
+        slot="ecl-footer-list-main"
+        >
+        <span slot="ecl-footer-item-desc">Use other</span>
+        telephone options
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/contact-eu/write-us_en"
+        theme="eu"
+        slot="ecl-footer-list-main"
+        >
+        <span slot="ecl-footer-item-desc">Write us via</span>
+        contact form
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/contact-eu/meet-us_en"
+        theme="eu"
+        slot="ecl-footer-list-main"
+        >
+        <span slot="ecl-footer-item-desc">Meet us at one of the</span>
+        EU centres
+        </ecl-footer-item>
+        <ecl-text
+        tag="h2"
+        level="1"
+        slot="ecl-footer-list-bottom-left"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        >
+        Social Media
+        </ecl-text>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/contact-eu/social-media-channels_en"
+        theme="eu"
+        slot="ecl-footer-list-bottom-left"
+        >
+        <span slot="ecl-footer-item-desc">Search for</span>
+        EU social media channels
+        </ecl-footer-item>
+        <ecl-text
+        level="1"
+        tag="h2"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Legal
+        </ecl-text>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/languages-our-websites_en"
+        theme="eu"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Languages on our websites
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/privacy-policy_en"
+        theme="eu"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Privacy policy
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/privacy-policy_en"
+        theme="eu"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Legal notice
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/cookies_en"
+        theme="eu"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Cookies
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="/example.html#zka7m"
+        theme="eu"
+        slot="ecl-footer-list-info"
+        >
+        Accessibility
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/web-accessibility-policy_en"
+        theme="eu"
+        slot="ecl-footer-list-main-bottom"
+        >
+        Accessibility
+        </ecl-footer-item>
+        <ecl-text
+        level="1"
+        tag="h2"
+        style-class="ecl-site-footer__title ecl-site-footer__title--separator"
+        slot="ecl-footer-list-right"
+        >
+        EU institutions
+        </ecl-text>
+        <ecl-footer-item
+        link="http://www.europarl.europa.eu/portal/"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Parliament
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://www.consilium.europa.eu/en/european-council/"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Council
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://www.consilium.europa.eu/en/home/"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        Council of the European Union
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://ec.europa.eu/commission/index_en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Commission
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://curia.europa.eu/jcms/jcms/j_6/en/"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        Court of Justice of the European Union (CJEU)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="European Central Bank (ECB)"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Central Bank (ECB)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://www.eca.europa.eu/en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Court of Auditors (ECA)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://www.eca.europa.eu/en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Court of Auditors (ECA)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://eeas.europa.eu/headquarters/headquarters-homepage_en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European External Action Service (EEAS)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://www.eesc.europa.eu/?i=portal.en.home"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Economic and Social Committee (EESC)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="http://cor.europa.eu/en/"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Committee of the Regions (CoR)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://www.eib.org/en/index.htm"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Investment Bank (EIB)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://www.ombudsman.europa.eu/en/home"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Ombudsman
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://secure.edps.europa.eu/EDPSWEB/edps/EDPS?lang=ene"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Data Protection Supervisor (EDPS)
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://edpb.europa.eu/edpb_en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        The European Data Protection Board
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://epso.europa.eu/en"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        European Personnel Selection Office
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://op.europa.eu/en/home"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        Publications Office of the European Union
+        </ecl-footer-item>
+        <ecl-footer-item
+        link="https://european-union.europa.eu/institutions-law-budget/institutions-and-bodies/institutions-and-bodies-profiles_en?f%5B0%5D=oe_organisation_eu_type%3Ahttp%3A//publications.europa.eu/resource/authority/corporate-body-classification/AGENCY_DEC&f%5B1%5D=oe_organisation_eu_type%3Ahttp%3A//publications.europa.eu/resource/authority/corporate-body-classification/AGENCY_EXEC&f%5B2%5D=oe_organisation_eu_type%3Ahttp%3A//publications.europa.eu/resource/authority/corporate-body-classification/EU_JU"
+        theme="eu"
+        slot="ecl-footer-list-right"
+        >
+        Agencies
+        </ecl-footer-item>
+    </ecl-footer>
+
+    <h1>Ion Webcomponents</h1>
+
+    <h2>Datetime</h2>
+    <ion-datetime value="2022-04-21T00:00:00"
+                  min="2022-03-01T00:00:00"
+                  max="2022-05-31T23:59:59"></ion-datetime>
+
+    <h2>Chip</h2>
+
+    <ion-chip>Default</ion-chip>
+    <ion-chip disabled="true">Disabled</ion-chip>
+    <ion-chip outline="true">Outline</ion-chip>
+    <ion-chip>
+        <ion-avatar>
+            <img alt="Silhouette of a person's head"
+                 src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label>Avatar Chip</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+
+    <ion-chip>
+        <ion-icon name="pin"
+                  color="primary"></ion-icon>
+        <ion-label>Icon Chip</ion-label>
+        <ion-icon name="close"></ion-icon>
+    </ion-chip>
+
+    <h2>Item with input</h2>
+    <ion-item>
+        <ion-input label="Default Input"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-input label="Fixed Input"
+                   label-placement="fixed"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-input label="Stacked Input"
+                   label-placement="stacked"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-input label="Floating Input"
+                   label-placement="floating"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline">
+        <ion-input label="Floating Input: Outline (MD only)"
+                   label-placement="floating"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid">
+        <ion-input label="Floating Input: Solid (MD only)"
+                   label-placement="floating"
+                   placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-select label="Select"
+                    placeholder="Make a Selection">
+            <ion-select-option value="">No Game Console</ion-select-option>
+            <ion-select-option value="nes">NES</ion-select-option>
+            <ion-select-option value="n64">Nintendo64</ion-select-option>
+            <ion-select-option value="ps">PlayStation</ion-select-option>
+            <ion-select-option value="genesis">Sega Genesis</ion-select-option>
+            <ion-select-option value="saturn">Sega Saturn</ion-select-option>
+            <ion-select-option value="snes">SNES</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-toggle>
+            <div>Toggle</div>
+        </ion-toggle>
+    </ion-item>
+
+    <ion-item>
+        <ion-checkbox>
+            <div>Checkbox</div>
+        </ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+        <ion-range label-placement="start">
+            <div slot="label">Range</div>
+        </ion-range>
+    </ion-item>
+
+    <h2>Segment</h2>
+    <ion-segment value="default">
+        <ion-segment-button value="default">
+            <ion-label>Default</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="segment">
+            <ion-label>Segment</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+
+    <ion-segment disabled="true"
+                 value="disabled">
+        <ion-segment-button value="disabled">
+            <ion-label>Disabled</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="segment">
+            <ion-label>Segment</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</body>
+
+</html>

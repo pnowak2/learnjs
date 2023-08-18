@@ -1,0 +1,15 @@
+{
+  "name": "vanilla-js-using-ecl-webcomps",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stencil": "./bin/stencil"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ecl/ecl-webcomponents": "^0.9.0"
+  }
+}
