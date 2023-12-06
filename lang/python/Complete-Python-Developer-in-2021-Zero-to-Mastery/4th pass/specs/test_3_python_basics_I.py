@@ -84,3 +84,65 @@ class TestAugmentedAssignmentOperator:
 
         assert someValue is 7
 
+class TestString:
+    def test_declaration(self):
+        'hi hello'
+        "hi hello"
+        assert type("string") is str
+
+        username = 'supercode'
+        passwd = 'superpasword'
+
+    def test_long_string(self):
+        long_string = '''hello
+                         world
+                         how are
+                         you'''
+
+        assert type(long_string) is str
+
+    def test_merging_strings(self):
+        first = 'piotr'
+        last = 'nowak'
+        full = first + ' ' + last
+
+        assert full == 'piotr nowak'
+
+    def test_concatenation(self):
+        assert 'hello' + ' piotr' == 'hello piotr'
+
+class TestTypeConversion:
+    def test(self):
+        conv = str(100)
+        assert conv == '100'
+        assert type(conv) is str
+
+class TestEscapeSequence:
+    def test_escape_quote(self):
+        weather = 'it\'s sunny'
+        another = '''it's sunny'''
+        assert weather == "it's sunny"
+        assert another == "it's sunny"
+
+    def test_other(self):
+        weather = 'hello\tworld' # tab
+        weather = 'hello\nworld' # new line
+
+class TestFormattedStrings:
+    def test_format_string_python3(self):
+        name = 'pnowak'
+        message = f'hello {name}'
+
+        assert message == 'hello pnowak'
+
+    def test_format_string_python2(self):
+        name = 'pnowak'
+        age = 43
+        message = 'hello {0}, you are {1}'.format(name, age)
+
+        assert message == 'hello pnowak, you are 43'
+
+    def test_named_format_string_python2(self):
+        message = 'hello {name}, you are {age}'.format(name='andrew', age=29)
+
+        assert message == 'hello andrew, you are 29'
