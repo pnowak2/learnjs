@@ -146,3 +146,59 @@ class TestFormattedStrings:
         message = 'hello {name}, you are {age}'.format(name='andrew', age=29)
 
         assert message == 'hello andrew, you are 29'
+
+class TestStringIndexes:
+    def test_indexes(self):
+        msg = 'hello'
+
+        assert msg[0] == 'h'
+        assert msg[4] == 'o'
+
+    def test_range(self):
+        msg = 'hello'
+
+        assert msg[1:3] == 'el'
+
+    def test_range_with_stepover(self):
+        msg = 'hello world'
+        assert msg[0:len(msg):2] == 'hlowrd'
+        assert msg[6:] == 'world' # no end index means till end
+        assert msg[:6] == 'hello ' # no start index means till beginning
+        assert msg[::1] == 'hello world'
+        assert msg[::3] == 'hlwl'
+        assert msg[-1] == 'd'
+        assert msg[::-1] == 'dlrow olleh'
+
+    def test_anatomy(self):
+        # [start:stop:stepover]
+        pass
+
+class TestImmutability:
+    def test(self):
+        name = 'piotr'
+        name = 100
+        # name[0] = 'b' # immutable, cannot change it in python
+
+class TestBuilInFunctionsAndMethods:
+    def test_builtins(self):
+        quote = 'hello'
+        assert quote.upper() == 'HELLO'
+        assert quote.capitalize() == 'Hello'
+        assert 'HOME'.lower() == 'home'
+        assert quote.find('lo') == 3
+        assert quote.replace('lo', 'l yeah') == 'hell yeah'
+        assert quote == 'hello'
+
+class TestBooleans:
+    def test_booleans(self):
+        name = 'peter'
+        is_auth = False
+        is_auth = True
+
+        assert is_auth is True
+        assert bool(1) is True
+        assert bool(0) is False
+
+class TypeConversion:
+    def test(self):
+        pass
