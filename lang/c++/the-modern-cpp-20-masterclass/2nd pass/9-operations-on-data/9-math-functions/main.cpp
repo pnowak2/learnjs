@@ -1,14 +1,30 @@
 #include <iostream>
-#include <limits>
+#include <cmath>
+#include <iomanip>
 
 int main()
 {
-    std::cout << "Lowest for short: " << std::numeric_limits<short>::lowest() << std::endl;
-    std::cout << "Minimum for short: " << std::numeric_limits<short>::min() << std::endl;
-    std::cout << "Maximum for short: " << std::numeric_limits<short>::max() << std::endl;
+    double weight { 7.7 };
 
-    std::cout << "Lowest for float: " << std::numeric_limits<float>::lowest() << std::endl;
-    std::cout << "Minimum for float: " << std::numeric_limits<float>::min() << std::endl;
-    std::cout << "Maximum for float: " << std::numeric_limits<float>::max() << std::endl;
+    std::cout << std::floor(weight) << std::endl;
+    std::cout << std::ceil(weight) << std::endl;
+
+    std::cout << std::abs(-5) << std::endl;
+
+    std::cout <<std::setprecision(20) << std::exp(1) << std::endl;
+
+    std::cout << std::pow(2, 3) << std::endl;
+
+    std::cout << std::log(3.14) << std::endl;
+    std::cout << std::log10(10000) << std::endl;
+
+    std::cout << std::sqrt(9) << std::endl;
+
+    std::cout << std::round(9.49) << std::endl;
+    std::cout << std::round(9.51) << std::endl;
+
+    const auto PI = 3.1428;
+    std::cout << std::sin(PI/2) << std::endl;
+    std::cout << std::cos(PI/2) << std::endl;
     return 0;
 }
