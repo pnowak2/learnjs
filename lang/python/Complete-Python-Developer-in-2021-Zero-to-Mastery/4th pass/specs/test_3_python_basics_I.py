@@ -321,8 +321,8 @@ class TestFundamentalsII:
                 idx = basket.index('yo')
                 precise_idx = basket.index('yo', 3)
 
-                assert idx == 2 
-                assert precise_idx == 3 
+                assert idx == 2
+                assert precise_idx == 3
 
             def test_in(self):
                 basket = ['a', 'b', 'c']
@@ -364,3 +364,92 @@ class TestFundamentalsII:
                 basket.reverse()
 
                 assert basket == [2, 1]
+
+        class TestCommonListPatterns:
+            def test_length(self):
+                lst = [1, 2, 3]
+                assert(len(lst) == 3)
+
+            def test_reverse(self):
+                lst = [1, 2, 3]
+                assert(lst[::-1] == [3, 2, 1])
+
+            def test_range(self):
+                lst = list(range(1, 5))
+                assert(lst == [1, 2, 3, 4])
+
+            def test_list_str_join(self):
+                result = '-'.join(['hi', 'how', 'are', 'you'])
+                assert(result == 'hi-how-are-you')
+
+        class TestListUnpacking:
+            def test_unpacking(self):
+                a, b, c, *rest, d = [1, 2, 3, 4, 5, 6]
+
+                assert a == 1
+                assert b == 2
+                assert c == 3
+                assert rest == [4, 5]
+                assert d == 6
+
+        class TestNone:
+            def test(self):
+                weapons = None
+                assert weapons == None
+
+    class TestDictionaries:
+        def test_type(self):
+            dict
+
+        def test_declarations(self):
+            dct = {
+                'a': 1,
+                'b': 2,
+                'x': [1, 2, 3],
+                'z': None
+            }
+
+            assert dct['a'] == 1
+            assert dct['b'] == 2
+            assert dct['x'] == [1, 2, 3]
+            assert dct['z'] is None
+            # dct['c'] // error, does not exist
+
+        class TestDictionaryKeys:
+            def test_keys_immutable_types(self):
+                dct = {
+                    123: 1,
+                    True: 'b',
+                    'foo': [1, 2],
+                    'foo': 'bar'  # overrides previous one, need unique keys
+                    # [1, 2]: False # key has to be immutable
+                }
+
+                assert dct['foo'] == 'bar'
+
+        class TestDictionaryMethods:
+            def test_get(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                assert(user.get('a') == 1)
+                assert(user.get('boo') == None)  # no error as with [] operator
+                assert(user.get('boo', 'default') == 'default')
+
+            def test_dict_constructor(self):
+                user = dict(a=1, b=2)
+
+                assert(user.get('a') == 1)
+                assert(user.get('boo') == None)  # no error as with [] operator
+                assert(user.get('boo', 'default') == 'default')
+
+            def test_in(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                assert(('a' in user) is True)
+                assert(('boo' in user) is False)
