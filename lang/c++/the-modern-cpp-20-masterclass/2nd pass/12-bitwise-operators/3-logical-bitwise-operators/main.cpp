@@ -14,6 +14,7 @@ int main()
     std::cout << std::bitset<8>(orOp) << std::endl;
     std::cout << std::bitset<8>(xorOp) << std::endl;
     std::cout << std::bitset<8>(~orOp) << std::endl;
+    std::cout << std::bitset<8>(0b01011010) << std::endl;
 
     return 0;
 }
