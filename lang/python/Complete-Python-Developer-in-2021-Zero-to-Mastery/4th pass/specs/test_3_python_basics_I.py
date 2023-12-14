@@ -421,8 +421,9 @@ class TestFundamentalsII:
                     123: 1,
                     True: 'b',
                     'foo': [1, 2],
-                    'foo': 'bar'  # overrides previous one, need unique keys
+                    'foo': 'bar',  # overrides previous one, need unique keys
                     # [1, 2]: False # key has to be immutable
+                    (1, 2): [3, 4] # ok, as tuple is immutable
                 }
 
                 assert dct['foo'] == 'bar'
