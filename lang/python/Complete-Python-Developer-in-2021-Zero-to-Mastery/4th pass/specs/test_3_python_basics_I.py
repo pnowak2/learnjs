@@ -454,3 +454,89 @@ class TestFundamentalsII:
 
                 assert(('a' in user) is True)
                 assert(('boo' in user) is False)
+            def test_in_keys(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                assert(('a' in user.keys()) is True)
+
+            def test_in_values(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                assert((1 in user.values()) is True)
+
+            def test_in_items(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                item_tuple = list(user.items())
+                assert(item_tuple == [('a', 1), ('b', 2)])
+                assert(item_tuple[0] == ('a', 1))
+                assert(item_tuple[1] == ('b', 2))
+
+            def test_clear(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                assert len(user.keys()) == 2
+
+                user.clear()
+
+                assert len(user.keys()) == 0
+
+            def test_copy(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                copied = user.copy()
+
+                assert user == copied
+
+                user['a'] = 'boo'
+
+                assert user != copied
+
+                assert user['a'] == 'boo'
+                assert copied['a'] == 1
+
+            def test_pop(self):
+                user = {
+                    'a': 1,
+                    'b': 2
+                }
+
+                popped = user.pop('b')
+                assert popped == 2
+                assert user == {'a': 1}
+
+            def test_popitem(self):
+                user = {
+                    'a': 1,
+                    'b': 2,
+                    'c': 3
+                }
+
+                # removes last one inserted
+                popped = user.popitem()
+                assert popped == ('c', 3) 
+                assert user == {'a': 1, 'b': 2}
+
+            def test_update(self):
+                user = {
+                    'a': 1,
+                    'b': 2,
+                }
+
+                user.update({'a': 6})
+                assert user['a'] == 6
