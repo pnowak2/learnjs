@@ -423,7 +423,7 @@ class TestFundamentalsII:
                     'foo': [1, 2],
                     'foo': 'bar',  # overrides previous one, need unique keys
                     # [1, 2]: False # key has to be immutable
-                    (1, 2): [3, 4] # ok, as tuple is immutable
+                    (1, 2): [3, 4]  # ok, as tuple is immutable
                 }
 
                 assert dct['foo'] == 'bar'
@@ -454,6 +454,7 @@ class TestFundamentalsII:
 
                 assert(('a' in user) is True)
                 assert(('boo' in user) is False)
+
             def test_in_keys(self):
                 user = {
                     'a': 1,
@@ -529,7 +530,7 @@ class TestFundamentalsII:
 
                 # removes last one inserted
                 popped = user.popitem()
-                assert popped == ('c', 3) 
+                assert popped == ('c', 3)
                 assert user == {'a': 1, 'b': 2}
 
             def test_update(self):
@@ -540,3 +541,95 @@ class TestFundamentalsII:
 
                 user.update({'a': 6})
                 assert user['a'] == 6
+
+    class TestTuples:
+        def test_definition(self):
+            my_tuple = (1, 2, 3)
+            tpl = tuple([1, 2, 3])
+            # my_tuple[0] = 3 # error, tuples are read only
+
+            assert(my_tuple == (1, 2, 3))
+            assert(tpl == (1, 2, 3))
+
+        def test_tuple_in(self):
+            my_tuple = (1, 2, 3)
+
+            assert ((2 in my_tuple) is True)
+
+        def test_tuple_from_dict(self):
+            dic = {'a': 1, 'b': 2}
+            items = list(dic.items())
+
+            assert (items == [('a', 1), ('b', 2)])
+
+        def test_as_dict_key(self):
+            dic = {(1, 2): 1, 'b': 2}  # valid as tuple is immutable
+
+        def test_slicing(self):
+            my_tuple = (1, 2, 3, 4, 5)
+            new_tuple = my_tuple[1:2]
+
+            assert (new_tuple == (2,))
+
+        def test_destructurize(self):
+            my_tuple = (1, 2, 3, 4, 5)
+            x, y, *rest = my_tuple
+
+            assert x == 1
+            assert y == 2
+            assert rest == [3, 4, 5]
+
+        class TestTupleMethods:
+            def test_count(self):
+                tpl = (1, 2, 3, 3, 3, 4, 4, 5)
+                assert tpl.count(3) == 3
+
+            def test_index(self):
+                tpl = (1, 2, 3)
+                assert tpl.index(2) == 1
+
+            def test_len(self):
+                tpl = (1, 2, 3)
+                assert len(tpl) == 3
+
+    class TestSets:
+        def test_definition(self):
+            my_set = {1, 2, 3, 4, 4, 5, 5, 5}
+            assert my_set == {1, 2, 3, 4, 5}
+
+            my_set.add(4)
+            assert my_set == {1, 2, 3, 4, 5}
+
+            my_set.add(6)
+            assert my_set == {1, 2, 3, 4, 5, 6}
+
+        def test_collection_without_dups(self):
+            my_list = [1, 2, 2, 3, 3, 3]
+            assert set(my_list) == {1, 2, 3}
+
+        def test_check_for_item_existence(self):
+            my_set = {1, 'b', 3}
+            assert('b' in my_set) == True
+
+        def test_test_not_subscripable(self):
+            my_set = {1, 'b', 3}
+            # my_set[0]
+
+        def test_len(self):
+            my_set = {1, 'b', 3}
+            assert len(my_set) == 3
+
+        def test_to_list(self):
+            my_set = {1, 'b', 3}
+            lst = list(my_set)
+            assert lst == [1, 3, 'b']
+
+        def test_copy(self):
+            my_set = {1, 'b', 3}
+            copied = my_set.copy()
+            my_set.clear()
+
+            assert copied == {1, 'b', 3}
+
+
+
