@@ -1,4 +1,4 @@
-class TestFundamentalsI:
+class TestPythonBasics:
     class TestDataTypes:
         def test_fundamental_data_types(self):
             assert (type(1) is int)
@@ -622,14 +622,75 @@ class TestFundamentalsII:
         def test_to_list(self):
             my_set = {1, 'b', 3}
             lst = list(my_set)
-            assert lst == [1, 3, 'b']
+            # assert lst == [1, 3, 'b'] # order changes here from run to run
 
         def test_copy(self):
             my_set = {1, 'b', 3}
             copied = my_set.copy()
             my_set.clear()
 
-            assert copied == {1, 'b', 3}
+            assert copied == {1, 3, 'b'}
 
+        def test_difference(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
 
+            result = your_set.difference(my_set)
+            assert result == {6, 7, 8, 9, 10}
 
+        def test_discard(self):
+            my_set = {1, 2, 3, 4, 5}
+
+            my_set.discard(4)
+            assert my_set == {1, 2, 3, 5}
+
+        def test_update(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            your_set.update(my_set)
+            assert your_set == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+        def test_intersection(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = your_set.intersection(my_set)
+            assert result == {4, 5}
+
+        def test_intersection_with_and(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = my_set & your_set
+            assert result == {4, 5}
+
+        def test_isdisjoint(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = your_set.isdisjoint(my_set)
+            assert result == False
+            assert {1, 2, 3}.isdisjoint({4, 5}) == True
+
+        def test_issubset(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = my_set.issubset(your_set)
+            assert result == False
+            assert {1, 2, 3}.issubset({1, 2, 3, 4, 5}) == True
+
+        def test_issuperset(self):
+            my_set = {4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = your_set.issuperset(my_set)
+            assert result == True
+
+        def test_union(self):
+            my_set = {1, 2, 3, 4, 5}
+            your_set = {4, 5, 6, 7, 8, 9, 10}
+
+            result = my_set.union(your_set)
+            assert result == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
