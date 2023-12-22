@@ -1,5 +1,5 @@
 #include <iostream>
-#include <time>
+#include <ctime>
 
 int main()
 {
@@ -11,16 +11,29 @@ int main()
         std::cout << random << std::endl;
     }
 
+    std::cout << std::endl;
+
     std::cout << "RAND_MAX: " << RAND_MAX;
 
-    // random number between 1-10
+    std::cout << std::endl;
+
+    // random number between 1-10, but always same without seed
 
     for (auto _ : loops)
     {
-        std::srand(std::time(0));
-        auto rand10 = (std::rand() % 11) + 1;
-        std::cout << rand10 << std::endl;
+        int random_num = std::rand() % 10 + 1;
+        std::cout << random_num << std::endl;
     }
 
+
+    // random number between 1-10
+    std::cout << std::endl;
+
+    std::srand(std::time(0));
+    for (auto _ : loops)
+    {
+        auto rand10 = (std::rand() % 10) + 1;
+        std::cout << rand10 << std::endl;
+    }
     return 0;
 }

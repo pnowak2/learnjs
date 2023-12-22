@@ -20,7 +20,7 @@ int main()
     std::cout << "^= 0b00001111: " << std::bitset<8>(var) << std::endl;
 
     var |= 0b11110000;
-    std::cout << "|= 0b00001111: " << std::bitset<8>(var) << std::endl;
+    std::cout << "|= 0b11110000: " << std::bitset<8>(var) << std::endl;
 
     return 0;
 }

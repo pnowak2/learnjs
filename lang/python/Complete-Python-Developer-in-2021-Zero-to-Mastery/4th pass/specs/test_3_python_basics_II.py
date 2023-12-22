@@ -178,5 +178,35 @@ class TestPythonBasicsII:
             assert sum == 45
 
     class TestRange:
-        def test(self):
+        def test_declaration(self):
+            assert(list(range(5)) == [0, 1, 2, 3, 4])
+            assert(list(range(1, 5)) == [1, 2, 3, 4])
+            assert(list(range(1, 10, 2)) == [1, 3, 5, 7, 9]) # step as last param to range
+            assert(list(range(10, 0, -1)) == [10,9,8,7,6,5,4,3,2,1])
+
+        counter = 0
+        def test_in_for_loops(self):
+            counter = 0
+            for _ in range(1, 5):
+                counter += 1
+
+            assert counter == 4
+    class TestEnumarate:
+        def test_declaration(self):
+            text = 'hello'
+
+            for idx, char in enumerate(text):
+               assert text[idx] == char
+
+        def test_excercise_index_of_50(self):
+            index = None
+
+            for i, n in enumerate(list(range(100))):
+                if n == 50:
+                    index = i
+
+            assert index == 50 
+
+    class TestWhileLoops:
+        def test_declaration(self):
             pass
