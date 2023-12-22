@@ -43,4 +43,17 @@ int main()
             }
         }
     }
+
+    // can omit first size, will be inferred from initialization data
+    int items[][3] {
+        {1, 2, 3},
+        {4, 5, 6}
+    }; // automatically will set size to 2
+
+    std::cout << "Size: " << std::size(items) << std::endl;
+
+    int others[][3] {
+        {1, 2, 3},
+        {4/* autofilled with zeros*/}
+    }; 
 }
