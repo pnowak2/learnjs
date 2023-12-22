@@ -178,5 +178,96 @@ class TestPythonBasicsII:
             assert sum == 45
 
     class TestRange:
-        def test(self):
-            pass
+        def test_declaration(self):
+            assert(list(range(5)) == [0, 1, 2, 3, 4])
+            assert(list(range(1, 5)) == [1, 2, 3, 4])
+            assert(list(range(1, 10, 2)) == [1, 3, 5, 7, 9]) # step as last param to range
+            assert(list(range(10, 0, -1)) == [10,9,8,7,6,5,4,3,2,1])
+
+        counter = 0
+        def test_in_for_loops(self):
+            counter = 0
+            for _ in range(1, 5):
+                counter += 1
+
+            assert counter == 4
+    class TestEnumarate:
+        def test_declaration(self):
+            text = 'hello'
+
+            for idx, char in enumerate(text):
+               assert text[idx] == char
+
+        def test_excercise_index_of_50(self):
+            index = None
+
+            for i, n in enumerate(list(range(100))):
+                if n == 50:
+                    index = i
+
+            assert index == 50 
+
+    class TestWhileLoops:
+        def test_break_loop(self):
+            result = 0
+
+            while True:
+                result += 1
+                if(result == 10):
+                    break
+
+            assert result == 10
+
+        def test_condition(self):
+            result = 0
+
+            while result < 10:
+                result += 1
+
+            assert result == 10
+
+        def test_while_else(self):
+            result = 0
+            counter = 0
+
+            while counter < 10:
+                counter += 1
+            else: # called only once after all loops are done
+                result += 1
+
+            assert result == 1
+
+        def test_while_else_with_break(self):
+            result = 0
+            counter = 0
+
+            while counter < 10:
+                counter += 1
+                if counter == 3:
+                    break
+            else: # never called if break appeared in loop
+                result += 1
+
+            assert result == 0
+
+        def test_while_vs_for(self):
+            my_list = [1,2,3]
+            for _ in my_list:
+                pass
+
+            i = 0
+            while i < len(my_list): # when not sure how long i want to loop
+                i += 1
+
+            while True:
+                # make some input('ask user..')
+                response = 'bye'
+                if response == 'bye':
+                    break
+                elif True:
+                    continue # goes back to while / for loop / beginning
+                else:
+                    pass
+class TestDeveloperFundamentalsIV:
+    def test(self):
+        pass
