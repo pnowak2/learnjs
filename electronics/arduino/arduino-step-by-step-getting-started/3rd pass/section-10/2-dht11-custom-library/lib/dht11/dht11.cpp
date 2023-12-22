@@ -103,7 +103,7 @@ int DHT11::readHumidity()
       }
       if (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))
       {
-        return data[0];
+        return static_cast<float>(data[0]) + 0.1 * static_cast<float>(data[1]);
       }
     }
   }
