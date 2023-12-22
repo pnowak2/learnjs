@@ -208,5 +208,66 @@ class TestPythonBasicsII:
             assert index == 50 
 
     class TestWhileLoops:
-        def test_declaration(self):
-            pass
+        def test_break_loop(self):
+            result = 0
+
+            while True:
+                result += 1
+                if(result == 10):
+                    break
+
+            assert result == 10
+
+        def test_condition(self):
+            result = 0
+
+            while result < 10:
+                result += 1
+
+            assert result == 10
+
+        def test_while_else(self):
+            result = 0
+            counter = 0
+
+            while counter < 10:
+                counter += 1
+            else: # called only once after all loops are done
+                result += 1
+
+            assert result == 1
+
+        def test_while_else_with_break(self):
+            result = 0
+            counter = 0
+
+            while counter < 10:
+                counter += 1
+                if counter == 3:
+                    break
+            else: # never called if break appeared in loop
+                result += 1
+
+            assert result == 0
+
+        def test_while_vs_for(self):
+            my_list = [1,2,3]
+            for _ in my_list:
+                pass
+
+            i = 0
+            while i < len(my_list): # when not sure how long i want to loop
+                i += 1
+
+            while True:
+                # make some input('ask user..')
+                response = 'bye'
+                if response == 'bye':
+                    break
+                elif True:
+                    continue # goes back to while / for loop / beginning
+                else:
+                    pass
+class TestDeveloperFundamentalsIV:
+    def test(self):
+        pass
