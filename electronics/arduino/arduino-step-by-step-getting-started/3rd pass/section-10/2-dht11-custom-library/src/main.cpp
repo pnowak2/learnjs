@@ -17,7 +17,7 @@ void setup()
 void loop()
 {
     // Attempt to read the temperature value from the DHT11 sensor.
-    int temperature = dht11.readTemperature();
+    float temperature = dht11.readTemperature();
 
     // Check the result of the reading.
     // If there's no error, print the temperature value.

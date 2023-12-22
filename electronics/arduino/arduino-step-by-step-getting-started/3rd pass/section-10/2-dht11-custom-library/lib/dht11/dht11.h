@@ -42,7 +42,7 @@ public:
    * @return: Temperature value in Celsius. Returns DHT11_ERROR_TIMEOUT if reading times out.
    *          Returns DHT11_ERROR_CHECKSUM if checksum validation fails.
    */
-  int readTemperature();
+  float readTemperature();
 
   // Constants to represent error codes.
   static const int ERROR_CHECKSUM = 254;   // Error code indicating checksum mismatch.

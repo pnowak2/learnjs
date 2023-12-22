@@ -28,7 +28,7 @@ DHT11::DHT11(int pin)
  * @return: Temperature value in Celsius. Returns DHT11::ERROR_TIMEOUT if reading times out.
  *          Returns DHT11::ERROR_CHECKSUM if checksum validation fails.
  */
-int DHT11::readTemperature()
+float DHT11::readTemperature()
 {
   delay(150);
   byte data[5] = {0, 0, 0, 0, 0};
@@ -59,7 +59,7 @@ int DHT11::readTemperature()
       }
       if (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))
       {
-        return data[2];
+        return static_cast<float>(data[2]) + 0.1 * static_cast<float>(data[3]);
       }
     }
   }
