@@ -269,5 +269,27 @@ class TestPythonBasicsII:
                 else:
                     pass
 class TestDeveloperFundamentalsIV:
-    def test(self):
-        pass
+    class TestFindDuplicates:
+        def test(self):
+            some_list = ['a', 'b', 'c', 'b', 'd', 'm', 'n', 'n']
+            dups = dict()
+            dups_lst = []
+
+            for item in some_list:
+                if(some_list.count(item) > 1):
+                    dups[item] = some_list.count(item)
+
+                    if(item not in dups_lst):
+                        dups_lst.append(item)
+
+            
+            assert dups == {
+                'b': 2,
+                'n': 2
+            }
+
+            assert dups_lst == ['b', 'n']
+
+    class TestFunctions:
+        def test(self):
+            pass
