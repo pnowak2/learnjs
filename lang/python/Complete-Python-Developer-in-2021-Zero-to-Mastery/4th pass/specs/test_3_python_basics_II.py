@@ -143,7 +143,8 @@ class TestPythonBasicsII:
                 'can_swim': False
             }
 
-            assert(list(user.items()) == [('name', 'Golem'), ('age', 5006), ('can_swim', False)])
+            assert(list(user.items()) == [
+                   ('name', 'Golem'), ('age', 5006), ('can_swim', False)])
             assert(user.keys() == {'name', 'age', 'can_swim'})
             assert(list(user.values()) == ['Golem', 5006, False])
 
@@ -158,7 +159,7 @@ class TestPythonBasicsII:
                 key, value = item
                 assert user[key] is value
 
-            # same as 
+            # same as
 
             for k, v in user.items():
                 assert user[k] is v
@@ -169,7 +170,7 @@ class TestPythonBasicsII:
             assert value == 'bar'
 
         def test_tricky_counter_excercise(self):
-            lst = [1,2,3,4,5,6,7,8,9]
+            lst = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
             sum = 0
             for item in lst:
@@ -181,22 +182,25 @@ class TestPythonBasicsII:
         def test_declaration(self):
             assert(list(range(5)) == [0, 1, 2, 3, 4])
             assert(list(range(1, 5)) == [1, 2, 3, 4])
-            assert(list(range(1, 10, 2)) == [1, 3, 5, 7, 9]) # step as last param to range
-            assert(list(range(10, 0, -1)) == [10,9,8,7,6,5,4,3,2,1])
+            # step as last param to range
+            assert(list(range(1, 10, 2)) == [1, 3, 5, 7, 9])
+            assert(list(range(10, 0, -1)) == [10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
 
         counter = 0
+
         def test_in_for_loops(self):
             counter = 0
             for _ in range(1, 5):
                 counter += 1
 
             assert counter == 4
+
     class TestEnumarate:
         def test_declaration(self):
             text = 'hello'
 
             for idx, char in enumerate(text):
-               assert text[idx] == char
+                assert text[idx] == char
 
         def test_excercise_index_of_50(self):
             index = None
@@ -205,7 +209,7 @@ class TestPythonBasicsII:
                 if n == 50:
                     index = i
 
-            assert index == 50 
+            assert index == 50
 
     class TestWhileLoops:
         def test_break_loop(self):
@@ -232,7 +236,7 @@ class TestPythonBasicsII:
 
             while counter < 10:
                 counter += 1
-            else: # called only once after all loops are done
+            else:  # called only once after all loops are done
                 result += 1
 
             assert result == 1
@@ -245,18 +249,18 @@ class TestPythonBasicsII:
                 counter += 1
                 if counter == 3:
                     break
-            else: # never called if break appeared in loop
+            else:  # never called if break appeared in loop
                 result += 1
 
             assert result == 0
 
         def test_while_vs_for(self):
-            my_list = [1,2,3]
+            my_list = [1, 2, 3]
             for _ in my_list:
                 pass
 
             i = 0
-            while i < len(my_list): # when not sure how long i want to loop
+            while i < len(my_list):  # when not sure how long i want to loop
                 i += 1
 
             while True:
@@ -265,9 +269,11 @@ class TestPythonBasicsII:
                 if response == 'bye':
                     break
                 elif True:
-                    continue # goes back to while / for loop / beginning
+                    continue  # goes back to while / for loop / beginning
                 else:
                     pass
+
+
 class TestDeveloperFundamentalsIV:
     class TestFindDuplicates:
         def test(self):
@@ -282,7 +288,6 @@ class TestDeveloperFundamentalsIV:
                     if(item not in dups_lst):
                         dups_lst.append(item)
 
-            
             assert dups == {
                 'b': 2,
                 'n': 2
@@ -291,5 +296,113 @@ class TestDeveloperFundamentalsIV:
             assert dups_lst == ['b', 'n']
 
     class TestFunctions:
+        def test_definition(self):
+            def say_hello():
+                return 1
+
+            assert say_hello() == 1
+
+        class TestParamsAndArguments:
+            def test(self):
+                def say_hello(name, age):
+                    return f'hello {name}, {age}'
+
+                assert say_hello('peter', 43) == 'hello peter, 43'
+
+        class TestDefaultParamsAndArguments:
+            def test_keyword_args(self):
+                def say_hello(name, age=43):
+                    return f'hello {name}, {age}'
+
+                assert say_hello(age=26, name="john") == 'hello john, 26'
+
+            def test_default_args(self):
+                def say_hello(name="Mark", age=43):
+                    return f'hello {name}, {age}'
+
+                assert say_hello() == 'hello Mark, 43'
+                assert say_hello('peter') == 'hello peter, 43'
+
+        class TestReturn:
+            def test(self):
+                def say_hello(name, age=43):
+                    return f'hello {name}, {age}'
+
+                def get_none():
+                    return
+
+                assert say_hello(age=26, name="john") == 'hello john, 26'
+
+                assert get_none() == None
+
+            def test_nested(self):
+                def outer(multiplier=2):
+                    def inner(number=5):
+                        return number * multiplier
+
+                    return inner
+
+                assert outer()() == 10
+
+                fiver = outer(5)
+                assert fiver(6) == 30
+
+    class TestMethodsVsFunctions:
+        def test_method(self):
+            assert 'test'.capitalize() == 'Test'
+
+    class TestDocStrings:
         def test(self):
-            pass
+            '''
+            Info: this is docstring
+            '''
+
+        assert ('this is docstring' in test.__doc__) == True
+
+    class TestArgsAndKwargs:
+        def test_args(self):
+            def super_fn(*args):
+                assert type(args) is tuple
+
+                assert args == (1, 2, 3)  # tuple
+
+                return sum(args)
+
+            assert super_fn(1, 2, 3) == 6
+
+        def test_keyword_args(self):
+            def super_fn(**kwargs):
+                assert type(kwargs) is dict
+
+                assert len(kwargs.keys()) == 2
+                assert kwargs.get('foo') == 1
+                assert kwargs.get('bar') == 2
+
+            super_fn(foo=1, bar=2)
+
+        def test_args_and_kwargs(self):
+            def super_fn(*args, **kwargs):
+                assert len(args) == 3
+                assert len(kwargs) == 2
+
+                assert args[0] == 1
+                assert args[1] == 2
+                assert args[2] == 3
+
+                assert kwargs['name'] == 'peter'
+                assert kwargs['age'] == '43'
+
+                return '-'.join(kwargs.values())
+
+            result = super_fn(1, 2, 3, name='peter', age='43')
+            assert result == 'peter-43'
+
+        def test_all_types(self):
+            def super_fn(prop1, prop2, *args, age=5, **kwargs):
+                assert prop1 == 1
+                assert prop2 == 2
+                assert args == (3, 4)
+                assert age == 5
+                assert kwargs.get('name') == 'peter'
+
+            super_fn(1, 2, 3, 4, name='peter')
