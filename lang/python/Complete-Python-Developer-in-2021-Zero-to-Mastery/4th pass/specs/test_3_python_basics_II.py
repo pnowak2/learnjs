@@ -1,3 +1,6 @@
+
+total = 0 # global variable
+
 class TestPythonBasicsII:
     class TestConditionalLogic:
         def test_if_else_elif_and(self):
@@ -406,3 +409,81 @@ class TestDeveloperFundamentalsIV:
                 assert kwargs.get('name') == 'peter'
 
             super_fn(1, 2, 3, 4, name='peter')
+
+    class TestExcerciseFunctions:
+        def test(self):
+            def highest(lst):
+                evens = []
+
+                for item in lst:
+                    if item % 2 == 0:
+                        evens.append(item)
+
+                return max(evens)
+
+            def highest_even(lst):
+                highest_even = 0
+
+                for item in lst:
+                    if item % 2 is 0 and item > highest_even == 0:
+                        highest_even = item
+
+                return highest_even
+
+            result = highest_even([1, 10, 2, 3, 4, 8, 11])
+            assert result == 10
+
+            result = highest([10, 2, 3, 4, 8, 11])
+            assert result == 10
+
+    class TestWalrusOperator:
+        def test(self):
+            def fn(a):
+                if((size := len(a)) > 10):
+                    return f"Too long, {size} elements"
+
+            assert (fn('hello world') == 'Too long, 11 elements')
+            assert ("world"[:-1] == 'worl')
+
+    class TestScope:
+        def test(self):
+            def some_fn():
+                total = 100
+
+            some_fn()
+            # total # not defined in this scope
+
+        def test_scope_rules(self):
+            a = 1
+
+            def confusion():
+                a = 5
+                return a
+
+            assert a == 1
+            assert confusion() == 5
+
+        def test_global_keyword(self):
+            def count():
+                global total # declare this variable is global and already has been declared
+                total += 1
+
+                return total
+
+            count()
+            count()
+            assert count() == 3
+
+        def test_nonlocal_keyword(self):
+            my_var = 'local' 
+
+            def check():
+                nonlocal my_var # saying: its not global variable, but its also defined outside of this scope
+                                # modifying it, will affect outer scope variable (nonlocal)
+                                # useful for closures
+                my_var = 'non local' 
+
+                return my_var
+
+            assert check() == 'non local' 
+            assert my_var == 'non local' 
