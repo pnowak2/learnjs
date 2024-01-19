@@ -158,15 +158,125 @@ class TestAdvancedPythonOOP:
             assert self.p1.speak() == 'tom 18'
 
     class TestInheritance:
-        class Player:
-            def __init__(self, name, age):
-                self._name = name
-                self._age = age
+        class User:
+            def sign_in(self):
+                return 'login'
 
-            def speak(self):
-                return f'{self._name} {self._age}'
+        class Wizard(User):
+            def __init__(self, name, power):
+                self.name = name
+                self.power = power
+            
+            def attack(self):
+                return f"attacking with power of {self.power}"
 
-        p1 = Player('tom', 18)
+        class Archer(User):
+            def __init__(self, name, num_arrows):
+                self.name = name
+                self.num_arrows = num_arrows
+            
+            def attack(self):
+                return f"attacking with arrows {self.num_arrows}"
+
+        wizard = Wizard("peter", 43)
+        archer = Archer("john", 6)
 
         def test(self):
-            assert self.p1.speak() == 'tom 18'
+            assert isinstance(self.wizard, object)
+            assert isinstance(self.wizard, self.User)
+            assert isinstance(self.archer, self.User)
+            assert isinstance(self.wizard, self.Wizard)
+            assert isinstance(self.archer, self.Archer)
+
+            assert self.wizard.sign_in() == 'login'
+            assert self.archer.sign_in() == 'login'
+            assert self.wizard.attack() == 'attacking with power of 43'
+            assert self.archer.attack() == 'attacking with arrows 6'
+
+    class TestPolymorphism:
+        class User:
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return 'no action'
+        class Wizard(User):
+            def attack(self):
+                return 'wizard attack'
+
+        class Archer(User):
+            def attack(self):
+                return 'archer attack'
+
+        def player_attack(self, character: User):
+            return character.attack()
+
+        def test(self):
+            archer = self.Archer();
+            wizard = self.Wizard();
+
+            assert self.player_attack(self.User()) == 'no action'
+            assert self.player_attack(archer) == 'archer attack'
+            assert self.player_attack(wizard) == 'wizard attack'
+
+            result = []
+            for character in [archer, wizard, self.User()]:
+                result.append(character.attack())
+
+            assert ",".join(result) == 'archer attack,wizard attack,no action'
+
+    class TestSuper:
+        class User:
+            def __init__(self, email):
+                self.email = email
+
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return 'no action'
+
+        class Wizard(User):
+            def __init__(self, email):
+                super().__init__(email)
+
+            def attack(self):
+                return 'wizard attack'
+
+        class Archer(User):
+            def __init__(self, email):
+                super().__init__(email)
+
+            def attack(self):
+                return 'archer attack'
+
+        def test(self):
+            archer = self.Archer('archer mail');
+            wizard = self.Wizard('wizard mail');
+
+            assert archer.email == 'archer mail'
+            assert wizard.email == 'wizard mail'
+
+    class TestIntrospection:
+        class User:
+            def __init__(self, email):
+                self.email = email
+
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return 'no action'
+
+        class Wizard(User):
+            def __init__(self, email):
+                super().__init__(email)
+
+            def attack(self):
+                return 'wizard attack'
+
+
+        def test(self):
+            wizard = self.Wizard('wizard mail')
+
+            assert "sign_in" in dir(wizard)
