@@ -280,3 +280,18 @@ class TestAdvancedPythonOOP:
             wizard = self.Wizard('wizard mail')
 
             assert "sign_in" in dir(wizard)
+
+    class TestDunderMethods:
+        class Toy:
+            def __init__(self, color, age):
+                self.color = color
+                self.age = age
+
+            def __str__(self) -> str:
+                return f"Toy({self.color},{self.age})"
+
+        figure = Toy('red', 5)
+
+        def test(self):
+            assert str(self.figure) == 'Toy(red,5)'
+            assert self.figure.__str__() == 'Toy(red,5)'
