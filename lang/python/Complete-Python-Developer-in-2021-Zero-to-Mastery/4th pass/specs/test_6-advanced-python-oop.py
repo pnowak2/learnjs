@@ -290,8 +290,78 @@ class TestAdvancedPythonOOP:
             def __str__(self) -> str:
                 return f"Toy({self.color},{self.age})"
 
+            def __len__(self):
+                return len(str(self))
+
+            def __del__(self):
+                return 'deleted'
+
+            def __call__(self):
+                return f'called {self.color}'
+
+            def __getitem__(self, i):
+                return self.color[i]
+                
+
         figure = Toy('red', 5)
 
         def test(self):
             assert str(self.figure) == 'Toy(red,5)'
             assert self.figure.__str__() == 'Toy(red,5)'
+            assert len(self.figure) == 10
+            assert(self.figure() == 'called red')
+            assert self.figure[2] == 'd'
+
+            # del self.figure
+
+    class TestSuperList:
+        class SuperList(list):
+            def __len__(self):
+                return 1000 + super().__len__()
+
+        super_list = SuperList()
+        super_list.append(5)
+
+        def test(self):
+            assert len(self.super_list) == 1001
+            assert issubclass(list, object)
+            assert issubclass(self.SuperList, object)
+            assert issubclass(self.SuperList, list)
+            assert isinstance(self.super_list, list)
+
+    class TestMultipleInheritance:
+        class User:
+            def __init__(self, email):
+                self.email = email
+
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return 'no action'
+
+        class Wizard(User):
+            def __init__(self, email):
+                super().__init__(email)
+
+            def attack(self):
+                return 'wizard attack'
+
+        class Archer(User):
+            def __init__(self, email):
+                super().__init__(email)
+
+            def attack(self):
+                return 'archer attack'
+
+        class HybridBorg(Archer, Wizard,):
+            def __init__(self, email):
+                super().__init__(email)
+                # normally work but here in tests those are not accessible for whatever reason.
+                # Archer.__init(...)
+                # Wizard.__init(...)
+
+        def test(self):
+            borg = self.HybridBorg('borg mail')
+            assert borg.email == 'borg mail'
+            assert borg.attack() == 'archer attack'
