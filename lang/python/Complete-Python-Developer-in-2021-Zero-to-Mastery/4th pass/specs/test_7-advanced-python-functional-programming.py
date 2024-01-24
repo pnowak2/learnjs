@@ -51,3 +51,32 @@ class TestAdvancedPythonFunctional:
             output = reduce(sum, input, 0)
 
             assert output == 15
+
+    class TestLambdaExpressions:
+        def test_lambda_map(self):
+            input = [1, 2, 3]
+            result = list(map(lambda item: item **2 , input))
+
+            assert result == [1, 4, 9]
+
+        def test_lambda_filter(self):
+            input = [1, 2, 3, 4, 5]
+            result = list(filter(lambda item: item % 2 == 0, input))
+
+            assert result == [2, 4]
+
+        def test_lambda_reduce(self):
+            input = [1, 2, 3, 4, 5]
+            result = reduce(lambda acc, item: acc + item, input)
+
+            assert result == 15
+
+        def test_sort_excercise(self):
+            arr = [(0, 2), (4, 3), (10, -1), (9, 9)]
+            arr.sort(key=lambda item: item[1])
+
+            assert arr == [(10, -1), (0, 2), (4, 3), (9, 9)]
+
+    class TestListComprehensions:
+        def test(self):
+            pass
