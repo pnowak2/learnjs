@@ -79,4 +79,12 @@ class TestAdvancedPythonFunctional:
 
     class TestListComprehensions:
         def test(self):
+            result = [item ** 2 for item in range(1, 5) if item % 2 == 0]
+            assert result == [4, 16]
+
+    class TestSetAndDictionaryComprehensions:
+        def test_list(self):
+            pass
+
+        def test_dictionary(self):
             pass
