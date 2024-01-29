@@ -1,5 +1,6 @@
 from functools import reduce
 
+
 class TestAdvancedPythonFunctional:
     class TestPureFunctions:
         def test(self):
@@ -36,8 +37,8 @@ class TestAdvancedPythonFunctional:
 
     class TestZip:
         def test(self):
-            my_list = [1, 2, 3] # any iterable
-            your_list = (10, 20, 30) # any iterable
+            my_list = [1, 2, 3]  # any iterable
+            your_list = (10, 20, 30)  # any iterable
 
             output = list(zip(my_list, your_list))
             assert output == [(1, 10), (2, 20), (3, 30)]
@@ -55,7 +56,7 @@ class TestAdvancedPythonFunctional:
     class TestLambdaExpressions:
         def test_lambda_map(self):
             input = [1, 2, 3]
-            result = list(map(lambda item: item **2 , input))
+            result = list(map(lambda item: item ** 2, input))
 
             assert result == [1, 4, 9]
 
@@ -83,8 +84,27 @@ class TestAdvancedPythonFunctional:
             assert result == [4, 16]
 
     class TestSetAndDictionaryComprehensions:
-        def test_list(self):
-            pass
+        def test_set(self):
+            result = {item ** 2 for item in range(1, 5) if item % 2 == 0}
+            assert result == {4, 16}
 
         def test_dictionary(self):
-            pass
+            simple_dict = {
+                'a': 2,
+                'b': 3
+            }
+
+            result = {key: value ** 2 for key, value in simple_dict.items() if key == 'a'}
+
+            assert result == {
+                'a': 4,
+            }
+
+        def test_dictionary_from_list(self):
+            result = { number: f'{number} - ok' for number in [1, 2, 3]}
+
+            assert result == {
+                1: '1 - ok',
+                2: '2 - ok',
+                3: '3 - ok' 
+            }
