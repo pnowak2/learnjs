@@ -1,13 +1,10 @@
 #include <iostream>
-
-int max(int a, int b);
-
+#include "compare.h"
 
 int main()
 {
-    return 0;
-}
+    int val = max(2, 6);
+    std::cout << val << std::endl;
 
-int max(int a, int b) {
-    return a > b ? a : b;
+    return 0;
 }
