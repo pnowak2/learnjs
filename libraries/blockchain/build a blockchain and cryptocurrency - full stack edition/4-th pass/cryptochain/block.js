@@ -14,6 +14,7 @@ class Block {
 
   static mineBlock({lastBlock, data}) {
     const lastHash = lastBlock.hash;
+    const timestamp = undefined;
 
     const minedBlock = new Block({ lastHash, data, timestamp });
 
