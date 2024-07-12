@@ -56,8 +56,8 @@ export default function Examples() {
   return (
     <Section id="examples" title="Examples" className="clazz">
       <Tabs 
-        buttons={buttons} 
-        ButtonsContainer="menu">
+        ButtonsContainer="menu"
+        buttons={buttons}>
         {tabContent}
       </Tabs>
     </Section>
