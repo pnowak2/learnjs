@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="tooltip.js"></script>
+
+  <style>
+    div {
+      border: 2px solid orange;
+    }
+
+    .highlight {
+      background-color: yellow;
+      /* light dom takes precedence over shadow dom slotted definition */
+      /* border-bottom: 2px solid green; */
+    }
+  </style>
+
+</head>
+<body>
+  <p>
+    <eui-tooltip text="web components is a set of standards">
+      <span class="highlight">Web Components</span>
+    </eui-tooltip> are awesome!
+  </p>
+
+  <eui-tooltip></eui-tooltip>
+
+  <div>generic light DOM div</div>
+</body>
+</html>
