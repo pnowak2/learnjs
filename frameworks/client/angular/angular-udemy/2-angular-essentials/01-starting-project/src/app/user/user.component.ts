@@ -19,4 +19,8 @@ export class UserComponent {
   get avatar(): string {
     return this.selectedUser.name;
   }
+
+  onSelectUser() {
+    console.log('test');
+  }
 }
