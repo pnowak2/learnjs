@@ -9,7 +9,8 @@ let config = {
   },
   scene: {
     preload,
-    create
+    create,
+    update
   }
 };
 
@@ -25,6 +26,9 @@ function create() {
   bird = this.physics.add.sprite(config.width / 10, config.height / 2 , 'bird').setOrigin(0.5, 0.5);
   bird.body.gravity.y = 200;
   bird.body.velocity.x = 200;
+}
+
+function update(time, delta) {
 }
 
 new Phaser.Game(config);
