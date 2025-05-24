@@ -25,7 +25,6 @@ function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
   bird = this.physics.add.sprite(config.width / 10, config.height / 2 , 'bird').setOrigin(0.5, 0.5);
   bird.body.gravity.y = 200;
-  bird.body.velocity.x = 200;
 }
 
 function update(time, delta) {
