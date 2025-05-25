@@ -30,6 +30,14 @@ function preload() {
 function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
   bird = this.physics.add.sprite(config.width / 10, config.height / 2 , 'bird').setOrigin(0.5, 0.5);
+
+  this.input.on('pointerdown', function() {
+    console.log('mouse down');
+  });
+
+  this.input.keyboard.on('keydown-SPACE', function() {
+    console.log('space');
+  });
 }
 
 function update(time, delta) {
