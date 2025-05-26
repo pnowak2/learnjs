@@ -89,7 +89,7 @@ function placePipe(upperPipe, lowerPipe) {
 function getRightMostPipe() {
   return pipes
     .getChildren()
-    .reduce((prev, pipe) => Math.max(prev, pipe.x), 0)
+    .reduce((prevX, pipe) => Math.max(prevX, pipe.x), 0)
 }
 
 function flap() {
