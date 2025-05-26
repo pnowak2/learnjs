@@ -45,7 +45,7 @@ class PlayScene extends Phaser.Scene {
       this.config.startPosition.y,
       'bird')
       .setOrigin(0, 0)
-      .setGravityY(300)
+      .setGravityY(450)
       .setCollideWorldBounds(true);
 
   }
