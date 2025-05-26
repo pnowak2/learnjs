@@ -23,28 +23,10 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(0, 0, 'sky').setOrigin(0, 0);
-
-    this.bird = this.physics.add.sprite(
-      this.config.startPosition.x,
-      this.config.startPosition.y,
-      'bird')
-      .setOrigin(0.5, 0.5)
-      .setGravityY(300);
-
-    this.pipes = this.physics.add.group();
-
-    for (let i = 0; i < PIPES_COUNT; i++) {
-      const upperPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 1);
-      const lowerPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 0);
-
-      this.placePipe(upperPipe, lowerPipe);
-    }
-
-    this.pipes.setVelocityX(VELOCITY);
-
-    this.input.on('pointerdown', this.flap, this);
-    this.input.keyboard.on('keydown-SPACE', this.flap, this);
+    this.createBG();
+    this.createBird();
+    this.createPipes();
+    this.handleIinputs();
   }
 
   update() {
@@ -58,6 +40,37 @@ class PlayScene extends Phaser.Scene {
     this.recyclePipes();
   }
 
+  createBG() {
+    this.add.image(0, 0, 'sky').setOrigin(0, 0);
+  }
+
+  createBird() {
+    this.bird = this.physics.add.sprite(
+      this.config.startPosition.x,
+      this.config.startPosition.y,
+      'bird')
+      .setOrigin(0.5, 0.5)
+      .setGravityY(300);
+
+  }
+
+  createPipes() {
+    this.pipes = this.physics.add.group();
+
+    for (let i = 0; i < PIPES_COUNT; i++) {
+      const upperPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 1);
+      const lowerPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 0);
+
+      this.placePipe(upperPipe, lowerPipe);
+    }
+
+    this.pipes.setVelocityX(VELOCITY);
+  }
+
+  handleIinputs() {
+    this.input.on('pointerdown', this.flap, this);
+    this.input.keyboard.on('keydown-SPACE', this.flap, this);
+  }
 
   placePipe(upperPipe, lowerPipe) {
     const rightMostX = this.getRightMostPipe();
