@@ -74,9 +74,9 @@ function placePipe(upperPipe, lowerPipe) {
   let pipeVerticalPosition = Phaser.Math.Between(20, config.height - 20 - pipeVerticalDistance);
 
   upperPipe.x = pipeHorizontalDistance;
-  lowerPipe.x = upperPipe.x;
-
   upperPipe.y = pipeVerticalPosition;
+
+  lowerPipe.x = upperPipe.x;
   lowerPipe.y = upperPipe.y + pipeVerticalDistance;
 
   upperPipe.body.velocity.x = -200;
