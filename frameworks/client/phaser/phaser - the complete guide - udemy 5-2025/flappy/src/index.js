@@ -26,7 +26,6 @@ const initialBirdPosition = {
   y: config.height / 2
 };
 
-
 function preload() {
   this.load.image('sky', 'assets/sky.png');
   this.load.image('bird', 'assets/bird.png');
@@ -34,7 +33,11 @@ function preload() {
 
 function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
-  bird = this.physics.add.sprite(initialBirdPosition.x, initialBirdPosition.y, 'bird').setOrigin(0.5, 0.5);
+  bird = this.physics.add.sprite(
+    initialBirdPosition.x,
+    initialBirdPosition.y,
+    'bird')
+    .setOrigin(0.5, 0.5);
 
   this.input.on('pointerdown', flap);
   this.input.keyboard.on('keydown-SPACE', flap);
