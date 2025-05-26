@@ -1,11 +1,8 @@
 import Phaser from 'phaser';
 
-const VELOCITY = -200;
 const PIPES_COUNT = 4;
 const FLAP_VELOCITY = 300;
 
-const PIPE_VERTICAL_DISTANCE_RANGE = [150, 250]
-const PIPE_HORIZONTAL_DISTANCE_RANGE = [300, 600]
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
@@ -14,6 +11,10 @@ class PlayScene extends Phaser.Scene {
     this.config = config;
     this.bird = null;
     this.pipes = null;
+
+    this.velocity = -200;
+    this.pipeVerticalDistanceRange = [150, 250]
+    this.pipeHorizontalDistanceRange = [300, 600]
   }
 
   preload() {
@@ -67,7 +68,7 @@ class PlayScene extends Phaser.Scene {
       this.placePipe(upperPipe, lowerPipe);
     }
 
-    this.pipes.setVelocityX(VELOCITY);
+    this.pipes.setVelocityX(this.velocity);
   }
 
   createColliders() {
@@ -96,9 +97,9 @@ class PlayScene extends Phaser.Scene {
 
   placePipe(upperPipe, lowerPipe) {
     const rightMostX = this.getRightMostPipe();
-    const pipeVerticalDistance = Phaser.Math.Between(...PIPE_VERTICAL_DISTANCE_RANGE);
+    const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
     const pipeVerticalPosition = Phaser.Math.Between(20, this.config.height - 20 - pipeVerticalDistance);
-    const pipeHorizontalDistance = Phaser.Math.Between(...PIPE_HORIZONTAL_DISTANCE_RANGE);
+    const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
 
     upperPipe.x = rightMostX + pipeHorizontalDistance;
     upperPipe.y = pipeVerticalPosition;
