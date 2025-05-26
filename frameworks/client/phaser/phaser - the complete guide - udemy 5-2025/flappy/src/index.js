@@ -87,12 +87,9 @@ function placePipe(upperPipe, lowerPipe) {
 }
 
 function getRightMostPipe() {
-  let rightMostX = 0;
-  pipes.getChildren().forEach(function (pipe) {
-    rightMostX = Math.max(rightMostX, pipe.x);
-  });
-
-  return rightMostX;
+  return pipes
+    .getChildren()
+    .reduce((prev, pipe) => Math.max(prev, pipe.x), 0)
 }
 
 function flap() {
