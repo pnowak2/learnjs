@@ -1,16 +1,25 @@
 import Phaser from 'phaser';
 
+const VELOCITY = -200;
+const PIPES_COUNT = 4;
+const FLAP_VELOCITY = 300;
+
+const PIPE_VERTICAL_DISTANCE_RANGE = [150, 250]
+const PIPE_HORIZONTAL_DISTANCE_RANGE = [300, 600]
+
 class PlayScene extends Phaser.Scene {
   constructor(config) {
     super('PlayScene');
 
     this.config = config;
     this.bird = null;
+    this.pipes = null;
   }
 
   preload() {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('bird', 'assets/bird.png');
+    this.load.image('pipe', 'assets/pipe.png');
   }
 
   create() {
@@ -22,10 +31,75 @@ class PlayScene extends Phaser.Scene {
       'bird')
       .setOrigin(0.5, 0.5)
       .setGravityY(300);
+
+    this.pipes = this.physics.add.group();
+
+    for (let i = 0; i < PIPES_COUNT; i++) {
+      const upperPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 1);
+      const lowerPipe = this.pipes.create(0, 0, 'pipe').setOrigin(0, 0);
+
+      this.placePipe(upperPipe, lowerPipe);
+    }
+
+    this.pipes.setVelocityX(VELOCITY);
+
+    this.input.on('pointerdown', this.flap.bind(this));
+    this.input.keyboard.on('keydown-SPACE', this.flap.bind(this));
   }
 
   update() {
+    const isHitBottom = this.bird.y > this.config.height;
+    const isHitTop = this.bird.y <= -this.bird.height;
 
+    if (isHitBottom || isHitTop) {
+      this.restartBirdPosition();
+    }
+
+    this.recyclePipes();
+  }
+
+
+  placePipe(upperPipe, lowerPipe) {
+    const rightMostX = this.getRightMostPipe();
+    const pipeVerticalDistance = Phaser.Math.Between(...PIPE_VERTICAL_DISTANCE_RANGE);
+    const pipeVerticalPosition = Phaser.Math.Between(20, this.config.height - 20 - pipeVerticalDistance);
+    const pipeHorizontalDistance = Phaser.Math.Between(...PIPE_HORIZONTAL_DISTANCE_RANGE);
+
+    upperPipe.x = rightMostX + pipeHorizontalDistance;
+    upperPipe.y = pipeVerticalPosition;
+
+    lowerPipe.x = upperPipe.x;
+    lowerPipe.y = upperPipe.y + pipeVerticalDistance;
+  }
+
+  getRightMostPipe() {
+    return this.pipes
+      .getChildren()
+      .reduce((prevX, pipe) => Math.max(prevX, pipe.x), 0)
+  }
+
+  recyclePipes() {
+    let tempPipes = [];
+
+    this.pipes.getChildren().forEach((pipe, idx) => {
+      if (pipe.getBounds().right < 0) {
+        tempPipes.push(pipe);
+
+        if (tempPipes.length === 2) {
+          this.placePipe(...tempPipes);
+        }
+      }
+    });
+  }
+
+  flap() {
+    this.bird.body.velocity.y -= FLAP_VELOCITY;
+  }
+
+  restartBirdPosition() {
+    this.bird.x = this.config.startPosition.x;
+    this.bird.y = this.config.startPosition.y;
+    this.bird.body.velocity.y = 0;
   }
 }
 
