@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import PlayScene from './scenes/play.scene';
 
 let config = {
   type: Phaser.AUTO,
@@ -11,11 +12,9 @@ let config = {
       // gravity: { y: 400 }
     }
   },
-  scene: {
-    preload,
-    create,
-    update
-  }
+  scene: [
+    PlayScene
+  ]
 };
 
 let bird = null;
