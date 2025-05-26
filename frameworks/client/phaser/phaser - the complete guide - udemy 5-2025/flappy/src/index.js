@@ -23,8 +23,8 @@ let upperPipe = null;
 let lowerPipe = null;
 
 const pipeVerticalDistanceRange = [150, 250]
-let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
-let pipeVerticalPosition = Phaser.Math.Between(20, config.height - 20 - pipeVerticalDistance);
+let pipeHorizontalDistance = 0;
+const PIPES_COUNT = 4;
 
 const flapVelocity = 300;
 const VELOCITY = 200;
@@ -48,14 +48,25 @@ function create() {
     .setOrigin(0.5, 0.5)
     .setGravityY(300);
 
-  upperPipe = this.physics.add.sprite(400, pipeVerticalPosition, 'pipe')
-    .setOrigin(0, 1);
+  for (let i = 0; i < PIPES_COUNT; i++) {
+    pipeHorizontalDistance += 400;
 
-  lowerPipe = this.physics.add.sprite(
-    upperPipe.x,
-    upperPipe.y + pipeVerticalDistance,
-    'pipe'
-  ).setOrigin(0, 0);
+    let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
+    let pipeVerticalPosition = Phaser.Math.Between(20, config.height - 20 - pipeVerticalDistance);
+
+    upperPipe = this.physics.add.sprite(pipeHorizontalDistance, pipeVerticalPosition, 'pipe')
+      .setOrigin(0, 1);
+
+    lowerPipe = this.physics.add.sprite(
+      upperPipe.x,
+      upperPipe.y + pipeVerticalDistance,
+      'pipe'
+    ).setOrigin(0, 0);
+
+    upperPipe.body.velocity.x = -200;
+    lowerPipe.body.velocity.x = upperPipe.body.velocity.x;
+  }
+
 
   this.input.on('pointerdown', flap);
   this.input.keyboard.on('keydown-SPACE', flap);
