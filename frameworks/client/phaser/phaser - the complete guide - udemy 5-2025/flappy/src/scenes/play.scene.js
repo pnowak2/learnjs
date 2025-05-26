@@ -138,7 +138,6 @@ class PlayScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 1000,
       callback: () => {
-        this.scene.resume();
         this.scene.restart();
       },
       loop: false
