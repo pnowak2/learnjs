@@ -43,8 +43,8 @@ class PlayScene extends Phaser.Scene {
 
     this.pipes.setVelocityX(VELOCITY);
 
-    this.input.on('pointerdown', this.flap.bind(this));
-    this.input.keyboard.on('keydown-SPACE', this.flap.bind(this));
+    this.input.on('pointerdown', this.flap, this);
+    this.input.keyboard.on('keydown-SPACE', this.flap, this);
   }
 
   update() {
