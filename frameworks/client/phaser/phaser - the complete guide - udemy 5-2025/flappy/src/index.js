@@ -71,6 +71,8 @@ function update(time, delta) {
   if (isHitBottom || isHitTop) {
     restartBirdPosition();
   }
+
+  recyclePipes();
 }
 
 function placePipe(upperPipe, lowerPipe) {
@@ -90,6 +92,20 @@ function getRightMostPipe() {
   return pipes
     .getChildren()
     .reduce((prevX, pipe) => Math.max(prevX, pipe.x), 0)
+}
+
+function recyclePipes() {
+  let tempPipes = [];
+
+  pipes.getChildren().forEach((pipe, idx) => {
+    if(pipe.getBounds().right < 0) {
+      tempPipes.push(pipe);
+
+      if(tempPipes.length === 2) {
+        placePipe(...tempPipes);
+      }
+    }
+  });
 }
 
 function flap() {
