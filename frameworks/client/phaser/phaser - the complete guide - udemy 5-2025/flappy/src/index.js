@@ -19,13 +19,15 @@ let config = {
 };
 
 let bird = null;
+let pipes = null;
 
 const pipeVerticalDistanceRange = [150, 250]
-let pipeHorizontalDistance = 0;
+const pipeHorizontalDistanceRange = [300, 600]
+
 const PIPES_COUNT = 4;
 
 const flapVelocity = 300;
-const VELOCITY = 200;
+const VELOCITY = -200;
 const initialBirdPosition = {
   x: config.width * 0.1,
   y: config.height / 2
@@ -39,6 +41,7 @@ function preload() {
 
 function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
+
   bird = this.physics.add.sprite(
     initialBirdPosition.x,
     initialBirdPosition.y,
@@ -46,13 +49,16 @@ function create() {
     .setOrigin(0.5, 0.5)
     .setGravityY(300);
 
+  pipes = this.physics.add.group();
+
   for (let i = 0; i < PIPES_COUNT; i++) {
-    const upperPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 1);
-    const lowerPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 0);
+    const upperPipe = pipes.create(0, 0, 'pipe').setOrigin(0, 1);
+    const lowerPipe = pipes.create(0, 0, 'pipe').setOrigin(0, 0);
 
     placePipe(upperPipe, lowerPipe);
   }
 
+  pipes.setVelocityX(VELOCITY);
 
   this.input.on('pointerdown', flap);
   this.input.keyboard.on('keydown-SPACE', flap);
@@ -68,19 +74,25 @@ function update(time, delta) {
 }
 
 function placePipe(upperPipe, lowerPipe) {
-  pipeHorizontalDistance += 400;
+  const rightMostX = getRightMostPipe();
+  const pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
+  const pipeVerticalPosition = Phaser.Math.Between(20, config.height - 20 - pipeVerticalDistance);
+  const pipeHorizontalDistance = Phaser.Math.Between(...pipeHorizontalDistanceRange);
 
-  let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
-  let pipeVerticalPosition = Phaser.Math.Between(20, config.height - 20 - pipeVerticalDistance);
-
-  upperPipe.x = pipeHorizontalDistance;
+  upperPipe.x = rightMostX + pipeHorizontalDistance;
   upperPipe.y = pipeVerticalPosition;
 
   lowerPipe.x = upperPipe.x;
   lowerPipe.y = upperPipe.y + pipeVerticalDistance;
+}
 
-  upperPipe.body.velocity.x = -200;
-  lowerPipe.body.velocity.x = upperPipe.body.velocity.x;
+function getRightMostPipe() {
+  let rightMostX = 0;
+  pipes.getChildren().forEach(function (pipe) {
+    rightMostX = Math.max(rightMostX, pipe.x);
+  });
+
+  return rightMostX;
 }
 
 function flap() {
