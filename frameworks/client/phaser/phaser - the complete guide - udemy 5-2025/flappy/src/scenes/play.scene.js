@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 const PIPES_COUNT = 4;
 const FLAP_VELOCITY = 300;
 
-
 class PlayScene extends Phaser.Scene {
   constructor(config) {
     super('PlayScene');
@@ -18,6 +17,7 @@ class PlayScene extends Phaser.Scene {
 
     this.score = 0;
     this.scoreText = null;
+    this.bestScoreText = null;
   }
 
   preload() {
@@ -128,6 +128,7 @@ class PlayScene extends Phaser.Scene {
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
           this.updateScore();
+          this.saveBestScore();
         }
       }
     });
@@ -139,10 +140,16 @@ class PlayScene extends Phaser.Scene {
 
   createScore() {
     this.score = 0;
+    const bestScore = localStorage.getItem('bestScore');
+
     this.scoreText = this.add.text(16, 16, `Score: ${0}`, {
       fill: '#ffffff',
       fontSize: 32 
-    })
+    });
+    this.bestScoreText = this.add.text(16, 56, `Best Score: ${bestScore || 0}`, {
+      fill: '#ffffff',
+      fontSize: 24 
+    });
   }
 
   updateScore() {
@@ -150,9 +157,21 @@ class PlayScene extends Phaser.Scene {
     this.scoreText.setText(`Score: ${this.score}`);
   }
 
+  saveBestScore() {
+    const bestScoreText = localStorage.getItem('bestScore');
+    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+
+    if(!bestScore || this.score > bestScore) {
+      localStorage.setItem('bestScore', this.score);
+    }
+
+  }
+
   gameOver() {
     this.physics.pause();
     this.bird.setTint(0xff0000);
+
+    this.saveBestScore();
 
     this.time.addEvent({
       delay: 1000,
