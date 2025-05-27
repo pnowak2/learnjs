@@ -17,19 +17,17 @@ class BaseScene extends Phaser.Scene {
     this.add.image(0, 0, 'sky').setOrigin(0, 0);
   }
 
-  createMenu(menu) {
+  createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
 
     menu.forEach(menuItem => {
       const menuPosition = [this.screenCenter[0], this.screenCenter[1] + lastMenuPositionY];
 
-      const item = this.add.text(...menuPosition, menuItem.text, this.fontOptions)
+      menuItem.textGO = this.add.text(...menuPosition, menuItem.text, this.fontOptions)
       .setInteractive()
       .setOrigin(0.5, 2);
 
-      item.on('pointerdown', () => {
-        this.scene.start(menuItem.scene)
-      });
+      setupMenuEvents(menuItem);
 
       lastMenuPositionY += this.lineHeight;
     });
