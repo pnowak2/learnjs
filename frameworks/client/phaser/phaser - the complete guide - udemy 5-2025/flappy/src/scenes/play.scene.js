@@ -15,6 +15,9 @@ class PlayScene extends Phaser.Scene {
     this.velocity = -200;
     this.pipeVerticalDistanceRange = [150, 250]
     this.pipeHorizontalDistanceRange = [300, 600]
+
+    this.score = 0;
+    this.scoreText = null;
   }
 
   preload() {
@@ -28,6 +31,7 @@ class PlayScene extends Phaser.Scene {
     this.createBird();
     this.createPipes();
     this.createColliders();
+    this.createScore();
     this.handleIinputs();
   }
 
@@ -123,6 +127,7 @@ class PlayScene extends Phaser.Scene {
 
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
+          this.updateScore();
         }
       }
     });
@@ -130,6 +135,19 @@ class PlayScene extends Phaser.Scene {
 
   flap() {
     this.bird.body.velocity.y -= FLAP_VELOCITY;
+  }
+
+  createScore() {
+    this.score = 0;
+    this.scoreText = this.add.text(16, 16, `Score: ${0}`, {
+      fill: '#ffffff',
+      fontSize: 32 
+    })
+  }
+
+  updateScore() {
+    this.score++;
+    this.scoreText.setText(`Score: ${this.score}`);
   }
 
   gameOver() {
