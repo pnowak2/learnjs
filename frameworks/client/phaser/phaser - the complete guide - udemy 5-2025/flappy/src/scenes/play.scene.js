@@ -1,13 +1,12 @@
-import Phaser from 'phaser';
+import BaseScene from './base.scene';
 
 const PIPES_COUNT = 4;
 const FLAP_VELOCITY = 300;
 
-class PlayScene extends Phaser.Scene {
+class PlayScene extends BaseScene {
   constructor(config) {
-    super('PlayScene');
+    super('PlayScene', config);
 
-    this.config = config;
     this.bird = null;
     this.pipes = null;
 
@@ -21,7 +20,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.createBG();
+    super.create();
+
     this.createBird();
     this.createPipes();
     this.createColliders();
@@ -33,10 +33,6 @@ class PlayScene extends Phaser.Scene {
   update() {
     this.checkGameStatus();
     this.recyclePipes();
-  }
-
-  createBG() {
-    this.add.image(0, 0, 'sky').setOrigin(0, 0);
   }
 
   createBird() {
