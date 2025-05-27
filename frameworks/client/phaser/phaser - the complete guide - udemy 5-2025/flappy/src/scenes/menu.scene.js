@@ -1,17 +1,17 @@
 import BaseScene from './base.scene';
 
 class MenuScene extends BaseScene {
-    constructor(config) {
-        super('MenuScene', config);
-    }
+  constructor(config) {
+    super('MenuScene', config);
+  }
 
-    create() {
-        super.create();
-    }
+  create() {
+    super.create();
+  }
 
-    update() {
+  update() {
 
-    }
+  }
 }
 
 export default MenuScene;
