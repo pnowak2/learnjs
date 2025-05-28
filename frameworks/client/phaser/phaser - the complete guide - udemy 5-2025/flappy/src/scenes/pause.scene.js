@@ -16,8 +16,14 @@ class PauseScene extends BaseScene {
   }
 
   setupMenuEvents(menuItem) {
-    menuItem.textGO.on('pointerdown', () => {
-
+    menuItem.textGO.on('pointerup', () => {
+      if(menuItem.scene && menuItem.text === 'Continue') {
+        this.scene.stop();
+        this.scene.resume(menuItem.scene);
+      } else {
+        this.scene.stop('PlayScene');
+        this.scene.start('MenuScene');
+      }
     });
   }
 }
