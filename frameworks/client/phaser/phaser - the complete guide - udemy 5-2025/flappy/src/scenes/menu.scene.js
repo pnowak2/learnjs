@@ -32,6 +32,14 @@ class MenuScene extends BaseScene {
         fontStyle: 'normal'
       });
     });
+
+    textGO.on('pointerup', () => {
+      menuItem.scene && this.scene.start(menuItem.scene);
+
+      if(menuItem.text === 'Exit') {
+        this.game.destroy(true);
+      }
+    });
   }
 }
 
