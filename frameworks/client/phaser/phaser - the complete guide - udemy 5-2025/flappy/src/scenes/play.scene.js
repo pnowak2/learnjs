@@ -28,6 +28,7 @@ class PlayScene extends BaseScene {
     this.createScore();
     this.createPauseButton();
     this.handleIinputs();
+    this.listenToEvents();
   }
 
   update() {
@@ -79,6 +80,39 @@ class PlayScene extends BaseScene {
   handleIinputs() {
     this.input.on('pointerdown', this.flap, this);
     this.input.keyboard.on('keydown-SPACE', this.flap, this);
+  }
+
+  listenToEvents() {
+    if(this.pauseEvent) return;
+
+    this.pauseEvent = this.events.on('resume', () => {
+      this.initialTime = 3;
+      this.countDownText = this.add.text(
+        ...this.screenCenter,
+        `Fly in ${this.initialTime}`,
+        this.fontOptions
+      )
+      .setOrigin(0.5)
+      .setInteractive();
+
+      this.timedEvent = this.time.addEvent({
+        delay: 1000,
+        callback: this.countDown,
+        callbackScope: this,
+        loop: true
+      });
+    });
+  }
+
+  countDown() {
+    this.initialTime--;
+    this.countDownText.setText(`Fly in ${this.initialTime}`);
+
+    if(this.initialTime <= 0) {
+      this.countDownText.setText('');
+      this.physics.resume();
+      this.timedEvent.remove();
+    }
   }
 
   checkGameStatus() {
