@@ -5,7 +5,7 @@ const FLAP_VELOCITY = 300;
 
 class PlayScene extends BaseScene {
   constructor(config) {
-    super('PlayScene', config);
+    super('PlayScene',{ ...config, canGoBack: true });
 
     this.bird = null;
     this.pipes = null;
@@ -155,6 +155,7 @@ class PlayScene extends BaseScene {
     pauseBtn.on('pointerdown', () => {
         this.physics.pause();
         this.scene.pause();
+        this.scene.launch('PauseScene');
     });
   }
 
