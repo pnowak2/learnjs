@@ -9,6 +9,7 @@ class PlayScene extends BaseScene {
 
     this.bird = null;
     this.pipes = null;
+    this.isPaused = false;
 
     this.velocity = -200;
     this.pipeVerticalDistanceRange = [150, 250]
@@ -112,6 +113,7 @@ class PlayScene extends BaseScene {
       this.countDownText.setText('');
       this.physics.resume();
       this.timedEvent.remove();
+      this.isPaused = false;
     }
   }
 
@@ -160,7 +162,9 @@ class PlayScene extends BaseScene {
   }
 
   flap() {
-    this.bird.body.velocity.y -= FLAP_VELOCITY;
+    if(!this.isPaused) {
+      this.bird.body.velocity.y -= FLAP_VELOCITY;
+    }
   }
 
   createScore() {
@@ -178,6 +182,7 @@ class PlayScene extends BaseScene {
   }
 
   createPauseButton() {
+    this.isPaused = false;
     const pauseBtn = this.add.image(
       this.config.width - 16, 
       this.config.height- 16, 
@@ -187,6 +192,7 @@ class PlayScene extends BaseScene {
     .setOrigin(1, 1);
 
     pauseBtn.on('pointerdown', () => {
+        this.isPaused = true;
         this.physics.pause();
         this.scene.pause();
         this.scene.launch('PauseScene');
