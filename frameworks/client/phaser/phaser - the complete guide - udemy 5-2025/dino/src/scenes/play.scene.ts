@@ -10,11 +10,15 @@ export default class PlayScene extends Phaser.Scene {
 
   create() {
     this.tile = this.add
-    .tileSprite(0, +this.game.config.height, +this.game.config.width, 26, 'ground')
+    .tileSprite(0, this.gameHeight, 88, 26, 'ground')
     .setOrigin(0, 1);
   }
 
   update(time: number, delta: number): void {
     // this.tile.tilePositionX += 10;
+  }
+
+  get gameHeight(): number {
+    return this.game.config.height as number;
   }
 }
