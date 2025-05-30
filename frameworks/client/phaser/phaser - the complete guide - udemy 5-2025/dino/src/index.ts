@@ -20,9 +20,8 @@ const config: Phaser.Types.Core.GameConfig = {
 new Phaser.Game(config);
 
 function preload () {
-  this.load.image('sky', 'assets/sky.png');
 }
 
 function create (this: Phaser.Scene) {
-  this.add.image(0, 0, 'sky').setOrigin(0, 0);
+  this.add.image(400, 300, 'sky');
 }
