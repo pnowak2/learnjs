@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 
 class BaseScene extends Phaser.Scene {
-  constructor(key, config, canGoBack = false) {
+  constructor(key, config) {
     super(key);
     this.config = config;
-    this.canGoBack = canGoBack;
     this.fontSize = 32;
     this.lineHeight = 50;
     this.fontOptions = {
