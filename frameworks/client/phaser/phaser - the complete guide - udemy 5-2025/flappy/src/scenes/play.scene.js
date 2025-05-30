@@ -63,6 +63,8 @@ class PlayScene extends BaseScene {
       .setFlipX(true)
       .setGravityY(450)
       .setCollideWorldBounds(true);
+
+    this.bird.setBodySize(this.bird.width, this.bird.height - 10);
   }
 
   createPipes() {
@@ -147,7 +149,7 @@ class PlayScene extends BaseScene {
 
   checkGameStatus() {
     const isHitBottom = this.bird.getBounds().bottom >= this.config.height;
-    const isHitTop = this.bird.y <= 0;
+    const isHitTop = this.bird.getBounds().top <= 0;
 
     if (isHitBottom || isHitTop) {
       this.gameOver();
