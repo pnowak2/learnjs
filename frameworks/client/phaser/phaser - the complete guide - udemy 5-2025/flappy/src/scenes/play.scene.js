@@ -57,9 +57,10 @@ class PlayScene extends BaseScene {
       this.config.startPosition.y,
       'bird')
       .setOrigin(0, 0)
+      .setScale(3)
+      .setFlipX(true)
       .setGravityY(450)
       .setCollideWorldBounds(true);
-
   }
 
   createPipes() {
