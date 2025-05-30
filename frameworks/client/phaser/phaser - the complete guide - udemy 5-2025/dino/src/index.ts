@@ -1,27 +1,18 @@
 
 import Phaser from "phaser";
+import PreloadScene from "./scenes/preload.scene";
+import PlayScene from "./scenes/play.scene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 340,
+  pixelArt: true,
+  transparent: true,
   physics: {
     default: 'arcade',
-    arcade: {
-      gravity: { y: 200 }
-    }
   },
-  scene: {
-    preload: preload,
-    create: create
-  }
+  scene: [ PreloadScene, PlayScene ]
 };
 
 new Phaser.Game(config);
-
-function preload () {
-}
-
-function create (this: Phaser.Scene) {
-  this.add.image(400, 300, 'sky');
-}
