@@ -10,6 +10,9 @@ const config: Phaser.Types.Core.GameConfig = {
   pixelArt: true,
   transparent: true,
   physics: {
+    arcade: {
+      debug: true
+    },
     default: 'arcade',
   },
   scene: [ PreloadScene, PlayScene ]
