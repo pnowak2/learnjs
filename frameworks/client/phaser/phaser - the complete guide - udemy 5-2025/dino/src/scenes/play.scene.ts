@@ -4,6 +4,7 @@ import { SpriteWithDynamicBody } from '../types';
 
 export default class PlayScene extends Phaser.Scene {
   player: SpriteWithDynamicBody;
+  startTrigger: SpriteWithDynamicBody;
 
   constructor() {
     super('PlayScene');
@@ -12,7 +13,17 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     this.createEnvironment();
     this.createPlayer();
+
+    this.startTrigger = this.physics.add
+      .sprite(0, 10, null)
+      .setAlpha(0)
+      .setOrigin(0,1);
+
     this.registerPlayerControl();
+
+    this.physics.add.overlap(this.player, this.startTrigger, () => {
+      console.log('collision')
+    });
   }
 
   update(time: number, delta: number): void {
