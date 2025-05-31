@@ -20,8 +20,6 @@ export default class PlayScene extends Phaser.Scene {
       .setAlpha(0)
       .setOrigin(0,1);
 
-    this.registerPlayerControl();
-
     this.physics.add.overlap(this.player, this.startTrigger, () => {
       console.log('collision')
     });
@@ -44,11 +42,4 @@ export default class PlayScene extends Phaser.Scene {
     return this.game.config.height as number;
   }
 
-  registerPlayerControl() {
-    const spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-    spaceBar.on('down', () => {
-      this.player.setVelocityY(-1600);
-    })
-  }
 }
