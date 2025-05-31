@@ -16,7 +16,6 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    // this.tile.tilePositionX += 10;
   }
 
   createEnvironment() {
