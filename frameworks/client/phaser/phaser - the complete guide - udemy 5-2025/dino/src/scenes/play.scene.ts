@@ -1,8 +1,9 @@
 
 import Phaser from 'phaser';
+import { SpriteWithDynamicBody } from '../types';
 
 export default class PlayScene extends Phaser.Scene {
-  player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  player: SpriteWithDynamicBody;
 
   constructor() {
     super('PlayScene');
