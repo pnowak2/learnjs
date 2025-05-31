@@ -23,7 +23,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.startTrigger, () => {
       if (this.startTrigger.y === 10) {
-        this.startTrigger.body.reset(0, this.gameHeight);
+        this.startTrigger.body.reset(this.startTrigger.x, this.gameHeight);
         return;
       }
 
