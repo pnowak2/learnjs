@@ -11,7 +11,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.init();
 
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene.events.on(
+      Phaser.Scenes.Events.UPDATE, this.update, this
+    );
   }
 
   init() {
@@ -28,7 +30,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
     const onFloor = (this.body as Phaser.Physics.Arcade.Body).onFloor();
 
-    if(isSpaceJustDown && onFloor) {
+    if (isSpaceJustDown && onFloor) {
       this.setVelocityY(-1600);
     }
   }
