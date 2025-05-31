@@ -21,14 +21,17 @@ export default class PlayScene extends Phaser.Scene {
 
   createEnvironment() {
     this.add
-    .tileSprite(0, this.gameHeight, 88, 26, 'ground')
-    .setOrigin(0, 1);
+      .tileSprite(0, this.gameHeight, 88, 26, 'ground')
+      .setOrigin(0, 1);
   }
 
   createPlayer() {
     this.player = this.physics.add
       .sprite(0, this.gameHeight, 'dino-idle')
+      .setGravityY(5000)
+      .setCollideWorldBounds(true)
       .setInteractive()
+      .setBodySize(44, 92)
       .setOrigin(0, 1);
   }
 
