@@ -25,9 +25,6 @@ export default class PlayScene extends Phaser.Scene {
     });
   }
 
-  update(time: number, delta: number): void {
-  }
-
   createEnvironment() {
     this.add
       .tileSprite(0, this.gameHeight, 88, 26, 'ground')
