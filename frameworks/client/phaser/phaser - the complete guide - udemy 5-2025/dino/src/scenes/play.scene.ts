@@ -24,18 +24,26 @@ export default class PlayScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.startTrigger, () => {
       if (this.startTrigger.y === 10) {
         this.startTrigger.body.reset(this.startTrigger.x, this.gameHeight);
+
         return;
       }
 
       this.startTrigger.destroy(true);
 
-      this.time.addEvent({
-        delay: 1000/60,
+      const rolloutEvent = this.time.addEvent({
+        delay: 1000 / 60,
         loop: true,
         callback: () => {
-          if(this.ground.width <= this.gameWidth) {
-            this.ground.width += 17 * 2;
-          }         }
+          this.player.playRunAnimation();
+          this.player.setVelocityX(80)
+          this.ground.width += 17 * 2;
+
+          if (this.ground.width >= this.gameWidth) {
+            rolloutEvent.remove();
+            this.ground.width = this.gameWidth;
+            this.player.setVelocityX(0);
+          }
+        }
       });
     });
   }
