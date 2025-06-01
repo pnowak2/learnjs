@@ -1,13 +1,12 @@
-
 import Phaser from 'phaser';
 import { SpriteWithDynamicBody } from '../types';
 import Player from '../entities/player';
+import GameScene from './game.scene';
 
-export default class PlayScene extends Phaser.Scene {
+export default class PlayScene extends GameScene {
   player: Player;
   startTrigger: SpriteWithDynamicBody;
   ground: Phaser.GameObjects.TileSprite;
-  isGameRunning: boolean = false;
 
   constructor() {
     super('PlayScene');
@@ -62,13 +61,5 @@ export default class PlayScene extends Phaser.Scene {
 
   createPlayer() {
     this.player = new Player(this, 0, this.gameHeight);
-  }
-
-  get gameHeight(): number {
-    return this.game.config.height as number;
-  }
-
-  get gameWidth(): number {
-    return this.game.config.width as number;
   }
 }
