@@ -7,6 +7,7 @@ export default class PlayScene extends Phaser.Scene {
   player: Player;
   startTrigger: SpriteWithDynamicBody;
   ground: Phaser.GameObjects.TileSprite;
+  isGameRunning: boolean = false;
 
   constructor() {
     super('PlayScene');
@@ -39,9 +40,11 @@ export default class PlayScene extends Phaser.Scene {
           this.ground.width += 17 * 2;
 
           if (this.ground.width >= this.gameWidth) {
-            rolloutEvent.remove();
             this.ground.width = this.gameWidth;
             this.player.setVelocityX(0);
+            this.isGameRunning = true;
+
+            rolloutEvent.remove();
           }
         }
       });
