@@ -41,7 +41,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if(this.body.deltaAbsY() > 0 ) {
+    if(this.body.deltaAbsY() > 0) {
       this.anims.stop();
       this.setTexture('dino-run', 0);
     } else {
