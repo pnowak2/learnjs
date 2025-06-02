@@ -97,9 +97,6 @@ export default class PlayScene extends GameScene {
      this.obstacles
       .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
       .setOrigin(0, 1);
-
-    console.log('obstacles: ', this.obstacles.getLength())
-
   }
 
 }
