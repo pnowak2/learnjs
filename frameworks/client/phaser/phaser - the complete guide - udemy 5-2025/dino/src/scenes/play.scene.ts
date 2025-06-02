@@ -7,6 +7,8 @@ export default class PlayScene extends GameScene {
   player: Player;
   startTrigger: SpriteWithDynamicBody;
   ground: Phaser.GameObjects.TileSprite;
+  spawnInterval: number = 1500;
+  spawnTime: number = 0;
 
   constructor() {
     super('PlayScene');
@@ -50,7 +52,12 @@ export default class PlayScene extends GameScene {
     });
   }
 
-  update() {
+  update(time: number, delta: number) {
+    this.spawnTime += delta;
+    if(this.spawnTime >= this.spawnInterval) {
+      console.log('spawn');
+      this.spawnTime = 0;
+    }
   }
 
   createEnvironment() {
