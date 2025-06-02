@@ -11,7 +11,7 @@ export default class PlayScene extends GameScene {
   ground: Phaser.GameObjects.TileSprite;
   spawnInterval: number = 1500;
   spawnTime: number = 0;
-  obstacleSpeec: number = 10;
+  obstacleSpeed: number = 10;
 
   constructor() {
     super('PlayScene');
@@ -66,7 +66,7 @@ export default class PlayScene extends GameScene {
       this.spawnTime = 0;
     }
 
-    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.obstacleSpeec);
+    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.obstacleSpeed);
   }
 
   createEnvironment() {
