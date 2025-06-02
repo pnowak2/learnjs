@@ -82,7 +82,6 @@ export default class PlayScene extends GameScene {
 
      this.obstacles
       .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
-      .setVelocityX(-300)
       .setOrigin(0, 1);
   }
 }
