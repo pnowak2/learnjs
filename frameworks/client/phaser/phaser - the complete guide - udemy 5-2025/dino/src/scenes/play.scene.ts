@@ -70,7 +70,7 @@ export default class PlayScene extends GameScene {
 
     this.obstacles.getChildren().forEach((item: Phaser.Physics.Arcade.Sprite) => {
       if(item.getBounds().right < 0) {
-        this.obstacles.remove(item, true);
+        this.obstacles.remove(item, true, true);
       }
     });
 
