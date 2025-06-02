@@ -32,6 +32,9 @@ export default class PlayScene extends GameScene {
       this.isGameRunning = false;
       this.physics.pause();
       this.player.die();
+
+      this.spawnTime = 0;
+      this.gameSpeed = 10;
     });
 
     this.physics.add.overlap(this.player, this.startTrigger, () => {
