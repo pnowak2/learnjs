@@ -67,6 +67,12 @@ export default class PlayScene extends GameScene {
     }
 
     Phaser.Actions.IncX(this.obstacles.getChildren(), -this.obstacleSpeed);
+
+    this.obstacles.getChildren().forEach((item: Phaser.Physics.Arcade.Sprite) => {
+      if(item.getBounds().right < 0) {
+        this.obstacles.remove(item, true);
+      }
+    });
   }
 
   createEnvironment() {
@@ -89,5 +95,9 @@ export default class PlayScene extends GameScene {
      this.obstacles
       .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
       .setOrigin(0, 1);
+
+    console.log('obstacles: ', this.obstacles.getLength())
+
   }
+
 }
