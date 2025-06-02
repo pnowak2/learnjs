@@ -11,7 +11,7 @@ export default class PlayScene extends GameScene {
   ground: Phaser.GameObjects.TileSprite;
   spawnInterval: number = 1500;
   spawnTime: number = 0;
-  obstacleSpeed: number = 10;
+  gameSpeed: number = 10;
 
   constructor() {
     super('PlayScene');
@@ -66,13 +66,15 @@ export default class PlayScene extends GameScene {
       this.spawnTime = 0;
     }
 
-    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.obstacleSpeed);
+    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
 
     this.obstacles.getChildren().forEach((item: Phaser.Physics.Arcade.Sprite) => {
       if(item.getBounds().right < 0) {
         this.obstacles.remove(item, true);
       }
     });
+
+    this.ground.tilePositionX += this.gameSpeed;
   }
 
   createEnvironment() {
