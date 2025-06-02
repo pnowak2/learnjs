@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { SpriteWithDynamicBody } from '../types';
 import Player from '../entities/player';
 import GameScene from './game.scene';
+import { PRELOAD_CONFIG } from '..';
 
 export default class PlayScene extends GameScene {
   player: Player;
@@ -74,7 +75,7 @@ export default class PlayScene extends GameScene {
   }
 
   spawnObstacle() {
-    const obstacleNumber = Phaser.Math.Between(1, 6);
+    const obstacleNumber = Phaser.Math.Between(1, PRELOAD_CONFIG.cactusesCount);
     const distance = Phaser.Math.Between(
       this.gameWidth * 0.6,
       this.gameWidth * 0.9
