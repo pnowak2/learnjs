@@ -54,8 +54,8 @@ export default class PlayScene extends GameScene {
 
   update(time: number, delta: number) {
     this.spawnTime += delta;
-    if(this.spawnTime >= this.spawnInterval) {
-      console.log('spawn');
+    if (this.spawnTime >= this.spawnInterval) {
+      this.spawnObstacle();
       this.spawnTime = 0;
     }
   }
@@ -68,5 +68,17 @@ export default class PlayScene extends GameScene {
 
   createPlayer() {
     this.player = new Player(this, 0, this.gameHeight);
+  }
+
+  spawnObstacle() {
+    const obstacleNumber = Phaser.Math.Between(1, 6);
+    const obstacleXPosition = Phaser.Math.Between(
+      this.gameWidth * 0.5,
+      this.gameWidth * 0.9
+    );
+
+    // this.physics.add
+    //   .sprite(obstacleXPosition, this.gameHeight, `obstacle-${obstacleNumber}`)
+    //   .setOrigin(0, 1)
   }
 }
