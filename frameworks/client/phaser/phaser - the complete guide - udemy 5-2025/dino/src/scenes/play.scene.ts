@@ -138,6 +138,13 @@ export default class PlayScene extends GameScene {
 
   handleGameRestart() {
     this.restartText.on('pointerdown', () => {
+      this.physics.resume();
+      this.player.setVelocityY(0);
+
+      this.obstacles.clear(true, true);
+      this.gameOverContainer.setVisible(false);
+      this.anims.resumeAll();
+      this.isGameRunning = true;
     });
   }
 
@@ -153,5 +160,4 @@ export default class PlayScene extends GameScene {
       .setImmovable()
       .setOrigin(0, 1);
   }
-
 }
