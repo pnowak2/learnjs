@@ -25,73 +25,11 @@ export default class PlayScene extends GameScene {
   create() {
     this.createEnvironment();
     this.createPlayer();
-
-    this.obstacles = this.physics.add.group();
-
-    this.gameOverText = this.make.image({
-      x: 0,
-      y: 0,
-      key: 'game-over',
-    }, false);
-
-    this.restartText = this.make
-    .image({
-      x: 0,
-      y: 80,
-      key: 'restart',
-    }, false)
-    .setInteractive();
-
-    this.restartText.on('pointerdown', () => {
-    });
-
-    this.gameOverContainer = this.add
-      .container(this.gameWidth / 2, (this.gameHeight / 2) - 40)
-      .add([this.gameOverText, this.restartText])
-      .setVisible(false);
-
-    this.startTrigger = this.physics.add
-      .sprite(0, 10, null)
-      .setAlpha(0)
-      .setOrigin(0, 1);
-
-    this.physics.add.collider(this.obstacles, this.player, () => {
-      this.isGameRunning = false;
-      this.physics.pause();
-      this.player.die();
-      this.gameOverContainer.setVisible(true);
-
-      this.spawnTime = 0;
-      this.gameSpeed = 10;
-    });
-
-    this.physics.add.overlap(this.player, this.startTrigger, () => {
-      if (this.startTrigger.y === 10) {
-        this.startTrigger.body.reset(this.startTrigger.x, this.gameHeight);
-
-        return;
-      }
-
-      this.startTrigger.destroy(true);
-
-      const rolloutEvent = this.time.addEvent({
-        delay: 1000 / 60,
-        loop: true,
-        callback: () => {
-          this.player.playRunAnimation();
-          this.player.setVelocityX(80)
-          this.ground.width += 17 * 2;
-
-          if (this.ground.width >= this.gameWidth) {
-            this.ground.width = this.gameWidth;
-            this.player.setVelocityX(0);
-            this.isGameRunning = true;
-
-            rolloutEvent.remove();
-          }
-        }
-      });
-    });
+    this.createObstacles();
+    this.createGameOverContainer();
+    this.handleGameStart();
+    this.handleObstacleCollisions();
+    this.handleGameRestart();
   }
 
   update(time: number, delta: number) {
@@ -124,6 +62,84 @@ export default class PlayScene extends GameScene {
     this.player = new Player(this, 0, this.gameHeight);
   }
 
+  createObstacles() {
+    this.obstacles = this.physics.add.group();
+  }
+
+  createGameOverContainer() {
+    this.gameOverText = this.make.image({
+      x: 0,
+      y: 0,
+      key: 'game-over',
+    }, false);
+
+    this.restartText = this.make
+      .image({
+        x: 0,
+        y: 80,
+        key: 'restart',
+      }, false)
+      .setInteractive();
+
+    this.gameOverContainer = this.add
+      .container(this.gameWidth / 2, (this.gameHeight / 2) - 40)
+      .add([this.gameOverText, this.restartText])
+      .setVisible(false);
+
+  }
+
+  handleGameStart() {
+    this.startTrigger = this.physics.add
+      .sprite(0, 10, null)
+      .setAlpha(0)
+      .setOrigin(0, 1);
+
+    this.physics.add.overlap(this.player, this.startTrigger, () => {
+      if (this.startTrigger.y === 10) {
+        this.startTrigger.body.reset(this.startTrigger.x, this.gameHeight);
+
+        return;
+      }
+
+      this.startTrigger.destroy(true);
+
+      const rolloutEvent = this.time.addEvent({
+        delay: 1000 / 60,
+        loop: true,
+        callback: () => {
+          this.player.playRunAnimation();
+          this.player.setVelocityX(80)
+          this.ground.width += 17 * 2;
+
+          if (this.ground.width >= this.gameWidth) {
+            this.ground.width = this.gameWidth;
+            this.player.setVelocityX(0);
+            this.isGameRunning = true;
+
+            rolloutEvent.remove();
+          }
+        }
+      });
+    });
+  }
+
+  handleObstacleCollisions() {
+    this.physics.add.collider(this.obstacles, this.player, () => {
+      this.isGameRunning = false;
+      this.physics.pause();
+      this.player.die();
+      this.gameOverContainer.setVisible(true);
+
+      this.spawnTime = 0;
+      this.gameSpeed = 10;
+    });
+  }
+
+  handleGameRestart() {
+    this.restartText.on('pointerdown', () => {
+    });
+  }
+
   spawnObstacle() {
     const obstacleNumber = Phaser.Math.Between(1, PRELOAD_CONFIG.cactusesCount);
     const distance = Phaser.Math.Between(
@@ -136,4 +152,5 @@ export default class PlayScene extends GameScene {
       .setImmovable()
       .setOrigin(0, 1);
   }
+
 }
