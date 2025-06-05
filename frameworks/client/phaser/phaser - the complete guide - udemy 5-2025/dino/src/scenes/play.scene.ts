@@ -9,6 +9,11 @@ export default class PlayScene extends GameScene {
   obstacles: Phaser.Physics.Arcade.Group;
   startTrigger: SpriteWithDynamicBody;
   ground: Phaser.GameObjects.TileSprite;
+
+  gameOverContainer: Phaser.GameObjects.Container;
+  gameOverText: Phaser.GameObjects.Image;
+  restartText: Phaser.GameObjects.Image;
+
   spawnInterval: number = 1500;
   spawnTime: number = 0;
   gameSpeed: number = 10;
@@ -23,6 +28,28 @@ export default class PlayScene extends GameScene {
 
     this.obstacles = this.physics.add.group();
 
+    this.gameOverText = this.make.image({
+      x: 0,
+      y: 0,
+      key: 'game-over',
+    }, false);
+
+    this.restartText = this.make
+    .image({
+      x: 0,
+      y: 80,
+      key: 'restart',
+    }, false)
+    .setInteractive();
+
+    this.restartText.on('pointerdown', () => {
+    });
+
+    this.gameOverContainer = this.add
+      .container(this.gameWidth / 2, (this.gameHeight / 2) - 40)
+      .add([this.gameOverText, this.restartText])
+      .setVisible(false);
+
     this.startTrigger = this.physics.add
       .sprite(0, 10, null)
       .setAlpha(0)
@@ -32,6 +59,7 @@ export default class PlayScene extends GameScene {
       this.isGameRunning = false;
       this.physics.pause();
       this.player.die();
+      this.gameOverContainer.setVisible(true);
 
       this.spawnTime = 0;
       this.gameSpeed = 10;
@@ -67,7 +95,7 @@ export default class PlayScene extends GameScene {
   }
 
   update(time: number, delta: number) {
-    if(!this.isGameRunning) return;
+    if (!this.isGameRunning) return;
 
     this.spawnTime += delta;
     if (this.spawnTime >= this.spawnInterval) {
@@ -78,7 +106,7 @@ export default class PlayScene extends GameScene {
     Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
 
     this.obstacles.getChildren().forEach((item: Phaser.Physics.Arcade.Sprite) => {
-      if(item.getBounds().right < 0) {
+      if (item.getBounds().right < 0) {
         this.obstacles.remove(item, true, true);
       }
     });
@@ -103,7 +131,7 @@ export default class PlayScene extends GameScene {
       this.gameWidth * 0.9
     );
 
-     const obstacle = this.obstacles
+    const obstacle = this.obstacles
       .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
       .setImmovable()
       .setOrigin(0, 1);
