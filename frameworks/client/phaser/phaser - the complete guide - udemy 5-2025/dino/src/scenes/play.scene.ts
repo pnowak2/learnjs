@@ -27,6 +27,7 @@ export default class PlayScene extends GameScene {
     this.createPlayer();
     this.createObstacles();
     this.createGameOverContainer();
+
     this.handleGameStart();
     this.handleObstacleCollisions();
     this.handleGameRestart();
