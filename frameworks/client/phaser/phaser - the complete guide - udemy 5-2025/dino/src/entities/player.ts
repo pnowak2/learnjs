@@ -30,7 +30,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(x: any, y: any) {
-    const { space, down} = this.cursors;
+    const { space, down } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
     const isDownJustDown = Phaser.Input.Keyboard.JustDown(down);
     const isDownJustUp = Phaser.Input.Keyboard.JustUp(down);
@@ -50,11 +50,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.setOffset(20, 0);
     }
 
-    if(!this.scene.isGameRunning) {
+    if (!this.scene.isGameRunning) {
       return;
     }
 
-    if(this.body.deltaAbsY() > 0) {
+    if (this.body.deltaAbsY() > 0) {
       this.anims.stop();
       this.setTexture('dino-run', 0);
     } else {
@@ -82,7 +82,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   playRunAnimation() {
-    this.play('dino-run-anim', true);
+    this.body.height <= 58 ?
+      this.play('dino-down-anim', true) :
+      this.play('dino-run-anim', true);
   }
 
   die() {
