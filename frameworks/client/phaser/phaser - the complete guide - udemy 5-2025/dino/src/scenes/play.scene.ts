@@ -27,6 +27,7 @@ export default class PlayScene extends GameScene {
     this.createPlayer();
     this.createObstacles();
     this.createGameOverContainer();
+    this.createAnimations();
 
     this.handleGameStart();
     this.handleObstacleCollisions();
@@ -86,7 +87,15 @@ export default class PlayScene extends GameScene {
       .container(this.gameWidth / 2, (this.gameHeight / 2) - 40)
       .add([this.gameOverText, this.restartText])
       .setVisible(false);
+  }
 
+  createAnimations() {
+    this.anims.create({
+      key: 'enemy-anim',
+      frameRate: 10,
+      repeat: -1,
+      frames: this.anims.generateFrameNumbers('enemy-bird')
+    });
   }
 
   handleGameStart() {
@@ -151,7 +160,7 @@ export default class PlayScene extends GameScene {
   spawnObstacle() {
     const obstaclesCount = PRELOAD_CONFIG.cactusesCount + PRELOAD_CONFIG.birdsCount;
     const obstacleNumber = Phaser.Math.Between(1, obstaclesCount);
-    let obstacle;
+    let obstacle: Phaser.Physics.Arcade.Sprite;
 
     const distance = Phaser.Math.Between(
       this.gameWidth * 0.6,
@@ -164,7 +173,7 @@ export default class PlayScene extends GameScene {
 
       obstacle = this.obstacles
         .create(distance, this.gameHeight - enemyHeight, 'enemy-bird');
-
+      obstacle.play('enemy-anim');
     } else {
       obstacle = this.obstacles
         .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`);
