@@ -4,7 +4,8 @@ import PreloadScene from "./scenes/preload.scene";
 import PlayScene from "./scenes/play.scene";
 
 export const PRELOAD_CONFIG = {
-  cactusesCount: 6
+  cactusesCount: 6,
+  birdsCount: 1
 }
 
 const config: Phaser.Types.Core.GameConfig = {

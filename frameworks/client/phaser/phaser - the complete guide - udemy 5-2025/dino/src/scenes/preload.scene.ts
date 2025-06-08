@@ -20,9 +20,15 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 88,
       frameHeight: 94 
     });
+
     for(let i = 1; i <= PRELOAD_CONFIG.cactusesCount; i++) {
       this.load.image(`obstacle-${i}`, `assets/cactuses_${i}.png`);
     }
+
+    this.load.spritesheet('enemy-bird', 'assets/enemy-bird.png', {
+      frameWidth: 92,
+      frameHeight: 77
+    });
   }
 
   create() {

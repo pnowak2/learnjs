@@ -31,6 +31,7 @@ export default class PlayScene extends GameScene {
     this.handleGameStart();
     this.handleObstacleCollisions();
     this.handleGameRestart();
+
   }
 
   update(time: number, delta: number) {
@@ -149,15 +150,36 @@ export default class PlayScene extends GameScene {
   }
 
   spawnObstacle() {
-    const obstacleNumber = Phaser.Math.Between(1, PRELOAD_CONFIG.cactusesCount);
+    const obstaclesCount = PRELOAD_CONFIG.cactusesCount + PRELOAD_CONFIG.birdsCount;
+    const obstacleNumber = Phaser.Math.Between( 1, obstaclesCount);
+
     const distance = Phaser.Math.Between(
       this.gameWidth * 0.6,
       this.gameWidth * 0.9
     );
 
-    const obstacle = this.obstacles
-      .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
-      .setImmovable()
-      .setOrigin(0, 1);
+    if (obstacleNumber > PRELOAD_CONFIG.cactusesCount) {
+
+    } else {
+      this.obstacles
+        .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
+        .setImmovable()
+        .setOrigin(0, 1);
+    }
+
+
+
+    // const enemy = this.physics.add.sprite(this.gameWidth / 2, this.gameHeight / 2, 'enemy');
+    // this.anims.create({
+    //   key: 'enemy-anim',
+    //   frameRate: 10,
+    //   repeat: -1,
+    //   frames: this.anims.generateFrameNumbers('enemy-bird', {
+    //     start: 0,
+    //     end: 1
+    //   })
+    // });
+
+    // enemy.play('enemy-anim', true);
   }
 }
