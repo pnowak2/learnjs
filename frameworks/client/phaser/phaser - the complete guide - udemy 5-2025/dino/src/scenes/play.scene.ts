@@ -31,7 +31,6 @@ export default class PlayScene extends GameScene {
     this.handleGameStart();
     this.handleObstacleCollisions();
     this.handleGameRestart();
-
   }
 
   update(time: number, delta: number) {
