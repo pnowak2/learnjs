@@ -151,7 +151,8 @@ export default class PlayScene extends GameScene {
 
   spawnObstacle() {
     const obstaclesCount = PRELOAD_CONFIG.cactusesCount + PRELOAD_CONFIG.birdsCount;
-    const obstacleNumber = Phaser.Math.Between( 1, obstaclesCount);
+    const obstacleNumber = Phaser.Math.Between(1, obstaclesCount);
+    let obstacle;
 
     const distance = Phaser.Math.Between(
       this.gameWidth * 0.6,
@@ -159,12 +160,19 @@ export default class PlayScene extends GameScene {
     );
 
     if (obstacleNumber > PRELOAD_CONFIG.cactusesCount) {
+      const enemyPossibleHeight = [20, 70];
+      const enemyHeight = enemyPossibleHeight[Math.floor(Math.random() * 2)];
+
+      obstacle = this.obstacles
+        .create(distance, this.gameHeight - enemyHeight, 'enemy-bird');
 
     } else {
-      this.obstacles
-        .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`)
-        .setImmovable()
-        .setOrigin(0, 1);
+      obstacle = this.obstacles
+        .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`);
     }
+
+    obstacle
+      .setOrigin(0, 1)
+      .setImmovable();
   }
 }
