@@ -166,20 +166,5 @@ export default class PlayScene extends GameScene {
         .setImmovable()
         .setOrigin(0, 1);
     }
-
-
-
-    // const enemy = this.physics.add.sprite(this.gameWidth / 2, this.gameHeight / 2, 'enemy');
-    // this.anims.create({
-    //   key: 'enemy-anim',
-    //   frameRate: 10,
-    //   repeat: -1,
-    //   frames: this.anims.generateFrameNumbers('enemy-bird', {
-    //     start: 0,
-    //     end: 1
-    //   })
-    // });
-
-    // enemy.play('enemy-anim', true);
   }
 }
