@@ -91,10 +91,10 @@ export default class PlayScene extends GameScene {
 
   createAnimations() {
     this.anims.create({
-      key: 'enemy-anim',
+      key: 'enemy-bird-fly-anim',
+      frames: this.anims.generateFrameNumbers('enemy-bird'),
       frameRate: 10,
-      repeat: -1,
-      frames: this.anims.generateFrameNumbers('enemy-bird')
+      repeat: -1
     });
   }
 
@@ -173,7 +173,7 @@ export default class PlayScene extends GameScene {
 
       obstacle = this.obstacles
         .create(distance, this.gameHeight - enemyHeight, 'enemy-bird');
-      obstacle.play('enemy-anim');
+      obstacle.play('enemy-bird-fly-anim');
     } else {
       obstacle = this.obstacles
         .create(distance, this.gameHeight, `obstacle-${obstacleNumber}`);
