@@ -71,4 +71,7 @@ class TestDeveloperFundamentalsI:
 
     class TestVariables:
         def test(self):
-            pass
+            user_id = 5
+            _private_var = user_id
+
+            assert(_private_var == 5)
