@@ -70,8 +70,25 @@ class TestDeveloperFundamentalsI:
             assert(complex(1, 2) == 1 + 2j)
 
     class TestVariables:
-        def test(self):
+        def test_declarations(self):
             user_id = 5
             _private_var = user_id
 
             assert(_private_var == 5)
+
+        def test_constant(self):
+            PI = 3.14 # convention only, still mutable
+
+        def test_dunder(self):
+            __loader__
+
+    class TestExpressionsVsStatements:
+        def test_expression(self):
+            iq = 100 # statement
+            user_age = iq / 5 # expression => entire line of code
+
+    class TestAugmentedAssignmentOperator:
+        def test(self):
+            val = 3
+            val += 2
+            assert(val == 5)
