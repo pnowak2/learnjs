@@ -92,3 +92,7 @@ class TestDeveloperFundamentalsI:
             val = 3
             val += 2
             assert(val == 5)
+
+    class TestStrings:
+        def test(self):
+            pass
