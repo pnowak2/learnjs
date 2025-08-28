@@ -94,5 +94,65 @@ class TestDeveloperFundamentalsI:
             assert(val == 5)
 
     class TestStrings:
-        def test(self):
-            pass
+        class TestBasics:
+            def test_str_types(self):
+                assert(type('hi') is str)
+                assert(type("hi") is str)
+                assert(type('''hi''') is str)
+
+            def test_multiline_str(self):
+                user = '''
+                        hi there!
+                    '''
+                assert(user.strip() == 'hi there!')
+
+            def test_concat(self):
+                first = 'piotr'
+                last = 'nowak'
+
+                full = first + ' ' + last
+                assert(full == 'piotr nowak')
+
+            def test_type_conversion(self):
+                s = str(100)
+                assert(type(s) is str)
+
+                assert(s + str(5) == '1005') 
+                assert(int('5') == 5)
+                assert(float('5') == 5.0)
+
+            def test_escape_sequence(self):
+                weather = 'it\'s sunny'
+                weather2 = "it's sunny \"today\""
+
+                assert(weather == "it's sunny")
+                assert(weather2 == '''it's sunny "today"''')
+        
+        class TestFormattedStrings:
+            def test_fstrings(self):
+                name = 'piotr'
+                age = 45
+                result = f'my name is {name} ({age})'
+
+                assert(result == 'my name is piotr (45)')
+
+            def test_old_way(self):
+                name = 'piotr'
+                age = 45
+                result = 'my name is {} ({})'.format(name, age)
+
+                assert(result == 'my name is piotr (45)')
+
+            def test_old_way_with_order(self):
+                name = 'piotr'
+                age = 45
+                result = 'my name is {1} ({0})'.format(name, age)
+
+                assert(result == 'my name is 45 (piotr)')
+
+            def test_old_way_with_names(self):
+                name = 'piotr'
+                age = 45
+                result = 'my name is {a} ({n})'.format(n=name, a=age)
+
+                assert(result == 'my name is 45 (piotr)')
