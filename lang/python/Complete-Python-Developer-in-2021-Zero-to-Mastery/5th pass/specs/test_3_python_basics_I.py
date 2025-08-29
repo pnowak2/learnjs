@@ -156,3 +156,7 @@ class TestDeveloperFundamentalsI:
                 result = 'my name is {a} ({n})'.format(n=name, a=age)
 
                 assert(result == 'my name is 45 (piotr)')
+
+        class TestStringIndexes:
+            def test(self):
+                pass
