@@ -204,3 +204,4 @@ class TestDeveloperFundamentalsI:
                 assert(name.find('hello') == 0)
                 assert(name.find('wo') == 6)
                 assert(name.replace('wo', 'bo') == 'hello borld')
+                assert(name == 'hello world') # immutable, not changed above
