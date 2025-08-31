@@ -206,6 +206,17 @@ class TestDeveloperFundamentalsI:
                 assert(name.replace('wo', 'bo') == 'hello borld')
                 assert(name == 'hello world') # immutable, not changed above
 
+        class TestTypeConversion:
+            def test(self):
+                name = 'Piotr Nowak'
+                age = 45
+                relationship = 'single'
+                relationship = 'married'
+
+                birth_year = '1980'
+                age = 2025 - int(birth_year) # need to convert str to int to avoid error
+                assert(age == 45)
+
     class TestBooleans:
         def test(self):
             is_valid = True
@@ -218,7 +229,7 @@ class TestDeveloperFundamentalsI:
             assert(bool('True') is True)
             assert(bool('False') is True)
 
-class TestDeveloperFundamentalsI:
+class TestDeveloperFundamentalsII:
     class TestPasswordChecker:
         def test(self):
             pass
