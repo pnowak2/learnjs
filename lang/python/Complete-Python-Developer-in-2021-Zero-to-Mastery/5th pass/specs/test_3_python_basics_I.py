@@ -205,3 +205,20 @@ class TestDeveloperFundamentalsI:
                 assert(name.find('wo') == 6)
                 assert(name.replace('wo', 'bo') == 'hello borld')
                 assert(name == 'hello world') # immutable, not changed above
+
+    class TestBooleans:
+        def test(self):
+            is_valid = True
+            assert(is_valid is True)
+
+            is_valid = False
+            assert(is_valid is False)
+
+            assert(bool(1) is True)
+            assert(bool('True') is True)
+            assert(bool('False') is True)
+
+class TestDeveloperFundamentalsI:
+    class TestPasswordChecker:
+        def test(self):
+            pass
