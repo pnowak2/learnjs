@@ -189,3 +189,7 @@ class TestDeveloperFundamentalsI:
                     assert None
                 except TypeError:
                     pass
+
+        class TestBuiltinFunctionsAndMethods:
+            def test(self):
+                pass
