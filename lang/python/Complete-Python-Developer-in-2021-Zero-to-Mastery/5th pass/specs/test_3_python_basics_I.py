@@ -199,4 +199,8 @@ class TestDeveloperFundamentalsI:
             def test_str_methods(self):
                 name = 'hello world'
 
+                assert(name.upper() == 'HELLO WORLD')
                 assert(name.capitalize() == 'Hello world')
+                assert(name.find('hello') == 0)
+                assert(name.find('wo') == 6)
+                assert(name.replace('wo', 'bo') == 'hello borld')
