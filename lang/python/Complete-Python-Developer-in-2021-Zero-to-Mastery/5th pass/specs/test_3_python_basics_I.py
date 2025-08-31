@@ -191,5 +191,12 @@ class TestDeveloperFundamentalsI:
                     pass
 
         class TestBuiltinFunctionsAndMethods:
-            def test(self):
-                pass
+            def test_len(self):
+                assert(len('') == 0)
+                assert(len('abc') == 3)
+                assert(len('abc'[0:2]) == 2)
+
+            def test_str_methods(self):
+                name = 'hello world'
+
+                assert(name.capitalize() == 'Hello world')
