@@ -158,5 +158,34 @@ class TestDeveloperFundamentalsI:
                 assert(result == 'my name is 45 (piotr)')
 
         class TestStringIndexes:
-            def test(self):
-                pass
+            def test_slicing(self):
+                name = 'hello world'
+
+                # [start:end:step]
+
+                assert(name[0] == 'h')
+                assert(name[10] == 'd')
+                assert(name[0:2] == 'he')
+                assert(name[0:7] == 'hello w')
+
+                assert(name[0:5:2] == 'hlo')
+
+                assert(name[1:] == 'ello world')
+                assert(name[:5] == 'hello')
+
+                assert(name[::] == 'hello world')
+
+                assert(name[-1] == 'd')
+                assert(name[-3] == 'r')
+
+                assert(name[::-1] == 'dlrow olleh')
+                
+
+        class TestImmutability:
+            def test_strings_immutable(self):
+                name = 'hello'
+                try:
+                    name[0] = '8' # illegal
+                    assert None
+                except TypeError:
+                    pass
