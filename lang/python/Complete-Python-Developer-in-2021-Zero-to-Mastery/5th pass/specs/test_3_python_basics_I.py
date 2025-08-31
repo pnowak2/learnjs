@@ -239,3 +239,7 @@ class TestDeveloperFundamentalsII:
             result = f'{username}, your password {masked_pwd} is {len(passwd)} chars long'
 
             assert(result == 'pnowak, your password *** is 3 chars long')
+
+    class TestLists:
+        def test(self):
+            pass
