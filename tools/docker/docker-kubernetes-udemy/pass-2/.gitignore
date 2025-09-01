@@ -1,0 +1,58 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.pipenv/
+pip-wheel-metadata/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+*.whl
+
+# Test and coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE/editor configs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# MacOS folder trash
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows folder trash
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Misc
+*.bak
+*.tmp
+*.swp
+*.lock
