@@ -242,4 +242,5 @@ class TestDeveloperFundamentalsII:
 
     class TestLists:
         def test(self):
-            pass
+            lst = [1, 2, 3]
+            assert(lst[1:] == [2, 3])
