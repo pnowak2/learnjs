@@ -434,3 +434,7 @@ class TestDeveloperFundamentalsII:
                 weapons = ['gun']
 
                 assert(weapons == ['gun'])
+
+    class TestDictionaries:
+        def test(self):
+            pass
