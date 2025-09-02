@@ -327,3 +327,28 @@ class TestDeveloperFundamentalsII:
 
                 assert(lst == ['a', 'c'])
                 assert(outcome is None)
+
+            def test_clear(self):
+                lst = ['a', 'b', 'c']
+
+                lst.clear()
+
+                assert(lst == [])
+
+            def test_index(self):
+                lst = ['a', 'b', 'c', 'd', 'b']
+
+                assert(lst.index('b') == 1)
+                assert(lst.index('b', 2) == 4)
+                try:
+                    assert(lst.index('b', 2, 3))
+                    assert(False)
+                except ValueError:
+                    pass
+
+            def test_in(self):
+                lst = ['a', 'b', 'c', 'd', 'b']
+
+                assert(('b' in lst) == True)
+                assert(('z' in lst) == False)
+                assert(('l' in 'hello') == True)
