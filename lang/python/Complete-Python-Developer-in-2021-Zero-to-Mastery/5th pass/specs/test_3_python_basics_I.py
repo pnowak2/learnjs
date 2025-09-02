@@ -375,3 +375,62 @@ class TestDeveloperFundamentalsII:
                 std = sorted(lst)
 
                 assert(std == ['a', 'b', 'c', 'd', 'e'])
+
+            def test_copy(self):
+                lst = ['a', 'b', 'c', 'd', 'e']
+                cpy = lst.copy()
+
+                lst[0] = 'boo'
+
+                assert(cpy == ['a', 'b', 'c', 'd', 'e'])
+
+            def test_reverse(self):
+                lst = ['a', 'b', 'c', 'd', 'e']
+
+                lst.reverse()
+
+                assert(lst == ['e', 'd', 'c', 'b', 'a'])
+
+        class TestCommonListPatterns:
+            def test_reverse(self):
+                lst = ['a', 'b', 'c', 'd', 'e']
+
+                rvr = lst[::-1]
+
+                assert(rvr == ['e', 'd', 'c', 'b', 'a'])
+
+            def test_copy(self):
+                lst = ['a', 'b', 'c', 'd', 'e']
+
+                rvr = lst[::]
+
+                assert(rvr == ['a', 'b', 'c', 'd', 'e'])
+
+            def test_range(self):
+                assert(list(range(1, 5)) == [1, 2, 3, 4])
+                assert(list(range(5)) == [0, 1, 2, 3, 4])
+
+            def test_join(self):
+                assert(','.join(['a', 'b', 'c']) == 'a,b,c')
+
+        class TestListUnpacking:
+            def test(self):
+                lst = [1, 2, 3, 4, 5, 6]
+
+                a, b, c, *other, d = lst
+
+                assert(a == 1)
+                assert(b == 2)
+                assert(c == 3)
+                assert(other == [4, 5])
+                assert(d == 6)
+
+        class TestNone:
+            def test(self):
+                weapons = None
+
+                assert(weapons is None)
+
+                weapons = ['gun']
+
+                assert(weapons == ['gun'])
