@@ -17,3 +17,6 @@ conda env export --prefix /Users/daniel/Desktop/project_1/env > environment.yml
 Finally, to create an environment called env_from_file from a .yml file called environment.yml, you can run the command:
 
 conda env create --file environment.yml --name env_from_file
+
+that one actually worked well
+conda env create --file environment.yml --prefix ./env
