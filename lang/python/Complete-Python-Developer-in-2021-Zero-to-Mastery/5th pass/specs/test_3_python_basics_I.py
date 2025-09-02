@@ -352,3 +352,8 @@ class TestDeveloperFundamentalsII:
                 assert(('b' in lst) == True)
                 assert(('z' in lst) == False)
                 assert(('l' in 'hello') == True)
+
+            def test_count(self):
+                lst = ['a', 'b', 'c', 'd', 'b']
+
+                assert(lst.count('b') == 2)
