@@ -241,6 +241,89 @@ class TestDeveloperFundamentalsII:
             assert(result == 'pnowak, your password *** is 3 chars long')
 
     class TestLists:
-        def test(self):
+        def test_list_declaration(self):
             lst = [1, 2, 3]
-            assert(lst[1:] == [2, 3])
+            lst2 = ['a', 'b', 'c']
+            lst3 = [1, 2, 'c', False]
+
+        def test_cart(self):
+            cart = ['notebooks', 'glasses']
+
+            assert(cart[0] == 'notebooks')
+            assert(cart[1] == 'glasses')
+
+            try:
+                cart[2]
+                assert(False)
+            except IndexError:
+                pass
+
+        def test_slicing(self):
+            lst = [1, 2, 3, 4, 5]
+
+            assert(lst[1:3] == [2, 3])
+            assert(lst[:3] == [1, 2, 3])
+            assert(lst[2:] == [3, 4, 5])
+            assert(lst[::2] == [1, 3, 5])
+            assert(lst[::-1] == [5, 4, 3, 2, 1])
+
+        def test_mutable(self):
+            lst = [1, 2, 3, 4, 5]
+
+            lst[0] = 'a'
+
+            assert(lst == ['a', 2, 3, 4, 5])
+
+        def test_matrix(self):
+            matrix = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+            ]
+
+            assert(matrix[1][2] == 6)
+
+        class TestListMethods:
+            def test_append(self):
+                lst = [1, 2, 3]
+
+                assert(lst == [1, 2, 3])
+                assert(len(lst) == 3)
+
+                lst.append(4)
+
+                assert(len(lst) == 4)
+                assert(lst == [1, 2, 3, 4])
+
+            def test_insert(self):
+                lst = [1, 2, 3]
+                lst.insert(1, 'a')
+
+                assert(lst == [1, 'a', 2, 3])
+
+            def test_extend(self):
+                lst = [1, 2, 3]
+
+                lst.extend(['a', 'b'])
+
+                assert(lst == [1, 2, 3, 'a', 'b'])
+                
+            def test_pop(self):
+                lst = ['a', 'b', 'c']
+
+                idx = lst.pop()
+
+                assert(lst == ['a', 'b'])
+                assert(idx == 'c')
+
+                idx = lst.pop(0)
+                assert(lst == ['b'])
+                assert(idx == 'a')
+
+            def test_remove(self):
+                lst = ['a', 'b', 'c']
+
+                outcome = lst.remove('b')
+
+                assert(lst == ['a', 'c'])
+                assert(outcome is None)
