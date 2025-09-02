@@ -357,3 +357,21 @@ class TestDeveloperFundamentalsII:
                 lst = ['a', 'b', 'c', 'd', 'b']
 
                 assert(lst.count('b') == 2)
+
+            def test_sort(self):
+                lst = ['a', 'd', 'c', 'b', 'e']
+
+                lst.sort()
+
+                assert(lst == ['a', 'b', 'c', 'd', 'e'])
+
+                lst.sort(reverse=True)
+
+                assert(lst == ['e', 'd', 'c', 'b', 'a'])
+
+            def test_sorted(self):
+                lst = ['a', 'd', 'c', 'b', 'e']
+
+                std = sorted(lst)
+
+                assert(std == ['a', 'b', 'c', 'd', 'e'])
