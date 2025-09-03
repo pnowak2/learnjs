@@ -436,21 +436,65 @@ class TestDeveloperFundamentalsII:
                 assert(weapons == ['gun'])
 
     class TestDictionaries:
-        def test_dictionary(self):
-            dct = {
-                'key': 'value',
-                'another': 2,
-                'lst': [1, 2, 3]
+        class TestBasics:
+            def test_dictionary(self):
+                dct = {
+                    'key': 'value',
+                    'another': 2,
+                    'lst': [1, 2, 3]
+                    }
+
+                assert(type(dct) is dict)
+
+                assert(dct['key'] == 'value')
+                assert(dct['another'] == 2)
+                assert(dct['lst'][2] == 3 )
+
+                try:
+                    assert(dct['nothing'])
+                    assert(False)
+                except KeyError:
+                    pass
+
+            def test_dictionary_keys(self):
+                # keys cannot change, immutable
+                dct = {
+                    'a': 1,
+                    1: 2,
+                    1: 3, # overriden the one with value of 2
+                    (1, 2): 3,
                 }
 
-            assert(type(dct) is dict)
+                assert(set(dct.keys()) == { 'a', 1, (1, 2) })
+                assert(dct[(1, 2)] == 3)
+                assert(dct[1] == 3)
 
-            assert(dct['key'] == 'value')
-            assert(dct['another'] == 2)
-            assert(dct['lst'][2] == 3 )
+        class TestDictionaryMethods:
+            def test_get(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
 
-            try:
-                assert(dct['nothing'])
-                assert(False)
-            except KeyError:
-                pass
+                try:
+                    dct['age']
+                    assert(False)
+                except KeyError:
+                    pass
+
+                assert(dct.get('age') is None)
+                assert(dct.get('age', 'dft') == 'dft')
+                assert(dct.get('greet') == 'hi')
+                
+            def test_dict_constructor_with_kwargs(self):
+                dct = dict(name='piotr', age=45)
+                assert(dct['name'] == 'piotr')
+
+            def test_in(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                assert(('basket' in dct) is True)
+                assert(('nothing' in dct) is False)
