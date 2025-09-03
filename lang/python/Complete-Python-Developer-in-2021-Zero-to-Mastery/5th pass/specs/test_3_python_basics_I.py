@@ -436,5 +436,21 @@ class TestDeveloperFundamentalsII:
                 assert(weapons == ['gun'])
 
     class TestDictionaries:
-        def test(self):
-            pass
+        def test_dictionary(self):
+            dct = {
+                'key': 'value',
+                'another': 2,
+                'lst': [1, 2, 3]
+                }
+
+            assert(type(dct) is dict)
+
+            assert(dct['key'] == 'value')
+            assert(dct['another'] == 2)
+            assert(dct['lst'][2] == 3 )
+
+            try:
+                assert(dct['nothing'])
+                assert(False)
+            except KeyError:
+                pass
