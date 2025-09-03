@@ -534,3 +534,50 @@ class TestDeveloperFundamentalsII:
                 dct.clear()
 
                 assert(dct == {})
+
+            def test_copy(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                cp = dct.copy()
+
+                assert(cp == dct)
+
+                dct['basket'] = 2
+
+                assert(cp != dct)
+
+            def test_pop(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                popped_value = dct.pop('basket')
+
+                assert(dct == {'greet': 'hi'})
+                assert(popped_value == 1)
+                
+            def test_pop_item(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                popped_key, popped_value = dct.popitem()
+
+                assert(dct == {'basket': 1})
+                assert(popped_key == 'greet')
+                assert(popped_value == 'hi')
+
+            def test_update(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                dct.update({'basket': 'ho'})
+
+                assert(dct['basket'] == 'ho')
