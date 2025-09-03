@@ -498,3 +498,39 @@ class TestDeveloperFundamentalsII:
 
                 assert(('basket' in dct) is True)
                 assert(('nothing' in dct) is False)
+
+            def test_keys_values(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                keys = list(dct.keys())
+                values = list(dct.values())
+                assert(keys == ['basket', 'greet'])
+                assert(values == [1, 'hi'])
+
+            def test_items(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                items = list(dct.items()) # list of tuples
+                key, value = items[0]
+
+                assert(len(items) == 2)
+                assert(items[0] == ('basket', 1))
+                assert(items[1] == ('greet', 'hi'))
+                assert(key == 'basket')
+                assert(value == 1)
+
+            def test_clear(self):
+                dct = {
+                    'basket': 1,
+                    'greet': 'hi'
+                }
+
+                dct.clear()
+
+                assert(dct == {})
