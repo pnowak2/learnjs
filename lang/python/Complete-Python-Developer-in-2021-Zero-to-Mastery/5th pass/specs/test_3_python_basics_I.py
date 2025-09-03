@@ -581,3 +581,8 @@ class TestDeveloperFundamentalsII:
                 dct.update({'basket': 'ho'})
 
                 assert(dct['basket'] == 'ho')
+
+    class TestTuples:
+        class TestBasics:
+            def test(self):
+                pass
