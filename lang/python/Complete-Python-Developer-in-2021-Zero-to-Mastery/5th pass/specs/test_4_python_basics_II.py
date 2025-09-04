@@ -1,6 +1,6 @@
 import math
 
 class TestPythonBasicsII:
-    class TestBreakingFlow:
+    class TestConditionalLogic:
         def test(self):
             pass
