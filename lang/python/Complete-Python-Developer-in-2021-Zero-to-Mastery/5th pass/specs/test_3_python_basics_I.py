@@ -583,6 +583,95 @@ class TestDeveloperFundamentalsII:
                 assert(dct['basket'] == 'ho')
 
     class TestTuples:
-        class TestBasics:
-            def test(self):
-                pass
+        def test_declaration(self):
+            tpl = (1, 2, 3)
+            assert((2 in tpl) == True)
+            assert(tpl[2] == 3)
+
+            x, *z = tpl
+
+            assert(x == 1)
+            assert(z == [2, 3])
+
+        def test_tuple_count(self):
+            tpl = (1, 2, 3, 2, 3, 2)
+
+            assert(tpl.count(2) == 3)
+
+        def test_index(self):
+            tpl = (1, 2, 3, 2, 3, 2)
+
+            assert(tpl.index(2) == 1)
+
+    class TestSets:
+        def test_declaration(self):
+            st = {1, 2, 2, 3, 2, 2}
+
+            assert(st == {1, 2, 3})
+            assert(len(st) == 3)
+
+        def test_convert_to_set(self):
+            assert(set([1, 3, 3, 3, 5]) == {1, 3, 5})
+
+        def test_add(self):
+            st = {1, 2, 2, 3, 2, 2}
+            st.add(2)
+
+            assert(st == {1, 2, 3})
+
+        def test_remove(self):
+            st = {1, 2, 2, 3, 2, 2}
+
+            st.remove(2)
+            assert(st == {1, 3})
+
+        def test_difference(self):
+            set1 = {1, 2, 3, 4, 5}
+            set2 = {4, 5, 6, 7, 8}
+
+            result = set1.difference(set2)
+            assert(result == {1, 2, 3})
+
+        def test_difference_update(self):
+            set1 = {1, 2, 3, 4, 5}
+            set2 = {4, 5, 6, 7, 8}
+
+            set1.difference_update(set2)
+            assert(set1 == {1, 2, 3})
+
+        def test_intersection(self):
+            set1 = {1, 2, 3, 4, 5}
+            set2 = {4, 5, 6, 7, 8}
+
+            result = set1.intersection(set2)
+            assert(result == {4, 5})
+
+        def test_isdisjoint(self):
+            set1 = {1, 2, 3, 4, 5}
+            set2 = {4, 5, 6, 7, 8}
+
+            result = set1.isdisjoint(set2)
+            assert(result is False)
+
+            assert({1, 2, 3}.isdisjoint({4, 5, 6}) is True)
+
+        def test_issubset(self):
+            set1 = {5, 6, 7}
+            set2 = {4, 5, 6, 7, 8}
+
+            result = set1.issubset(set2)
+            assert(result is True)
+
+        def test_issuperset(self):
+            set1 = {5, 6, 7}
+            set2 = {4, 5, 6, 7, 8}
+
+            result = set2.issuperset(set1)
+            assert(result is True)
+
+        def test_union(self):
+            set1 = {1, 2, 3}
+            set2 = {4, 5, 6}
+
+            result = set1.union(set2)
+            assert(result == {1, 2, 3, 4, 5, 6})
