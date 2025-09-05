@@ -50,3 +50,28 @@ class TestPythonBasicsII:
                 result = False or 'default'
 
                 assert(result == 'default')
+
+            def test_truthy_falsy(self):
+                assert(bool('5') is True)
+                assert(bool('False') is True)
+                assert(bool('') is False)
+                assert(bool(0) is False)
+                assert(bool(0j) is False)
+                assert(bool(None) is False)
+                assert(bool(()) is False)
+                assert(bool([]) is False)
+                assert(bool({}) is False)
+
+        class TestTernaryOperator:
+            def test(self):
+                condition = True
+                result = 'chop' if condition else 'baba'
+                assert(result == 'chop')
+
+                condition = False
+                result = 'chop' if condition else 'baba'
+                assert(result == 'baba')
+
+        class TestShortCircuiting:
+            def test(self):
+                pass
