@@ -1,22 +1,53 @@
-Useful infos
+# Complete Machine Learning Bootcamp (Udemy)
 
+## Useful Conda Commands
+
+### Create a Conda Environment
+
+```bash
 conda create --prefix ./env pandas numpy matplotlib scikit-learn
-conda activate <path>
+```
+
+### Activate the Environment
+
+```bash
+conda activate ./env
+```
+
+### Install Jupyter
+
+```bash
 conda install jupyter
+```
 
+### Start Jupyter Notebook
+
+```bash
 jupyter notebook
+```
 
---
+---
 
-For example, to export the environment we created earlier at /Users/daniel/Desktop/project_1/env as a YAML file called environment.yml we can use the command:
+## Exporting the Environment
 
-conda env export --prefix /Users/daniel/Desktop/project_1/env > environment.yml
+To export the environment as a YAML file:
 
---
+```bash
+conda env export --prefix ./env > environment.yml
+```
 
-Finally, to create an environment called env_from_file from a .yml file called environment.yml, you can run the command:
+---
 
+## Creating an Environment from a YAML File
+
+### Using Environment Name
+
+```bash
 conda env create --file environment.yml --name env_from_file
+```
 
-that one actually worked well
-conda env create --file environment.yml --prefix ./env
+### Using Environment Prefix (Recommended)
+
+```bash
+conda env create --file environment.yml
+```
