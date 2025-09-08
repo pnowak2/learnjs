@@ -277,3 +277,33 @@ class TestPythonBasicsII:
 
                 assert(hello('piotr') == 'hello piotr 😀')
                 assert(hello() == 'hello tom 😀')
+
+            def test_return(self):
+                def sum(a, b):
+                    return a + b
+
+                assert(sum(2, 3) == 5)
+
+            def test_closure(self):
+                def sum(a, b):
+                    def fn():
+                        return a + b
+
+                    return fn
+
+                closure = sum(2, 4)
+                assert(closure() == 6)
+
+            def test_methods_vs_functions(self):
+                def fn(a, b):
+                    ''.capitalize() # method on object
+
+            def test_docstrings(self):
+                def sum(a, b):
+                    '''
+                    Sums two numbers
+                    '''
+                    return a + b
+
+                assert(sum(3, 7) == 10)
+                assert(sum.__doc__.strip() == 'Sums two numbers')
