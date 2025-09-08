@@ -315,7 +315,10 @@ class TestPythonBasicsII:
                 assert(func(5, 3, 7, num1=5, num2=10) == 30)
 
             def test_walrus_operator(self):
-                if (n := len([1, 2, 3]) > 2):
-                    pass
+                if ((n := len([1, 2, 3])) > 2):
+                    assert(n == 3)
                 else:
                     assert(False)
+
+            def test_scope(self):
+                pass
