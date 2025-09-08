@@ -1,0 +1,1 @@
+docker run -d -p 8080:80 --name feedback-app -v feedback:/app/feedback -v $(pwd):/app -v /app/node_modules feedback-node:volumes
