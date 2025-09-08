@@ -247,3 +247,8 @@ class TestPythonBasicsII:
 
             def test(self):
                 assert(False)
+
+    class TestDeveloperFundamentalsIV:
+        class TestFunctions:
+            def test(self):
+                pass
