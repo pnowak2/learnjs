@@ -307,3 +307,15 @@ class TestPythonBasicsII:
 
                 assert(sum(3, 7) == 10)
                 assert(sum.__doc__.strip() == 'Sums two numbers')
+
+            def test_args_and_kwargs(self):
+                def func(priority, *args, **kwargs):
+                    return priority + sum(args) + sum(kwargs.values())
+
+                assert(func(5, 3, 7, num1=5, num2=10) == 30)
+
+            def test_walrus_operator(self):
+                if (n := len([1, 2, 3]) > 2):
+                    pass
+                else:
+                    assert(False)
