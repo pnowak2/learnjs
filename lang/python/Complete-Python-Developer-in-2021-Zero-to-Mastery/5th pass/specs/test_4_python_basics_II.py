@@ -245,8 +245,16 @@ class TestPythonBasicsII:
 
                 assert(result == '-----')
 
-            def test(self):
-                assert(False)
+            def test_duplicates(self):
+                lst = [1, 2, 1, 3, 4, 3, 5, 6]
+
+                dups = []
+                for item in lst:
+                    if lst.count(item) > 1 and item not in dups:
+                        dups.append(item)
+
+                assert(dups == [1, 3])
+
 
     class TestDeveloperFundamentalsIV:
         class TestFunctions:
