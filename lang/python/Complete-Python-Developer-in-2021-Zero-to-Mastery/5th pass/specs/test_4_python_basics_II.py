@@ -258,5 +258,22 @@ class TestPythonBasicsII:
 
     class TestDeveloperFundamentalsIV:
         class TestFunctions:
-            def test(self):
-                pass
+            def test_declaration(self):
+                def fun():
+                    pass
+
+                assert(fun() is None)
+
+            def test_parameters_vs_arguments(self):
+                def hello(name, emoji):
+                    return f"hello {name} {emoji}"
+
+                assert(hello('piotr', '😀') == 'hello piotr 😀')
+                assert(hello(emoji='😀', name='bob') == 'hello bob 😀')
+
+            def test_default_params_and_keyword_arguments(self):
+                def hello(name = 'tom', emoji='😀'):
+                    return f"hello {name} {emoji}"
+
+                assert(hello('piotr') == 'hello piotr 😀')
+                assert(hello() == 'hello tom 😀')
