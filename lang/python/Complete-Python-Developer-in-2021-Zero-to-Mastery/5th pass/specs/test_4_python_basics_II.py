@@ -321,4 +321,11 @@ class TestPythonBasicsII:
                     assert(False)
 
             def test_scope(self):
-                pass
+                def fn():
+                    name = ''
+                
+                try:
+                    name
+                    assert(False)
+                except NameError:
+                    assert(True)
