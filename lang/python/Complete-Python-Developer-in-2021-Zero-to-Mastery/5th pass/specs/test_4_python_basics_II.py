@@ -97,3 +97,62 @@ class TestPythonBasicsII:
                 assert(not(3 == 3) is False)
 
 
+        class TestIsVsEquals:
+            def test(self):
+                # implicit type conversion is done first
+                assert((True == 1) == True)
+                assert(('' == 1) == False)
+                assert(('1' == 1) == False)
+                assert(([] == 1) == False)
+                assert((10 == 10.0) == True)
+                assert(([] == []) == True)
+
+                # is location in memory also the same
+                assert((True is 1) == False)
+                assert(('' is 1) == False)
+                assert(('1' is 1) == False)
+                assert(([] is 1) == False)
+                assert((10 is 10.0) == False)
+                assert(([] is []) == False)
+
+                lst = []
+                lst2 = lst
+                assert((lst is lst2) == True)
+
+    class TestLoops:
+        class TestForLoops:
+            def test_string(self):
+                result = ''
+
+                for item in 'hello':
+                    result += item + '-'
+
+                assert(result == 'h-e-l-l-o-')
+
+            def test_list(self):
+                result = 0
+                for item in [1, 2, 3]:
+                    result += item
+
+                assert(result == 6)
+                assert(item == 3)
+
+            def test_tuple(self):
+                result = 0
+                for item in (1, 2, 3):
+                    result += item
+
+                assert(result == 6)
+                assert(item == 3)
+
+            def test_set(self):
+                result = 0
+                for item in {1, 2, 3}:
+                    result += item
+
+                assert(result == 6)
+                assert(item == 3)
+
+        class TestIterables:
+            def test(self):
+                pass
