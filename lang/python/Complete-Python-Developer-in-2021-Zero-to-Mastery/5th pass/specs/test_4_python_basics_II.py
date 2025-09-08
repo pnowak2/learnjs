@@ -73,5 +73,27 @@ class TestPythonBasicsII:
                 assert(result == 'baba')
 
         class TestShortCircuiting:
+            def evaluate(self):
+                raise RuntimeError() # never called
+
+            def test(self, monkeypatch):
+                assert((False or True) is True)
+                assert((False and self.evaluate()) is False)
+
+        class TestLogicalOperators:
             def test(self):
-                pass
+                assert((2 > 1) is True)
+                assert((2 >= 2) is True)
+                assert((2 < 3) is True)
+                assert((3 <= 3) is True)
+                assert((3 == 3) is True)
+                assert(('hello' == 'hello') is True)
+                assert(('hello' != 'ello') is True)
+
+                assert(('a' > 'A') is True)
+                assert((ord('A')) == 65)
+                assert((ord('a')) == 97)
+
+                assert(not(3 == 3) is False)
+
+
