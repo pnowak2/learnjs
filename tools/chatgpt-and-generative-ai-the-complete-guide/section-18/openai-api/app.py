@@ -16,6 +16,6 @@ body ={
     "input": "Write a one-sentence bedtime story about a unicorn."
 }
 
-res = requests.post(api_url, headers=headers, data=body)
+res = requests.post(api_url, headers=headers, json=body)
 
 print(res)
