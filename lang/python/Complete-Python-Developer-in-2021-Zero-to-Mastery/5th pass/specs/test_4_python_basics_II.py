@@ -154,5 +154,96 @@ class TestPythonBasicsII:
                 assert(item == 3)
 
         class TestIterables:
+            def test_items_keys_values(self):
+                user = {
+                    'name': 'Piotr',
+                    'age': 45,
+                }
+
+                items = list(user.items())
+                assert(items == [('name', 'Piotr'), ('age', 45)])
+
+                keys = list(user.keys())
+                assert(keys == ['name', 'age'])
+
+                values = list(user.values())
+                assert(values == ['Piotr', 45])
+
+            def test_items_keys_values(self):
+                user = {
+                    'name': 'Piotr',
+                    'age': 45,
+                }
+
+                result = ''
+                for key, value in user.items(): # returns array of tuples [(key, value)]
+                    result += key + str(value)
+
+                assert(result == 'namePiotrage45')
+
+        class TestRange:
+            def test_one_arg(self):
+                result = list(range(5))
+                assert(result == [0, 1, 2, 3, 4])
+
+                sum = 0
+                for i in range(4):
+                    sum += i
+
+                assert(sum == 6)
+
+            def test_two_args(self):
+                result = list(range(2, 6))
+                assert(result == [2, 3, 4, 5])
+
+            def test_three_args(self):
+                result = list(range(2, 10, 2))
+                assert(result == [2, 4, 6, 8])
+
+                result = list(range(8, 2, -2))
+                assert(result == [8, 6, 4])
+
+        class TestEnumerate:
+            # good when counter is needed for iterable
             def test(self):
-                pass
+                result = ''
+                for index, char in enumerate('omg'):
+                    result += f"{index}:{char},"
+
+                assert(result == '0:o,1:m,2:g,')
+
+            def test_enumerate_from_other_index(self):
+                result = ''
+                for index, char in enumerate('omg', 5):
+                    result += f"{index}:{char},"
+
+                assert(result == '5:o,6:m,7:g,')
+
+        class TestWhileLoops:
+            def test(self):
+                result = ''
+                i = 0
+                while i < 5:
+                    result += '-'
+                    i += 1
+                else:
+                    result += 'done'
+
+                assert(result == '-----done')
+
+            def test_with_break(self):
+                result = ''
+                i = 0
+                while i < 5:
+                    result += '-'
+                    i += 1
+
+                    if i == 5:
+                        break
+                else:
+                    result += 'done'
+
+                assert(result == '-----')
+
+            def test(self):
+                assert(False)
