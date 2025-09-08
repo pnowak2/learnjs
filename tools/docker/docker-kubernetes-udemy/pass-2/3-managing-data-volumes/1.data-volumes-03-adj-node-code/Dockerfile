@@ -12,4 +12,7 @@ EXPOSE 80
 
 VOLUME ["/app/feedback"]
 
+#  can also use this but need to rebuild image
+VOLUME ["/app/node_modules"]
+
 CMD [ "node", "server.js" ]
