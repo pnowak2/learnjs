@@ -1,5 +1,7 @@
 import math
 
+global_var = 'global'
+
 class TestPythonBasicsII:
     class TestConditionalLogic:
         class TestIf:
@@ -329,3 +331,30 @@ class TestPythonBasicsII:
                     assert(False)
                 except NameError:
                     assert(True)
+
+            def test_global(self):
+                assert(global_var == 'global')
+
+                def fn():
+                    global global_var
+                    global_var += '_mod'
+
+                    assert(global_var == 'global_mod')
+
+                fn()
+
+                assert(global_var == 'global_mod')
+
+            def test_non_local(self):
+                def outer():
+                    x = 'local'
+                    def inner():
+                        nonlocal x
+                        x += 'mod'
+
+                    inner()
+
+                    assert(x == 'localmod')
+
+
+                outer()
