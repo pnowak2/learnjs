@@ -46,8 +46,8 @@ conda env export --prefix ./env > environment.yml
 conda env create --file environment.yml --name env_from_file
 ```
 
-### Using Environment Prefix (Recommended)
+### Using Environment Prefix, to install in local folder ./env (Recommended)
 
 ```bash
-conda env create --file environment.yml
+conda env create --file environment.yml --prefix ./env
 ```
