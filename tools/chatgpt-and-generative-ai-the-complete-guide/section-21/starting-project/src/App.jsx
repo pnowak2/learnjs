@@ -33,7 +33,15 @@ function App() {
         <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
-              
+            {CORE_CONCEPTS.map((concept) => (
+              <CoreConcept 
+                key={concept.id} 
+                id={concept.id} 
+                title={concept.title}
+                description={concept.description}
+                image={concept.image} // pass image prop
+              />
+            ))} 
           </ul>
         </section>
         <section id="examples">
