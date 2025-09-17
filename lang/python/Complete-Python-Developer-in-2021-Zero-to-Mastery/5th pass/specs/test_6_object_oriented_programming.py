@@ -118,4 +118,33 @@ class TestObjectOrientedProgramming:
 
 class TestDeveloperFundamentalsV:
     def test_encapsulation(self):
-        pass
+        class Player:
+            def __init__(self, name, age):
+                self.name = name
+                self.age = age
+
+            def run(self):
+                return 'run'
+
+            def speak(self):
+                return f'Hi, I\'m {self.name}'
+
+        player1 = Player('piotr', 45)
+        assert(player1.speak() == '''Hi, I'm piotr''')
+
+    def test_private_vs_public_vars(self):
+        class Player:
+            def __init__(self, name, age):
+                # only naming convention, not enforced by python
+                self._name = name
+                self._age = age
+
+            def get_name(self):
+                return self._name
+
+            def get_age(self):
+                return self._age
+
+        p1 = Player('piotr', 45)
+        assert(p1.get_name() == 'piotr')
+        assert(p1.get_age() == 45)
