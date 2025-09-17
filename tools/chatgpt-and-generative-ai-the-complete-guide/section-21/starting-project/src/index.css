@@ -98,3 +98,24 @@ main h2 {
 #tab-content code {
   font-size: 1rem;
 }
+
+footer {
+  text-align: center;
+  margin: 2rem 0;
+  color: #888;
+}
+
+#examples menu button {
+  font: inherit;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: #3f2a55;
+  color: #ebe7ef;
+  cursor: pointer;
+}
+
+#examples menu button:hover,
+#examples menu button.active {
+  background-color: #5e3b7a;
+}
