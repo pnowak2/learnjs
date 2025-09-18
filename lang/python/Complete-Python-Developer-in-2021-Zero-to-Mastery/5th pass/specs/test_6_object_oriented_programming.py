@@ -174,6 +174,7 @@ class TestDeveloperFundamentalsV:
         w = Wizard('piotr', 10)
         a = Archer('robin', 8)
 
+        assert(isinstance(w, object) is True)
         assert(isinstance(w, User) is True)
         assert(isinstance(w, Wizard) is True)
         assert(isinstance(w, Archer) is False)
@@ -183,3 +184,26 @@ class TestDeveloperFundamentalsV:
 
         assert(w.attack() == 'piotr attacking with power of 10')
         assert(a.attack() == 'robin attacking with 8 arrows')
+
+    def test_polymorphism(self):
+        class User:
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return '[attack]'
+
+        class Wizard(User):
+            def __init__(self, name, power):
+                self.name = name
+                self.power = power
+
+            def attack(self):
+                return f'{super().attack()} {self.name} attacking with power of {self.power}'
+
+        w = Wizard('piotr', 10)
+
+        def player_attack(character: User):
+            return character.attack()
+
+        assert(player_attack(w) == '[attack] piotr attacking with power of 10')
