@@ -187,6 +187,9 @@ class TestDeveloperFundamentalsV:
 
     def test_polymorphism_and_super(self):
         class User:
+            def __init__(self, email):
+                self.email = email
+
             def sign_in(self):
                 return 'login'
 
@@ -194,16 +197,19 @@ class TestDeveloperFundamentalsV:
                 return '[attack]'
 
         class Wizard(User):
-            def __init__(self, name, power):
+            def __init__(self, name, email, power):
+                super().__init__(email)
+
                 self.name = name
                 self.power = power
 
             def attack(self):
                 return f'{super().attack()} {self.name} attacking with power of {self.power}'
 
-        w = Wizard('piotr', 10)
+        w = Wizard('piotr', 'piotr@gmail.com', 10)
 
         def player_attack(character: User):
             return character.attack()
 
         assert(player_attack(w) == '[attack] piotr attacking with power of 10')
+        assert(w.email == 'piotr@gmail.com')
