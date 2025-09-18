@@ -185,7 +185,7 @@ class TestDeveloperFundamentalsV:
         assert(w.attack() == 'piotr attacking with power of 10')
         assert(a.attack() == 'robin attacking with 8 arrows')
 
-    def test_polymorphism(self):
+    def test_polymorphism_and_super(self):
         class User:
             def sign_in(self):
                 return 'login'
