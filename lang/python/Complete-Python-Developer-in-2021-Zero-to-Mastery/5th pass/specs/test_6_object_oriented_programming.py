@@ -148,3 +148,38 @@ class TestDeveloperFundamentalsV:
         p1 = Player('piotr', 45)
         assert(p1.get_name() == 'piotr')
         assert(p1.get_age() == 45)
+
+class TestDeveloperFundamentalsV:
+    def test_inheritance(self):
+        class User:
+            def sign_in(self):
+                return 'login'
+
+        class Wizard(User):
+            def __init__(self, name, power):
+                self.name = name
+                self.power = power
+
+            def attack(self):
+                return f'{self.name} attacking with power of {self.power}'
+
+        class Archer(User):
+            def __init__(self, name, arrows):
+                self.name = name
+                self.arrows = arrows
+
+            def attack(self):
+                return f'{self.name} attacking with {self.arrows} arrows'
+
+        w = Wizard('piotr', 10)
+        a = Archer('robin', 8)
+
+        assert(isinstance(w, User) is True)
+        assert(isinstance(w, Wizard) is True)
+        assert(isinstance(w, Archer) is False)
+
+        assert(w.sign_in() == 'login')
+        assert(a.sign_in() == 'login')
+
+        assert(w.attack() == 'piotr attacking with power of 10')
+        assert(a.attack() == 'robin attacking with 8 arrows')
