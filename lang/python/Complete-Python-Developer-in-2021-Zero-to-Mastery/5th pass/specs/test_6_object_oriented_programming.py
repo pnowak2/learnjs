@@ -251,7 +251,29 @@ class TestDeveloperFundamentalsV:
             def sign_in(self):
                 return 'login'
 
-            def attack(self):
-                return '[attack]'
+            def __len__(self):
+                return len(self.email)
 
-        u = User('p.nowak@gmail.com')
+            def __str__(self):
+                return f'str({self.email})'
+
+            def __call__(self, name):
+                return f'yes {name}?' 
+
+            def __getitem__(self, idx):
+                if type(idx) is str:
+                    return idx in self.email 
+                else:
+                    return self.email[idx]
+
+            def __delete__(self):
+                return 'deleted'
+
+        u = User('mail.com')
+        assert(len(u) == 8)
+        assert(str(u) == 'str(mail.com)')
+        assert(u('master') == 'yes master?')
+        assert(u[2] == 'i')
+        assert(u['mail'] is True)
+
+        del u
