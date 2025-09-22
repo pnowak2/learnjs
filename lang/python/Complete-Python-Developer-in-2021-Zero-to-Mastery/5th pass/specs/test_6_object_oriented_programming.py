@@ -277,3 +277,44 @@ class TestDeveloperFundamentalsV:
         assert(u['mail'] is True)
 
         del u
+
+    def test_extend_list(self):
+        class SuperList(list):
+            def __len__(self):
+                return 1000
+
+        slist = SuperList()
+        slist.append('a')
+        slist.append('b')
+
+        assert(slist[1] == 'b')
+        assert(len(slist) == 1000)
+        assert(issubclass(SuperList, list))
+
+    def test_multiple_inheritance(self):
+        class User:
+            def __init__(name):
+                self.name = name
+
+        class Wizard(User):
+            def __init__(self, stamina: int):
+                self.stamina = stamina
+
+            def magic(self):
+                return 'magic'
+
+        class Archer(User):
+            def __init__(self):
+                pass
+
+            def arrow(self):
+                return 'arrow'
+
+        class HybridBorg(Wizard, Archer):
+            def __init__(self, stamina):
+                Wizard.__init__(self, stamina)
+                Archer.__init__(self)
+
+        hb = HybridBorg(10)
+        hb.arrow()
+        hb.magic()
