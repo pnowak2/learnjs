@@ -213,3 +213,45 @@ class TestDeveloperFundamentalsV:
 
         assert(player_attack(w) == '[attack] piotr attacking with power of 10')
         assert(w.email == 'piotr@gmail.com')
+
+    def test_introspection(self):
+        class User:
+            def __init__(self, email):
+                self.email = email
+
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return '[attack]'
+
+        class Wizard(User):
+            def __init__(self, name, email, power):
+                super().__init__(email)
+
+                self.name = name
+                self.power = power
+
+            def attack(self):
+                return f'{super().attack()} {self.name} attacking with power of {self.power}'
+
+        w = Wizard('piotr', 'piotr@gmail.com', 10)
+        props_methods_of_w = dir(w)
+
+        assert('sign_in' in props_methods_of_w)
+        assert('attack' in props_methods_of_w)
+        assert('email' in props_methods_of_w)
+        assert('__gt__' in props_methods_of_w)
+
+    def test_dunder_methods(self):
+        class User:
+            def __init__(self, email):
+                self.email = email
+
+            def sign_in(self):
+                return 'login'
+
+            def attack(self):
+                return '[attack]'
+
+        u = User('p.nowak@gmail.com')
