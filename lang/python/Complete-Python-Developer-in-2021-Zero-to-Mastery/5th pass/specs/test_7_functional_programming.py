@@ -44,12 +44,19 @@ class TestFunctionalProgramming:
 
         assert(result == [(1, 'a'), (2, 'b'), (3, 'c')])
 
-    def test_reduct(self):
+    def test_reduce(self):
         a = [1, 2, 3]
 
         def reducer(acc, item):
             return acc + item
 
         result = reduce(reducer, a, 0)
+
+        assert(result == 6)
+
+    def test_lambda_expressions(self):
+        lst = [1, 2, 3]
+
+        result = reduce(lambda acc, item: acc + item, lst, 0)
 
         assert(result == 6)
