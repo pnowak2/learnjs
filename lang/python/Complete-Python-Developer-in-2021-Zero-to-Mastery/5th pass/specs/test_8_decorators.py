@@ -18,11 +18,11 @@ class TestDecorators:
         assert(hello(greet) == 'calling fn: hello fellow friend')
         
     def test_higher_order_functions(self):
-        def make_fn():
-            def internal_fn():
-                return 5
+        def make_fn(param):
+            def internal_fn(first, *args, **kwargs):
+                return param * first
 
             return internal_fn
 
-        assert(make_fn()() == 5)
+        assert(make_fn(5)(2) == 10)
         
