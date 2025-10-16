@@ -56,3 +56,23 @@ class TestDecorators:
 
         result = hello('piotr')
         assert(result == 'hello piotr!')
+
+    def test_decorator_with_dict_config(self):
+        def my_decorator(config):
+            tag = config.get('tag', 'div')
+            def actual_decorator(fn):
+                def wrapper_fn(*args):
+                    return f'<{tag}>{fn(*args)}</{tag}>'
+
+                return wrapper_fn
+
+            return actual_decorator
+
+        @my_decorator({
+            'tag': 'greeter'
+        })
+        def hello(name):
+            return f'hello {name}'
+
+        result = hello('piotr')
+        assert(result == '<greeter>hello piotr</greeter>')
