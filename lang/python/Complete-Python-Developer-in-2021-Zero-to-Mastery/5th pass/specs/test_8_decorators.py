@@ -44,7 +44,7 @@ class TestDecorators:
         def my_decorator(arg):
             def actual_decorator(fn):
                 def wrapper_fn(*args):
-                    return fn(*args) + arg 
+                    return fn(*args) + arg # unpack args
 
                 return wrapper_fn
 
@@ -61,7 +61,7 @@ class TestDecorators:
         def my_decorator(config):
             tag = config.get('tag', 'div')
             def actual_decorator(fn):
-                def wrapper_fn(*args):
+                def wrapper_fn(*args, **kwargs):
                     return f'<{tag}>{fn(*args)}</{tag}>'
 
                 return wrapper_fn
