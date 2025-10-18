@@ -6,18 +6,24 @@
  */
 #include "Arduino.h"
 
-int sensorPin = A2;
-int sensorValue = 0;
+int leftSensorPin = A0;
+int leftSensorValue = 0;
+int rightSensorPin = A2;
+int rightSensorValue = 0;
 
 void setup()
 {
-  pinMode(sensorPin, INPUT);
   Serial.begin(9600);
 }
 
 void loop()
 {
-  sensorValue = analogRead(sensorPin);
-  Serial.println(sensorValue);
+  leftSensorValue = analogRead(leftSensorPin);
+  rightSensorValue = analogRead(rightSensorPin);
+  Serial.print(leftSensorValue);
+  Serial.print(", ");
+  Serial.print(rightSensorValue);
+  Serial.println();
+
   delay(10);
 }
