@@ -9,3 +9,7 @@ class TestModules:
     assert(m.sum(6, 3) == 9)
     assert(sum(6, 3) == 9)
     assert(divide(9, 3) == 3)
+
+class TestBuiltInModules:
+  def test(self):
+    pass
