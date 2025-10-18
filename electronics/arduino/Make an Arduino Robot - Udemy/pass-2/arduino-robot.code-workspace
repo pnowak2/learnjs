@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "Photoresistor"
+		},
+		{
+			"name": "Ultrasonic",
+			"path": "Ultrasonic"
+		}
+	],
+	"settings": {}
+}
