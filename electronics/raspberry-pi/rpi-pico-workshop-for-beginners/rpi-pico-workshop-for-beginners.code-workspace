@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "rpi-pico-workshop-for-beginners"
+		},
+		{
+			"name": "Mpy Remote Workspace",
+			"uri": "pico:"
+		}
+	],
+	"settings": {
+		"python.languageServer": "Pylance"
+	}
+}

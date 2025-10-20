@@ -82,6 +82,9 @@ app.get('/people', async (req, res) => {
 //   }
 // );
 
+// by using docker inspect <container name> you can find ip address
+// but not recommended, as ip can change anytime container starts
+
 // mongoose.connect(
 //   'mongodb://172.17.0.2:27017/swfavorites',
 //   { useNewUrlParser: true },
