@@ -1,3 +1,3 @@
 import pyjokes
 
-print(pyjokes.get_jokes()[:3])
+print(pyjokes.get_jokes(language='pl')[:3])
