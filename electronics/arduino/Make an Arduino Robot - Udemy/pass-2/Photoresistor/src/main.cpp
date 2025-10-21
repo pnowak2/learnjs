@@ -1,25 +1,24 @@
 #include "Arduino.h"
 
 int leftSensorPin = A0;
-int leftSensorValue = 0;
 int rightSensorPin = A2;
-int rightSensorValue = 0;
-int leftLedIndicator = 2;
-int rightLedIndicator = 3;
-
 int tresholdPotPin = A4;
+int leftLedIndicatorPin = 2;
+int rightLedIndicatorPin = 3;
 
-int tresholdValue = 700;
+const int SENSOR_CLOSENESS = 70;
+
+int rightSensorValue = 0;
+int leftSensorValue = 0;
 int sensorDifference = 0;
-
-int closeness = 70;
+int tresholdValue = 700;
 
 bool shouldGoForward() {
   if(leftSensorValue >= tresholdValue / 2 &&
      leftSensorValue <= tresholdValue &&
      rightSensorValue >= tresholdValue / 2 &&
      rightSensorValue <= tresholdValue &&
-     sensorDifference <= closeness) { 
+     sensorDifference <= SENSOR_CLOSENESS) { 
       return true;
      } else {
       return false;
@@ -29,7 +28,7 @@ bool shouldGoForward() {
 bool shouldStop() {
   if(leftSensorValue >= tresholdValue &&
      rightSensorValue >= tresholdValue &&
-     sensorDifference <= closeness) { 
+     sensorDifference <= SENSOR_CLOSENESS) { 
       return true;
      } else {
       return false;
@@ -66,32 +65,32 @@ bool isLost() {
 }
 
 void goForward() {
-  digitalWrite(leftLedIndicator, HIGH);
-  digitalWrite(rightLedIndicator, HIGH);
+  digitalWrite(leftLedIndicatorPin, HIGH);
+  digitalWrite(rightLedIndicatorPin, HIGH);
 }
 
 void stop() {
-  digitalWrite(leftLedIndicator, LOW);
-  digitalWrite(rightLedIndicator, LOW);
+  digitalWrite(leftLedIndicatorPin, LOW);
+  digitalWrite(rightLedIndicatorPin, LOW);
 }
 
 void turnLeft() {
-  digitalWrite(leftLedIndicator, HIGH);
-  digitalWrite(rightLedIndicator, LOW);
+  digitalWrite(leftLedIndicatorPin, HIGH);
+  digitalWrite(rightLedIndicatorPin, LOW);
 }
 
 void turnRight() {
-  digitalWrite(leftLedIndicator, LOW);
-  digitalWrite(rightLedIndicator, HIGH);
+  digitalWrite(leftLedIndicatorPin, LOW);
+  digitalWrite(rightLedIndicatorPin, HIGH);
 }
 
 void lost() {
   for(int i = 0; i < 5; i++) {
-    digitalWrite(leftLedIndicator, LOW);
-    digitalWrite(rightLedIndicator, LOW);
+    digitalWrite(leftLedIndicatorPin, LOW);
+    digitalWrite(rightLedIndicatorPin, LOW);
     delay(50);
-    digitalWrite(leftLedIndicator, HIGH);
-    digitalWrite(rightLedIndicator, HIGH);
+    digitalWrite(leftLedIndicatorPin, HIGH);
+    digitalWrite(rightLedIndicatorPin, HIGH);
     delay(50);
   }
 }
@@ -100,8 +99,8 @@ void setup()
 {
   Serial.begin(9600);
 
-  pinMode(leftLedIndicator, OUTPUT);
-  pinMode(rightLedIndicator, OUTPUT);
+  pinMode(leftLedIndicatorPin, OUTPUT);
+  pinMode(rightLedIndicatorPin, OUTPUT);
 }
 
 
@@ -111,7 +110,6 @@ void loop()
   rightSensorValue = analogRead(rightSensorPin);
   tresholdValue = analogRead(tresholdPotPin);
   sensorDifference = abs(leftSensorValue - rightSensorValue);
-
 
   if (shouldGoForward()) {
     goForward();
