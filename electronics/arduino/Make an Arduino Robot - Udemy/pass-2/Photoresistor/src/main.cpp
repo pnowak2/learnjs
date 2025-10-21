@@ -121,9 +121,7 @@ void loop()
     turnRight();
   } else if (isLost()) {
     lost();
-  } else {
-    lost();
-  }
+  } 
 
   Serial.print(leftSensorValue);
   Serial.print(", ");
