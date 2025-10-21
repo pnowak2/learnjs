@@ -7,8 +7,7 @@ int rightSensorValue = 0;
 int leftLedIndicator = 2;
 int rightLedIndicator = 3;
 
-int sensitivitySensorPin = A4;
-int sensitivitySensorValue = 0;
+int tresholdPotPin = A4;
 
 int tresholdValue = 700;
 int sensorDifference = 0;
@@ -110,9 +109,9 @@ void loop()
 {
   leftSensorValue = analogRead(leftSensorPin);
   rightSensorValue = analogRead(rightSensorPin);
+  tresholdValue = analogRead(tresholdPotPin);
   sensorDifference = abs(leftSensorValue - rightSensorValue);
 
-  sensitivitySensorValue = analogRead(sensitivitySensorPin);
 
   if (shouldGoForward()) {
     goForward();
@@ -123,7 +122,7 @@ void loop()
   } else if (shouldTurnRight()) {
     turnRight();
   } else if (isLost()) {
-    turnRight();
+    lost();
   } else {
     lost();
   }
@@ -132,7 +131,7 @@ void loop()
   Serial.print(", ");
   Serial.print(rightSensorValue);
   Serial.print(", ");
-  Serial.print(sensitivitySensorValue);
+  Serial.print(tresholdValue);
   Serial.println();
 
   delay(10);
