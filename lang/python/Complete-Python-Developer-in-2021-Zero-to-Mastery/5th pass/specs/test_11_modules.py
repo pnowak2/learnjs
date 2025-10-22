@@ -10,6 +10,11 @@ import sys
 
 from collections import Counter, defaultdict, OrderedDict
 
+import datetime
+from time import time
+
+from array import array
+
 class TestModules:
   def test_importing_module_from_package(self):
     assert(math.divide(6, 3) == 2)
@@ -75,4 +80,35 @@ class TestUsefulModules:
 
     # would fail if order of insertion is different
     # would pass for regular dictionaries as values and keys are same, order does not matter
+    # Recently, the Python has made Dictionaries ordered by default! 
+    # https://softwaremaniacs.org/blog/2020/02/05/dicts-ordered/en/
+
+  def test_datetime(self):
+    tme = datetime.time(6, 59, 12)
+    assert(tme.hour == 6)
+    assert(tme.minute == 59)
+    assert(tme.second == 12)
+
+    dte = datetime.date(2025, 10, 22)
+    assert(dte.year == 2025)
+    assert(dte.month == 10)
+    assert(dte.day == 22)
+
+  def test_time(self):
+    tme = time()
+    assert(type(tme) is float)
+
+  def test_array(self):
+    # more performant array, limited only to integers ('i')
+    arr = array('i', [1, 2, 3])
+
+    assert(arr[1] == 2)
+
+    try:
+      arr.append('hey')
+      assert False
+    except TypeError as e:
+      # must be an integer, not string!
+      assert True
+
     
