@@ -80,4 +80,10 @@ class TestGenerators:
       except StopIteration:
         assert True
 
+      myRange2 = MyRange(1, 3)
+      # cause its iterable, i can use in loops and everywhere where
+      # iterable is accepted
+      lst = [item for item in myRange2]
+      assert(lst == [1, 2])
+
          
