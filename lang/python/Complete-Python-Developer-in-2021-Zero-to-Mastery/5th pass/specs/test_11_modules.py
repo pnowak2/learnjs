@@ -41,3 +41,38 @@ class TestUsefulModules:
     
   def test_default_dict(self):
     dct = {'a': 1, 'b': 2}
+    assert(dct['a'] == 1)
+
+    try:
+      assert(dct['c'])
+      assert(False)
+    except KeyError:
+      assert(True)
+
+    assert(dct.get('c') == None)
+    assert(dct.get('c', 'does not exist') == 'does not exist')
+
+    # same but with defaultdict
+    defdict = defaultdict(lambda: 'does not exist', dct)
+
+    assert(defdict['c'] == 'does not exist')
+    assert(defdict['a'] == 1)
+    assert(defdict['b'] == 2)
+
+  def test_ordered_dict(self):
+    # retains order of insertion
+    d = OrderedDict()
+
+    d['a'] = 1
+    d['b'] = 2
+
+    d2 = OrderedDict()
+
+    d2['a'] = 1
+    d2['b'] = 2
+
+    assert(d == d2)
+
+    # would fail if order of insertion is different
+    # would pass for regular dictionaries as values and keys are same, order does not matter
+    
