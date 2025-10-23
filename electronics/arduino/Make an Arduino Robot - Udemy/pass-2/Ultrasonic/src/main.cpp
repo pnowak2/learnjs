@@ -1,13 +1,15 @@
 #include <HCSR04.h>
+#define TRIG_PIN 3
+#define ECHO_PIN 2
+#define ECHO_INT 0
 
-UltraSonicDistanceSensor distanceSensor(3, 2);  // Initialize sensor that uses digital pins 13 and 12.
+UltraSonicDistanceSensor distanceSensor(TRIG_PIN, ECHO_PIN);
 
 void setup () {
-    Serial.begin(9600);  // We initialize serial connection so that we could print values from sensor.
+    Serial.begin(9600);
 }
 
 void loop () {
-    // Every 500 miliseconds, do a measurement using the sensor and print the distance in centimeters.
     Serial.println(distanceSensor.measureDistanceCm());
     delay(500);
 }
