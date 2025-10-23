@@ -14,6 +14,9 @@ function App() {
       setIsLoading(true);
 
       try {
+        // using container name which is in same network now
+        // but since its running in browser, this name cannot be solved by docker
+        // const response = await fetch('http://goals-backend/goals');
         const response = await fetch('http://localhost/goals');
 
         const resData = await response.json();
@@ -39,6 +42,7 @@ function App() {
     setIsLoading(true);
 
     try {
+      // const response = await fetch('http://goals-backend/goals', {
       const response = await fetch('http://localhost/goals', {
         method: 'POST',
         body: JSON.stringify({
@@ -78,6 +82,7 @@ function App() {
     setIsLoading(true);
 
     try {
+      // const response = await fetch('http://goals-backend/goals/' + goalId, {
       const response = await fetch('http://localhost/goals/' + goalId, {
         method: 'DELETE',
       });

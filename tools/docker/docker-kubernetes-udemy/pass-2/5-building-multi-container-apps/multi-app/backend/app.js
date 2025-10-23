@@ -84,7 +84,8 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://host.docker.internal:27017/course-goals',
+  'mongodb://mongodb:27017/course-goals', // this mongodb container is in same network as backend and frontend now
+  // 'mongodb://host.docker.internal:27017/course-goals', // when needed to conntect on host local side
   // 'mongodb://localhost:27017/course-goals',
   {
     useNewUrlParser: true,
