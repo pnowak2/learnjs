@@ -5,7 +5,7 @@ led = PWM(Pin(16))
 pot = ADC(Pin(26))
 switch = Pin(15, Pin.IN)
 
-led.freq(1000)
+led.freq(10)
 
 while True:
   potValue = pot.read_u16()
