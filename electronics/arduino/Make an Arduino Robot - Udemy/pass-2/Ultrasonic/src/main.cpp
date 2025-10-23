@@ -1,18 +1,13 @@
-#include <Arduino.h>
+#include <HCSR04.h>
 
-// put function declarations here:
-int myFunction(int, int);
+UltraSonicDistanceSensor distanceSensor(3, 2);  // Initialize sensor that uses digital pins 13 and 12.
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup () {
+    Serial.begin(9600);  // We initialize serial connection so that we could print values from sensor.
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop () {
+    // Every 500 miliseconds, do a measurement using the sensor and print the distance in centimeters.
+    Serial.println(distanceSensor.measureDistanceCm());
+    delay(500);
 }
