@@ -86,4 +86,8 @@ class TestGenerators:
       lst = [item for item in myRange2]
       assert(lst == [1, 2])
 
+      myRange3 = iter(MyRange(1, 3))
+      assert(next(myRange3) == 1)
+      assert(next(myRange3) == 2)
+
          
