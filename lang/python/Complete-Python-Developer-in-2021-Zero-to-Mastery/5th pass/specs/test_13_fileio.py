@@ -29,3 +29,9 @@ class TestFileIO:
     assert(my_file.readline() == '')
 
     my_file.close()
+
+  def test_readlines(self):
+    my_file = open(f"specs/files/multiline.txt")
+    assert(my_file.readlines() == ['line 1\n', 'line 2\n', 'line 3'])
+
+    my_file.close()
