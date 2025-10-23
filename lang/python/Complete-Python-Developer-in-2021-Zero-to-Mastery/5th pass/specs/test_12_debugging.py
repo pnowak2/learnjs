@@ -1,3 +1,3 @@
 class TestDebugging:
-  def test(self):
+  def test_pdb(self):
     pass
