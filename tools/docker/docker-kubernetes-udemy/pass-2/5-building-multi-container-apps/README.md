@@ -33,3 +33,11 @@ docker build -t goals-react .
 docker run --name goals-frontend -d --rm -it --network goals -p 3000:3000 goals-react
 
 no need to publish port as they're all in same network
+but later in the course it appeared that browser in react app needs
+to have node port 80 to be exposed as it cannot use docker netowork
+names directly there.
+
+docker run --name goals-frontend -d --rm -it -p 3000:3000 goals-react
+
+and run now backend with 80 port exposed
+docker run --name goals-backend --rm -d -p 80:80 --network goals goals-node
