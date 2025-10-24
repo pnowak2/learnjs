@@ -41,3 +41,16 @@ docker run --name goals-frontend -d --rm -it -p 3000:3000 goals-react
 
 and run now backend with 80 port exposed
 docker run --name goals-backend --rm -d -p 80:80 --network goals goals-node
+
+## volumes for storing data
+
+### mongo
+docker run --name mongodb -v data:/data/db -d --rm --network goals  mongo
+
+data will survive mongo container restarts
+
+for security user and password env variables to be used
+
+
+
+
