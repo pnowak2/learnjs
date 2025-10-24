@@ -6,6 +6,10 @@
 		{
 			"name": "Ultrasonic",
 			"path": "Ultrasonic"
+		},
+		{
+			"name": "Motors",
+			"path": "Motors"
 		}
 	],
 	"settings": {}
