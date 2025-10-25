@@ -86,7 +86,7 @@ class TestFileIO:
     with open(f"specs/files/logs.txt", mode="r") as file:
       assert(file.read() == 'helloworld')
 
-class TestCustomWith:
+class TestContextManager:
   def test_with_on_own_class(self):
     class Connection:
       def __init__(self, username):
@@ -97,8 +97,15 @@ class TestCustomWith:
         self.password = 'root'
         return self
 
-      def __exit__(self, exc_type, exc_val, exc_tb):
+      def __exit__(self, exception_type, exception_val, exception_traceback):
         self.password = 'none'
+
+        if(exception_type is not None):
+          'exception happened..'
+
+        # True, exception never propagates, gets swallowed here
+        # False exception propagates further
+        return True 
 
     
     conn = Connection('pnowak')
