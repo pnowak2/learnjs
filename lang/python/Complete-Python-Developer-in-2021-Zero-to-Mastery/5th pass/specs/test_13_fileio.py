@@ -1,3 +1,5 @@
+from pathlib import Path
+
 class TestFileIO:
   def test_open(self):
     my_file = open(f"specs/files/readme.md")
@@ -85,6 +87,25 @@ class TestFileIO:
 
     with open(f"specs/files/logs.txt", mode="r") as file:
       assert(file.read() == 'helloworld')
+
+class TestFilePaths:
+  def test(self):
+    path = Path('specs/files')
+    assert('specs' in str(path.absolute()))
+
+    file = path / 'readme.md'
+    # done with def __truediv__(self, key): operator overload
+    # file = path.joinpath('readme.md') # same but using / is more easy
+    assert(file.read_text() == 'hello world')
+
+class TestFileIOErrors:
+  def test(self):
+    try:
+      with open("nonexistent.txt", mode="r") as file:
+        file.read()
+        assert False
+    except FileNotFoundError:
+      assert True
 
 class TestContextManager:
   def test_with_on_own_class(self):
