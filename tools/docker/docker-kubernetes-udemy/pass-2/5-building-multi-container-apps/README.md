@@ -56,3 +56,8 @@ part of the code, but set as environment variable, visible only to admin.
 docker run --name mongodb -v data:/data/db -d --rm --network goals -e MONGO_INITDB_ROOT_USERNAME=pnowak -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
 
 
+## run backend with live source code updates
+
+docker build -t goals-node .
+
+docker run --name goals-backend -v $(pwd):/app -v logs:/app/logs -v /app/node_modules -d --rm -p 80:80 --network goals goals-node
