@@ -10,6 +10,10 @@
 		{
 			"name": "Motors",
 			"path": "Motors"
+		},
+		{
+			"name": "Ultrasonic-With-Servo",
+			"path": "Ultrasonic-With-Servo"
 		}
 	],
 	"settings": {}
