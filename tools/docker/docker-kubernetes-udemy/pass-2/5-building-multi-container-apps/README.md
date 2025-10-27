@@ -61,3 +61,7 @@ docker run --name mongodb -v data:/data/db -d --rm --network goals -e MONGO_INIT
 docker build -t goals-node .
 
 docker run --name goals-backend -v $(pwd):/app -v logs:/app/logs -v /app/node_modules -d --rm -p 80:80 --network goals goals-node
+
+## add env vars for mongo username and password and run container with those 
+
+docker run --name goals-backend -v $(pwd):/app -v logs:/app/logs -v /app/node_modules -d --rm -p 80:80 --network goals -e MONGODB_USERNAME=pnowak -e MONGODB_PASSWORD=secret goals-node
