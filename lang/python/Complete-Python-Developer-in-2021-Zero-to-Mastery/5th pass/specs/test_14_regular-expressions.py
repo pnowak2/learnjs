@@ -1,3 +1,55 @@
+import re
+
 class TestRegularExpressions:
+  def test_simple_in(self):
+    string = 'search inside of this text please!'
+
+    assert(('search' in string) == True)
+
+  def test_match_object(self):
+    string = 'search inside of this text please!'
+    match_object = re.search('this', string)
+
+    assert(match_object.start() == 17)
+    assert(match_object.end() == 21)
+    assert(match_object.group() == 'this')
+
+  def test_match_object_no_match(self):
+    string = 'search inside of this text please!'
+    match_object = re.search('thIs', string)
+
+    assert(match_object is None)
+
+  def test_match_compile_pattern(self):
+    string = 'search this inside of this text please!'
+    pattern = re.compile('this')
+
+    match = pattern.search(string)
+    assert(match.start() == 7)
+    assert(match.end() == 11)
+
+    matches = pattern.findall(string)
+    assert(matches == ['this', 'this'])
+
+  def test_full_match(self):
+    string = 'search this inside of this text please!'
+    pattern = re.compile('search this inside of this text please!')
+
+    full_match = pattern.fullmatch(string)
+
+    assert(full_match)
+
+  def test_match_which_tries_match_beginning_of_string(self):
+    string = 'search this inside of this text please!'
+    pattern = re.compile('search')
+
+    match = pattern.match(string)
+
+    assert(match)
+
+class TestAdvancedRegespressions:
   def test(self):
-    pass
+    assert(re.compile('\d{2}').search('hello 52 guys'))
+    assert(re.compile('[a-zA-Z]').findall('ab') == ['a', 'b'])
+    assert(re.compile('\w+').findall('whats up') == ['whats', 'up'])
+    assert(re.compile('([a-zA-Z]).([!])').findall('whats up!') == [('u', '!')])
