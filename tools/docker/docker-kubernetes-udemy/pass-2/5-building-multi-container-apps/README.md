@@ -65,3 +65,7 @@ docker run --name goals-backend -v $(pwd):/app -v logs:/app/logs -v /app/node_mo
 ## add env vars for mongo username and password and run container with those 
 
 docker run --name goals-backend -v $(pwd):/app -v logs:/app/logs -v /app/node_modules -d --rm -p 80:80 --network goals -e MONGODB_USERNAME=pnowak -e MONGODB_PASSWORD=secret goals-node
+
+## live source code updates for react container
+
+docker run --name goals-frontend -v $(pwd)/src:/app/src -v -d --rm -it -p 3000:3000 goals-react
