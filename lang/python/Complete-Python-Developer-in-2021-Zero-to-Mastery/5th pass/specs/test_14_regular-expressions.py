@@ -48,8 +48,18 @@ class TestRegularExpressions:
     assert(match)
 
 class TestAdvancedRegespressions:
-  def test(self):
+  def test_popular_matches(self):
     assert(re.compile('\d{2}').search('hello 52 guys'))
     assert(re.compile('[a-zA-Z]').findall('ab') == ['a', 'b'])
     assert(re.compile('\w+').findall('whats up') == ['whats', 'up'])
     assert(re.compile('([a-zA-Z]).([!])').findall('whats up!') == [('u', '!')])
+
+  def test_raw_string(self):
+    # r"", R"" - treat backslashes and other special chars as string literals,
+    # not as escape characters
+    pattern = re.compile(r"[a-zA-Z].[a]")
+    string = "search this inside of this text please!"
+
+    result = pattern.search(string)
+
+    assert(result.group() == 'sea')
