@@ -2,6 +2,10 @@
 	"folders": [
 		{
 			"path": "Introduction to Arduino Programming"
+		},
+		{
+			"name": "LED Control",
+			"path": "LED Control"
 		}
 	],
 	"settings": {}
