@@ -63,3 +63,22 @@ class TestAdvancedRegespressions:
     result = pattern.search(string)
 
     assert(result.group() == 'sea')
+
+class TestEmailValidation:
+  def test(self):
+    email_regexp = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    pattern = re.compile(email_regexp)
+
+    assert(pattern.match('p.nowak2@gmail.com'))
+    assert(pattern.match('p.nowak2gmail.com') is None)
+
+class TestPasswordValidation:
+  def test(self):
+    pass_regexp = r'[a-zA-Z0-9$@%#]{8,}'
+    pattern = re.compile(pass_regexp)
+
+    assert(pattern.fullmatch('abcdefgi'))
+    assert(pattern.fullmatch('abc34fgi'))
+    assert(pattern.fullmatch('$123super'))
+    assert(pattern.fullmatch('$123super!') is None)
+    assert(pattern.fullmatch('abc') is None)
