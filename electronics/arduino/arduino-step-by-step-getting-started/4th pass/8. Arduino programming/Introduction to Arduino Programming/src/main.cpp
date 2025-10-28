@@ -1,13 +1,13 @@
 #include <Arduino.h>
+#include <foo.cpp>
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Hello World");
-  Serial.print("Hello Again");
+  Serial.println(domeSomeCalc());
 }
 
 void loop() {
   Serial.println(millis());
-  Serial.println(micros());
   delay(1000);
 }
