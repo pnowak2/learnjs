@@ -1,6 +1,6 @@
 from machine import Pin
 import time
-from servo import Servo
+from lib.servo import Servo
 
 my_servo = Servo(pin_id=17)
 
