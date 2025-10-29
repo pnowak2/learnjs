@@ -1,3 +1,3 @@
-int domeSomeCalc() {
-  return 1 + 1;
+int domeSomeCalc(int a, int b) {
+  return a + b;
 }

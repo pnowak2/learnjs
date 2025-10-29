@@ -6,6 +6,14 @@
 		{
 			"name": "LED Control",
 			"path": "LED Control"
+		},
+		{
+			"name": "If Statement",
+			"path": "If Statement"
+		},
+		{
+			"name": "While Statement",
+			"path": "While Statement"
 		}
 	],
 	"settings": {}
