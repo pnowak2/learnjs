@@ -22,6 +22,10 @@
 		{
 			"name": "Switch Statement",
 			"path": "Switch Statement"
+		},
+		{
+			"name": "Button",
+			"path": "Button"
 		}
 	],
 	"settings": {}
