@@ -8,4 +8,20 @@ class TestMain(unittest.TestCase):
 
     self.assertEqual(result, 100)
 
-unittest.main()
+  def test_other_stuff(self):
+    test_param = 'test'
+    result = main.do_stuff(test_param)
+    self.assertIsInstance(result, ValueError)
+
+  def test_sth_else(self):
+    test_param = None
+    result = main.do_stuff(test_param)
+    self.assertEqual(result, 'please enter a number')
+
+  def test_empty_string(self):
+    test_param = ''
+    result = main.do_stuff(test_param)
+    self.assertEqual(result, 'please enter a number')
+
+if __name__ == '__main__':
+  unittest.main()
