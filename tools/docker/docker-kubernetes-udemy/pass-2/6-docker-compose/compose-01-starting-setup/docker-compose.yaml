@@ -4,13 +4,19 @@ services:
     image: "mongo"
     volumes:
       - data:/data/db
-    environment:
+    # environment:
       # MONGO_INITDB_ROOT_USERNAME: max
       # MONGO_INITDB_ROOT_PASSWORD: secret
-      # - MONGO_INITDB_ROOT_USERNAME=max # alternative way, note -
+      # - MONGO_INITDB_ROOT_USERNAME=max # alternative way, note -, used for single values
     env_file:
       - ./env/mongo.env
-  backend:
+    # networks: # no need to add, compose will create network for all related services
+      # - goals-net
+  # backend:
 
-  frontend:
+  # frontend:
 
+# named volumes, for anonymous volumes no need to specify here
+# can be reused across containers
+volumes:
+  data: 
