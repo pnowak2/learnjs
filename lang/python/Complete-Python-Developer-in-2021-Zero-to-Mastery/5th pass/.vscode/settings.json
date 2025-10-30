@@ -3,5 +3,12 @@
     "specs"
   ],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+  "python-envs.pythonProjects": [
+    {
+      "path": "excercises/17-scripting-with-python/1. images-with-python",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
+    }
+  ]
 }
