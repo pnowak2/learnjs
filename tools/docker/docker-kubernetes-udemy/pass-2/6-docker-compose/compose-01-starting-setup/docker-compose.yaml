@@ -12,7 +12,31 @@ services:
       - ./env/mongo.env
     # networks: # no need to add, compose will create network for all related services
       # - goals-net
-  # backend:
+
+  backend:
+    build: ./backend # find docker file and build that image if image is not built yet
+    # build: # if custom folder and docker file name is used
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    # args:
+    #  some-arg: 1 # provide some args like in cmd line previously
+
+    ports:
+      - "80:80"
+
+    # networks: # no need to add, compose will create network for all related services
+      # - goals-net
+
+    volumes:
+      - logs:/app/logs # named volume
+      - ./backend:/app # bound volume, resolves absolute path, kinda like $(pwd) in terminal
+      - app/node_modules # anonymous volume
+
+    env_file:
+      - ./env/backend.env
+
+    depends_on:
+      - mongodb
 
   # frontend:
 
@@ -20,3 +44,4 @@ services:
 # can be reused across containers
 volumes:
   data: 
+  logs:
