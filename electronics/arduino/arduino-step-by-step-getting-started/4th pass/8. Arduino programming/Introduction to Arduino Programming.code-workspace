@@ -30,6 +30,10 @@
 		{
 			"name": "Analog Input Potentiometer",
 			"path": "Analog Input Potentiometer"
+		},
+		{
+			"name": "Fading LED",
+			"path": "Fading LED"
 		}
 	],
 	"settings": {}
