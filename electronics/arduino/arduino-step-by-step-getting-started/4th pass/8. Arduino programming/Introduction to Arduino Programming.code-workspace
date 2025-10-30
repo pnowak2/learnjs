@@ -26,6 +26,10 @@
 		{
 			"name": "Button",
 			"path": "Button"
+		},
+		{
+			"name": "Analog Input Potentiometer",
+			"path": "Analog Input Potentiometer"
 		}
 	],
 	"settings": {}
