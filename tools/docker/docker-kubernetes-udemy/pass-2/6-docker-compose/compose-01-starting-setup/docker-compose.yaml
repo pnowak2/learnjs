@@ -30,7 +30,7 @@ services:
     volumes:
       - logs:/app/logs # named volume
       - ./backend:/app # bound volume, resolves absolute path, kinda like $(pwd) in terminal
-      - app/node_modules # anonymous volume
+      - /app/node_modules # anonymous volume
 
     env_file:
       - ./env/backend.env
@@ -38,7 +38,21 @@ services:
     depends_on:
       - mongodb
 
-  # frontend:
+  frontend:
+    build: ./frontend
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ./frontend/src:/app/src
+
+    # interactive terminal (like -it flag)
+    stdin_open: true
+    tty: true
+
+    depends_on:
+      - backend
 
 # named volumes, for anonymous volumes no need to specify here
 # can be reused across containers
