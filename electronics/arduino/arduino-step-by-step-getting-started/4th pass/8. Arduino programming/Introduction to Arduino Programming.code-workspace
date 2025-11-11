@@ -38,6 +38,10 @@
 		{
 			"name": "RGB LED",
 			"path": "RGB LED"
+		},
+		{
+			"name": "RGB Library",
+			"path": "RGB Library"
 		}
 	],
 	"settings": {}
