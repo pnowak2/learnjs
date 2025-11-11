@@ -2,6 +2,7 @@ version: "3.8"
 services:
   mongodb:
     image: "mongo"
+    # container_name: mongodb # custom name, if not it consists of folder name, service name and number
     volumes:
       - data:/data/db
     # environment:
