@@ -42,3 +42,10 @@ resized_img.save(path.join("./output", "resized.png"), "png")
 
 crop_img = img.crop((100, 100, 200, 200))
 crop_img.save(path.join("./output", "crop.png"), "png")
+
+astro = Image.open('./images/astro.jpg')
+print(astro.size)
+astro_copy = astro.copy()
+astro_copy.thumbnail((400, 200)) # keeps aspect ratio
+print(astro_copy.size)
+astro_copy.save(path.join('./output', 'astro-resized.png'), 'png')
