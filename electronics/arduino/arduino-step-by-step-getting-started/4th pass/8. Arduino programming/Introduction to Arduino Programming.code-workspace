@@ -34,6 +34,10 @@
 		{
 			"name": "Fading LED",
 			"path": "Fading LED"
+		},
+		{
+			"name": "RGB LED",
+			"path": "RGB LED"
 		}
 	],
 	"settings": {}
