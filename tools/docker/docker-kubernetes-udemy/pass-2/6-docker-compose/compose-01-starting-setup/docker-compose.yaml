@@ -1,5 +1,5 @@
 version: "3.8"
-services:
+services: # containers used in the bundle
   mongodb:
     image: "mongo"
     # container_name: mongodb # custom name, if not it consists of folder name, service name and number
