@@ -1,8 +1,8 @@
 # runs default command inside container node instance
+## interactive terminal and detached so i got container running in bg
 docker run -it -d node:alpine
 
 # runs custom / different command instead
-
 docker run -it node:alpine <new command>
 ## example
 docker run -it node:alpine npm init
