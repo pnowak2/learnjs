@@ -9,6 +9,11 @@
       "path": "excercises/17-scripting-with-python/1. images-with-python",
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
+    },
+    {
+      "path": "excercises/17-scripting-with-python/2.pdfs",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
     }
   ]
 }

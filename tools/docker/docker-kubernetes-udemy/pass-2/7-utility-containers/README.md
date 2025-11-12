@@ -23,6 +23,11 @@ npm install -g @eui/cli
 eui-cli
 yarn install
 
-npm run start -- --host 0.0.0.0 --port 4200
+## modify package.json so it starts with host 0.0.0.0
+## npm run start -- --host 0.0.0.0 --port 4200
+"start-serve": "eui-scripts serve-app --configuration=proxy-mock --host 0.0.0.0",
 
-host machine - localhost:4200
+visit on host machine - localhost:4200
+
+## open separate terminal and edit any app files
+docker exec -it mynode sh
