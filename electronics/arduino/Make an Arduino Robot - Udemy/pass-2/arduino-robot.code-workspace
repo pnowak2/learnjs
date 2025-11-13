@@ -14,6 +14,10 @@
 		{
 			"name": "Ultrasonic-With-Servo",
 			"path": "Ultrasonic-With-Servo"
+		},
+		{
+			"name": "Chassis",
+			"path": "Chassis"
 		}
 	],
 	"settings": {}
