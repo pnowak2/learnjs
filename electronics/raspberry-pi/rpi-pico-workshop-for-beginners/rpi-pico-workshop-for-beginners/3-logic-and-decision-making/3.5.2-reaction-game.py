@@ -27,6 +27,7 @@ while True:
   while button_state == 0:
     button_state = button.value()
 
+  led.off()
   end_time = ticks_ms()
 
   reaction_time = end_time - start_time
