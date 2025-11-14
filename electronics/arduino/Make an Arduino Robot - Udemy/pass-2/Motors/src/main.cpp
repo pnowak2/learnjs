@@ -11,47 +11,28 @@
   * range for non-continous servo motor is also 0-180
   * but this time min and max values denote angle how shaft should turn
   */
-
-const int RForward = 120; // the speed of the servo, max. speed is 180
-const int RBackward = 60;
-
-const int LForward = 120;
-const int LBackward = 60;
-
-const int RNeutral = 90; // centered position
-const int LNeutral = 90;
-
-Servo leftMotor;
-Servo rightMotor;
 Servo panMotor;
+Servo panMotor2;
 
 void setup() {
   Serial.begin(9600);
-  rightMotor.attach(11); // pin 11
-  leftMotor.attach(10); // pin 10
   panMotor.attach(6); // pin 6
+  panMotor2.attach(5); // pin 6
 
   panMotor.write(90); // set to center position
-  leftMotor.write(LNeutral);
-  rightMotor.write(RNeutral);
+  panMotor2.write(90); // set to center position
+  delay(2000);
 }
 
 void loop() {
-  panMotor.write(0); // full right
-  leftMotor.write(LForward);
-  rightMotor.write(RForward);
-
+  panMotor.write(132); // full left
   delay(1000);
 
-  panMotor.write(180); // full left
-  leftMotor.write(LBackward);
-  rightMotor.write(RBackward);
-
+  panMotor2.write(132); // full left
+  delay(1000);
+  panMotor2.write(90); // full left
   delay(1000);
 
-  panMotor.write(90); // center
-  leftMotor.write(LForward);
-  rightMotor.write(RBackward);
-
-  delay(1000);
+  panMotor.write(90); // full right
+  delay(2000);
 }
