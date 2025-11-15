@@ -36,3 +36,7 @@ syncs package.json, node_modules on host machine
 now init is appended after entrypoint, making npm init command run in container
 
 container always shuts down after command is run
+
+# Docker Compose
+run single service from yaml file by service name and any command appended
+docker-compose run npm init
