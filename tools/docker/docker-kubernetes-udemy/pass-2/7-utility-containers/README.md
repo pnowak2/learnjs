@@ -10,3 +10,13 @@ docker run -it node:alpine npm init
 # exec any command inside container
 # -it for interactive, prevent exiting immediately and keep terminal responsive to prompts
 docker exec -it <container-name> npm init
+
+
+
+# Build own utility container
+Create docker file, then
+
+docker build -t node-util .
+docker run -it -v $(pwd):/app node-util npm init
+
+syncs package.json between container and host machine
