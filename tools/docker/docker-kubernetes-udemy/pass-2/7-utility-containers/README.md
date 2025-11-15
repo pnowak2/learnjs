@@ -40,3 +40,9 @@ container always shuts down after command is run
 # Docker Compose
 run single service from yaml file by service name and any command appended
 docker-compose run npm init
+
+docker-compose run npm init  
+docker-compose run npm install
+
+can also remove container when is done
+docker-compose run --rm npm init  
