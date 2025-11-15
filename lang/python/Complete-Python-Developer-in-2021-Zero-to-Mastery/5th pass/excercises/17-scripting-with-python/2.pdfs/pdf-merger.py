@@ -2,7 +2,9 @@ import pypdf
 import sys
 import os
 
-_, *files = sys.argv
+# _, *files = sys.argv
+# or same but cleaner
+files = sys.argv[1:]
 
 merger = pypdf.PdfWriter()
 
