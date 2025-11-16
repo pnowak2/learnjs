@@ -1,18 +1,53 @@
 #include <Arduino.h>
+#include <AFMotor.h>
 
-// put function declarations here:
-int myFunction(int, int);
+AF_DCMotor leftMotor(2, MOTOR12_64KHZ);
+AF_DCMotor rightMotor(1, MOTOR12_64KHZ); 
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void goForward() {
+  leftMotor.run(FORWARD);
+  rightMotor.run(FORWARD);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void turnLeft() {
+  leftMotor.run(RELEASE);
+  rightMotor.run(FORWARD);
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void turnRight() {
+  leftMotor.run(FORWARD);
+  rightMotor.run(RELEASE);
+}
+
+void goBackward() {
+  leftMotor.run(BACKWARD);
+  rightMotor.run(BACKWARD);
+}
+
+void stop() {
+  leftMotor.run(RELEASE);
+  rightMotor.run(RELEASE);
+}
+
+
+void setup()
+{
+  Serial.begin(9600);
+  
+  leftMotor.setSpeed(150);
+  rightMotor.setSpeed(150);
+
+  // stop();
+}
+
+void loop()
+{
+  goForward();
+  delay(1000);
+
+  turnRight();
+  delay(1000);
+
+  stop();
+  delay(1000);
 }
