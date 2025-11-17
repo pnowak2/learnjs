@@ -1,5 +1,12 @@
 #include <Arduino.h>
 #include <AFMotor.h>
+#include <HCSR04.h>
+
+#define TRIG_PIN A5
+#define ECHO_PIN A4
+#define ECHO_INT 0
+
+UltraSonicDistanceSensor distanceSensor(TRIG_PIN, ECHO_PIN);
 
 AF_DCMotor leftMotor(2, MOTOR12_64KHZ);
 AF_DCMotor rightMotor(1, MOTOR12_64KHZ);
@@ -50,20 +57,40 @@ void setup()
 {
   Serial.begin(9600);
 
+
   leftMotor.setSpeed(250);
   rightMotor.setSpeed(250);
-
-  // stop();
 }
 
 void loop()
 {
-  goForward();
-  delay(3000);
+    int dystans = distanceSensor.measureDistanceCm();
 
-  spinRight();
-  delay(1000);
+    goForward();
 
-  stop();
-  delay(1000);
+    if(dystans <= 5) {
+      stop();
+      delay(1000);
+      spinRight();
+      delay(100);
+      spinLeft();
+      delay(100);
+      spinRight();
+      delay(100);
+      spinLeft();
+      delay(100);
+
+      goBackward();
+      delay(500);
+      spinRight();
+      delay(1000);
+    }
+  // goForward();
+  // delay(3000);
+
+  // spinRight();
+  // delay(1000);
+
+  // stop();
+  // delay(1000);
 }
