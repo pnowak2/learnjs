@@ -81,9 +81,9 @@ void loop()
       delay(100);
 
       goBackward();
-      delay(500);
-      spinRight();
       delay(1000);
+      spinRight();
+      delay(500);
     }
   // goForward();
   // delay(3000);
