@@ -64,11 +64,12 @@ void setup()
 
 void loop()
 {
-    int dystans = distanceSensor.measureDistanceCm();
+    int distance = distanceSensor.measureDistanceCm();
 
-    goForward();
-
-    if(dystans <= 5) {
+    if(distance >= 10 || distance == -1) {
+      goForward();
+      delay(300);
+    } else {
       stop();
       delay(1000);
       spinRight();
@@ -85,12 +86,4 @@ void loop()
       spinRight();
       delay(500);
     }
-  // goForward();
-  // delay(3000);
-
-  // spinRight();
-  // delay(1000);
-
-  // stop();
-  // delay(1000);
 }
