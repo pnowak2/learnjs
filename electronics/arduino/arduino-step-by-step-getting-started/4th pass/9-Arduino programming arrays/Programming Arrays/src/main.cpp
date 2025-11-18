@@ -27,6 +27,10 @@ void setup() {
 
   char_array5[2] = '2';
   Serial.println(char_array5);
+
+  for(size_t i = 0; i < strlen(str); i++ ) {
+    Serial.println(str[i]);
+  }
 }
 
 void loop() {
