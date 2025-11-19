@@ -18,6 +18,10 @@
 		{
 			"name": "Chassis",
 			"path": "Chassis"
+		},
+		{
+			"name": "Final Project",
+			"path": "Final Project"
 		}
 	],
 	"settings": {}
