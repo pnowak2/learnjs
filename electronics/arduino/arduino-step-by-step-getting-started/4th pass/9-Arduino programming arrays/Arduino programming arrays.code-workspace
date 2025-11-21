@@ -7,7 +7,19 @@
 		{
 			"name": "Arrays-Example-1",
 			"path": "Arrays-Example-1"
-		}
+		},
+		{
+			"name": "Arrays-Example-2",
+			"path": "Arrays-Example-2"
+		},
+		{
+			"name": "Arrays-Example-3",
+			"path": "Arrays-Example-3"
+		},
+		{
+			"name": "Arrays-Example-4",
+			"path": "Arrays-Example-4"
+		},
 	],
 	"settings": {}
 }

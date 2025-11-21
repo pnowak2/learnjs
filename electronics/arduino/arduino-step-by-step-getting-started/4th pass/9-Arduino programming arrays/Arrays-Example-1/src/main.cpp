@@ -1,37 +1,53 @@
 #include <Arduino.h>
 
-void setup() {
+int myIntegers[]{1, 2, 3, 4, 5};
 
+void setup()
+{
   Serial.begin(9600);
+  while (!Serial)
+    ;
 
-  char char_array[] = {'a', 'b', 'c'};
-  char char_array2[5] {'a', 'b', 'c'};
-  char char_array3[3] = "ab";
-  char char_array5[] = "abcde";
-
-  char char_array4[5];
-
-  int int_array[] = {1, 2, 3};
-  int int_array2[3] = {1, 2, 3 };
-
-  const char* str {"hello world"};
-
-  Serial.println(char_array);
-  Serial.println(char_array2);
-  Serial.println(char_array3);
-  Serial.println(char_array5);
-  Serial.println(str);
-
-  Serial.println(char_array2[1]);
-  Serial.println(str[6]);
-
-  char_array5[2] = '2';
-  Serial.println(char_array5);
-
-  for(size_t i = 0; i < strlen(str); i++ ) {
-    Serial.println(str[i]);
-  }
+  Serial.println("Your array numbers");
 }
 
-void loop() {
+void loop()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    Serial.print("Index ");
+    Serial.print(1);
+    Serial.print(" contains value ");
+    Serial.println(myIntegers[i]);
+
+    delay(200);
+  }
+
+  Serial.println();
+
+  for(int i = 0; i < 4; i++) {
+    Serial.print(myIntegers[i]);
+    Serial.print(" + ");
+    Serial.print(myIntegers[i + 1]);
+    Serial.print(" = ");
+    Serial.println(myIntegers[i] + myIntegers[i + 1]);
+    delay(200);
+  }
+
+  Serial.println();
+
+  for(int i = 0; i < 4; i++) {
+    Serial.print(myIntegers[i]);
+    Serial.print(" + ");
+    Serial.print(myIntegers[i + 1]);
+    Serial.print(" = ");
+    Serial.println(myIntegers[i] + myIntegers[i + 1]);
+
+    int sum = myIntegers[i] + myIntegers[i + 1];
+
+    myIntegers[i] = sum;
+    Serial.print(myIntegers[i]);
+
+    delay(200);
+  }
 }
