@@ -85,7 +85,6 @@ class TestDecorators:
             def __call__(self, *args, **kwargs):
                 return f'@decor: {self.fn(*args, **kwargs)}'
 
-
         @MyClass
         def fn(arg):
             return f'arg: {arg}'
@@ -93,4 +92,74 @@ class TestDecorators:
         # fn = MyClass(fn)
 
         assert(fn(5) == '@decor: arg: 5')
+
+    def test_making_descriptor(self):
+        class MyProperty:
+            def __init__(self, getterFn):
+                self._getterFn = getterFn
+
+            def __get__(self, instance, clazz):
+                if instance is None:
+                    return self
+
+                if self._getterFn is None:
+                    raise AttributeError('Attribute not found')
+
+                return self._getterFn(instance)
+
+            def __set__(self, instance, value):
+                if self._setterFn is None:
+                    raise AttributeError('Attribute setter not found')
+
+                self._setterFn(instance, value)
+
+            def __delete__(self, instance):
+                if self._deleterFn is None:
+                    raise AttributeError('Attribute setter not found')
+                self._deleterFn(instance)
+
+            def setter(self, setterFn): 
+                self._setterFn = setterFn
+                return self
+
+            def deleter(self, deleterFn):
+                self._deleterFn = deleterFn
+                return self
+
+        class Person:
+            def __init__(self, name):
+                self._name = name
+
+            @MyProperty
+            def name(self):
+                return "@" + self._name
+            # name = MyProperty(name) # makes class level property which is getter/descriptor
+
+            @name.setter
+            def name(self, value):
+                self._name = value + '!'
+            # name = name.setter(name)
+
+            @name.deleter
+            def name(self):
+                del self._name
+            # name = name.deleter(name)
+
+        p = Person('piotr')
+
+        assert(p.name == '@piotr') # first looks in __dict__, but its not there, then check in class, to handle for descriptors
+
+        p.name = 'domi'
+        assert (p.name == '@domi!')
+
+        p.name
+
+        del p.name
+
+        try:
+            p.name
+        except AttributeError as ae:
+            assert ae.args[0] == "'Person' object has no attribute '_name'"
+            assert True
+
 
