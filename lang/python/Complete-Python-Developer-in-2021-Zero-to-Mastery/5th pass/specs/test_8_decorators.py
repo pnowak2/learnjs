@@ -154,6 +154,8 @@ class TestDecorators:
 
         p.name
 
+        assert (Person.name == Person.name)
+
         del p.name
 
         try:
