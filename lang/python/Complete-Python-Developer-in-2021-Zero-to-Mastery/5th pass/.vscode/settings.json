@@ -2,7 +2,6 @@
   "python.testing.pytestArgs": [
     "specs"
   ],
-  "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python-envs.pythonProjects": [
     {
@@ -20,5 +19,12 @@
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
     }
+  ],
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./specs",
+    "-p",
+    "test*.py"
   ]
 }

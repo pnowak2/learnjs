@@ -76,3 +76,21 @@ class TestDecorators:
 
         result = hello('piotr')
         assert(result == '<greeter>hello piotr</greeter>')
+
+    def test_with_simple_class(self):
+        class MyClass:
+            def __init__(self, fn):
+                self.fn = fn
+
+            def __call__(self, *args, **kwargs):
+                return f'@decor: {self.fn(*args, **kwargs)}'
+
+
+        @MyClass
+        def fn(arg):
+            return f'arg: {arg}'
+
+        # fn = MyClass(fn)
+
+        assert(fn(5) == '@decor: arg: 5')
+
