@@ -31,12 +31,12 @@ void decode()
    * ON / OFF
    * Protocol=NEC Address=0x0, Command=0x1, Raw-Data=0xFE01FF00, 32 bits, LSB first, Gap=3276750us, Duration=68300us
    * Send with: IrSender.sendNEC(0x0, 0x1, <numberOfRepeats>);
-   * 
-   * LIGHTER 
+   *
+   * LIGHTER
    * Protocol=NEC Address=0x0, Command=0x9, Raw-Data=0xF609FF00, 32 bits, LSB first, Gap=3276750us, Duration=68300us
    * Send with: IrSender.sendNEC(0x0, 0x9, <numberOfRepeats>);
-   * 
-   * DIMMER 
+   *
+   * DIMMER
    * Protocol=NEC Address=0x0, Command=0x11, Raw-Data=0xEE11FF00, 32 bits, LSB first, Gap=3276750us, Duration=68250us
    * Send with: IrSender.sendNEC(0x0, 0x11, <numberOfRepeats>);
    */
@@ -46,34 +46,77 @@ void decode()
    *
    * ON / OFF
    * Protocol=UNKNOWN Hash=0xDA0AE878 24 bits (incl. gap and start) received
-   * 
+   *
    * DISPLAY
    * Protocol=UNKNOWN Hash=0xF40BF22B 24 bits (incl. gap and start) received
    */
 
   /*
-   * KOD DO TEALIGHTS 
+   * KOD DO TEALIGHTS
    *
-   * ON 
+   * ON
    * Protocol=NEC Address=0x93CB, Command=0x50, Raw-Data=0xAF5093CB, 32 bits, LSB first, Gap=1877700us, Duration=68850us
    * end with: IrSender.sendNEC(0x93CB, 0x50, <numberOfRepeats>);
-   * 
-   * OFF 
+   *
+   * OFF
    * Protocol=NEC Address=0x93CB, Command=0x5F, Raw-Data=0xA05F93CB, 32 bits, LSB first, Gap=594700us, Duration=68850us
    * Send with: IrSender.sendNEC(0x93CB, 0x5F, <numberOfRepeats>);
-   * 
+   *
    * FLICKER
    * Protocol=NEC Address=0x93CB, Command=0x3B, Raw-Data=0xC43B93CB, 32 bits, LSB first, Gap=763350us, Duration=68800us
    * end with: IrSender.sendNEC(0x93CB, 0x3B, <numberOfRepeats>);
-   * 
+   *
    * TIMER 4h
    * Protocol=NEC Address=0x93CB, Command=0x2F, Raw-Data=0xD02F93CB, 32 bits, LSB first, Gap=3276750us, Duration=68800us
    * Send with: IrSender.sendNEC(0x93CB, 0x2F, <numberOfRepeats>);
-   * 
+   *
    * TIMER 6h
    * Protocol=NEC Address=0x93CB, Command=0x2A, Raw-Data=0xD52A93CB, 32 bits, LSB first, Gap=1362250us, Duration=68800us
    * Send with: IrSender.sendNEC(0x93CB, 0x2A, <numberOfRepeats>);
    */
+}
+
+void decodeRaw()
+{
+  if (IrReceiver.decode())
+  {
+
+    IrReceiver.printIRResultAsCArray(&Serial);
+
+    // dostęp do rawlen
+    uint8_t rawLen = IrReceiver.decodedIRData.rawlen;
+
+    Serial.print("rawLen = ");
+    Serial.println(rawLen);
+
+    if (rawLen < 3)
+    {
+      Serial.println("Brak surowych danych RAW — pilot za krótki lub nietypowy protokół.");
+    }
+    else
+    {
+      Serial.print("uint16_t rawData[");
+      Serial.print(rawLen - 1);
+      Serial.println("] = {");
+    }
+
+    // dostęp do raw timing array: decodedRawDataArray[]
+    for (uint8_t i = 1; i < rawLen; i++)
+    { // 0 = initial gap
+      Serial.print("  ");
+      Serial.print(IrReceiver.decodedIRData.decodedRawDataArray[i]);
+      if (i < rawLen - 1)
+        Serial.print(",");
+      Serial.println();
+    }
+
+    Serial.println("};");
+    Serial.print("rawLen = ");
+    Serial.println(rawLen - 1);
+    Serial.println();
+
+    IrReceiver.resume();
+  }
 }
 
 void sendOnOff()
@@ -84,6 +127,6 @@ void sendOnOff()
 
 void loop()
 {
-  decode();
+  decodeRaw();
   // sendOnOff();
 }
