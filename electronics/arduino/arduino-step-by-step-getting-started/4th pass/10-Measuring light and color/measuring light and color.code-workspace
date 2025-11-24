@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "UV Sensor"
+		},
+		{
+			"path": "IR Remote Controller"
 		}
 	],
 	"settings": {}
