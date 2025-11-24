@@ -107,41 +107,7 @@ void decodeRaw()
 {
   if (IrReceiver.decode())
   {
-
     IrReceiver.printIRResultAsCArray(&Serial);
-
-    // dostęp do rawlen
-    uint8_t rawLen = IrReceiver.decodedIRData.rawlen;
-
-    Serial.print("rawLen = ");
-    Serial.println(rawLen);
-
-    if (rawLen < 3)
-    {
-      Serial.println("Brak surowych danych RAW — pilot za krótki lub nietypowy protokół.");
-    }
-    else
-    {
-      Serial.print("uint16_t rawData[");
-      Serial.print(rawLen - 1);
-      Serial.println("] = {");
-    }
-
-    // dostęp do raw timing array: decodedRawDataArray[]
-    for (uint8_t i = 1; i < rawLen; i++)
-    { // 0 = initial gap
-      Serial.print("  ");
-      Serial.print(IrReceiver.decodedIRData.decodedRawDataArray[i]);
-      if (i < rawLen - 1)
-        Serial.print(",");
-      Serial.println();
-    }
-
-    Serial.println("};");
-    Serial.print("rawLen = ");
-    Serial.println(rawLen - 1);
-    Serial.println();
-
     IrReceiver.resume();
   }
 }
@@ -150,7 +116,7 @@ void sendRaw()
 {
   uint8_t freqs[] = {30, 33, 36, 38, 40, 56};
 
-  uint16_t rawData[] = {1230, 420, 1280, 370, 430, 1220, 1280, 370, 1280, 420, 430, 1220, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 1280, 7020, 1280, 370, 1280, 370, 480, 1220, 1230, 420, 1280, 370, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 430, 1220, 430, 1220, 1280};
+  uint16_t rawData[47] = {1280, 370, 1280, 370, 430, 1220, 1280, 420, 1230, 420, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 430, 1220, 1280, 7020, 1280, 370, 1280, 370, 430, 1220, 1280, 420, 1230, 420, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 380, 1270, 1280};
   uint8_t rawLen = sizeof(rawData) / sizeof(rawData[0]);
 
   for (int j = 0; j < 6; j++)
