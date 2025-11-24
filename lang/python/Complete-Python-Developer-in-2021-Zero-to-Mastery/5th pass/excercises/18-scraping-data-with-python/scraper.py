@@ -1,8 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
 import pprint
+import sys
 
-res = requests.get('https://news.ycombinator.com/news')
+args = sys.argv
+page = 1
+
+if(len(args) > 1):
+  page = args[1]
+
+res = requests.get(f'https://news.ycombinator.com/news?p={page}')
 soup = BeautifulSoup(res.text, 'html.parser')
 
 links = soup.select('.titleline > a')
