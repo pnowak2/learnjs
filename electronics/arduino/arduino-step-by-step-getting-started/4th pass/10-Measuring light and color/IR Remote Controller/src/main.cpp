@@ -153,8 +153,10 @@ void sendRaw()
   uint16_t rawData[] = {1230, 420, 1280, 370, 430, 1220, 1280, 370, 1280, 420, 430, 1220, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 1280, 7020, 1280, 370, 1280, 370, 480, 1220, 1230, 420, 1280, 370, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 430, 1220, 430, 1220, 1280};
   uint8_t rawLen = sizeof(rawData) / sizeof(rawData[0]);
 
-  for(int i = 0; i < 3; i++) {
-    for(int j = 0; j < 6; j++) {
+  for (int j = 0; j < 6; j++)
+  {
+    for (int i = 0; i < 3; i++)
+    {
       IrSender.sendRaw(rawData, rawLen, freqs[j]);
       Serial.println(freqs[j]);
       delay(100);
