@@ -46,7 +46,34 @@ void decode()
    *
    * ON / OFF
    * Protocol=UNKNOWN Hash=0xDA0AE878 24 bits (incl. gap and start) received
-   *
+    uint16_t rawData[47] = {
+      1230,420,
+      1280,370,
+      430,1220,
+      1280,370,
+      1280,420,
+      430,1220,
+      430,1220,
+      430,1220,
+      430,1220,
+      480,1220,
+      430,1220,
+      1280,7020,
+      1280,370,
+      1280,370,
+      480,1220,
+      1230,420,
+      1280,370,
+      430,1220,
+      430,1220,
+      480,1220,
+      430,1220,
+      430,1220,
+      430,1220,
+      430,1220,
+      1280
+    };
+uint8_t rawLen = 47;
    * DISPLAY
    * Protocol=UNKNOWN Hash=0xF40BF22B 24 bits (incl. gap and start) received
    */
@@ -119,6 +146,16 @@ void decodeRaw()
   }
 }
 
+void sendRaw()
+{
+  uint16_t rawData[] = {1230, 420, 1280, 370, 430, 1220, 1280, 370, 1280, 420, 430, 1220, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 1280, 7020, 1280, 370, 1280, 370, 480, 1220, 1230, 420, 1280, 370, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 430, 1220, 430, 1220, 1280};
+  uint8_t rawLen = sizeof(rawData) / sizeof(rawData[0]);
+
+  IrSender.sendRaw(rawData, rawLen, 38);
+
+  delay(2000);
+}
+
 void sendOnOff()
 {
   IrSender.sendNEC(0x0, 0x1, 0);
@@ -127,6 +164,7 @@ void sendOnOff()
 
 void loop()
 {
-  decodeRaw();
+  // decodeRaw();
   // sendOnOff();
+  // sendRaw();
 }
