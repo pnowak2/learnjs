@@ -148,10 +148,18 @@ void decodeRaw()
 
 void sendRaw()
 {
+  uint8_t freqs[] = {30, 33, 36, 38, 40, 56};
+
   uint16_t rawData[] = {1230, 420, 1280, 370, 430, 1220, 1280, 370, 1280, 420, 430, 1220, 430, 1220, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 1280, 7020, 1280, 370, 1280, 370, 480, 1220, 1230, 420, 1280, 370, 430, 1220, 430, 1220, 480, 1220, 430, 1220, 430, 1220, 430, 1220, 1280};
   uint8_t rawLen = sizeof(rawData) / sizeof(rawData[0]);
 
-  IrSender.sendRaw(rawData, rawLen, 38);
+  for(int i = 0; i < 3; i++) {
+    for(int j = 0; j < 6; j++) {
+      IrSender.sendRaw(rawData, rawLen, freqs[j]);
+      Serial.println(freqs[j]);
+      delay(100);
+    }
+  }
 
   delay(2000);
 }
@@ -166,5 +174,5 @@ void loop()
 {
   // decodeRaw();
   // sendOnOff();
-  // sendRaw();
+  sendRaw();
 }
