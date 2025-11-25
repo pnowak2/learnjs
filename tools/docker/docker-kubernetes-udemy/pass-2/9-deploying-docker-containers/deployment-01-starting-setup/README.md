@@ -1,5 +1,7 @@
 # Lanuching EC2 instance
 
+https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#Home
+
 Instance ID i-0036a1429e7f65564
 Open an SSH client.
 
