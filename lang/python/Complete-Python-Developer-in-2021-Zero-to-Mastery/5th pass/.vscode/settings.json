@@ -18,6 +18,11 @@
       "path": "excercises/18-scraping-data-with-python",
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
+    },
+    {
+      "path": "excercises/19-web-development-flask/web-server",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
     }
   ],
   "python.testing.unittestArgs": [
