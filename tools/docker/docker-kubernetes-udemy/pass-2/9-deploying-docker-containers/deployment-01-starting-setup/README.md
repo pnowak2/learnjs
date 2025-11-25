@@ -11,10 +11,10 @@ Run this command, if necessary, to ensure your key is not publicly viewable.
 chmod 400 "example-1.pem"
 
 Connect to your instance using its Public DNS:
-ec2-13-61-22-79.eu-north-1.compute.amazonaws.com
+ec2-51-21-181-97.eu-north-1.compute.amazonaws.com
 
 Example:
-ssh -i "example-1.pem" ec2-user@ec2-13-61-22-79.eu-north-1.compute.amazonaws.com
+ssh -i "example-1.pem" ec2-user@ec2-51-21-181-97.eu-north-1.compute.amazonaws.com
 
 # Install Docker on Virtual Machine
 sudo yum update -y
