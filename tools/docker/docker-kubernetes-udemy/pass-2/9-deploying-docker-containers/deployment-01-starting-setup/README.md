@@ -2,10 +2,10 @@
 
 https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#Home
 
-Instance ID i-0036a1429e7f65564
+Instance ID i-0a70d89950a0c8888
 Open an SSH client.
 
-Locate your private key file. The key used to launch this instance is example-1.pem
+Locate your private key file. The key used to launch this instance is example-2.pem
 Run this command, if necessary, to ensure your key is not publicly viewable.
 
 chmod 400 ~/.ssh/example-2.pem
