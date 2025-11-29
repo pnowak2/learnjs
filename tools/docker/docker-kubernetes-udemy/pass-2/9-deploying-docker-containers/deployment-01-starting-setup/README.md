@@ -35,3 +35,16 @@ docker buildx build \
 
 docker login
 docker push pnowak2/node-example-1
+
+go to EC2
+
+docker run -d --rm -p 80:80 pnowak2/node-example1
+
+optionally, after each image update locally
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t pnowak2/node-example-1:latest \
+  --push .
+
+on EC2
+docker pull pnowak2/node-example1
