@@ -26,3 +26,12 @@ Make sure to log out + back in after running these commands.
 
 sudo systemctl enable docker
 docker version
+
+# Build on mac, run on remote linux with buildx
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t pnowak2/node-example-1:latest \
+  --push .
+
+docker login
+docker push pnowak2/node-example-1
