@@ -4,9 +4,17 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def my_home():
-  print(url_for('static', filename='favicon.png'))
+def home():
+  print(url_for('static', filename='favicon.ico'))
   return render_template('index.html')
+
+@app.route('/index.html')
+def my_home():
+  return home()
+
+@app.route('/works.html')
+def my_works():
+  return render_template('works.html')
 
 @app.route('/about')
 def about():
