@@ -8,37 +8,9 @@ def home():
   print(url_for('static', filename='favicon.ico'))
   return render_template('index.html')
 
-@app.route('/index.html')
-def my_home():
-  return home()
-
-@app.route('/works.html')
-def my_works():
-  return render_template('works.html')
-
-@app.route('/about')
-def about():
-  return render_template('about.html')
-
-@app.route('/about/<username>')
-def user_profile(username = None):
-  ctx = {
-    'user': username
-  }
-
-  return render_template('about.html', **ctx)
-
-@app.route('/blog/<username>/<int:post_id>')
-def blog(username = None, post_id = None):
-  return render_template('blog.html', user=username, post_id=post_id)
-
-# @app.route('/favicon.ico')
-# def favicon():
-#   return 'Blog'
-
-@app.route('/blog/2025/dogs')
-def blog2():
-  return 'Dogs'
+@app.route('/<string:page_name>')
+def html_page(page_name):
+  return render_template(page_name)
 
 if __name__ == '__main__':
   app.run(debug=True)
