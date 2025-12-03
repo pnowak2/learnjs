@@ -31,5 +31,6 @@
     "./specs",
     "-p",
     "test*.py"
-  ]
+  ],
+  "python.testing.unittestEnabled": false
 }
