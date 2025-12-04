@@ -2,11 +2,11 @@
   background: #ff1b68;
 }
 
+.section-title {
+  color: #2ddf5c;
+}
+
 h1 {
   color: white;
   font-family: anton;
-}
-
-.section-title {
-  color: #2ddf5c;
 }
