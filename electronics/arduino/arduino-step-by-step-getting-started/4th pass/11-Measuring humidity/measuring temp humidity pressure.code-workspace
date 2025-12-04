@@ -3,6 +3,9 @@
 		{
 			"path": "DHT-22 Sensor"
 		},
+		{
+			"path": "Thermistor"
+		},
 	],
 	"settings": {}
 }
