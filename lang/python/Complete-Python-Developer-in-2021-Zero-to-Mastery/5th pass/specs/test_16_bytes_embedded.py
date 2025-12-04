@@ -18,6 +18,8 @@ class TestBytesEmbeddedSystems:
     assert(b'\xff'[0] == 255)
     assert(b'\xff'.hex() == 'ff')
 
+    assert(bytes([0xff][0] == 255))
+
   def test_bytes(self):
     b = bytes(4)
     assert(b[0] == 0)
