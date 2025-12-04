@@ -1,0 +1,16 @@
+{
+  "name": "2025",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "vitest": "^4.0.15"
+  }
+}
