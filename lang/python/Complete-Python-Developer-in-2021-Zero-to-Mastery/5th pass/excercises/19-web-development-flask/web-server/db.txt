@@ -1,0 +1,3 @@
+email, subject, message
+piotr-andrzej.nowak@ext.ec.europa.eu,temat,wiadomość
+biuro@domi-soft.com,pytanie,panele solarne
