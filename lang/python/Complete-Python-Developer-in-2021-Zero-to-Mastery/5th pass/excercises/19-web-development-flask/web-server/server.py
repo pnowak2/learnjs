@@ -34,7 +34,7 @@ def write_to_file(data):
     file = db.write(f'\n{email},{subject},{message}')
 
 def write_to_csv(data):
-  with open('db2.txt', mode='a') as db2:
+  with open('db.csv', mode='a', newline='') as db2:
     email = data.get('email')
     subject = data.get('subject')
     message = data.get('message')
