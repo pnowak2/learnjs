@@ -35,11 +35,11 @@ describe('Fundamentals', () => {
       });
 
       it('should use Infinity', () => {
-        expect(2/0).toBe(Infinity);
+        expect(2 / 0).toBe(Infinity);
       });
 
       it('should use Nan', () => {
-        expect(2*'abc').toBe(NaN);
+        expect(2 * 'abc').toBe(NaN);
       });
 
       it('should check BigInt', () => {
@@ -52,8 +52,51 @@ describe('Fundamentals', () => {
     });
 
     describe('String', () => {
-      it('should..', () => {
+      it('should use different types', () => {
+        let str = 'piotr';
+        let strdbl = "nowak";
+        let strbacktick = `hello ${str} ${strdbl}`
+
+        expect(strbacktick).toEqual('hello piotr nowak');
       });
+    });
+
+    describe('Boolean', () => {
+      it('should use boolean', () => {
+        let bool = true;
+        let truthy = Boolean('hi');
+
+        expect(truthy).toBe(true);
+      });
+    });
+
+    describe('null and undefined', () => {
+      it('should use null', () => {
+        let age = null;
+
+        expect(age).toBeNull();
+      });
+
+      it('should use undefined', () => {
+        let age;
+
+        expect(age).toBeUndefined();
+      });
+    });
+
+    describe('object', () => {
+      it('should use object', () => {
+        let obj = {};
+
+        expect(obj).toBeTypeOf('object');
+        expect(typeof (obj)).toEqual('object');
+      });
+    });
+  });
+
+  describe('Type Conversions', () => {
+    it('should ..', () => {
+
     });
   });
 });
