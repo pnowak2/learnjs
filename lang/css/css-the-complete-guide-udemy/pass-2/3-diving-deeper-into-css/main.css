@@ -54,7 +54,40 @@ body {
     list-style: none;
 }
 
+.main-nav__item {
+    text-decoration: none;
+    margin: 0 16px;
+    position: relative;
+}
+
 .main-header > div {
     display: inline-block;
     vertical-align: middle;
+}
+
+.main-nav__item a {
+    text-decoration: none;
+    color: #0e4f1f;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.main-nav__item a:hover, 
+.main-nav__item a:active {
+    color: white;
+    border-bottom: 5px solid white;;
+}
+
+.main-nav__item--cta a {
+    color: white;
+    background: red;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.main-nav__item--cta a:hover, 
+.main-nav__item--cta a:active {
+    color: #ff1b68;
+    background: white;
+    border: none;
 }
