@@ -41,6 +41,19 @@ describe('Fundamentals', () => {
       it('should use Nan', () => {
         expect(2*'abc').toBe(NaN);
       });
-    })
+
+      it('should check BigInt', () => {
+        expect(Number("1" + "0".repeat(309)) + 1).toBe(Infinity);
+
+        // append n at the end to make it bigint
+
+        expect(BigInt("1" + "0".repeat(309)) + 1n).not.toBe(Infinity);
+      });
+    });
+
+    describe('String', () => {
+      it('should..', () => {
+      });
+    });
   });
 });
