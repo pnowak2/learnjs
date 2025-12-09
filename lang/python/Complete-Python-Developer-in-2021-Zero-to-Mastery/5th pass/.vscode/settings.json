@@ -23,6 +23,11 @@
       "path": "excercises/19-web-development-flask/web-server",
       "envManager": "ms-python.python:venv",
       "packageManager": "ms-python.python:pip"
+    },
+    {
+      "path": "excercises/20-automation-testing",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
     }
   ],
   "python.testing.unittestArgs": [
