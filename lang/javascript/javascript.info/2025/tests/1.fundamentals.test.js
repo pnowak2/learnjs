@@ -95,8 +95,103 @@ describe('Fundamentals', () => {
   });
 
   describe('Type Conversions', () => {
-    it('should ..', () => {
-
+    it('should convert to string', () => {
+      let str = String(5) + String(7);
+      expect(str).toEqual('57');
     });
+
+    it('should convert string to numbers', () => {
+      let result = "10" / "2"
+      expect(result).toEqual(5);
+      expect(result).toBeTypeOf('number');
+    });
+
+    it('should explicit convert to number', () => {
+      let result = Number("8") + Number("4");
+      expect(result).toEqual(12);
+      expect(result).toBeTypeOf('number');
+
+      expect(Number("hello")).toBeNaN();
+    });
+
+    it('should convert to Boolean', () => {
+      expect(Boolean("true")).toBe(true);
+      expect(Boolean("false")).toBe(true);
+      expect(Boolean("0")).toBe(true);
+      expect(Boolean(1)).toBe(true);
+
+      expect(Boolean("")).toBe(false);
+      expect(Boolean(0)).toBe(false);
+    })
+  });
+
+  describe('Basic operators, maths', () => {
+    describe('Maths', () => {
+      it('should perform simple math', () => {
+        expect(3**3).toEqual(27);
+        expect(20/4).toEqual(5);
+        expect(16%3).toEqual(1);
+      });
+
+      it('numeric conversion with +', () => {
+        expect(+"5").toBeTypeOf('number');
+      })
+    });
+
+    describe('Bitwise operators', () => {
+      it('should test few interesting ones', () => {
+        expect(1 << 2).toEqual(4); // 0000 0001 => 0000 0100
+        expect(7 >> 2).toEqual(1); // 0000 0111 => 0000 0011
+      });
+    });
+  });
+
+  describe('Comparisons', () => {
+    it('should check strict equality', () => {
+      expect(0 == false).toBe(true);
+      expect(0 === false).toBe(false);
+    })
+  });
+
+  describe('Nullish coalescing operator "??"', () => {
+    it('should check for null & undefined, returns first defined value', () => {
+      let a = undefined;
+      let b = null;
+
+      let result = a ?? b;
+
+      expect(result).toBeNull();
+
+      a = null;
+      b = undefined;
+
+      result = a ?? b;
+
+      expect(result).toBeUndefined();
+
+      a = null;
+      b = 'hi';
+
+      result = a ?? b;
+
+      expect(result).toEqual('hi');
+    });
+
+    it('should compare with ||, returns first truthy value', () => {
+      let a = undefined;
+      let b = null;
+
+      let result = a || b;
+
+      expect(result).toBeNull();
+
+      a = "0";
+      b = 'hi';
+
+      result = a || b;
+
+      expect(result).toEqual('0');
+      
+    })
   });
 });
