@@ -36,10 +36,10 @@ body {
 }
 
 .main-header__brand {
-        color: #0e4f1f;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 22px;
+    color: #0e4f1f;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .main-nav {
@@ -61,7 +61,7 @@ body {
     position: relative;
 }
 
-.main-header > div {
+.main-header>div {
     display: inline-block;
     vertical-align: middle;
 }
@@ -73,10 +73,10 @@ body {
     padding: 3px 0;
 }
 
-.main-nav__item a:hover, 
+.main-nav__item a:hover,
 .main-nav__item a:active {
     color: white;
-    border-bottom: 5px solid white;;
+    border-bottom: 5px solid white;
 }
 
 .main-nav__item--cta a {
@@ -86,7 +86,7 @@ body {
     border-radius: 8px;
 }
 
-.main-nav__item--cta a:hover, 
+.main-nav__item--cta a:hover,
 .main-nav__item--cta a:active {
     color: #ff1b68;
     background: white;
