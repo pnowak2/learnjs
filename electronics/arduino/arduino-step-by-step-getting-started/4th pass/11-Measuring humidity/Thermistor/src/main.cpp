@@ -22,6 +22,9 @@ uint16_t temp;
 void setup()
 {
   Serial.begin(9600);
+  // Option is to connect 3.3V pin to Aref pin and call analogReference(EXTERNAL); to inform arduino
+  // ADC precision will increase from 5V/1023 4.8mV to 3V/1023 3.22mV
+  analogReference(EXTERNAL);
 }
 
 /**
