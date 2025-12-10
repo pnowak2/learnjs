@@ -1,0 +1,65 @@
+################################
+# Binaria i pliki wynikowe
+################################
+*.bin
+*.out
+*.exe
+a.out
+
+################################
+# Obiekty i artefakty kompilacji
+################################
+*.o
+*.obj
+*.lo
+*.la
+*.s
+*.d
+
+################################
+# Katalogi build
+################################
+build/
+bin/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+compile_commands.json
+install_manifest.txt
+
+################################
+# Debug / profile
+################################
+*.dSYM/
+*.prof
+*.gcda
+*.gcno
+*.gcov
+
+################################
+# Edytory / IDE
+################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
+
+.idea/
+*.iml
+
+################################
+# Systemowe (macOS)
+################################
+.DS_Store
+.AppleDouble
+.LSOverride
+
+################################
+# Tymczasowe
+################################
+*~
+*.swp
+*.tmp
