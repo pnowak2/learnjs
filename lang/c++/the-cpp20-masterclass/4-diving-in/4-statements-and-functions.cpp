@@ -1,6 +1,6 @@
 #include <iostream>
 
-int add(int a, int b) {
+int add(int a = 3, int b = 2) {
   int sum = a + b;
 
   return sum;
@@ -17,6 +17,7 @@ int main()
   int sum = add(first, second);
 
   std::cout << "Sum is: " << sum << std::endl;
+  std::cout << "Sum is: " << add() << std::endl;
 
   return 0;
 }
