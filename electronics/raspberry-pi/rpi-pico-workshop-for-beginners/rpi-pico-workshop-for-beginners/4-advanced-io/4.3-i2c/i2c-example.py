@@ -1,6 +1,10 @@
 from machine import Pin, I2C
 from lib.lcd.pico_i2c_lcd import I2cLcd
+from dht import DHT11, InvalidChecksum
 from time import sleep
+
+DHT_PIN = Pin(28, Pin.OUT, Pin.PULL_DOWN)
+dht = DHT11(DHT_PIN)
 
 i2c = I2C(0, scl=Pin(1), sda=Pin(0))
 
@@ -19,20 +23,19 @@ sleep(2)
 
 try:
   while True:
+    temperature = dht.temperature
+    humidity = dht.humidity
+
     lcd.show_cursor()
     lcd.clear()
 
-    for idx, letter in enumerate("Moien"):
-      lcd.move_to(idx, 0)
-      lcd.putstr(letter)
-      sleep(0.5)
+    lcd.move_to(3, 0)
+    lcd.putstr(f"Temp: {temperature}")
 
-    lcd.move_to(0, 1)
-    lcd.putstr("Luxembourg")
+    lcd.move_to(2, 1)
+    lcd.putstr(f"Humid: {humidity}%")
     sleep(2)
 
 except KeyboardInterrupt:
   lcd.backlight_off()
-  sleep(1)
   lcd.display_off()
-  sleep(1)
