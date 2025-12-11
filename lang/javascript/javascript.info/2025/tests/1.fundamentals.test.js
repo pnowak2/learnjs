@@ -124,7 +124,7 @@ describe('Fundamentals', () => {
       expect(Boolean(0)).toBe(false);
     })
   });
-
+ 
   describe('Basic operators, maths', () => {
     describe('Maths', () => {
       it('should perform simple math', () => {
