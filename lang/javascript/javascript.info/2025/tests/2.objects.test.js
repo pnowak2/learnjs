@@ -91,4 +91,52 @@ describe('Objects, the basics', () => {
       expect(keys).toEqual(['name', 'age']);
     })
   });
+
+  describe('Object references and copying', () => {
+    it('should use reference', () => {
+      let user = {name: 'piotr'};
+      let admin = user;
+
+      expect(user).toBe(admin);
+      expect(user) == admin;
+    });
+
+    it('should do a clone', () => {
+      let user = {name: 'piotr'};
+      let clone = {};
+
+      for(let key in user) {
+        clone[key] = user[key]
+      }
+
+      expect(clone).not.toBe(user);
+      expect(clone).toEqual(user);
+    });
+
+    it('should clonse with Object.assign()', () => {
+      let user = {name: 'piotr'};
+      let other = {hasPerm: true};
+
+      let clone = {}
+      Object.assign(clone, user, other)
+
+      expect(clone.name).toEqual('piotr');
+      expect(clone.hasPerm).toEqual(true);
+    });
+
+    it('should structuredClone(object) for deep clone', () => {
+      let user = {
+        name: 'piotr',
+        sizes: {
+          height: 194,
+          weight: 90
+        }
+      };
+
+      let clone = structuredClone(user);
+
+      expect(user).toEqual(clone);
+      expect(user).not.toBe(clone);
+    })
+  });
 });
