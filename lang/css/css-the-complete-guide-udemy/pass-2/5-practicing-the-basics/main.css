@@ -1,12 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    margin: 0;
-}
-
 #product-overview {
     background: url("freedom.jpg");
     width: 100%;
@@ -27,6 +18,12 @@ body {
 /* h1 {
     font-family: sans-serif;
 } */
+
+.plan__list {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
 
 .plan {
     background-color: #d5ffdc;
@@ -78,65 +75,42 @@ body {
     margin: 8px 0;
 }
 
-.main-header {
-    width: 100%;
-    background: #2ddf5c;
-    padding: 8px 16px;
+#key-features {
+    background-color: #ff1b68;
+    margin-top: 80px;
+    padding: 16px;
 }
 
-.main-header > div {
-    display: inline-block;
-    vertical-align: middle;
+#key-features .section-title {
+    color: white;
+    margin: 32px;
 }
 
-.main-header__brand {
-    color: #0e4f1f;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.main-nav {
-    display: inline-block;
-    text-align: right;
-    width: calc(100% - 74px);
-    vertical-align: middle;
-}
-
-.main-nav__items {
+.key-feature__list {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
+    text-align: center;
 }
 
-.main-nav__item {
+.key-feature {
     display: inline-block;
-    margin: 0 16px;
+    width: 30%;
+    vertical-align: top;
 }
 
-.main-nav__item a {
-    text-decoration: none;
-    color: #0e4f1f;
+.key-feature__description {
+    text-align: center;
     font-weight: bold;
-    padding: 3px 0;
-}
-
-.main-nav__item a:hover,
-.main-nav__item a:active {
+    font-size: 20px;
     color: white;
-    border-bottom: 5px solid white;
 }
 
-.main-nav__item--cta a {
-    color: white;
-    background: #ff1b68;
-    padding: 8px 16px;
-    border-radius: 8px;
-}
-
-.main-nav__item--cta a:hover,
-.main-nav__item--cta a:active {
-    color: #ff1b68;
-    background: white;
-    border: none;
+.key-feature__image {
+    background: #ffcede;
+    width: 128px;
+    height: 128px; 
+    border: 2px solid #424242;
+    border-radius: 50%;
+    margin: 0 auto;
 }
