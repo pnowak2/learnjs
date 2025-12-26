@@ -61,7 +61,7 @@ describe('Objects, the basics', () => {
       let name = 'piotr';
       let age = 45;
 
-      let obj = {name, age}
+      let obj = { name, age }
 
       expect(obj.name).toEqual('piotr');
       expect(obj.age).toBe(45);
@@ -84,7 +84,7 @@ describe('Objects, the basics', () => {
       };
 
       let keys = []
-      for(let key in user) {
+      for (let key in user) {
         keys.push(key);
       }
 
@@ -94,7 +94,7 @@ describe('Objects, the basics', () => {
 
   describe('Object references and copying', () => {
     it('should use reference', () => {
-      let user = {name: 'piotr'};
+      let user = { name: 'piotr' };
       let admin = user;
 
       expect(user).toBe(admin);
@@ -102,10 +102,10 @@ describe('Objects, the basics', () => {
     });
 
     it('should do a clone', () => {
-      let user = {name: 'piotr'};
+      let user = { name: 'piotr' };
       let clone = {};
 
-      for(let key in user) {
+      for (let key in user) {
         clone[key] = user[key]
       }
 
@@ -114,8 +114,8 @@ describe('Objects, the basics', () => {
     });
 
     it('should clonse with Object.assign()', () => {
-      let user = {name: 'piotr'};
-      let other = {hasPerm: true};
+      let user = { name: 'piotr' };
+      let other = { hasPerm: true };
 
       let clone = {}
       Object.assign(clone, user, other)
@@ -137,6 +137,53 @@ describe('Objects, the basics', () => {
 
       expect(user).toEqual(clone);
       expect(user).not.toBe(clone);
+    })
+  });
+
+  describe('Object methods and this', () => {
+    it('should use object method', () => {
+      let user = {
+        name: 'piotr',
+        age: 45,
+        // method shorthand
+        sayHi() {
+          return 'hi!';
+        },
+        // regular method param
+        sayHello: function () {
+          return 'hello!';
+        }
+      };
+
+      expect(user.sayHi()).toEqual('hi!');
+      expect(user.sayHello()).toEqual('hello!');
+    });
+
+    it('should use this in methods', () => {
+      let user = {
+        name: 'piotr',
+        age: 45,
+        // method shorthand
+        sayHi() {
+          return `hi ${this.name}!`;
+        }
+      };
+
+      expect(user.sayHi()).toEqual('hi piotr!');
+    });
+
+    it('should use arrow methods', () => {
+      let user = {
+        name: 'piotr',
+        age: 45,
+        sayHi() {
+          let arrow = () => { return `hi ${this.name}` } // this is inherited from parent context
+          return arrow();
+        }
+      };
+
+      expect(user.sayHi()).toEqual('hi piotr');
+
     })
   });
 });
