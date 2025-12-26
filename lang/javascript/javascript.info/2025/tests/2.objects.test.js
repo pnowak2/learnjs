@@ -186,4 +186,10 @@ describe('Objects, the basics', () => {
 
     })
   });
+
+  describe('Constructor, operator "new"', () => {
+    it('should', () => {
+      
+    });
+  });
 });
