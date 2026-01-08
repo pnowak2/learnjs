@@ -188,8 +188,108 @@ describe('Objects, the basics', () => {
   });
 
   describe('Constructor, operator "new"', () => {
-    it('should', () => {
-      
+    it('should should create new object from function', () => {
+      function User(name) {
+        this.name = name;
+        this.isAdmin = false;
+      }
+
+      let user = new User("Piotr");
+
+      expect(user.name).toEqual('Piotr');
+    });
+
+    it('should check if function is called with new (target)', () => {
+      function User(name) {
+        if (!new.target) {
+          return new User(name);
+        }
+
+        this.name = name;
+        this.isAdmin = false;
+      }
+
+      let user = new User("Piotr");
+      let user2 = User('Adam');
+
+      expect(user.name).toEqual('Piotr');
+      expect(user2.name).toEqual('Adam');
+    });
+
+    it('should add methods to costructor', () => {
+      function User(name) {
+        this.name = name;
+        this.isAdmin = false;
+
+        this.greet = function () {
+          return 'hello ' + this.name;
+        }
+      }
+
+      let user = new User("Piotr");
+      expect(user.greet()).toEqual('hello Piotr');
+
+    })
+  });
+
+  describe('Optional chaining "?"', () => {
+    it('should avoid making if checks', () => {
+      let user = {};
+
+      expect(user?.address?.street).toBeUndefined();
+    });
+
+    it('should call functions which dont exist', () => {
+      let user = {};
+
+      expect(user.hello?.()).toBeUndefined();
     });
   });
+
+  describe('Symbol type', () => {
+    it('should represent unique identifier', () => {
+      let id = Symbol('im id');
+
+      expect(id.description).toEqual('im id');
+    });
+
+    it('should add hidden properties to an object', () => {
+      let id = Symbol('id');
+
+      let user = {
+        name: 'Piotr',
+        [id]: 1
+      }
+
+      expect(user[id]).toEqual(1);
+    });
+
+    it('should use Global Symbols', () => {
+      let gbl = Symbol.for('id');
+      let gbl2 = Symbol.for('id');
+
+      expect(gbl).toBe(gbl2);
+      expect(Symbol.keyFor(gbl)).toEqual('id');
+      expect(Symbol.keyFor(gbl2)).toEqual('id');
+    })
+  });
+
+  describe('Object to primitive conversion', () => {
+    it('should convert object to primitive', () => {
+      let user = {
+        name: 'piotr',
+        age: 45,
+        [Symbol.toPrimitive](hint) {
+          if(hint == 'string') {
+            return this.name;
+          } else if (hint == 'number'){
+            return this.age
+          }
+        }
+      };
+
+      expect(+user).toEqual(45)
+      expect(String(user)).toEqual('piotr')
+    })
+  })
 });
