@@ -8,9 +8,13 @@ body {
 }
 
 .main-header {
+    position: fixed;
     width: 100%;
     background: #2ddf5c;
     padding: 8px 16px;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
 .main-header > div {
