@@ -49,7 +49,9 @@ export async function createNote(
     `INSERT INTO notes (id, user_id, title, content_json) VALUES (?, ?, ?, ?)`,
     [id, userId, title, contentJson]
   );
-  return toNote(get<NoteRow>("SELECT * FROM notes WHERE id = ?", [id])!);
+  const created = get<NoteRow>("SELECT * FROM notes WHERE id = ?", [id]);
+  if (!created) throw new Error(`Note ${id} not found after insert`);
+  return toNote(created);
 }
 
 export async function getNoteById(
@@ -92,7 +94,9 @@ export async function updateNote(
       userId,
     ]
   );
-  return toNote(get<NoteRow>("SELECT * FROM notes WHERE id = ?", [noteId])!);
+  const updated = get<NoteRow>("SELECT * FROM notes WHERE id = ?", [noteId]);
+  if (!updated) throw new Error(`Note ${noteId} not found after update`);
+  return toNote(updated);
 }
 
 export async function deleteNote(userId: string, noteId: string): Promise<void> {
@@ -124,7 +128,9 @@ export async function setNotePublic(
       [noteId, userId]
     );
   }
-  return toNote(get<NoteRow>("SELECT * FROM notes WHERE id = ?", [noteId])!);
+  const patched = get<NoteRow>("SELECT * FROM notes WHERE id = ?", [noteId]);
+  if (!patched) throw new Error(`Note ${noteId} not found after update`);
+  return toNote(patched);
 }
 
 export async function getNoteByPublicSlug(slug: string): Promise<Note | null> {

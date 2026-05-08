@@ -1,6 +1,6 @@
 import { Database } from "bun:sqlite";
-import { mkdirSync } from "fs";
-import { join } from "path";
+import { mkdirSync } from "node:fs";
+import { join } from "node:path";
 
 const DATA_DIR = join(process.cwd(), "data");
 mkdirSync(DATA_DIR, { recursive: true });
@@ -23,8 +23,7 @@ db.run(`
   )
 `);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Bindings = any[];
+type Bindings = unknown[];
 
 export function query<T>(sql: string, params?: Bindings) {
   return db.query<T, Bindings>(sql).all(params ?? []);
