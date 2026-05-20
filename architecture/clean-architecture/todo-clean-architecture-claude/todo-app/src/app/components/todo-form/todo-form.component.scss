@@ -1,0 +1,22 @@
+.todo-form {
+  display: flex;
+  width: 100%;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 16px 60px 16px 60px;
+  font-size: 1.5rem;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+  color: inherit;
+  font-family: inherit;
+
+  &::placeholder {
+    color: #e6e6e6;
+    font-style: italic;
+  }
+}

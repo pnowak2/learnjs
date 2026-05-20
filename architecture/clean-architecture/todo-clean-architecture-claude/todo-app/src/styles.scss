@@ -1,0 +1,43 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.4em;
+  background: #f5f5f5;
+  color: #111827;
+  min-width: 230px;
+  max-width: 550px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+:focus-visible {
+  outline: 2px solid #5dc2af;
+  outline-offset: 2px;
+}
+
+.info {
+  margin: 65px auto 0;
+  color: #bfbfbf;
+  font-size: 0.875rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-align: center;
+  line-height: 1.8;
+
+  p { margin: 0; }
+}
+
+app-root {
+  display: block;
+  padding-top: 130px;
+}

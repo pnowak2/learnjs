@@ -1,0 +1,23 @@
+.todoapp {
+  background: #fff;
+  margin: 0 auto;
+  max-width: 550px;
+  position: relative;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 25px 50px 0 rgba(0, 0, 0, 0.1);
+
+  .header {
+    h1 {
+      position: absolute;
+      top: -140px;
+      width: 100%;
+      font-size: 6rem;
+      font-weight: 100;
+      text-align: center;
+      color: rgba(175, 47, 47, 0.6);
+      text-rendering: optimizeLegibility;
+      pointer-events: none;
+    }
+  }
+}
